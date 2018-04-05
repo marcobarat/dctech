@@ -11,13 +11,48 @@ sap.ui.define([
         oModel: null,
         pippo: null,
         total: null,
+        bool_expanded: null,
+
         onInit: function () {
-
             this.getSplitAppObj().toDetail(this.createId("Home"));
+        },
 
+        onAfterRendering: function () {
+            this.pippo = this.getView().byId("TreeTableBasic");
+            this.pippo.addEventDelegate(
+                    {onAfterRendering: function () {
+                            console.log("aaaaaaaaaaaaaaaaaaaa");
+                        }
+                    });
+        },
+
+        PresaInCarico: function () {
+            this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
+            this.oModel = new JSONModel("model/Clothing.json");
+            this.getView().setModel(this.oModel);
+            
+            this.bool_expanded = false;
+
+            this.onExpandFirstLevel();
+            this.onMiao();
+//            this.pippo = this.getView().byId("TreeTableBasic");
+//            var JSON_data = this.oModel.getProperty("/");
+//            this.onExpandFirstLevel();
+//            this.onMiao();
+//            this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
 
         },
+
+        onExpandFirstLevel: function () {
+            this.pippo = this.getView().byId("TreeTableBasic");
+            this.pippo.expandToLevel(100);
+            this.bool_expanded = true;
+        },
+
         onMiao: function () {
+            this.pippo = this.getView().byId("TreeTableBasic");
+
+            this.total = this.pippo._iBindingLength;
             alert(this.total);
             var temp;
             for (var i = this.total - 1; i >= 0; i--) {
@@ -26,31 +61,8 @@ sap.ui.define([
                     this.pippo.collapse(i);
                 }
             }
-        },
-
-        onExpandFirstLevel: function () {
-            this.pippo.expandToLevel(100);
-            this.total = this.pippo._iBindingLength;
-            alert(this.total);
-            //pippo.expand(2);
-//            pippo.expandToLevel(10);
-//            pippo.collapse(0);
-//            pippo.collapse(2);
-//            pippo.collapse(3);
-        },
-
-        PresaInCarico: function () {
-            this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-            this.oModel = new JSONModel("model/Clothing.json");
-            this.getView().setModel(this.oModel);
-            this.pippo = this.getView().byId("TreeTableBasic");
-            var JSON_data = this.oModel.getProperty("/");
-//            var n_levels = this.ReturnLevels("categories",JSON_data);
-//            console.log(n_levels);
-//            var indexes = ReturnIndexes("categories" , JSON_data);
-            this.onExpandFirstLevel();
-            this.onMiao();
-
+            this.bool_expanded = false;
+//            this.PresaInCarico();
         },
 
         FinePredisposizione: function () {
@@ -72,25 +84,7 @@ sap.ui.define([
                 jQuery.sap.log.info("SplitApp object can't be found");
             }
             return result;
-        },
-        ReturnLevels: function (arrayName, JSON_file) {
-            var levels = 1;
-            var obj = JSON_file;
-            var keys = Object.keys(obj);
-            var discr = null;
-            while (obj !== discr) {
-                if (keys.indexOf(arrayName) > -1) {
-                    levels += 1;
-                }
-                discr = obj;
-                obj = obj[keys[0]];
-                keys = Object.keys(obj);
-            }
-            return levels;
         }
-//        ReturnIndexes: function (arrayName , JSON_file) {
-//            var keys = Object.keys(JSON_data);
-//        }
     });
     return TmpController;
 });

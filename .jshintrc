@@ -9,6 +9,7 @@
         "sap" : false,
         "console" : false,
         "sprintf" : false,
-        "accounting" : false
+        "accounting" : false,
+		"alert": false
     }
 }
