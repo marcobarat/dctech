@@ -15,26 +15,39 @@ sap.ui.define([
 
         onInit: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
+//            this.bool_expanded = false;
         },
 
         onAfterRendering: function () {
-            this.pippo = this.getView().byId("TreeTableBasic");
-            this.pippo.addEventDelegate(
-                    {onAfterRendering: function () {
-                            console.log("aaaaaaaaaaaaaaaaaaaa");
-                        }
-                    });
+            if (this.bool_expanded !== null) {
+                this.PresaInCarico();
+                this.pippo = this.getView().byId("TreeTableBasic");
+                var that = this;
+                this.pippo.addEventDelegate(
+                        {onAfterRendering: function () {
+                                if (that.bool_expanded == false) {
+                                    that.onExpandFirstLevel();
+//                                that.onAfterRendering();
+                                } else {
+                                    that.onMiao();
+                                }
+                            }
+                        });
+            }
         },
 
         PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
             this.oModel = new JSONModel("model/Clothing.json");
             this.getView().setModel(this.oModel);
-            
-            this.bool_expanded = false;
 
-            this.onExpandFirstLevel();
-            this.onMiao();
+            this.bool_expanded = false;
+            this.pippo = this.getView().byId("TreeTableBasic");
+
+            //this.onAfterRendering();
+
+//            this.onExpandFirstLevel();
+//            this.onMiao();
 //            this.pippo = this.getView().byId("TreeTableBasic");
 //            var JSON_data = this.oModel.getProperty("/");
 //            this.onExpandFirstLevel();
@@ -61,7 +74,7 @@ sap.ui.define([
                     this.pippo.collapse(i);
                 }
             }
-            this.bool_expanded = false;
+//            this.bool_expanded = false;
 //            this.PresaInCarico();
         },
 
