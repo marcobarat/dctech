@@ -2,25 +2,25 @@
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" xmlns:u="sap.ui.unified"
 
           controllerName="myapp.controller.Tmp">
-    <Page title="{locale>myapp.view.tmp.title}">
+    <Page id="myPage" title="{locale>myapp.view.tmp.title}">
         <headerContent>
             <Button icon="sap-icon://arrow-left" press="onNavBack" text="{locale>myapp.view.tmp.back}"
                     ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
         </headerContent>
         <content>
-            
-            <SplitApp id="SplitAppDemo" initialDetail="detail" initialMaster="master" orientationChange="onOrientationChange">
+            <Label id="lab" text="ciao is Detail Page2" />
+            <SplitApp id="SplitAppDemo" initialDetail="detail" initialMaster="master" afterDetailNavigate="Collapse" detailNavigate="Collapse">
                 <detailPages>
                     <Page id="Home" title="De Cecco" class="sapUiStdPage">
                         <content>
-                                <Image
-                                    src="{img/dececco}"
-                                    densityAware="false"
-                                    width="{/imageWidth}" >
-                                    <layoutData>
-                                        <FlexItemData growFactor="1" />
-                                    </layoutData>
-                                </Image>
+                            <Image
+                                src="{img/dececco}"
+                                densityAware="false"
+                                width="{/imageWidth}" >
+                                <layoutData>
+                                    <FlexItemData growFactor="1" />
+                                </layoutData>
+                            </Image>
                         </content>
                     </Page>
                     <Page id="PresaInCarico" title="Presa in carico nuovo confezionamento" class="sapUiStdPage">
@@ -36,7 +36,7 @@
                                     <Toolbar>
                                         <Title id="title" text="Clothing"/>
                                         <ToolbarSpacer/>
-                                        <Button text="Collapse all" press="onMiao"/>
+                                        <Button text="Collapse all" press="Collapse"/>
                                         <Button text="Expand all" press="onExpandFirstLevel"/>
                                     </Toolbar>
                                 </t:toolbar>
@@ -53,17 +53,17 @@
                                             <u:Currency value="{amount}" currency="{currency}"/>
                                         </t:template>
                                     </t:Column>
-<!--                                    <t:Column width="11rem">
-                                        <Label text="Size"/>
-                                        <t:template>
-                                            <Select
-                                                items="{path: '/sizes', templateShareable: true}"
-                                                selectedKey="{size}"
-                                                visible="{= !!${size}}"
-                                                forceSelection="false">
-                                                <core:Item key="{key}" text="{value}"/>
-                                            </Select>
-                                        </t:template>-->
+                                    <!--                                    <t:Column width="11rem">
+                                    <Label text="Size"/>
+                                    <t:template>
+                                        <Select
+                                            items="{path: '/sizes', templateShareable: true}"
+                                            selectedKey="{size}"
+                                            visible="{= !!${size}}"
+                                            forceSelection="false">
+                                            <core:Item key="{key}" text="{value}"/>
+                                        </Select>
+                                    </t:template>-->
                                     <!--</t:Column>-->
                                 </t:columns>
                             </t:TreeTable>
@@ -115,9 +115,8 @@
             </SplitApp>
             
             
-            
-            
-
+      
+       
             <!--Table items="{/Invoices}">
                 <columns>
                     <Column width="11rem" hAlign="Center">
