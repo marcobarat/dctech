@@ -11,13 +11,14 @@ sap.ui.define([
         oModel: null,
         pippo: null,
         total: null,
+        pic: null,
 
         onInit: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
         },
 
         PresaInCarico: function () {
-            if (sap.ui.getCore().byId("PresaInCarico") !== null) {
+            if (this.pic == null) {
 
                 this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
                 this.oModel = new JSONModel("model/Clothing.json");
@@ -25,6 +26,8 @@ sap.ui.define([
 
                 this.pippo = this.getView().byId("TreeTableBasic");
                 this.pippo.expandToLevel(100);
+                
+                this.pic = 0;
 
             }
         },
@@ -49,6 +52,7 @@ sap.ui.define([
 
         FinePredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
+            this.pic = null;
         },
         onNavBack: function () {
             var oHistory = History.getInstance();
