@@ -9,64 +9,59 @@
         </headerContent>
         <content>
             <Label id="lab" text="ciao is Detail Page2" />
-            <SplitApp id="SplitAppDemo" initialDetail="detail" initialMaster="master" afterDetailNavigate="Collapse" detailNavigate="Collapse">
+            <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" afterDetailNavigate="CollapseNotRelevant"> 
                 <detailPages>
                     <Page id="Home" title="De Cecco" class="sapUiStdPage">
                         <content>
-                            <Image
-                                src="{img/dececco}"
-                                densityAware="false"
-                                width="{/imageWidth}" >
-                                <layoutData>
-                                    <FlexItemData growFactor="1" />
-                                </layoutData>
-                            </Image>
+                            <Panel>
+                                <FlexBox width="100%" alignItems="Start"
+                                         justifyContent="Center">
+                                    <items>
+                                        <Image
+                                            src="img/dececco.jpg"                               
+                                            width="60%" class="sapUiSmallMarginEnd" >
+                                        </Image>
+                                    </items>
+                                </FlexBox>
+                            </Panel>
                         </content>
                     </Page>
-                    <Page id="PresaInCarico" title="Presa in carico nuovo confezionamento" class="sapUiStdPage">
+                    <Page id="PresaInCarico" title="Presa in carico nuovo confezionamento" class="sapUiStdPage"> 
                         <content>
-                            <t:TreeTable
-                                id="TreeTableBasic"
-                                rows="{path:'/', parameters: {arrayNames:['categories']}}"
-                                selectionMode="MultiToggle"
-                                collapseRecursive="true"
-                                enableSelectAll="false"
-                                ariaLabelledBy="title">
-                                <t:toolbar>
-                                    <Toolbar>
-                                        <Title id="title" text="Clothing"/>
-                                        <ToolbarSpacer/>
-                                        <Button text="Collapse all" press="Collapse"/>
-                                        <Button text="Expand all" press="onExpandFirstLevel"/>
-                                    </Toolbar>
-                                </t:toolbar>
-                                <t:columns>
-                                    <t:Column width="13rem">
-                                        <Label text="Categories"/>
-                                        <t:template>
-                                            <Text text="{name}" wrapping="false" />
-                                        </t:template>
-                                    </t:Column>
-                                    <t:Column width="9rem">
-                                        <Label text="Price"/>
-                                        <t:template>
-                                            <u:Currency value="{amount}" currency="{currency}"/>
-                                        </t:template>
-                                    </t:Column>
-                                    <!--                                    <t:Column width="11rem">
-                                    <Label text="Size"/>
-                                    <t:template>
-                                        <Select
-                                            items="{path: '/sizes', templateShareable: true}"
-                                            selectedKey="{size}"
-                                            visible="{= !!${size}}"
-                                            forceSelection="false">
-                                            <core:Item key="{key}" text="{value}"/>
-                                        </Select>
-                                    </t:template>-->
-                                    <!--</t:Column>-->
-                                </t:columns>
-                            </t:TreeTable>
+                            <Panel>
+                                <t:TreeTable
+                                    id="TreeTableBasic"
+                                    rows="{path:'/', parameters: {arrayNames:['attributi']}}"
+                                    selectionMode="MultiToggle"
+                                    collapseRecursive="true"
+                                    enableSelectAll="false"
+                                    ariaLabelledBy="title"
+                                    visibleRowCount="20">
+                                    <t:toolbar>
+                                        <Toolbar>
+                                            <Title id="title" text="SKU"/>
+                                            <ToolbarSpacer/>
+                                            <Button text="Collapse all" press="CollapseAll"/>
+                                            <Button text="Expand all" press="ExpandAll"/>
+                                            <Button id="collapseButton" text="Show Relevant" press="ShowRelevant" enabled="false"/>
+                                        </Toolbar>
+                                    </t:toolbar>
+                                    <t:columns>
+                                        <t:Column width="10rem">
+                                            <Label text="Attibuti"/>
+                                            <t:template>
+                                                <Text text="{name}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="10rem">
+                                            <Label text="Valore"/>
+                                            <t:template>
+                                                <Text text="{value}" wrapping="false" />
+                                            </t:template>
+                                        </t:Column>
+                                    </t:columns>
+                                </t:TreeTable>
+                            </Panel>
                         </content>
                     </Page>
                     <Page id="FinePredisposizione" title="Fine predisposizione inizio confezionamento" class="sapUiStdPage">

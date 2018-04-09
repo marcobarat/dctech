@@ -11,30 +11,31 @@ sap.ui.define([
         oModel: null,
         pippo: null,
         total: null,
-        pic: null,
+        FlagPresaInCarico: null,
+        FlagCollapseNotRelevant: null,
+        AllExpanded: 0,
 
         onInit: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
         },
 
         PresaInCarico: function () {
-            if (this.pic == null) {
+            if (this.FlagPresaInCarico == null) {
 
                 this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-                this.oModel = new JSONModel("model/Clothing.json");
+                this.oModel = new JSONModel("model/SKU.json");
                 this.getView().setModel(this.oModel);
 
                 this.pippo = this.getView().byId("TreeTableBasic");
                 this.pippo.expandToLevel(100);
-                
-                this.pic = 0;
 
+                this.FlagPresaInCarico = 0;
+                this.FlagCollapseNotRelevant = 1;
             }
         },
 
-        Collapse: function () {
-//          
-            if (this.pippo !== null) {
+        CollapseNotRelevant: function () {
+            if (this.FlagCollapseNotRelevant == 1 && this.pippo !== null) {
                 var oGlobalBusyDialog = new sap.m.BusyDialog();
                 oGlobalBusyDialog.open();
                 this.pippo = this.getView().byId("TreeTableBasic");
@@ -47,12 +48,40 @@ sap.ui.define([
                     }
                 }
                 oGlobalBusyDialog.close();
+                this.FlagCollapseNotRelevant = 0;
             }
+        },
+
+        CollapseAll: function () {
+            this.pippo = this.getView().byId("TreeTableBasic");
+            this.pippo.collapseAll();
+            this.AllExpanded = 0;
+            var button = this.getView().byId("collapseButton");
+            button.setEnabled(false);
+        },
+
+        ExpandAll: function () {
+            this.pippo = this.getView().byId("TreeTableBasic");
+            this.pippo.expandToLevel(100);
+            this.AllExpanded = 1;
+            var button = this.getView().byId("collapseButton");
+            button.setEnabled(true);
+        },
+
+        ShowRelevant: function () {
+            this.FlagCollapseNotRelevant = 1;
+            this.CollapseNotRelevant();
+            var button = this.getView().byId("collapseButton");
+            button.setEnabled(false);
+        },
+
+        onAfterRendering: function () {
+            this.CollapseNotRelevant();
         },
 
         FinePredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
-            this.pic = null;
+            this.FlagPresaInCarico = null;
         },
         onNavBack: function () {
             var oHistory = History.getInstance();
