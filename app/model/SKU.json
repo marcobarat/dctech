@@ -1,108 +1,376 @@
 {
-    "categories": [
+    "attributi": [
         {
-            "name": "Men",
+            "name": "SKU",
+            "expand": "0"
+        },
+        {
+            "name": "descrizione",
+            "expand": "0"
+        },
+        {
+            "name": "Formato",
             "expand": "0",
-            "categories": [
+            "attributi": [
                 {
-                    "name": "Accessories",
-                    "expand": "0",
-                    "categories": [
-                        {
-                            "name": "Tie",
-                            "amount": 36.99,
-                            "currency": "USD",
-                            "expand": "0"
-                        },
-                        {
-                            "name": "Wallet",
-                            "amount": 47.99,
-                            "currency": "USD",
-                            "expand": "0"
-                        },
-                        {
-                            "name": "Sunglasses",
-                            "amount": 199.99,
-                            "currency": "USD",
-                            "expand": "0"
-                        }
-                    ]
+                    "name": "Formato",
+                    "expand": "0"
                 },
                 {
-                    "name": "Shoes",
-                    "expand": "0",
-                    "categories": [
-                        {
-                            "name": "Fashion Sneaker",
-                            "amount": 89.99,
-                            "currency": "USD",
-                            "expand": "0"
-                        },
-                        {
-                            "name": "Sport Shoe",
-                            "amount": 47.99,
-                            "currency": "USD",
-                            "expand": "0"
-                        },
-                        {
-                            "name": "Boots",
-                            "amount": 103.99,
-                            "currency": "USD",
-                            "expand": "0"
-                        }
-                    ]
+                    "name": "formatoProduttivo",
+                    "expand": "0"
+                },
+                {
+                    "name": "tipologiaImpasto",
+                    "expand": "0"
                 }
             ]
         },
         {
-            "name": "Boys",
-            "expand": "1",
-            "categories": [
+            "name": "Confezionamento",
+            "expand": "0",
+            "attributi": [
                 {
-                    "name": "Accessories",
+                    "name": "Confezionamento",
+                    "expand": "0"
+                },
+                {
+                    "name": "tipo",
+                    "expand": "0"
+                },
+                {
+                    "name": "grammatura",
+                    "expand": "0"
+                }
+            ]
+        },
+        {
+            "name": "SpecificheConfezionamento",
+            "expand": "0",
+            "attributi": [
+                {
+                    "name": "SpecificheConfezionamento",
+                    "expand": "0"
+                },
+                {
+                    "name": "confezionePrimaria",
                     "expand": "0",
-                    "categories": [
+                    "attributi": [
                         {
-                            "name": "Sunglasses",
-                            "amount": 36.99,
-                            "currency": "USD",
+                            "name": "confezionePrimaria",
                             "expand": "0"
                         },
                         {
-                            "name": "Beanie",
-                            "amount": 17.99,
-                            "currency": "USD",
+                            "name": "controlloPeso",
                             "expand": "0"
                         },
                         {
-                            "name": "Scarf",
-                            "amount": 15.99,
-                            "currency": "USD",
-                            "expand": "0"
+                            "name": "stampa",
+                            "expand": "0",
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "id",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "layout",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "expand": "0"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "etichettaturaP",
+                            "expand": "0",
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "id",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "layout",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "expand": "0"
+                                }
+                            ]
                         }
                     ]
                 },
                 {
-                    "name": "Shoes",
-                    "expand": "1",
-                    "categories": [
+                    "name": "confezioneSecondaria",
+                    "expand": "0",
+                    "attributi": [
                         {
-                            "name": "Sneaker",
-                            "amount": 89.99,
-                            "currency": "USD",
+                            "name": "confezioneSecondaria",
                             "expand": "0"
                         },
                         {
-                            "name": "Sport Shoe",
-                            "amount": 47.99,
-                            "currency": "USD",
+                            "name": "tipologia",
                             "expand": "0"
                         },
                         {
-                            "name": "Boots",
-                            "amount": 103.99,
-                            "currency": "USD",
+                            "name": "qtaConfezionePrimaria",
                             "expand": "0"
+                        },
+                        {
+                            "name": "schema",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "controlloPeso",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "etichettaturaS",
+                            "expand": "0",
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "id",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "layout",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "expand": "0"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "pallettizzazione",
+                    "expand": "0",
+                    "attributi": [
+                        {
+                            "name": "pallettizzazione",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "pallet",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "dimensioni",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "protezione",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "qtaConfezioneSecondaria",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "nStrati",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "schemaStrati",
+                            "expand": "0"
+                        },
+                        {
+                            "name": "etichettaturaB",
+                            "expand": "0",
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "id",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "layout",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "expand": "0"
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "expand": "0"
+                                }
+                            ]
                         }
                     ]
                 }
