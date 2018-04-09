@@ -1,6 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" xmlns:u="sap.ui.unified"
-
+          xmlns:comp="myapp.component"
           controllerName="myapp.controller.Tmp">
     <Page id="myPage" title="{locale>myapp.view.tmp.title}">
         <headerContent>
@@ -8,9 +8,10 @@
                     ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
         </headerContent>
         <content>
-            <Label id="lab" text="ciao is Detail Page2" />
             <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" afterDetailNavigate="CollapseNotRelevant"> 
                 <detailPages>
+                    
+                    
                     <Page id="Home" title="De Cecco" class="sapUiStdPage">
                         <content>
                             <Panel>
@@ -26,24 +27,26 @@
                             </Panel>
                         </content>
                     </Page>
-                    <Page id="PresaInCarico" title="Presa in carico nuovo confezionamento" class="sapUiStdPage"> 
+                    
+                    
+                    <Page id="PresaInCarico" title="Presa in carico nuovo confezionamento" class="sapUiStdPage" afterDetailNavigate="CollapseNotRelevant_PresaInCarico"> 
                         <content>
                             <Panel>
                                 <t:TreeTable
-                                    id="TreeTableBasic"
+                                    id="TreeTable_PresaInCarico"
                                     rows="{path:'/', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="MultiToggle"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
                                     ariaLabelledBy="title"
-                                    visibleRowCount="20">
+                                    visibleRowCount="15">
                                     <t:toolbar>
                                         <Toolbar>
                                             <Title id="title" text="SKU"/>
                                             <ToolbarSpacer/>
-                                            <Button text="Collapse all" press="CollapseAll"/>
-                                            <Button text="Expand all" press="ExpandAll"/>
-                                            <Button id="collapseButton" text="Show Relevant" press="ShowRelevant" enabled="false"/>
+                                            <Button text="Collassa" press="CollapseAll_PresaInCarico"/>
+                                            <Button text="Espandi" press="ExpandAll_PresaInCarico"/>
+                                            <Button id="collapseButton_PresaInCarico" text="Non conformi" press="ShowRelevant_PresaInCarico" enabled="false"/>
                                         </Toolbar>
                                     </t:toolbar>
                                     <t:columns>
@@ -62,13 +65,86 @@
                                     </t:columns>
                                 </t:TreeTable>
                             </Panel>
+                            <Button text="Conferma" width="100%" press="FinePredisposizione"/>
                         </content>
                     </Page>
+                    
+                    
                     <Page id="FinePredisposizione" title="Fine predisposizione inizio confezionamento" class="sapUiStdPage">
                         <content>
-                            <VBox class="sapUiSmallMargin">
-                                <Label text="This is Detail Page2" />
-                            </VBox>
+                            <FlexBox width="100%" alignItems="Start"
+                                     justifyContent="Center">
+                                <HBox height="100%" width="50%">
+                                    <Panel>
+                                        <t:TreeTable
+                                            id="TreeTable_FinePredisposizione1"
+                                            rows="{path:'/', parameters: {arrayNames:['attributi']}}"
+                                            selectionMode="MultiToggle"
+                                            collapseRecursive="true"
+                                            enableSelectAll="false"
+                                            ariaLabelledBy="title"
+                                            visibleRowCount="15">
+                                            <t:toolbar>
+                                                <Toolbar>
+                                                    <Title text="SKU"/>
+                                                    <Button text="Collassa" press="CollapseAll_FinePredisposizione1"/>
+                                                    <Button text="Espandi" press="ExpandAll_FinePredisposizione1"/>
+                                                    <Button id="collapseButton_FinePredisposizione1" text="Non conformi" press="ShowRelevant_FinePredisposizione1" enabled="false"/>
+                                                </Toolbar>
+                                            </t:toolbar>
+                                            <t:columns>
+                                                <t:Column width="10rem">
+                                                    <Label text="Attibuti"/>
+                                                    <t:template>
+                                                        <Text text="{name}" wrapping="false" />
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column width="10rem">
+                                                    <Label text="Valore"/>
+                                                    <t:template>
+                                                        <Text text="{value}" wrapping="false" />
+                                                    </t:template>
+                                                </t:Column>
+                                            </t:columns>
+                                        </t:TreeTable>
+                                    </Panel>
+                                </HBox>
+                                <HBox height="100%" width="50%">
+                                    <Panel>
+                                        <t:TreeTable
+                                            id="TreeTable_FinePredisposizione2"
+                                            rows="{path:'/', parameters: {arrayNames:['attributi']}}"
+                                            selectionMode="MultiToggle"
+                                            collapseRecursive="true"
+                                            enableSelectAll="false"
+                                            ariaLabelledBy="title"
+                                            visibleRowCount="15">
+                                            <t:toolbar>
+                                                <Toolbar>
+                                                    <Title text="SKU"/>
+                                                    <Button text="Collassa" press="CollapseAll_FinePredisposizione2"/>
+                                                    <Button text="Espandi" press="ExpandAll_FinePredisposizione2"/>
+                                                    <Button id="collapseButton_FinePredisposizione2" text="Non conformi" press="ShowRelevant_FinePredisposizione2" enabled="false"/>
+                                                </Toolbar>
+                                            </t:toolbar>
+                                            <t:columns>
+                                                <t:Column width="10rem">
+                                                    <Label text="Attibuti"/>
+                                                    <t:template>
+                                                        <Text text="{name}" wrapping="false" />
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column width="10rem">
+                                                    <Label text="Valore"/>
+                                                    <t:template>
+                                                        <Text text="{value}" wrapping="false" />
+                                                    </t:template>
+                                                </t:Column>
+                                            </t:columns>
+                                        </t:TreeTable>
+                                    </Panel>
+                                </HBox>
+                            </FlexBox>
                         </content>
                     </Page>
                 </detailPages>
@@ -77,15 +153,11 @@
                         <content>
                             <VBox height="100%" width="100%">
                                 <VBox height="60%" width="100%">
+                                    <Button text="Home" icon="sap-icon://home" enabled="true" pressed="true" press="onInit">
+                                    </Button>
                                     <Button text="Presa in carico nuovo confezionamento" enabled="true" pressed="true" press="PresaInCarico">
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
                                     </Button>
                                     <Button text="Fine predisposizione inizio confezionamento" enabled="true" pressed="true" press="FinePredisposizione">
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
                                     </Button>
                                 </VBox>
                                 <VBox height="10%" width="100%">
