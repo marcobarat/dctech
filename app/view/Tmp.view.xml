@@ -1,6 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
-          xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" xmlns:u="sap.ui.unified"
-          xmlns:comp="myapp.component"
+          xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
+          xmlns:u="sap.ui.unified" xmlns:comp="myapp.component" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+          
           controllerName="myapp.controller.Tmp">
     <Page id="myPage" title="{locale>myapp.view.tmp.title}">
         <headerContent>
@@ -8,15 +9,15 @@
                     ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
         </headerContent>
         <content>
-            <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" afterDetailNavigate="CollapseNotRelevant"> 
+            <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" > 
                 <detailPages>
                     
                     
                     <Page id="Home" title="De Cecco" class="sapUiStdPage">
                         <content>
                             <Panel>
-                                <FlexBox width="100%" alignItems="Start"
-                                         justifyContent="Center">
+                                <FlexBox width="100%" alignItems="Center"
+                                         justifyContent="Center" class="middleImg">
                                     <items>
                                         <Image
                                             src="img/dececco.jpg"                               
@@ -29,7 +30,7 @@
                     </Page>
                     
                     
-                    <Page id="PresaInCarico" title="Presa in carico nuovo confezionamento" class="sapUiStdPage" afterDetailNavigate="CollapseNotRelevant_PresaInCarico"> 
+                    <Page id="PresaInCarico" title="Presa in carico nuovo confezionamento" class="sapUiStdPage"> 
                         <content>
                             <Panel>
                                 <t:TreeTable
@@ -44,9 +45,9 @@
                                         <Toolbar>
                                             <Title id="title" text="SKU"/>
                                             <ToolbarSpacer/>
-                                            <Button text="Collassa" press="CollapseAll_PresaInCarico"/>
-                                            <Button text="Espandi" press="ExpandAll_PresaInCarico"/>
-                                            <Button id="collapseButton_PresaInCarico" text="Non conformi" press="ShowRelevant_PresaInCarico" enabled="false"/>
+                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_PresaInCarico"/>
+                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_PresaInCarico"/>
+                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_PresaInCarico"/>
                                         </Toolbar>
                                     </t:toolbar>
                                     <t:columns>
@@ -59,7 +60,7 @@
                                         <t:Column width="10rem">
                                             <Label text="Valore"/>
                                             <t:template>
-                                                <Text text="{value}" wrapping="false" />
+                                                    <Text text="{value}" wrapping="false" />
                                             </t:template>
                                         </t:Column>
                                     </t:columns>
@@ -87,9 +88,9 @@
                                             <t:toolbar>
                                                 <Toolbar>
                                                     <Title text="SKU"/>
-                                                    <Button text="Collassa" press="CollapseAll_FinePredisposizione1"/>
-                                                    <Button text="Espandi" press="ExpandAll_FinePredisposizione1"/>
-                                                    <Button id="collapseButton_FinePredisposizione1" text="Non conformi" press="ShowRelevant_FinePredisposizione1" enabled="false"/>
+                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_FinePredisposizione1"/>
+                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_FinePredisposizione1"/>
+                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione1"/>
                                                 </Toolbar>
                                             </t:toolbar>
                                             <t:columns>
@@ -122,9 +123,9 @@
                                             <t:toolbar>
                                                 <Toolbar>
                                                     <Title text="SKU"/>
-                                                    <Button text="Collassa" press="CollapseAll_FinePredisposizione2"/>
-                                                    <Button text="Espandi" press="ExpandAll_FinePredisposizione2"/>
-                                                    <Button id="collapseButton_FinePredisposizione2" text="Non conformi" press="ShowRelevant_FinePredisposizione2" enabled="false"/>
+                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_FinePredisposizione2"/>
+                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_FinePredisposizione2"/> 
+                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione2"/>
                                                 </Toolbar>
                                             </t:toolbar>
                                             <t:columns>
