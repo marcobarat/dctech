@@ -47,6 +47,7 @@ sap.ui.define([
             var name = event.getSource().data("mydata");
             this.View = this.getView().byId(name);
             this.View.expandToLevel(100);
+            this.oGlobalBusyDialog.open();
             setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, name), 400);
         },
         FinePredisposizione: function () {

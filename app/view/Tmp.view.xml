@@ -1,6 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
           xmlns:u="sap.ui.unified" xmlns:comp="myapp.component" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+          xmlns:wt="myapp.control"
           
           controllerName="myapp.controller.Tmp">
     <Page id="myPage" title="{locale>myapp.view.tmp.title}">
@@ -54,13 +55,19 @@
                                         <t:Column width="10rem">
                                             <Label text="Attibuti"/>
                                             <t:template>
-                                                <Text text="{name}" wrapping="false" />
+                                                <!--<Text text="{name}" wrapping="false" />-->
+                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="10rem">
                                             <Label text="Valore"/>
                                             <t:template>
-                                                    <Text text="{value}" wrapping="false" />
+                                                <!--<Text text="{value}" wrapping="false" />-->
+                                                <HBox>
+                                                    <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
+                                                    <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
+                                                </HBox>
                                             </t:template>
                                         </t:Column>
                                     </t:columns>
@@ -97,13 +104,15 @@
                                                 <t:Column width="10rem">
                                                     <Label text="Attibuti"/>
                                                     <t:template>
-                                                        <Text text="{name}" wrapping="false" />
+                                                        <!--<Text text="{name}" wrapping="false" />-->
+                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
                                                     </t:template>
                                                 </t:Column>
                                                 <t:Column width="10rem">
                                                     <Label text="Valore"/>
                                                     <t:template>
-                                                        <Text text="{value}" wrapping="false" />
+                                                        <!--<Text text="{value}" wrapping="false" />-->
+                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
                                                     </t:template>
                                                 </t:Column>
                                             </t:columns>
@@ -132,13 +141,15 @@
                                                 <t:Column width="10rem">
                                                     <Label text="Attibuti"/>
                                                     <t:template>
-                                                        <Text text="{name}" wrapping="false" />
+                                                        <!--<Text text="{name}" wrapping="false" />-->
+                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
                                                     </t:template>
                                                 </t:Column>
                                                 <t:Column width="10rem">
                                                     <Label text="Valore"/>
                                                     <t:template>
-                                                        <Text text="{value}" wrapping="false" />
+                                                        <!--<Text text="{value}" wrapping="false" />-->
+                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
                                                     </t:template>
                                                 </t:Column>
                                             </t:columns>
