@@ -8,9 +8,9 @@
     text-align: center;
 }
 
-/*.diffStandard {
+.diffStandard input {
     color : red;
-}*/
+}
 
 .diffRed {
     color : red;

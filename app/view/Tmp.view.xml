@@ -192,7 +192,7 @@
                                             <t:template>
                                                 <!--<Text text="{name}" wrapping="false" />-->
                                                 <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>-->
-                                                <wt:StyleTextTreeTableAttr text="{TreeTable_FinePredisposizione>name}" diff="{TreeTable_FinePredisposizione>expand}" discr="{TreeTable_FinePredisposizione>value}" />
+                                                <Text text="{TreeTable_FinePredisposizione>name}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem">
@@ -200,7 +200,7 @@
                                             <t:template>
                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                 <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                <wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" />
+                                                <Text text="{TreeTable_FinePredisposizione>value}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem">
@@ -211,7 +211,7 @@
                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                 <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
                                                 <!--<wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" visible="{= ${modify} == '0'}" />-->
-                                                <Input value="{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}" editable="{= ${TreeTable_FinePredisposizione>modify} === '1'}" />
+                                                <wt:StyleInputTreeTableValue value="{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}" diff="{TreeTable_FinePredisposizione>modify}" editable="{= ${TreeTable_FinePredisposizione>modify} === '1'}" />
                                                 <!--<Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>modify} === '0'}" />-->
                                                 <!--<wt:StyleInputTreeTableModify diff="{TreeTable_FinePredisposizione>modify}"/>-->
                                             </t:template>

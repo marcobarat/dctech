@@ -1,11 +1,11 @@
 sap.ui.define([
     "sap/ui/core/Control",
     "sap/m/Label",
-    "sap/m/Text"
-], function (Control, Label, Text) {
+    "sap/m/InputBase"
+], function (Control, Label, InputBase) {
     "use strict";
 
-    var StyleTextTreeTableAttr = Text.extend("myapp.control.StyleTextTreeTableAttr", {
+    var StyleInputTreeTableValue = InputBase.extend("myapp.control.StyleInputTreeTableValue", {
 
         metadata: {
             //eventi 
@@ -17,24 +17,23 @@ sap.ui.define([
             },
 
             properties: {
-                diff: {type: "string", defaultValue: "0"},
-                discr: {type: "string", defaultValue: ""}
+                diff: {type: "string", defaultValue: 0}
             }
         },
         renderer: function (oRm, oControl) {
             //Funzione che renderizza il testo 
-            sap.m.TextRenderer.render(oRm, oControl);
+            sap.m.InputBaseRenderer.render(oRm, oControl);
         },
 
         onAfterRendering: function () {
 
-            if (this.getDiff() === "1" && this.getDiscr() !== "") {
-                this.addStyleClass('diffRed');
+            if (this.getDiff() === "1") {
+                this.addStyleClass('diffStandard');
             } else {
-                this.removeStyleClass('diffRed');
+                this.removeStyleClass('diffStandard');
             }
         }
     });
 
-    return StyleTextTreeTableAttr;
+    return StyleInputTreeTableValue;
 });
