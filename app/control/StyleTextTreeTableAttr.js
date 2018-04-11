@@ -17,7 +17,8 @@ sap.ui.define([
             },
 
             properties: {
-                diff: {type: "string", defaultValue: 0}
+                diff: {type: "string", defaultValue: "0"},
+                discr: {type: "string", defaultValue: ""}
             }
         },
         renderer: function (oRm, oControl) {
@@ -27,7 +28,7 @@ sap.ui.define([
 
         onAfterRendering: function () {
 
-            if (this.getDiff() === "1") {
+            if (this.getDiff() === "1" && this.getDiscr() !== "") {
                 this.addStyleClass('diffRed');
             } else {
                 this.removeStyleClass('diffRed');

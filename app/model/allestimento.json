@@ -1,0 +1,310 @@
+{
+    "attributi": [
+        {
+            "name": "confezionamento primario",
+            "value": "",
+            "expand": "1",
+            "modify": "0",
+            "code": "0",
+            "codePlaceholder": "",
+            "attributi": [
+                {
+                    "name": "sezione 1",
+                    "value": "",
+                    "expand": "1",
+                    "modify": "0",
+                    "code": "0",
+                    "codePlaceholder": "",
+                    "attributi": [
+                        {
+                            "name": "confezionatrice",
+                            "value": "",
+                            "expand": "1",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "semilavorato",
+                                    "value": "Farfalle 093",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "1",
+                                    "codePlaceholder": "Lotto"
+                                },
+                                {
+                                    "name": "programma bilancia",
+                                    "value": "KZ911",
+                                    "expand": "0",
+                                    "modify": "1",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "tubo formatore",
+                                    "value": "TF045.4",
+                                    "expand": "0",
+                                    "modify": "1",
+                                    "code": "1",
+                                    "codePlaceholder": "Matricola"
+                                },
+                                {
+                                    "name": "film",
+                                    "value": "1SXGH005",
+                                    "expand": "0",
+                                    "modify": "1",
+                                    "code": "1",
+                                    "codePlaceholder": "Matricola"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "marcatore",
+                            "value": "",
+                            "expand": "1",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "* stampa film",
+                                    "value": "CEE",
+                                    "expand": "0",
+                                    "modify": "1",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "controllo peso",
+                            "value": "",
+                            "expand": "1",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "* regole intervallo peso",
+                                    "value": "normBRA",
+                                    "expand": "0",
+                                    "modify": "1",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "campionatura temporale",
+                                    "value": "stdDC",
+                                    "expand": "0",
+                                    "modify": "1",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "metal detector",
+                            "value": "",
+                            "expand": "0",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "intensità campo magnetico",
+                                    "value": "5mT",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "frequenza campo magnetico",
+                                    "value": "5GHz",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "etichettatrice",
+                            "value": "",
+                            "expand": "0",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "value": "bella",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "sezione 2",
+                    "value": "",
+                    "expand": "1",
+                    "modify": "0",
+                    "code": "0",
+                    "codePlaceholder": "",
+                    "attributi": [
+                        {
+                            "name": "confezionatrice",
+                            "value": "",
+                            "expand": "0",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "semilavorato",
+                                    "value": "Farfalle 093",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "programma bilancia",
+                                    "value": "KZ911",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "tubo formatore",
+                                    "value": "TF045.4",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "film",
+                                    "value": "1SXGH005",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "marcatore",
+                            "value": "",
+                            "expand": "0",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "* stampa film",
+                                    "value": "CEE",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "controllo peso",
+                            "value": "",
+                            "expand": "0",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "* regole intervallo peso",
+                                    "value": "normBRA",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "campionatura temporale",
+                                    "value": "stdDC",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "metal detector",
+                            "value": "",
+                            "expand": "0",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "intensità campo magnetico",
+                                    "value": "5mT",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "frequenza campo magnetico",
+                                    "value": "5GHz",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        },
+                        {
+                            "name": "etichettatrice",
+                            "value": "",
+                            "expand": "0",
+                            "modify": "0",
+                            "code": "0",
+                            "codePlaceholder": "",
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "value": "bella",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                },
+                                {
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": "0",
+                                    "modify": "0",
+                                    "code": "0",
+                                    "codePlaceholder": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

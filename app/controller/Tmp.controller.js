@@ -8,7 +8,6 @@ sap.ui.define([
     "use strict";
     var TmpController = Controller.extend("myapp.controller.Tmp", {
 
-        oModel: null,
         View: null,
         total: null,
         oGlobalBusyDialog: new sap.m.BusyDialog(),
@@ -50,11 +49,10 @@ sap.ui.define([
             this.oGlobalBusyDialog.open();
             setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, name), 400);
         },
-        FinePredisposizione: function () {
-            this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
-
-            this.FillTreeTable("model/SKU.json", "TreeTable_FinePredisposizione1");
-            this.FillTreeTable("model/SKU.json", "TreeTable_FinePredisposizione2");
+        Conferma: function () {
+            this.getSplitAppObj().toDetail(this.createId("Conferma"));
+            this.FillTreeTable("model/SKU.json", "TreeTable_ConfermaOld");
+            this.FillTreeTable("model/SKU_1.json", "TreeTable_ConfermaNew");
         },
         LinkClick: function (event) {
             var clicked_row = event.getParameters().rowBindingContext.getObject();
@@ -63,13 +61,25 @@ sap.ui.define([
                 alert(clicked_row.value);
             }
         },
+        
+        FinePredisposizione: function () {
+            this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
+            this.FillTreeTable("model/allestimento.json", "TreeTable_FinePredisposizione");
+            
+//            setTimeout(jQuery.proxy(this.MakeEditable, this), 600);
+        },
+        
+//        MakeEditable: function () {
+//            this.View = this.getView().byId("TreeTable_FinePredisposizione");
+//            this.total = this.View._iBindingLength;
+//        },
+//            
         Expander: function (name) {
             this.View = this.getView().byId(name);
             this.View.expandToLevel(100);
         },
-        FillTreeTable: function (model_path, TreeName) {
-            this.oModel = new JSONModel(model_path);
-            this.getView().setModel(this.oModel);
+        FillTreeTable: function (model, TreeName) {
+            this.getView().setModel(new JSONModel(model), TreeName);
             this.View = this.getView().byId(TreeName);
             this.oGlobalBusyDialog.open();
 

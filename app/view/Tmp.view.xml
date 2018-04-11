@@ -36,7 +36,7 @@
                             <Panel>
                                 <t:TreeTable
                                     id="TreeTable_PresaInCarico"
-                                    rows="{path:'/', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'TreeTable_PresaInCarico>/', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="MultiToggle"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -58,7 +58,7 @@
                                             <t:template>
                                                 <!--<Text text="{name}" wrapping="false" />-->
                                                 <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}" />-->
-                                                <wt:StyleTextTreeTableAttr text="{name}" diff="{expand}" />
+                                                <wt:StyleTextTreeTableAttr text="{TreeTable_PresaInCarico>name}" diff="{TreeTable_PresaInCarico>expand}" discr="{TreeTable_PresaInCarico>value}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="10rem">
@@ -66,7 +66,7 @@
                                             <t:template>
                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                 <HBox>
-                                                    <wt:StyleTextTreeTableValue text="{value}" diff="{expand}" />
+                                                    <wt:StyleTextTreeTableValue text="{TreeTable_PresaInCarico>value}" diff="{TreeTable_PresaInCarico>expand}" />
                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
                                                     <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
@@ -76,20 +76,20 @@
                                     </t:columns>
                                 </t:TreeTable>
                             </Panel>
-                            <Button text="Conferma" width="100%" press="FinePredisposizione"/>
+                            <Button text="Conferma" width="100%" press="Conferma"/>
                         </content>
                     </Page>
                     
                     
-                    <Page id="FinePredisposizione" title="Fine predisposizione inizio confezionamento" class="sapUiStdPage">
+                    <Page id="Conferma" title="Conferma Batch" class="sapUiStdPage">
                         <content>
                             <FlexBox width="100%" alignItems="Start"
                                      justifyContent="Center">
                                 <HBox height="100%" width="50%">
                                     <Panel>
                                         <t:TreeTable
-                                            id="TreeTable_FinePredisposizione1"
-                                            rows="{path:'/', parameters: {arrayNames:['attributi']}}"
+                                            id="TreeTable_ConfermaOld"
+                                            rows="{path:'TreeTable_ConfermaOld>/', parameters: {arrayNames:['attributi']}}"
                                             selectionMode="MultiToggle"
                                             collapseRecursive="true"
                                             enableSelectAll="false"
@@ -98,9 +98,9 @@
                                             <t:toolbar>
                                                 <Toolbar>
                                                     <Title text="SKU"/>
-                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_FinePredisposizione1"/>
-                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_FinePredisposizione1"/>
-                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione1"/>
+                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaOld"/>
+                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaOld"/>
+                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaOld"/>
                                                 </Toolbar>
                                             </t:toolbar>
                                             <t:columns>
@@ -108,14 +108,16 @@
                                                     <Label text="Attibuti"/>
                                                     <t:template>
                                                         <!--<Text text="{name}" wrapping="false" />-->
-                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
+                                                        <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>-->
+                                                        <wt:StyleTextTreeTableAttr text="{TreeTable_ConfermaOld>name}" diff="{TreeTable_ConfermaOld>expand}" discr="{TreeTable_ConfermaOld>value}" />
                                                     </t:template>
                                                 </t:Column>
                                                 <t:Column width="10rem">
                                                     <Label text="Valore"/>
                                                     <t:template>
                                                         <!--<Text text="{value}" wrapping="false" />-->
-                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                        <wt:StyleTextTreeTableValue text="{TreeTable_ConfermaOld>value}" diff="{TreeTable_ConfermaOld>expand}" />
                                                     </t:template>
                                                 </t:Column>
                                             </t:columns>
@@ -125,8 +127,8 @@
                                 <HBox height="100%" width="50%">
                                     <Panel>
                                         <t:TreeTable
-                                            id="TreeTable_FinePredisposizione2"
-                                            rows="{path:'/', parameters: {arrayNames:['attributi']}}"
+                                            id="TreeTable_ConfermaNew"
+                                            rows="{path:'TreeTable_ConfermaNew>/', parameters: {arrayNames:['attributi']}}"
                                             selectionMode="MultiToggle"
                                             collapseRecursive="true"
                                             enableSelectAll="false"
@@ -135,9 +137,9 @@
                                             <t:toolbar>
                                                 <Toolbar>
                                                     <Title text="SKU"/>
-                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_FinePredisposizione2"/>
-                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_FinePredisposizione2"/> 
-                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione2"/>
+                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaNew"/>
+                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaNew"/> 
+                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaNew"/>
                                                 </Toolbar>
                                             </t:toolbar>
                                             <t:columns>
@@ -145,14 +147,16 @@
                                                     <Label text="Attibuti"/>
                                                     <t:template>
                                                         <!--<Text text="{name}" wrapping="false" />-->
-                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
+                                                        <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>-->
+                                                        <wt:StyleTextTreeTableAttr text="{TreeTable_ConfermaNew>name}" diff="{TreeTable_ConfermaNew>expand}" discr="{TreeTable_ConfermaNew>value}" />
                                                     </t:template>
                                                 </t:Column>
                                                 <t:Column width="10rem">
                                                     <Label text="Valore"/>
                                                     <t:template>
                                                         <!--<Text text="{value}" wrapping="false" />-->
-                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                        <wt:StyleTextTreeTableValue text="{TreeTable_ConfermaNew>value}" diff="{TreeTable_ConfermaNew>expand}" />
                                                     </t:template>
                                                 </t:Column>
                                             </t:columns>
@@ -162,7 +166,76 @@
                             </FlexBox>
                         </content>
                     </Page>
+                    
+                    <Page id="FinePredisposizione" title="Fine predisposizione inizio confezionamento" class="sapUiStdPage">
+                        <content>
+                            <Panel>
+                                <t:TreeTable
+                                    id="TreeTable_FinePredisposizione"
+                                    rows="{path:'TreeTable_FinePredisposizione>/', parameters: {arrayNames:['attributi']}}"
+                                    selectionMode="MultiToggle"
+                                    collapseRecursive="true"
+                                    enableSelectAll="false"
+                                    ariaLabelledBy="title"
+                                    visibleRowCount="15">
+                                    <t:toolbar>
+                                        <Toolbar>
+                                            <Title text="SKU"/>
+                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_FinePredisposizione"/>
+                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_FinePredisposizione"/>
+                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione"/>
+                                        </Toolbar>
+                                    </t:toolbar>
+                                    <t:columns>
+                                        <t:Column width="15rem">
+                                            <Label text="Attibuti"/>
+                                            <t:template>
+                                                <!--<Text text="{name}" wrapping="false" />-->
+                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>-->
+                                                <wt:StyleTextTreeTableAttr text="{TreeTable_FinePredisposizione>name}" diff="{TreeTable_FinePredisposizione>expand}" discr="{TreeTable_FinePredisposizione>value}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem">
+                                            <Label text="Valore"/>
+                                            <t:template>
+                                                <!--<Text text="{value}" wrapping="false" />-->
+                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                <wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem">
+                                            <Label text="Modifica"/>
+                                            <t:template>
+                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
+                                                <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
+                                                <!--<Text text="{value}" wrapping="false" />-->
+                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                <!--<wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" visible="{= ${modify} == '0'}" />-->
+                                                <Input value="{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}" editable="{= ${TreeTable_FinePredisposizione>modify} === '1'}" />
+                                                <!--<Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>modify} === '0'}" />-->
+                                                <!--<wt:StyleInputTreeTableModify diff="{TreeTable_FinePredisposizione>modify}"/>-->
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem">
+                                            <Label text="Sigle"/>
+                                            <t:template>
+                                                <!--<Text text="{value}" wrapping="false" />-->
+                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                <Input placeholder="{= ${TreeTable_FinePredisposizione>code} === '1' ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}" editable="{= ${TreeTable_FinePredisposizione>code} === '1'}" />
+                                                <!--<Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>code} === '0'}" />-->
+                                                <!--<wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" />-->
+                                            </t:template>
+                                        </t:Column>
+                                    </t:columns>
+                                </t:TreeTable>
+                            </Panel>
+                        </content>
+                    </Page>
+                    
                 </detailPages>
+                
+                
+                
                 <masterPages>
                     <Page id="processi" title="Processi" icon="sap-icon://action" class="sapUiStdPage">
                         <content>
