@@ -12,7 +12,7 @@
         },
         {
             "name": "Formato",
-            "value": "093 Semola",
+            "value": "",
             "expand": "0",
             "attributi": [
                 {
@@ -34,7 +34,7 @@
         },
         {
             "name": "Confezionamento",
-            "value": "Film 500 gr.",
+            "value": "",
             "expand": "0",
             "attributi": [
                 {
@@ -56,7 +56,7 @@
         },
         {
             "name": "SpecificheConfezionamento",
-            "value": "CEE",
+            "value": "",
             "expand": "1",
             "attributi": [
                 {
@@ -66,7 +66,7 @@
                 },
                 {
                     "name": "confezionePrimaria",
-                    "value": "CEE",
+                    "value": "",
                     "expand": "0",
                     "attributi": [
                         {
@@ -237,18 +237,18 @@
                 },
                 {
                     "name": "confezioneSecondaria",
-                    "value": "CEE",
+                    "value": "",
                     "expand": "1",
                     "attributi": [
                         {
                             "name": "confezioneSecondaria",
                             "value": "CEE",
-                            "expand": "0"
+                            "expand": "2"
                         },
                         {
                             "name": "tipologia",
                             "value": "cartone",
-                            "expand": "0"
+                            "expand": "2"
                         },
                         {
                             "name": "qtaConfezionePrimaria",
@@ -346,7 +346,7 @@
                 },
                 {
                     "name": "pallettizzazione",
-                    "value": "CEE",
+                    "value": "",
                     "expand": "0",
                     "attributi": [
                         {

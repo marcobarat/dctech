@@ -41,7 +41,8 @@
                                     collapseRecursive="true"
                                     enableSelectAll="false"
                                     ariaLabelledBy="title"
-                                    visibleRowCount="15">
+                                    visibleRowCount="15"
+                                    cellClick="LinkClick">
                                     <t:toolbar>
                                         <Toolbar>
                                             <Title id="title" text="SKU"/>
@@ -56,7 +57,8 @@
                                             <Label text="Attibuti"/>
                                             <t:template>
                                                 <!--<Text text="{name}" wrapping="false" />-->
-                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}" />
+                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}" />-->
+                                                <wt:StyleTextTreeTableAttr text="{name}" diff="{expand}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="10rem">
@@ -64,7 +66,8 @@
                                             <t:template>
                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                 <HBox>
-                                                    <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                                    <wt:StyleTextTreeTableValue text="{value}" diff="{expand}" />
+                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
                                                     <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
                                                 </HBox>

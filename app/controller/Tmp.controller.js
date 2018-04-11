@@ -56,7 +56,13 @@ sap.ui.define([
             this.FillTreeTable("model/SKU.json", "TreeTable_FinePredisposizione1");
             this.FillTreeTable("model/SKU.json", "TreeTable_FinePredisposizione2");
         },
-
+        LinkClick: function (event) {
+            var clicked_row = event.getParameters().rowBindingContext.getObject();
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_row.expand == 2 && clicked_column == 1) {
+                alert(clicked_row.value);
+            }
+        },
         Expander: function (name) {
             this.View = this.getView().byId(name);
             this.View.expandToLevel(100);
