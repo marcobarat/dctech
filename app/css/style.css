@@ -17,6 +17,38 @@
     font-weight: bold;
 }
 
+.styleButton * {
+    /*margin: 5px;*/
+    /*width: 110%;*/
+    /*padding: 1px;*/
+    display: block; /* Make the buttons appear below each other */
+    font-size: 12pt;
+    line-height: 15pt;
+    white-space: normal;
+    text-align: center;
+    padding-top:5px;
+    height: 3em;
+    /*height: 50px;*/
+    /*margin: 1em;*/
+    /*display: inline-flex;*/
+}
+
+.styleLongButton * {
+    /*margin: 5px;*/
+    /*width: 110%;*/
+    /*padding: 1px;*/
+    display: block; /* Make the buttons appear below each other */
+    font-size: 12pt;
+    line-height: 15pt;
+    white-space: normal;
+    text-align: center;
+    height: 3.5em;
+    /*padding-top:5px;*/
+    /*height: 50px;*/
+    /*margin: 1em;*/
+    /*display: inline-flex;*/
+}
+
 .diffLink {
     color : blue;
     text-decoration: underline;

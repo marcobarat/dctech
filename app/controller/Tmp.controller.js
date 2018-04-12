@@ -66,14 +66,8 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
             this.FillTreeTable("model/allestimento.json", "TreeTable_FinePredisposizione");
             
-//            setTimeout(jQuery.proxy(this.MakeEditable, this), 600);
         },
-        
-//        MakeEditable: function () {
-//            this.View = this.getView().byId("TreeTable_FinePredisposizione");
-//            this.total = this.View._iBindingLength;
-//        },
-//            
+            
         Expander: function (name) {
             this.View = this.getView().byId(name);
             this.View.expandToLevel(100);

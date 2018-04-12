@@ -240,29 +240,43 @@
                     <Page id="processi" title="Processi" icon="sap-icon://action" class="sapUiStdPage">
                         <content>
                             <VBox height="100%" width="100%">
-                                <VBox height="60%" width="100%">
-                                    <Button text="Home" icon="sap-icon://home" enabled="true" pressed="true" press="onInit">
-                                    </Button>
-                                    <Button text="Presa in carico nuovo confezionamento" enabled="true" pressed="true" press="PresaInCarico">
-                                    </Button>
-                                    <Button text="Fine predisposizione inizio confezionamento" enabled="true" pressed="true" press="FinePredisposizione">
-                                    </Button>
-                                </VBox>
-                                <VBox height="10%" width="100%">
-                                    <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />
-                                </VBox>
-                                <VBox height="30%" width="100%">
-                                    <Button text="Attrezzaggio1" enabled="true" pressed="true" width="300px" >
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
-                                    </Button>
-                                    <Button text="Attrezzaggio2" enabled="true" pressed="true" width="300px" >
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
-                                    </Button>
-                                </VBox>
+                                <Panel>
+                                    <VBox height="60%" width="100%" justifyContent="center" alignItems="start">
+                                        <Button text="Home" enabled="true" pressed="true" press="onInit" width="100%" class="styleButton">
+                                        </Button>
+                                        <Button text="Presa in carico nuovo confezionamento" enabled="true" pressed="true" press="PresaInCarico" width="100%" class="styleLongButton">
+                                        </Button>
+                                        <Button text="Fine predisposizione inizio confezionamento" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleLongButton">
+                                        </Button>
+                                        <Button text="Modifica condizioni operative" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleButton">
+                                        </Button>
+                                        <Button text="Fermo" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleButton">
+                                        </Button>
+                                        <Button text="Riavvio" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleButton">
+                                        </Button>
+                                        <Button text="Causalizzazione fermi automatici" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleButton">
+                                        </Button>
+                                        <Button text="Chiusura confezionamento svuotamento linea" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleLongButton">
+                                        </Button>
+                                    </VBox>
+                                </Panel>
+                                <Panel>
+<!--                                    <VBox height="10%" width="100%">
+                                        <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />
+                                    </VBox>-->
+                                    <VBox height="30%" width="100%">
+                                        <Button text="Attrezzaggio1" enabled="true" pressed="true" width="100%" >
+                                            <layoutData>
+                                                <FlexItemData growFactor="1" />
+                                            </layoutData>
+                                        </Button>
+                                        <Button text="Attrezzaggio2" enabled="true" pressed="true" width="100%" >
+                                            <layoutData>
+                                                <FlexItemData growFactor="1" />
+                                            </layoutData>
+                                        </Button>
+                                    </VBox>
+                                </Panel>
                             </VBox>
                         </content>
                     </Page>
