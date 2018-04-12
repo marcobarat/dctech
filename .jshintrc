@@ -11,6 +11,7 @@
         "sprintf" : false,
         "accounting" : false,
 		"alert": false,
-		"setTimeout": false
+		"setTimeout": false,
+		"document": false
     }
 }

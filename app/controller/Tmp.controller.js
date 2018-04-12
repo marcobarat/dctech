@@ -49,10 +49,14 @@ sap.ui.define([
             this.oGlobalBusyDialog.open();
             setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, name), 400);
         },
-        Conferma: function () {
-            this.getSplitAppObj().toDetail(this.createId("Conferma"));
-            this.FillTreeTable("model/SKU.json", "TreeTable_ConfermaOld");
-            this.FillTreeTable("model/SKU_1.json", "TreeTable_ConfermaNew");
+        ConfermaBatch: function () {
+            this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
+            this.FillTreeTable("model/SKU.json", "TreeTable_ConfermaBatchOld");
+            this.FillTreeTable("model/SKU_1.json", "TreeTable_ConfermaBatchNew");
+//            document.getElementById('panel_processi').classList.add('stylePanelYellow');
+            this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
+            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
+            this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
         },
         LinkClick: function (event) {
             var clicked_row = event.getParameters().rowBindingContext.getObject();
@@ -61,13 +65,24 @@ sap.ui.define([
                 alert(clicked_row.value);
             }
         },
-        
+
         FinePredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
             this.FillTreeTable("model/allestimento.json", "TreeTable_FinePredisposizione");
-            
+
         },
-            
+
+        ConfermaPredisposizione: function () {
+            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.getView().byId("panel_processi").addStyleClass("stylePanelGreen"); 
+            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
+            this.getView().byId("ButtonFermo").setEnabled(true);
+            this.getView().byId("ButtonRiavvio").setEnabled(true);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+        },
+
         Expander: function (name) {
             this.View = this.getView().byId(name);
             this.View.expandToLevel(100);
