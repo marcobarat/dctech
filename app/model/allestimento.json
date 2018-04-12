@@ -6,6 +6,7 @@
             "expand": "1",
             "modify": "0",
             "code": "0",
+            "codeValue": "",
             "codePlaceholder": "",
             "attributi": [
                 {
@@ -14,6 +15,7 @@
                     "expand": "1",
                     "modify": "0",
                     "code": "0",
+                    "codeValue": "",
                     "codePlaceholder": "",
                     "attributi": [
                         {
@@ -22,6 +24,7 @@
                             "expand": "1",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -30,6 +33,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "1",
+                                    "codeValue": "",
                                     "codePlaceholder": "Lotto"
                                 },
                                 {
@@ -38,6 +42,7 @@
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -46,6 +51,7 @@
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "1",
+                                    "codeValue": "",
                                     "codePlaceholder": "Matricola"
                                 },
                                 {
@@ -54,6 +60,7 @@
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "1",
+                                    "codeValue": "",
                                     "codePlaceholder": "Matricola"
                                 }
                             ]
@@ -64,6 +71,7 @@
                             "expand": "1",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -72,6 +80,7 @@
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -82,6 +91,7 @@
                             "expand": "1",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -90,6 +100,7 @@
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -98,6 +109,7 @@
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -108,6 +120,7 @@
                             "expand": "0",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -116,6 +129,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -124,6 +138,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -134,6 +149,7 @@
                             "expand": "0",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -142,6 +158,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -150,6 +167,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -162,6 +180,7 @@
                     "expand": "1",
                     "modify": "0",
                     "code": "0",
+                    "codeValue": "",
                     "codePlaceholder": "",
                     "attributi": [
                         {
@@ -170,6 +189,7 @@
                             "expand": "0",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -178,6 +198,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -186,6 +207,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -194,6 +216,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -202,6 +225,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -212,6 +236,7 @@
                             "expand": "0",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -220,6 +245,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -230,6 +256,7 @@
                             "expand": "0",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -238,6 +265,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -246,6 +274,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -256,6 +285,7 @@
                             "expand": "0",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -264,6 +294,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -272,6 +303,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]
@@ -282,6 +314,7 @@
                             "expand": "0",
                             "modify": "0",
                             "code": "0",
+                            "codeValue": "",
                             "codePlaceholder": "",
                             "attributi": [
                                 {
@@ -290,6 +323,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 },
                                 {
@@ -298,6 +332,7 @@
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
+                                    "codeValue": "",
                                     "codePlaceholder": ""
                                 }
                             ]

@@ -63,3 +63,18 @@
     text-decoration: underline;
     font-weight: bold;
 }
+
+.textTop {
+    font-size: 30pt;
+}
+
+.progressBarFont * {
+    font-size: 24pt;
+    font-weight: bold;
+}
+
+.progressBarButton * {
+    height: 120px;
+    margin: -4px;
+    background-color: #4CAF50;
+}
