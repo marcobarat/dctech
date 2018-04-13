@@ -137,6 +137,7 @@ sap.ui.define([
         ConfermaPredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
+//            this.getView().byId("progressBar").addStyleClass("customText");
 //            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
 //            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
 //            this.getView().byId("ButtonFermo").setEnabled(true);
@@ -153,6 +154,10 @@ sap.ui.define([
 
         ConfermaModifica: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+        },
+        
+        SPCGraph: function () {
+            alert("Grafico SPC");
         },
 
         Expander: function (name) {

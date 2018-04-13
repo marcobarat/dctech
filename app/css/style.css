@@ -68,13 +68,19 @@
     font-size: 30pt;
 }
 
-.progressBarFont * {
-    font-size: 24pt;
+.customTextBar * {
+    font-size: 25pt;
+    font-weight: bold;
+}
+
+.customText {
+    font-size: 15pt;
     font-weight: bold;
 }
 
 .progressBarButton * {
     height: 120px;
-    margin: -4px;
-    background-color: #4CAF50;
+    background-color: green !important;
+    background-image: none !important;
+    border: 2px solid;
 }

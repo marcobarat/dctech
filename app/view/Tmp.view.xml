@@ -236,36 +236,91 @@
                     
                     <Page id="InProgress" class="sapUiStdPage">
                         <content>
-                            <HBox height="100%" width="100%">
-                                <HBox height="20%" width="100%">
-                                    <HBox width="100%">
-                                        <Text text="Linea 5" class="textTop"/>
-                                    </HBox>
-                                    <HBox width="100%">
-                                        <Text text="093 semola film 500gr" class="textTop"/>
-                                    </HBox  >
-                                </HBox>
-                                <HBox height="5%" width="100%"></HBox>
-                                <HBox height="75%" width="100%">
+                            <VBox height="100%" width="100%">
+                                <VBox height="20%" width="100%">
+                                    <VBox width="100%">
+                                        <FlexBox alignItems="Start" justifyContent="Center">
+                                            <Text text="Linea 5" class="textTop"/>
+                                        </FlexBox>
+                                    </VBox>
+                                    <VBox width="100%">
+                                        <FlexBox alignItems="Start" justifyContent="Center">
+                                            <Text text="093 semola film 500gr" class="textTop"/>
+                                        </FlexBox>
+                                    </VBox>
+                                </VBox>
+                                <HBox height="25%" width="100%">
                                     <VBox width="80%">
-                                        <Panel>
-                                            <!--class="sapUiSmallMarginBottom"-->
-                                            <ProgressIndicator
-                                                class="progressBarFont"
-                                                percentValue="30"
-                                                displayValue="30%"
-                                                showValue="true"
-                                                state="Success"
-                                                displayOnly="true"
-                                                height="80px"/>
-                                        </Panel>
+                                        <ProgressIndicator
+                                            id="progressBar"
+                                            class="customTextBar"
+                                            percentValue="30"
+                                            displayValue="30%"
+                                            showValue="true"
+                                            state="Success"
+                                            displayOnly="true"
+                                            height="120px"/>
                                     </VBox>
-                                    <VBox width="3%"/>
-                                    <VBox width="17%">
-                                        <Button width="100%" class="progressBarButton"/>
+                                    <VBox width="4%"/>
+                                    <VBox width="16%">
+                                        <Button width="85%" class="progressBarButton" press="SPCGraph"/>
                                     </VBox>
                                 </HBox>
-                            </HBox>
+                                <HBox height="15%" width="100%">
+                                    <VBox height="100%" width="10%"/>
+                                    <VBox height="100%" width="90%">
+                                        <VBox height="33%" width="100%">
+                                            <Text text="Efficienza: 91%" class="customText"/>
+                                        </VBox>
+                                        <VBox height="33%" width="100%">
+                                            <Text text="Disponibilità: 21%" class="customText"/>
+                                        </VBox>
+                                        <VBox height="33%" width="100%">
+                                            <Text text="Fermi automatici non causalizzati: 41m 23s" class="customText"/>
+                                        </VBox>
+                                    </VBox>
+                                </HBox>
+                                <VBox height="10%" width="100%"/>
+                                <VBox height="10%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text  text="Avanzamento confezionamento" class="customText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="30%" width="100%">
+                                    <HBox>
+                                        <VBox height="100%" width="28%"/>
+                                        <VBox height="100%" width="30%">
+                                            <VBox height="25%" width="100%">
+                                                <Text text="Valori consuntivi" class="customText"/>
+                                            </VBox>
+                                            <VBox height="25%" width="100%">
+                                                <Text text="- 174 qli" class="customText"/>
+                                            </VBox>
+                                            <VBox height="25%" width="100%">
+                                                <Text text="- 10h 14m" class="customText"/>
+                                            </VBox>
+                                            <VBox height="25%" width="100%">
+                                                <Text text="- 834 cartoni" class="customText"/>
+                                            </VBox>
+                                        </VBox>
+                                        <VBox height="100%" width="30%">
+                                            <VBox height="25%" width="100%">
+                                                <Text text="Valori residui" class="customText"/>
+                                            </VBox>
+                                            <VBox height="25%" width="100%">
+                                                <Text text="- 75 qli" class="customText"/>
+                                            </VBox>
+                                            <VBox height="25%" width="100%">
+                                                <Text text="- 4h 36m" class="customText"/>
+                                            </VBox>
+                                            <VBox height="25%" width="100%">
+                                                <Text text="- 124 cartoni" class="customText"/>
+                                            </VBox>
+                                        </VBox>
+                                        <VBox height="100%" width="12%"/>
+                                    </HBox>
+                                </VBox>
+                            </VBox>
                         </content>
                     </Page>
                     
