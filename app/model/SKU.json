@@ -243,12 +243,12 @@
                         {
                             "name": "confezioneSecondaria",
                             "value": "CEE",
-                            "expand": "2"
+                            "expand": "0"
                         },
                         {
                             "name": "tipologia",
                             "value": "cartone",
-                            "expand": "2"
+                            "expand": "0"
                         },
                         {
                             "name": "qtaConfezionePrimaria",

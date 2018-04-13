@@ -9,17 +9,15 @@ sap.ui.define([
     var TmpController = Controller.extend("myapp.controller.Tmp", {
 
         View: null,
-        ModelBatchOld: null,
-        ModelBatchNew: null,
-        ModelSetup: null,
+        ModelBatch: null,
+        ModelSetupOld: null,
+        ModelSetupNew: null,
         total: null,
         oGlobalBusyDialog: new sap.m.BusyDialog(),
-
         onInit: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
-
-            this.ModelBatchOld = new JSONModel({});
-            this.getView().setModel(this.ModelBatchOld, "ModelBatchOld");
+            this.ModelBatch = new JSONModel({});
+            this.getView().setModel(this.ModelBatch, "ModelBatch");
             var param = {};
             var req = jQuery.ajax({
                 url: "model/SKU.json",
@@ -29,38 +27,38 @@ sap.ui.define([
                 async: true,
                 Selected: true
             });
-            var tempfunc = jQuery.proxy(this.FillModelBatchOld, this);
+            var tempfunc = jQuery.proxy(this.FillModelBatch, this);
             req.done(tempfunc);
 
-            this.ModelBatchNew = new JSONModel({});
-            this.getView().setModel(this.ModelBatchNew, "ModelBatchNew");
+
+            this.ModelSetupOld = new JSONModel({});
+            this.getView().setModel(this.ModelSetupOld, "ModelSetupOld");
             param = {};
             req = jQuery.ajax({
-                url: "model/SKU_1.json",
+                url: "model/allestimentoOld.json",
                 data: param,
                 method: "GET",
                 dataType: "json",
                 async: true,
                 Selected: true
             });
-            tempfunc = jQuery.proxy(this.FillModelBatchNew, this);
+            tempfunc = jQuery.proxy(this.FillModelSetupOld, this);
             req.done(tempfunc);
 
-            this.ModelSetup = new JSONModel({});
-            this.getView().setModel(this.ModelSetup, "ModelSetup");
+
+            this.ModelSetupNew = new JSONModel({});
+            this.getView().setModel(this.ModelSetupNew, "ModelSetupNew");
             param = {};
             req = jQuery.ajax({
-                url: "model/allestimento.json",
+                url: "model/allestimentoNew.json",
                 data: param,
                 method: "GET",
                 dataType: "json",
                 async: true,
                 Selected: true
             });
-            tempfunc = jQuery.proxy(this.FillModelSetup, this);
+            tempfunc = jQuery.proxy(this.FillModelSetupNew, this);
             req.done(tempfunc);
-
-
 //            DA CANCELLARE
 //            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
             this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
@@ -71,16 +69,16 @@ sap.ui.define([
         },
         PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-            this.FillTreeTable(this.ModelBatchNew, "TreeTable_PresaInCarico");
+            this.FillTreeTable(this.ModelBatch, "TreeTable_PresaInCarico");
         },
-        FillModelBatchOld: function (data) {
-            this.ModelBatchOld.setProperty("/", data);
+        FillModelBatch: function (data) {
+            this.ModelBatch.setProperty("/", data);
         },
-        FillModelBatchNew: function (data) {
-            this.ModelBatchNew.setProperty("/", data);
+        FillModelSetupOld: function (data) {
+            this.ModelSetupOld.setProperty("/", data);
         },
-        FillModelSetup: function (data) {
-            this.ModelSetup.setProperty("/", data);
+        FillModelSetupNew: function (data) {
+            this.ModelSetupNew.setProperty("/", data);
         },
         CollapseNotRelevant: function (TreeName) {
 
@@ -114,26 +112,58 @@ sap.ui.define([
         },
         ConfermaBatch: function () {
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
-            this.FillTreeTable(this.ModelBatchNew, "TreeTable_ConfermaBatchOld");
-            this.FillTreeTable(this.ModelBatchOld, "TreeTable_ConfermaBatchNew");
-//            document.getElementById('panel_processi').classList.add('stylePanelYellow');
+            this.FillTreeTable(this.ModelBatch, "TreeTable_PresaInCarico1");
+            this.FillTreeTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
+            this.FillTreeTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
             this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
             this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
+
+            var oTabContainer = this.getView().byId("TabContainer");
+            oTabContainer.addEventDelegate({
+                onAfterRendering: function () {
+                    var oTabStrip = this.getAggregation("_tabStrip");
+                    var oItems = oTabStrip.getItems();
+                    for (var i = 0; i < 2; i++) {
+                        var oCloseButton = oItems[i].getAggregation("_closeButton");
+                        oCloseButton.setVisible(false);
+                    }
+                }
+            }, oTabContainer);
         },
         LinkClick: function (event) {
             var clicked_row = event.getParameters().rowBindingContext.getObject();
             var clicked_column = event.getParameters().columnIndex;
             if (clicked_row.expand == 2 && clicked_column == 1) {
-                alert(clicked_row.value);
+                var tabContainer = this.getView().byId("TabContainer");
+                var Item = new sap.m.TabContainerItem();
+                Item.setName(clicked_row.value);
+                var image = new sap.m.Image();
+                image.setSrc("img/dececco.jpg");
+                image.setWidth("60%");
+                Item.addContent(image);
+                tabContainer.addItem(Item);
+                tabContainer.setSelectedItem(Item);
             }
         },
 
+//        onItemSelected: function (event) {
+//            var container = this.getView().byId("TabContainer");
+//            var nameSelected = container.getSelectedItem();
+//            var length = container.getItems().length;
+//            var sId0 = container.getItems()[0].sId;
+//            var sId1 = container.getItems()[1].sId;
+//            if (sIdSelected == sId0 || sIdSelected == sId1) {
+////                for (var i = length-1;i > 1; i++) {
+////                    this.getView().byId("TabContainer").removeItem(container.getItems()[i]);
+////                }
+//            }
+//        },
+
         FinePredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
-            this.FillTreeTable(this.ModelSetup, "TreeTable_FinePredisposizione");
+            this.FillTreeTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
         },
-
         ConfermaPredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
@@ -145,21 +175,17 @@ sap.ui.define([
 //            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
 //            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
         },
-
         ModificaCondizioni: function () {
-            this.ModelSetup = this.getView().getModel("ModelSetup");
+            this.ModelSetupNew = this.getView().getModel("ModelSetupNew");
             this.getSplitAppObj().toDetail(this.createId("ModificaCondizioni"));
-            this.FillTreeTable(this.ModelSetup, "TreeTable_ModificaCondizioni");
+            this.FillTreeTable(this.ModelSetupNew, "TreeTable_ModificaCondizioni");
         },
-
         ConfermaModifica: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
         },
-        
         SPCGraph: function () {
             alert("Grafico SPC");
         },
-
         Expander: function (name) {
             this.View = this.getView().byId(name);
             this.View.expandToLevel(100);
@@ -168,11 +194,9 @@ sap.ui.define([
             this.getView().setModel(model, TreeName);
             this.View = this.getView().byId(TreeName);
             this.oGlobalBusyDialog.open();
-
             setTimeout(jQuery.proxy(this.Expander, this, TreeName), 200);
             setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, TreeName), 400);
         },
-
         onNavBack: function () {
             var oHistory = History.getInstance();
             var sPreviousHash = oHistory.getPreviousHash();
