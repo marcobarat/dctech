@@ -3,8 +3,10 @@ sap.ui.define([
     'sap/m/MessageToast',
     'sap/ui/core/routing/History',
     'sap/ui/core/mvc/Controller',
-    "sap/ui/model/json/JSONModel"
-], function (jQuery, MessageToast, History, Controller, JSONModel) {
+    'sap/ui/model/json/JSONModel',
+    'myapp/control/StyleInputTreeTableValue',
+    'myapp/control/CustomTreeTable'
+], function (jQuery, MessageToast, History, Controller, JSONModel, StyleInputTreeTableValue, CustomTreeTable) {
     "use strict";
     var TmpController = Controller.extend("myapp.controller.Tmp", {
 
@@ -14,6 +16,8 @@ sap.ui.define([
         ModelSetupNew: null,
         total: null,
         oGlobalBusyDialog: new sap.m.BusyDialog(),
+        TabContainer: null,
+
         onInit: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.ModelBatch = new JSONModel({});
@@ -72,12 +76,15 @@ sap.ui.define([
             this.FillTreeTable(this.ModelBatch, "TreeTable_PresaInCarico");
         },
         FillModelBatch: function (data) {
+//            data.array = this.ExpandArray(data);
             this.ModelBatch.setProperty("/", data);
         },
         FillModelSetupOld: function (data) {
+//            data.array = this.ExpandArray(data);
             this.ModelSetupOld.setProperty("/", data);
         },
         FillModelSetupNew: function (data) {
+//            data.array = this.ExpandArray(data);
             this.ModelSetupNew.setProperty("/", data);
         },
         CollapseNotRelevant: function (TreeName) {
@@ -119,17 +126,28 @@ sap.ui.define([
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
             this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
 
-            var oTabContainer = this.getView().byId("TabContainer");
-            oTabContainer.addEventDelegate({
-                onAfterRendering: function () {
-                    var oTabStrip = this.getAggregation("_tabStrip");
-                    var oItems = oTabStrip.getItems();
-                    for (var i = 0; i < 2; i++) {
-                        var oCloseButton = oItems[i].getAggregation("_closeButton");
-                        oCloseButton.setVisible(false);
-                    }
+            this.TabContainer = this.getView().byId("TabContainer");
+
+//            setTimeout(function () {
+//                var oTabStrip = that.getAggregation("_tabStrip");
+//                var oItems = oTabStrip.getItems();
+//                for (var i = 0; i < 2; i++) {
+//                    var oCloseButton = oItems[i].getAggregation("_closeButton");
+//                    oCloseButton.setVisible(false);
+//                }
+//            }, 0);
+
+            var that = this;
+            setTimeout(function () {
+                var oTabStrip = that.TabContainer.getAggregation("_tabStrip");
+                var oItems = oTabStrip.getItems();
+                for (var i = 0; i < 2; i++) {
+                    var oCloseButton = oItems[i].getAggregation("_closeButton");
+                    oCloseButton.setVisible(false);
                 }
-            }, oTabContainer);
+                that.getView().byId("TabContainer").setSelectedItem("tab2");
+            }, 0);
+
         },
         LinkClick: function (event) {
             var clicked_row = event.getParameters().rowBindingContext.getObject();
@@ -146,13 +164,12 @@ sap.ui.define([
                 tabContainer.setSelectedItem(Item);
             }
         },
-
 //        onItemSelected: function (event) {
 //            var container = this.getView().byId("TabContainer");
 //            var nameSelected = container.getSelectedItem();
 //            var length = container.getItems().length;
 //            var sId0 = container.getItems()[0].sId;
-//            var sId1 = container.getItems()[1].sId;
+//            var sId1 = container.getItems()[1].sId; 
 //            if (sIdSelected == sId0 || sIdSelected == sId1) {
 ////                for (var i = length-1;i > 1; i++) {
 ////                    this.getView().byId("TabContainer").removeItem(container.getItems()[i]);
@@ -161,7 +178,48 @@ sap.ui.define([
 //        },
 
         FinePredisposizione: function () {
-            this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
+//            this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
+            var tabContainer = this.getView().byId("TabContainer");
+            var Item = new sap.m.TabContainerItem({id: "tab3"});
+            Item.setName("Conferma predisposizione");
+            var TreeTable = new CustomTreeTable({
+                id: "TreeTable_FinePredisposizione",
+                rows: "{path:'TreeTable_FinePredisposizione>/', parameters: {arrayNames:['attributi']}}",
+                selectionMode: "MultiToggle",
+                collapseRecursive: true,
+                enableSelectAll: false,
+                ariaLabelledBy: "title",
+                visibleRowCount: 10,
+                columns: [
+                    new sap.ui.table.Column({
+                        label: "Attributi",
+                        width: "15rem",
+                        template: new sap.m.Text({
+                            text: "{TreeTable_FinePredisposizione>name}"})}),
+                    new sap.ui.table.Column({
+                        label: "Valore",
+                        width: "5rem",
+                        template: new sap.m.Text({
+                            text: "{TreeTable_FinePredisposizione>value}"})}),
+                    new sap.ui.table.Column({
+                        label: "Modifica",
+                        width: "5rem",
+                        template: new StyleInputTreeTableValue({
+                            value: "{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}",
+                            diff: "{TreeTable_FinePredisposizione>modify}",
+                            editable: "{= ${TreeTable_FinePredisposizione>modify} === '1'}"})}),
+                    new sap.ui.table.Column({
+                        label: "Sigle",
+                        width: "5rem",
+                        template: new sap.m.Input({
+                            placeholder: "{= ${TreeTable_FinePredisposizione>code} === '1' ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}",
+                            editable: "{= ${TreeTable_FinePredisposizione>code} === '1'}",
+                            value: "{TreeTable_FinePredisposizione>codeValue}"})})
+                ]
+            });
+            Item.addContent(TreeTable);
+            tabContainer.addItem(Item);
+            tabContainer.setSelectedItem(Item);
             this.FillTreeTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
         },
         ConfermaPredisposizione: function () {
@@ -186,16 +244,16 @@ sap.ui.define([
         SPCGraph: function () {
             alert("Grafico SPC");
         },
-        Expander: function (name) {
-            this.View = this.getView().byId(name);
-            this.View.expandToLevel(100);
-        },
+//        Expander: function (name) {
+//            this.View = this.getView().byId(name);
+//            this.View.expandToLevel(100);
+//        },
         FillTreeTable: function (model, TreeName) {
             this.getView().setModel(model, TreeName);
             this.View = this.getView().byId(TreeName);
-            this.oGlobalBusyDialog.open();
-            setTimeout(jQuery.proxy(this.Expander, this, TreeName), 200);
-            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, TreeName), 400);
+//            this.oGlobalBusyDialog.open();
+//            setTimeout(jQuery.proxy(this.Expander, this, TreeName), 200);
+//            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, TreeName), 400);
         },
         onNavBack: function () {
             var oHistory = History.getInstance();
@@ -214,7 +272,6 @@ sap.ui.define([
             }
             return result;
         }
-
         //        onAfterRendering: function () {
 //            if (this.bool_expanded == true) {
 ////                this.PresaInCarico();
@@ -229,6 +286,25 @@ sap.ui.define([
 //            }
 //        },
 
+//        ExpandArray: function (JSON_file) {
+//            var array = [];
+//            var temp;
+//            for (var key in JSON_file) {
+//                temp = JSON_file[key];
+//                if (typeof temp.expand != "undefined") {
+//                    array.push(temp.expand);
+//                }
+//                if (typeof JSON_file[key] === "object") {
+//                    var subarray = this.ExpandArray(JSON_file[key]);
+//                    array = array.concat(subarray);
+//                }
+//            }
+//            return array;
+//        }
+
     });
+
     return TmpController;
-});
+}
+);
+    
