@@ -14,6 +14,7 @@ sap.ui.define([
         ModelBatch: null,
         ModelSetupOld: null,
         ModelSetupNew: null,
+        ModelFaults: null,
         total: null,
         oGlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
@@ -69,6 +70,22 @@ sap.ui.define([
             });
             tempfunc = jQuery.proxy(this.FillModelSetupNew, this);
             req.done(tempfunc);
+            
+            this.ModelFaults = new JSONModel({});
+            this.getView().setModel(this.ModelFaults, "ModelFaults");
+            param = {};
+            req = jQuery.ajax({
+                url: "model/guasti.json",
+                data: param,
+                method: "GET",
+                dataType: "json",
+                async: true,
+                Selected: true
+            });
+            tempfunc = jQuery.proxy(this.FillModelFaults, this);
+            req.done(tempfunc);
+            
+            
 //            DA CANCELLARE
 //            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
             this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
@@ -79,7 +96,7 @@ sap.ui.define([
         },
         PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-            this.FillTreeTable(this.ModelBatch, "TreeTable_PresaInCarico");
+            this.FillTable(this.ModelBatch, "TreeTable_PresaInCarico");
         },
         FillModelBatch: function (data) {
 //            data.array = this.ExpandArray(data);
@@ -92,6 +109,10 @@ sap.ui.define([
         FillModelSetupNew: function (data) {
 //            data.array = this.ExpandArray(data);
             this.ModelSetupNew.setProperty("/", data);
+        },
+        FillModelFaults: function (data) {
+            data = this.AddTimeGaps(data);
+            this.ModelFaults.setProperty("/", data);
         },
         CollapseNotRelevant: function (TreeName) {
 
@@ -125,9 +146,9 @@ sap.ui.define([
         },
         ConfermaBatch: function () {
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
-            this.FillTreeTable(this.ModelBatch, "TreeTable_AttributiPredisposizione");
-            this.FillTreeTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
-            this.FillTreeTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
+            this.FillTable(this.ModelBatch, "TreeTable_AttributiPredisposizione");
+            this.FillTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
+            this.FillTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
             this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
             this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
@@ -269,7 +290,7 @@ sap.ui.define([
             this.Item.addContent(this.Panel);
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
-            this.FillTreeTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
+            this.FillTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
 
             var that = this;
             setTimeout(function () {
@@ -307,8 +328,8 @@ sap.ui.define([
         ModificaCondizioni: function () {
             this.ModelSetupNew = this.getView().getModel("ModelSetupNew");
             this.getSplitAppObj().toDetail(this.createId("ModificaCondizioni"));
-            this.FillTreeTable(this.ModelBatch, "TreeTable_AttributiModifica");
-            this.FillTreeTable(this.ModelSetupNew, "TreeTable_ModificaCondizioni");
+            this.FillTable(this.ModelBatch, "TreeTable_AttributiModifica");
+            this.FillTable(this.ModelSetupNew, "TreeTable_ModificaCondizioni");
 
             this.TabContainer = this.getView().byId("TabContainer-mod");
             var that = this;
@@ -329,6 +350,30 @@ sap.ui.define([
         ConfermaModifica: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
         },
+        
+        
+        Fermo: function () {
+            this.getSplitAppObj().toDetail(this.createId("Fermo"));
+        },
+        
+        ConfermaFermo: function () {
+            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+        },
+        
+        Causalizzazione: function () {
+            this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
+            this.FillTable(this.ModelFaults, "SingoliTable");
+        },
+        
+        EsciCausalizzazione: function () {
+            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+        },
+
+        ConfermaCausalizzazione: function () {
+            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+        },
+        
+        
         SPCGraph: function () {
             alert("Grafico SPC");
         },
@@ -336,13 +381,24 @@ sap.ui.define([
 //            this.View = this.getView().byId(name);
 //            this.View.expandToLevel(100);
 //        },
-        FillTreeTable: function (model, TreeName) {
+        FillTable: function (model, TreeName) {
             this.getView().setModel(model, TreeName);
             this.View = this.getView().byId(TreeName);
 //            this.oGlobalBusyDialog.open();
 //            setTimeout(jQuery.proxy(this.Expander, this, TreeName), 200);
 //            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, TreeName), 400);
         },
+        
+//        AddTimeGaps: function (data) {
+//             var starts = [];
+//             var ends = [];
+//             var temp_start;
+//             var temp_end;
+//             for (var key in data) {
+//                 
+//             }
+//        },
+        
         onNavBack: function () {
             var oHistory = History.getInstance();
             var sPreviousHash = oHistory.getPreviousHash();

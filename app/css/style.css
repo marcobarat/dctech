@@ -78,6 +78,12 @@
     font-weight: bold;
 }
 
+.customTextFermo {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+}
+
 .progressBarButton * {
     height: 120px;
     background-color: green !important;
