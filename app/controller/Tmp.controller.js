@@ -19,6 +19,10 @@ sap.ui.define([
         TabContainer: null,
         openedTabs: null,
         nextTab: null,
+        Item: null,
+        TreeTable: null,
+        Button: null,
+        Panel: null,
 
         onInit: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
@@ -121,7 +125,7 @@ sap.ui.define([
         },
         ConfermaBatch: function () {
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
-            this.FillTreeTable(this.ModelBatch, "TreeTable_PresaInCarico1");
+            this.FillTreeTable(this.ModelBatch, "TreeTable_AttributiPredisposizione");
             this.FillTreeTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
             this.FillTreeTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
             this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
@@ -160,7 +164,7 @@ sap.ui.define([
             var clicked_row = event.getParameters().rowBindingContext.getObject();
             var clicked_column = event.getParameters().columnIndex;
             if (clicked_row.expand == 2 && clicked_column == 1) {
-                var tabContainer = this.getView().byId("TabContainer");
+                this.TabContainer = this.getView().byId("TabContainer");
                 var Item = new sap.m.TabContainerItem({id: this.nextTab});
                 this.openedTabs.push(this.nextTab);
                 this.nextTab = this.NewTabName(this.nextTab);
@@ -169,8 +173,8 @@ sap.ui.define([
                 image.setSrc("img/dececco.jpg");
                 image.setWidth("60%");
                 Item.addContent(image);
-                tabContainer.addItem(Item);
-                tabContainer.setSelectedItem(Item);
+                this.TabContainer.addItem(Item);
+                this.TabContainer.setSelectedItem(Item);
             }
         },
 //        onItemSelected: function (event) {
@@ -188,20 +192,85 @@ sap.ui.define([
 
         FinePredisposizione: function () {
 //            this.getSplitAppObj().toDetail(this.createId("FinePredisposizione"));
+
             this.TabContainer = this.getView().byId("TabContainer");
             var length = this.TabContainer.getItems().length;
             var array = [];
-            for (var i = 0; i < length; i++) {
-                var id = this.TabContainer.getItems()[i].getId();
-                if (this.openedTabs.indexOf(id) > -1) {
-                    var item = this.TabContainer.getItems()[i];
-                    array.push(item);
-                }
+            for (var i = 2; i < length; i++) {
+//                var id = this.TabContainer.getItems()[i].getId();
+//                if (this.openedTabs.indexOf(id) > -1) {
+//                    var item = this.TabContainer.getItems()[i];
+//                    array.push(item);
+//                }
+                array.push(this.TabContainer.getItems()[i]);
             }
             for (i = 0; i < array.length; i++) {
                 this.TabContainer.removeItem(array[i]);
             }
             this.openedTabs = [];
+
+            this.openedTabs.push("tab3");
+
+            if (!this.Item) {
+                this.Item = new sap.m.TabContainerItem({
+                    id: "tab3"});
+            }
+            this.Item.setName("Conferma predisposizione");
+            if (!this.Panel) {
+                this.Panel = new sap.m.Panel();
+            }
+            if (!this.TreeTable) {
+                this.TreeTable = new CustomTreeTable({
+                    id: "TreeTable_FinePredisposizione",
+                    rows: "{path:'TreeTable_FinePredisposizione>/', parameters: {arrayNames:['attributi']}}",
+                    selectionMode: "MultiToggle",
+                    collapseRecursive: true,
+                    enableSelectAll: false,
+                    ariaLabelledBy: "title",
+                    visibleRowCount: 10,
+                    columns: [
+                        new sap.ui.table.Column({
+                            label: "Attributi",
+                            width: "15rem",
+                            template: new sap.m.Text({
+                                text: "{TreeTable_FinePredisposizione>name}"})}),
+                        new sap.ui.table.Column({
+                            label: "Valore",
+                            width: "5rem",
+                            template: new sap.m.Text({
+                                text: "{TreeTable_FinePredisposizione>value}"})}),
+                        new sap.ui.table.Column({
+                            label: "Modifica",
+                            width: "5rem",
+                            template: new StyleInputTreeTableValue({
+                                value: "{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}",
+                                diff: "{TreeTable_FinePredisposizione>modify}",
+                                editable: "{= ${TreeTable_FinePredisposizione>modify} === '1'}"})}),
+                        new sap.ui.table.Column({
+                            label: "Sigle",
+                            width: "5rem",
+                            template: new sap.m.Input({
+                                placeholder: "{= ${TreeTable_FinePredisposizione>code} === '1' ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}",
+                                editable: "{= ${TreeTable_FinePredisposizione>code} === '1'}",
+                                value: "{TreeTable_FinePredisposizione>codeValue}"})})
+                    ]
+                });
+            }
+            if (!this.Button) {
+                this.Button = new sap.m.Button({
+                    text: "Conferma",
+                    width: "100%",
+                    press: [this.ConfermaPredisposizione, this]});
+                this.Panel.addContent(this.TreeTable);
+                this.Panel.addContent(this.Button);
+            }
+
+
+            this.Item.addContent(this.Panel);
+            this.TabContainer.addItem(this.Item);
+            this.TabContainer.setSelectedItem(this.Item);
+            this.FillTreeTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
+
             var that = this;
             setTimeout(function () {
                 var oTabStrip = that.TabContainer.getAggregation("_tabStrip");
@@ -211,57 +280,7 @@ sap.ui.define([
                     oCloseButton.setVisible(false);
                 }
             }, 0);
-            
-            this.openedTabs.push("tab3");
-            var Item = new sap.m.TabContainerItem({
-                id: "tab3"});
-            Item.setName("Conferma predisposizione");
-            var Panel = new sap.m.Panel();
-            var TreeTable = new CustomTreeTable({
-                id: "TreeTable_FinePredisposizione",
-                rows: "{path:'TreeTable_FinePredisposizione>/', parameters: {arrayNames:['attributi']}}",
-                selectionMode: "MultiToggle",
-                collapseRecursive: true,
-                enableSelectAll: false,
-                ariaLabelledBy: "title",
-                visibleRowCount: 10,
-                columns: [
-                    new sap.ui.table.Column({
-                        label: "Attributi",
-                        width: "15rem",
-                        template: new sap.m.Text({
-                            text: "{TreeTable_FinePredisposizione>name}"})}),
-                    new sap.ui.table.Column({
-                        label: "Valore",
-                        width: "5rem",
-                        template: new sap.m.Text({
-                            text: "{TreeTable_FinePredisposizione>value}"})}),
-                    new sap.ui.table.Column({
-                        label: "Modifica",
-                        width: "5rem",
-                        template: new StyleInputTreeTableValue({
-                            value: "{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}",
-                            diff: "{TreeTable_FinePredisposizione>modify}",
-                            editable: "{= ${TreeTable_FinePredisposizione>modify} === '1'}"})}),
-                    new sap.ui.table.Column({
-                        label: "Sigle",
-                        width: "5rem",
-                        template: new sap.m.Input({
-                            placeholder: "{= ${TreeTable_FinePredisposizione>code} === '1' ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}",
-                            editable: "{= ${TreeTable_FinePredisposizione>code} === '1'}",
-                            value: "{TreeTable_FinePredisposizione>codeValue}"})})
-                ]
-            });
-            Panel.addContent(TreeTable);
-            var Button = new sap.m.Button({
-                text: "Conferma",
-                width: "100%",
-                press: [this.ConfermaPredisposizione, this]});
-            Panel.addContent(Button);
-            Item.addContent(Panel);
-            this.TabContainer.addItem(Item);
-            this.TabContainer.setSelectedItem(Item);
-            this.FillTreeTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
+
         },
         NewTabName: function (string) {
             var next_num = Number(string.substring(3, string.length)) + 1;
@@ -288,7 +307,24 @@ sap.ui.define([
         ModificaCondizioni: function () {
             this.ModelSetupNew = this.getView().getModel("ModelSetupNew");
             this.getSplitAppObj().toDetail(this.createId("ModificaCondizioni"));
+            this.FillTreeTable(this.ModelBatch, "TreeTable_AttributiModifica");
             this.FillTreeTable(this.ModelSetupNew, "TreeTable_ModificaCondizioni");
+
+            this.TabContainer = this.getView().byId("TabContainer-mod");
+            var that = this;
+            setTimeout(function () {
+                var oTabStrip = that.TabContainer.getAggregation("_tabStrip");
+                var oItems = oTabStrip.getItems();
+                for (var i = 0; i < 2; i++) {
+                    var oCloseButton = oItems[i].getAggregation("_closeButton");
+                    oCloseButton.setVisible(false);
+                }
+            }, 0);
+
+            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
+            this.Item = this.TabContainer.getItems()[1];
+            this.TabContainer.setSelectedItem(this.Item);
+
         },
         ConfermaModifica: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
