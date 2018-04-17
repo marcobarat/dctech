@@ -85,10 +85,11 @@
                         <content>
                             <TabContainer id="TabContainer"
                                           class="sapUiResponsiveContentPadding"
-                                          itemClose="itemCloseHandler"
-                                          itemSelect="onItemSelected">
+                                          itemClose="UpdateTabs">
                                 <items>
-                                    <TabContainerItem id="tab1" name="Attributi prodotto">
+                                    <TabContainerItem 
+                                        id="tab1"
+                                        name="Attributi prodotto">
                                         <content>
                                             <FlexBox width="100%" alignItems="Start"
                                                      justifyContent="Center">
@@ -139,7 +140,9 @@
                                             </FlexBox>
                                         </content>
                                     </TabContainerItem>
-                                    <TabContainerItem id="tab2" name="Predisposizione linea">
+                                    <TabContainerItem 
+                                        id="tab2"
+                                        name="Predisposizione linea">
                                         <content>
                                             <FlexBox width="100%" alignItems="Start"
                                                      justifyContent="Center">
