@@ -58,6 +58,10 @@
     background-color: green; 
 }
 
+.stylePanelRed {
+    background-color: red; 
+}
+
 .diffLink {
     color : blue;
     text-decoration: underline;

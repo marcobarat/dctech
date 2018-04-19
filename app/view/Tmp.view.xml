@@ -474,46 +474,57 @@
                     
                     <Page id="Fermo" class="sapUiStdPage">
                         <content>
-                            <Panel height="80%">
+                            <!--<Panel height="80%">-->
+                            <VBox height="100%">
                                 <VBox>
-                                    <HBox>
-                                        <VBox width="15%"/>
-                                        <VBox width="85%">
-                                            <VBox height="50%">
-                                                <HBox>
-                                                    <VBox width="50%">
-                                                        <Text text="Fermata programmata" class="customTextFermo"/>
-                                                        <CheckBox text="Sostituzione deteriorabili" />
+                                    <Panel>
+                                        <VBox>
+                                            <HBox height="100%">
+                                                <VBox width="15%"/>
+                                                <VBox width="85%">
+                                                    <VBox height="50%">
+                                                        <HBox>
+                                                            <VBox width="50%">
+                                                                <Text text="Fermata programmata" class="customTextFermo"/>
+                                                                <CheckBox id="CBFermo1" text="Sostituzione deteriorabili" select="ChangeCheckedFermo" />
+                                                            </VBox>
+                                                            <VBox width="50%">
+                                                                <Text text="Organizzazione reparto" class="customTextFermo"/>
+                                                                <CheckBox id="CBFermo2" text="Attesa produzione precedente" select="ChangeCheckedFermo" />
+                                                                <CheckBox id="CBFermo3" text="Mancanza materiali" select="ChangeCheckedFermo" />
+                                                            </VBox>
+                                                        </HBox>
                                                     </VBox>
-                                                    <VBox width="50%">
-                                                        <Text text="Organizzazione reparto" class="customTextFermo"/>
-                                                        <CheckBox text="Attesa produzione precedente" />
-                                                        <CheckBox text="Mancanza materiali" />
+                                                    <VBox height="50%">
+                                                        <HBox>
+                                                            <VBox width="50%">
+                                                                <Text text="Guasto" class="customTextFermo"/>
+                                                                <CheckBox id="CBFermo4" text="Svuotamento" select="ChangeCheckedFermo" />
+                                                                <CheckBox id="CBFermo5" text="Attesa intervento manutenzione" select="ChangeCheckedFermo" />
+                                                                <CheckBox id="CBFermo6" text="Manutenzione" select="ChangeCheckedFermo" />
+                                                                <CheckBox id="CBFermo7" text="Collaudo" select="ChangeCheckedFermo" />
+                                                            </VBox>
+                                                            <VBox width="50%">
+                                                                <Text text="Mancanza personale" class="customTextFermo" select="ChangeCheckedFermo"/>
+                                                                <CheckBox id="CBFermo8" text="Pausa pranzo" select="ChangeCheckedFermo" />
+                                                                <CheckBox id="CBFermo9" text="Motivi sindacali" select="ChangeCheckedFermo" />
+                                                                <CheckBox id="CBFermo10" text="Altro" select="ChangeCheckedFermo" />
+                                                            </VBox>
+                                                        </HBox>
                                                     </VBox>
-                                                </HBox>
-                                            </VBox>
-                                            <VBox height="50%">
-                                                <HBox>
-                                                    <VBox width="50%">
-                                                        <Text text="Guasto" class="customTextFermo"/>
-                                                        <CheckBox text="Svuotamento" />
-                                                        <CheckBox text="Attesa intervento manutenzione" />
-                                                        <CheckBox text="Manutenzione" />
-                                                        <CheckBox text="Collaudo" />
-                                                    </VBox>
-                                                    <VBox width="50%">
-                                                        <Text text="Mancanza personale" class="customTextFermo"/>
-                                                        <CheckBox text="Pausa pranzo" />
-                                                        <CheckBox text="Motivi sindacali" />
-                                                        <CheckBox text="Altro" />
-                                                    </VBox>
-                                                </HBox>
-                                            </VBox>
+                                                </VBox>
+                                            </HBox>
                                         </VBox>
-                                    </HBox>
+                                    </Panel>
                                 </VBox>
-                            </Panel>
-                            <Button text="Conferma" width="100%" press="ConfermaFermo"/>
+                                <VBox height="10%">
+                                    <Text/>
+                                </VBox>
+                                <VBox height="10%">
+                                    <!--</Panel>-->
+                                    <Button id="ConfermaFermo" text="Conferma" width="100%" enabled="false" press="ConfermaFermo"/>
+                                </VBox>
+                            </VBox>
                         </content>
                     </Page>
                     
@@ -522,7 +533,7 @@
                         <content>
                             <Panel>
                                 <VBox>
-                                    <VBox height="20%">
+                                    <VBox height="15%">
                                         <HBox>
                                             <VBox width="10%"/>
                                             <VBox width="25%">
@@ -530,73 +541,163 @@
                                             </VBox>
                                             <VBox width="30%"/>
                                             <VBox width="25%">
-                                                <Button text="Conferma" width="100%" press="ConfermaCausalizzazione"/>
+                                                <Button id="ConfermaCausalizzazione" text="Conferma" width="100%" enabled="false" press="Fermo"/>
                                             </VBox>
                                             <VBox width="10%"/>
                                         </HBox>
                                     </VBox>
-                                    <VBox height="30%">
-                                        <Table id="TotaleTable"
-                                               selectionMode="MultiToggle"
-                                               alternateRowColors="true">
-                                            <columns>
-                                                <Column width="20%"/>
-                                                <Column text="Minuti" width="30%"/>
-                                                <Column text="Causale" width="40%"/>
-                                                <Column width="10%"/>
-                                            </columns>
-                                            <items>
-                                                <ColumnListItem>
-                                                    <cells>
-                                                        <Text text="Totale complessivo"/>
-                                                        <Text text="41:23" />
-                                                        <Text text="" />
-                                                        <Text text="" />
-                                                    </cells>
-                                                </ColumnListItem>
-                                            </items>
-                                        </Table>
+                                    <VBox height="5%">
+                                        <Text/>
                                     </VBox>
-                                    <VBox height="50%">
-                                        <Table id="SingoliTable"
-                                               selectionMode="MultiToggle"
-                                               visibleRowCount="10"
-                                               alternateRowColors="true"
-                                               rows="{path:'TreeTable_Faults>/', parameters: {arrayNames:['guasti']}}">
-                                            <columns>
-                                                <Column text="Inizio" width="15%">
-                                                    <template>
-                                                        <Text text="{TreeTable_Faults>inizio}"/>
-                                                    </template>
-                                                </Column>
-                                                <Column text="Fine" width="15%">
-                                                    <template>
-                                                        <Text text="{TreeTable_Faults>fine"/>
-                                                    </template>
-                                                </Column>
-                                                <Column text="Minuti" width="15%">
-                                                    <template>
-                                                        <Text text="{TreeTable_Faults>intervallo"/>
-                                                    </template>
-                                                </Column>
-                                                <Column text="Causale" width="45%">
-                                                    <template>
-                                                        <Text text="{TreeTable_Faults>causa"/>
-                                                    </template>
-                                                </Column>
-                                                <Column width="10%">
-                                                    <template>
-                                                        <CheckBox/>
-                                                    </template>
-                                                </Column>
-                                            </columns>
-                                        </Table>
+                                    <VBox height="30%">
+                                        <t:Table
+                                            id="TotaleTable"
+                                            alternateRowColors="true"
+                                            visibleRowCount="1"
+                                            rows="{TotaleTable>/Totale/tempoGuastoTotale}">
+                                            <t:columns>
+                                                <t:Column hAlign="Center" width="30%">
+                                                    <t:template>
+                                                        <Text text="Totale complessivo"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="15%">
+                                                    <Label text="Tempo"/>
+                                                    <t:template>
+                                                        <Text text="{TotaleTable>/Totale/tempoGuastoTotale}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="45%">
+                                                    <Label text="Causale"/>
+                                                    <t:template>
+                                                        <Text text="{TotaleTable>/Totale/causaleTotale}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="10%">
+                                                    <t:template>
+                                                        <CheckBox id="CBTotaleCausa" select="ChangeCheckedCausa"/>
+                                                    </t:template>
+                                                </t:Column>
+                                            </t:columns>
+                                        </t:Table>
+                                    </VBox>
+                                    <VBox height="10%">
+                                        <Text/>
+                                    </VBox>
+                                    <VBox height="40%">
+                                        <t:Table
+                                            id="SingoliTable"
+                                            visibleRowCount="8"
+                                            alternateRowColors="true"
+                                            rows="{SingoliTable>/guasti}">
+                                            <t:columns>
+                                                <t:Column hAlign="Center" width="15%">
+                                                    <Label text="Inizio"/>
+                                                    <t:template>
+                                                        <Text text="{SingoliTable>inizio}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="15%">
+                                                    <Label text="Fine"/>
+                                                    <t:template>
+                                                        <Text text="{SingoliTable>fine}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="15%">
+                                                    <Label text="Tempo"/>
+                                                    <t:template>
+                                                        <Text text="{SingoliTable>intervallo}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="45%">
+                                                    <Label text="Causale"/>
+                                                    <t:template>
+                                                        <Text text="{SingoliTable>causa}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="10%">
+                                                    <t:template>
+                                                        <CheckBox id="CBSingoloCausa" select="ChangeCheckedCausa"/>
+                                                    </t:template>
+                                                </t:Column>
+                                            </t:columns>
+                                        </t:Table>
                                     </VBox>
                                 </VBox>
                             </Panel>
                         </content>
                     </Page>
                     
+                    
+                    <Page id="Fault" class="sapUiStdPage">
+                        <content>
+                            <VBox>
+                                <Panel height="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="Guasto - attesa intervento manutenzione" class="textTop"/>
+                                    </FlexBox>
+                                </Panel>
+                            </VBox>
+                        </content>
+                    </Page>
+                    
+                    
+                    <Page id="RipristinoCondizioni" class="sapUiStdPage">
+                        <content>
+                            <Panel>
+                                <wt:CustomTreeTable
+                                    id="TreeTable_RipristinoCondizioni"
+                                    rows="{path:'TreeTable_RipristinoCondizioni>/', parameters: {arrayNames:['attributi']}}"
+                                    selectionMode="MultiToggle"
+                                    collapseRecursive="true"
+                                    enableSelectAll="false"
+                                    ariaLabelledBy="title"
+                                    visibleRowCount="8">
+                                    <wt:toolbar>
+                                        <Toolbar>
+                                            <Title text="SKU"/>
+                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_RipristinoCondizioni"/>
+                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_RipristinoCondizioni"/>
+                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_RipristinoCondizioni"/>
+                                        </Toolbar>
+                                    </wt:toolbar>
+                                    <wt:columns>
+                                        <t:Column width="15rem">
+                                            <Label text="Attibuti"/>
+                                            <t:template>
+                                                <Text text="{TreeTable_RipristinoCondizioni>name}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem">
+                                            <Label text="Valore"/>
+                                            <t:template>
+                                                <Text text="{TreeTable_RipristinoCondizioni>value}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem">
+                                            <Label text="Sigle"/>
+                                            <t:template>
+                                                <Text text="{= ${TreeTable_RipristinoCondizioni>code} === '1' ? ${TreeTable_RipristinoCondizioni>codeValue}: ''}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem">
+                                            <Label text="Modifica Valore"/>
+                                            <t:template>
+                                                <wt:StyleInputTreeTableValue value="{= ${TreeTable_RipristinoCondizioni>modify} === '1' ? ${TreeTable_RipristinoCondizioni>value}: ''}" diff="{TreeTable_RipristinoCondizioni>modify}" editable="{= ${TreeTable_RipristinoCondizioni>modify} === '1'}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem">
+                                            <Label text="Modifica Sigle"/>
+                                            <t:template>
+                                                <wt:StyleInputTreeTableValue value="{= ${TreeTable_RipristinoCondizioni>code} === '1' ? ${TreeTable_RipristinoCondizioni>codeValue}: ''}" diff="{TreeTable_RipristinoCondizioni>code}" placeholder="{= ${TreeTable_RipristinoCondizioni>code} === '1' ? ${TreeTable_RipristinoCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_RipristinoCondizioni>code} === '1'}" />
+                                            </t:template>
+                                        </t:Column>
+                                    </wt:columns>
+                                </wt:CustomTreeTable>
+                            </Panel>
+                            <Button text="Conferma" width="100%" press="ConfermaRipristino"/>
+                        </content>
+                    </Page>
                     
                     
                     
@@ -859,7 +960,7 @@
                                         <Button id="ButtonFermo" text="Fermo" enabled="false" pressed="true" press="Fermo" width="100%" class="styleButton">
                                         </Button>
                                         <Text/>
-                                        <Button id="ButtonRiavvio" text="Riavvio" enabled="false" pressed="true" width="100%" class="styleButton">
+                                        <Button id="ButtonRiavvio" text="Riavvio" enabled="false" pressed="true" press="Riavvio" width="100%" class="styleButton">
                                         </Button>
                                         <Text/>
                                         <Button id="ButtonCausalizzazione" text="Causalizzazione fermi automatici" enabled="false" pressed="true" press="Causalizzazione" width="100%" class="styleButton">
