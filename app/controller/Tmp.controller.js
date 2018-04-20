@@ -11,12 +11,13 @@ sap.ui.define([
     var TmpController = Controller.extend("myapp.controller.Tmp", {
 
 //      VARIABILI GLOBALI
+        ModelDetailPages: new JSONModel({}),
         View: null,
-        ModelBatch: null,
-        ModelSetupOld: null,
-        ModelSetupNew: null,
-        ModelFaults: null,
-        ModelFaultsNoCause: null,
+//        ModelBatch: new JSONModel({}),
+//        ModelSetupOld: new JSONModel({}),
+//        ModelSetupNew: new JSONModel({}),
+//        ModelFaults: new JSONModel({}),
+//        ModelFaultsNoCause: new JSONModel({}),
         total: null,
         oGlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
@@ -35,65 +36,28 @@ sap.ui.define([
 
         onInit: function () {
 
-//          CARICAMENTO MODELLO DEL BATCH DI SEMILAVORATO
+            this.ModelDetailPages.setProperty("/PresaInCarico/", {});
+            this.ModelDetailPages.setProperty("/ConfermaBatch/", {});
+            this.ModelDetailPages.setProperty("/Fermo/", {});
+            this.ModelDetailPages.setProperty("/Causalizzazione/", {});
+//          CARICAMENTO MODELLI DATI
+//            this.AjaxCaller("model/SKU.json", this.ModelBatch, "/");
+//            this.AjaxCaller("model/allestimentoOld.json", this.ModelSetupOld, "");
+//            this.AjaxCaller("model/allestimentoNew.json", this.ModelSetupNew, "");
+//            this.AjaxCaller("model/guasti.json", this.ModelFaults, "", true);
+
+//          CARICAMENTO MODELLO INTESTAZIONE
+            this.AjaxCaller("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
+            this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
+            this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableStandard/");
+            this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableCurrent/");
+            this.AjaxCaller("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
+            this.AjaxCaller("model/JSON_FermoTesti.json", this.ModelDetailPages, "/Fermo/Testi/");
+            this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
+
             this.getSplitAppObj().toDetail(this.createId("Home"));
-            this.ModelBatch = new JSONModel({});
-            this.getView().setModel(this.ModelBatch, "ModelBatch");
-            var param = {};
-            var req = jQuery.ajax({
-                url: "model/SKU.json",
-                data: param,
-                method: "GET",
-                dataType: "json",
-                async: true,
-                Selected: true
-            });
-            var tempfunc = jQuery.proxy(this.FillModelBatch, this);
-            req.done(tempfunc);
-//          CARICAMENTO MODELLO DELL'ALLESTIMENTO LINEA PRECEDENTE
-            this.ModelSetupOld = new JSONModel({});
-            this.getView().setModel(this.ModelSetupOld, "ModelSetupOld");
-            param = {};
-            req = jQuery.ajax({
-                url: "model/allestimentoOld.json",
-                data: param,
-                method: "GET",
-                dataType: "json",
-                async: true,
-                Selected: true
-            });
-            tempfunc = jQuery.proxy(this.FillModelSetupOld, this);
-            req.done(tempfunc);
-//          CARICAMENTO MODELLO DELL'ALLESTIMENTO LINEA CORRENTE
-            this.ModelSetupNew = new JSONModel({});
-            this.getView().setModel(this.ModelSetupNew, "ModelSetupNew");
-            param = {};
-            req = jQuery.ajax({
-                url: "model/allestimentoNew.json",
-                data: param,
-                method: "GET",
-                dataType: "json",
-                async: true,
-                Selected: true
-            });
-            tempfunc = jQuery.proxy(this.FillModelSetupNew, this);
-            req.done(tempfunc);
-//          CARICAMENTO MODELLO DEI GUASTI AVVENUTI
-            this.ModelFaults = new JSONModel({});
-            this.getView().setModel(this.ModelFaults, "ModelFaults");
-            this.ModelFaultsNoCause = new JSONModel({});
-            this.getView().setModel(this.ModelFaultsNoCause, "ModelFaultsNoCause");
-            param = {};
-            req = jQuery.ajax({
-                url: "model/guasti.json",
-                data: param,
-                method: "GET",
-                dataType: "json",
-                async: true,
-                Selected: true
-            });
-            tempfunc = jQuery.proxy(this.FillModelFaults, this);
-            req.done(tempfunc);
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+
 //            DA CANCELLARE
 //            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
             this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
@@ -102,41 +66,65 @@ sap.ui.define([
             this.getView().byId("ButtonCausalizzazione").setEnabled(true);
             this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
         },
+
+//        onAfterRendering: function () {
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//        },
 //        DI SEGUITO LE 4 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
-        FillModelBatch: function (data) {
-            this.ModelBatch.setProperty("/", data);
+        AjaxCaller: function (addressOfJSON, model, targetAddress, faults) {
+            if (faults === undefined) {
+                faults = false;
+            }
+            var param = {};
+            var req = jQuery.ajax({
+                url: addressOfJSON,
+                data: param,
+                method: "GET",
+                dataType: "json",
+                async: true,
+                Selected: true
+            });
+            var passer = {};
+            passer.model = model;
+            passer.target = targetAddress;
+            passer.faults = faults;
+            var tempfunc = jQuery.proxy(this.FillModel, this, passer);
+            req.done(tempfunc);
         },
-        FillModelSetupOld: function (data) {
-            this.ModelSetupOld.setProperty("/", data);
-        },
-        FillModelSetupNew: function (data) {
-            this.ModelSetupNew.setProperty("/", data);
-        },
-        FillModelFaults: function (data) {
-            var dataAll = JSON.parse(JSON.stringify(data));
-            var dataReduced = JSON.parse(JSON.stringify(data));
-            dataAll = this.AddTimeGaps(dataAll);
-            this.ModelFaults.setProperty("/", dataAll);
-            dataReduced = this.RemoveCaused(dataReduced);
-            dataReduced = this.AddTimeGaps(dataReduced);
-            this.ModelFaultsNoCause.setProperty("/", dataReduced);
+        FillModel: function (struct, data) {
+            var model = struct.model;
+            var target = struct.target;
+            var faults = struct.faults;
+            if (!faults) {
+                model.setProperty(target, data);
+            } else {
+                var dataAll = JSON.parse(JSON.stringify(data));
+                var dataReduced = JSON.parse(JSON.stringify(data));
+                dataAll = this.AddTimeGaps(dataAll);
+                model.setProperty(target + "All/", dataAll);
+                dataReduced = this.RemoveCaused(dataReduced);
+                dataReduced = this.AddTimeGaps(dataReduced);
+                model.setProperty(target + "NoCause/", dataReduced);
+            }
         },
 //------------------------------------------------------------------------------
 
 
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
-        PresaInCarico: function () {
+        PresaInCarico: function (event) {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-            this.FillTable(this.ModelBatch, "TreeTable_PresaInCarico");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.getView().setModel(this.ModelBatch, "TreeTable_PresaInCarico");
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatch: function () {
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
-            this.FillTable(this.ModelBatch, "TreeTable_AttributiPredisposizione");
-            this.FillTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
-            this.FillTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.FillTable(this.ModelBatch, "TreeTable_AttributiPredisposizione");
+//            this.FillTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
+//            this.FillTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
             this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
             this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
@@ -178,9 +166,6 @@ sap.ui.define([
                 this.TabContainer.setSelectedItem(Item);
             }
         },
-//------------------------------------------------------------------------------
-//        
-//        
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
 //          nella quale viene messa la TreeTabledi fine predisposizione ed il bottone
@@ -189,6 +174,7 @@ sap.ui.define([
         FinePredisposizione: function () {
 
             this.TabContainer = this.getView().byId("TabContainer");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var length = this.TabContainer.getItems().length;
             var array = [];
             for (var i = 2; i < length; i++) {
@@ -197,10 +183,6 @@ sap.ui.define([
             for (i = 0; i < array.length; i++) {
                 this.TabContainer.removeItem(array[i]);
             }
-//            this.openedTabs = [];
-//
-//            this.openedTabs.push("tab3");
-
             if (!this.Item) {
                 this.Item = new sap.m.TabContainerItem({
                     id: "tab3"});
@@ -212,37 +194,37 @@ sap.ui.define([
             if (!this.TreeTable) {
                 this.TreeTable = new CustomTreeTable({
                     id: "TreeTable_FinePredisposizione",
-                    rows: "{path:'TreeTable_FinePredisposizione>/', parameters: {arrayNames:['attributi']}}",
+                    rows: "{path:'GeneralModel>/ConfermaBatch/TreeTableCurrent', parameters: {arrayNames:['attributi']}}",
                     selectionMode: "MultiToggle",
                     collapseRecursive: true,
                     enableSelectAll: false,
                     ariaLabelledBy: "title",
-                    visibleRowCount: 10,
+                    visibleRowCount: 7,
                     columns: [
                         new sap.ui.table.Column({
                             label: "Attributi",
                             width: "15rem",
                             template: new sap.m.Text({
-                                text: "{TreeTable_FinePredisposizione>name}"})}),
+                                text: "{GeneralModel>name}"})}),
                         new sap.ui.table.Column({
                             label: "Valore",
                             width: "5rem",
                             template: new sap.m.Text({
-                                text: "{TreeTable_FinePredisposizione>value}"})}),
+                                text: "{GeneralModel>value}"})}),
                         new sap.ui.table.Column({
                             label: "Modifica",
                             width: "5rem",
                             template: new StyleInputTreeTableValue({
-                                value: "{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}",
-                                diff: "{TreeTable_FinePredisposizione>modify}",
-                                editable: "{= ${TreeTable_FinePredisposizione>modify} === '1'}"})}),
+                                value: "{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}",
+                                diff: "{GeneralModel>modify}",
+                                editable: "{= ${GeneralModel>modify} === '1'}"})}),
                         new sap.ui.table.Column({
                             label: "Sigle",
                             width: "5rem",
                             template: new sap.m.Input({
-                                placeholder: "{= ${TreeTable_FinePredisposizione>code} === '1' ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}",
-                                editable: "{= ${TreeTable_FinePredisposizione>code} === '1'}",
-                                value: "{TreeTable_FinePredisposizione>codeValue}"})})
+                                placeholder: "{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}",
+                                editable: "{= ${GeneralModel>code} === '1'}",
+                                value: "{GeneralModel>codeValue}"})})
                     ]
                 });
             }
@@ -259,7 +241,7 @@ sap.ui.define([
             this.Item.addContent(this.Panel);
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
-            this.FillTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
+//            this.FillTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
             var that = this;
             setTimeout(function () {
                 var oTabStrip = that.TabContainer.getAggregation("_tabStrip");
@@ -273,6 +255,7 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE CONFERMA ALLA FINE DELLA PREDISPOSIZIONE
         ConfermaPredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
 //            this.getView().byId("progressBar").addStyleClass("customText");
 //            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
@@ -293,10 +276,11 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
         ModificaCondizioni: function () {
-            this.ModelSetupNew = this.getView().getModel("ModelSetupNew");
+//            this.ModelSetupNew = this.getView().getModel("ModelSetupNew");
             this.getSplitAppObj().toDetail(this.createId("ModificaCondizioni"));
-            this.FillTable(this.ModelBatch, "TreeTable_AttributiModifica");
-            this.FillTable(this.ModelSetupNew, "TreeTable_ModificaCondizioni");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.FillTable(this.ModelBatch, "TreeTable_AttributiModifica");
+//            this.FillTable(this.ModelSetupNew, "TreeTable_ModificaCondizioni");
             this.TabContainer = this.getView().byId("TabContainer-mod");
             var that = this;
             setTimeout(function () {
@@ -320,6 +304,8 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "FERMO"
         Fermo: function (event) {
             this.getSplitAppObj().toDetail(this.createId("Fermo"));
+            this.AjaxCaller("model/JSON_FermoSelezioni.json", this.ModelDetailPages, "/Fermo/Selezioni/");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.discr = event.getParameters().id;
             if (this.discr.indexOf("ButtonFermo") > -1) {
                 this.Item = {};
@@ -364,8 +350,8 @@ sap.ui.define([
                 this.getView().byId("ButtonCausalizzazione").setEnabled(false);
                 this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
             } else {
-                var data = this.ModelFaultsNoCause.getData();
-                var data_All = this.ModelFaults.getData();
+                var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
+                var data_All = this.ModelDetailPages.getData().Causalizzazione.All;
                 for (var i in this.CheckSingoloCausa) {
                     if (this.CheckSingoloCausa[i] > 0) {
                         data.guasti[i].causa = CB.getProperty("text");
@@ -377,18 +363,20 @@ sap.ui.define([
                         }
                     }
                 }
-                this.ModelFaultsNoCause.setProperty("/", data);
-                this.ModelFaults.setProperty("/", data_All);
+                this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data);
+                this.ModelDetailPages.setProperty("/Causalizzazione/All/", data_All);
                 this.UpdateFaultsModels();
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
         },
 //------------------------------------------------------------------------------
 
 //      RICHIAMATO DAL PULSANTE "RIAVVIO"
         Riavvio: function () {
-            this.FillTable(this.ModelSetupNew, "TreeTable_RipristinoCondizioni");
+//            this.FillTable(this.ModelSetupNew, "TreeTable_RipristinoCondizioni");
             this.getSplitAppObj().toDetail(this.createId("RipristinoCondizioni"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var now = new Date();
             this.Item.fine = this.DateToStandard(now);
             this.AggiornaGuasti();
@@ -396,13 +384,15 @@ sap.ui.define([
 //      FUNZIONE CHE AGGIORNA IL MODELLO DEI GUASTI
         AggiornaGuasti: function () {
             this.Item.intervallo = this.MillisecsToStandard(this.StandardToMillisecs(this.Item.fine) - this.StandardToMillisecs(this.Item.inizio));
-            var faults = this.ModelFaults.getData();
+            var faults = this.ModelDetailPages.getData().Causalizzazione.All;
             faults.Totale.tempoGuastoTotale[0] = this.MillisecsToStandard(this.StandardToMillisecs(faults.Totale.tempoGuastoTotale[0]) + this.StandardToMillisecs(this.Item.intervallo));
             faults.guasti.push(this.Item);
+            this.ModelDetailPages.setProperty("/Causalizzazione/All/", faults);
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA"
         ConfermaRipristino: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
             this.getView().byId("ButtonFermo").setEnabled(true);
             this.getView().byId("ButtonRiavvio").setEnabled(false);
@@ -416,13 +406,14 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "CAUSALIZZAZIONE FERMI AUTOMATICI"
         Causalizzazione: function () {
             this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
-            this.FillTable(this.ModelFaultsNoCause, "TotaleTable");
-            this.FillTable(this.ModelFaultsNoCause, "SingoliTable");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.FillTable(this.ModelFaultsNoCause, "TotaleTable");
+//            this.FillTable(this.ModelFaultsNoCause, "SingoliTable");
             this.CheckSingoloCausa = [];
-            for (var i in this.ModelFaultsNoCause.getData().guasti) {
+            for (var i in this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti) {
                 this.CheckSingoloCausa.push(0);
             }
-            this.getView().byId("TotaleTable").setSelectionMode(sap.ui.table.SelectionMode.None);
+//            this.getView().byId("TotaleTable").setSelectionMode(sap.ui.table.SelectionMode.None);
             this.getView().byId("SingoliTable").setSelectionMode(sap.ui.table.SelectionMode.None);
         },
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
@@ -463,7 +454,6 @@ sap.ui.define([
                 }
             }
             temp_id = 0;
-            temp_id += this.CheckTotaleCausa;
             for (i in this.CheckSingoloCausa) {
                 temp_id += this.CheckSingoloCausa[i];
             }
@@ -476,10 +466,11 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE DI ESCI NELLA CAUSALIZZAZIONE
         EsciCausalizzazione: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
 //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
         UpdateFaultsModels: function () {
-            var data_NOcause = this.ModelFaultsNoCause.getData();
+            var data_NOcause = this.ModelDetailPages.getData().Causalizzazione.NoCause;
             for (var i = data_NOcause.guasti.length - 1; i >= 0; i--) {
                 var temp_item = data_NOcause.guasti[i];
                 if (temp_item.causa !== "") {
@@ -487,7 +478,7 @@ sap.ui.define([
                     data_NOcause.Totale.tempoGuastoTotale[0] = this.MillisecsToStandard(this.StandardToMillisecs(data_NOcause.Totale.tempoGuastoTotale[0]) - this.StandardToMillisecs(temp_item.intervallo));
                 }
             }
-            this.ModelFaultsNoCause.setProperty("/", data_NOcause);
+            this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data_NOcause);
         },
 //------------------------------------------------------------------------------
 
@@ -534,6 +525,9 @@ sap.ui.define([
 
 //      Funzione che va ad associare il modello alla rispettiva treetable
         FillTable: function (model, TableName) {
+//            if (this.getView().byId(TableName).getModel()) {
+//                this.getView().byId(TableName).getModel().setData(null);
+//            }
             this.getView().setModel(model, TableName);
 //            this.View = this.getView().byId(TableName);
 //            this.oGlobalBusyDialog.open();
@@ -563,8 +557,8 @@ sap.ui.define([
                 data.guasti[i].intervallo = arrayGaps[i];
             }
             data.Totale = {};
-            data.Totale.tempoGuastoTotale = [this.MillisecsToStandard(sum)];
-            data.Totale.causaleTotale = [""];
+            data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);
+            data.Totale.causaleTotale = "";
             return data;
         },
 //        Funzione che rimuove l'offset del giorno in millisecondi
@@ -641,6 +635,9 @@ sap.ui.define([
             var real_id = id.substring(splitter, id.length);
             var index = id.substring(splitter + string.length, id.length);
             return [root, real_id, index];
+        },
+        ResetPage: function (event) {
+            console.log("");
         },
 //      Funzione che permette di cambiare pagina nello SplitApp
         getSplitAppObj: function () {

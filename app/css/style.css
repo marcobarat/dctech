@@ -72,6 +72,11 @@
     font-size: 30pt;
 }
 
+.textTopRed {
+    font-size: 30pt;
+    color: red;
+}
+
 .customTextBar * {
     font-size: 25pt;
     font-weight: bold;
