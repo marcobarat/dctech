@@ -114,6 +114,7 @@ sap.ui.define([
         PresaInCarico: function (event) {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.getView().byId("TreeTable_PresaInCarico").setSelectionMode(sap.ui.table.SelectionMode.None);
 //            this.getView().setModel(this.ModelBatch, "TreeTable_PresaInCarico");
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
@@ -125,6 +126,9 @@ sap.ui.define([
 //            this.FillTable(this.ModelBatch, "TreeTable_AttributiPredisposizione");
 //            this.FillTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
 //            this.FillTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
+//            this.getView().byId("TreeTable_AttributiPredisposizione").setSelectionMode(sap.ui.table.SelectionMode.None);
+//            this.getView().byId("TreeTable_ConfermaSetupOld").setSelectionMode(sap.ui.table.SelectionMode.None);
+//            this.getView().byId("TreeTable_ConfermaSetupNew").setSelectionMode(sap.ui.table.SelectionMode.None);
             this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
             this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
@@ -195,7 +199,7 @@ sap.ui.define([
                 this.TreeTable = new CustomTreeTable({
                     id: "TreeTable_FinePredisposizione",
                     rows: "{path:'GeneralModel>/ConfermaBatch/TreeTableCurrent', parameters: {arrayNames:['attributi']}}",
-                    selectionMode: "MultiToggle",
+                    selectionMode: "None",
                     collapseRecursive: true,
                     enableSelectAll: false,
                     ariaLabelledBy: "title",
@@ -227,6 +231,7 @@ sap.ui.define([
                                 value: "{GeneralModel>codeValue}"})})
                     ]
                 });
+//                this.TreeTable.setSelectionMode(sap.ui.table.SelectionMode.None);
             }
             if (!this.Button) {
                 this.Button = new sap.m.Button({
@@ -294,6 +299,8 @@ sap.ui.define([
             this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
             this.Item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(this.Item);
+//            this.getView().byId("TreeTable_AttributiModifica").setSelectionMode(sap.ui.table.SelectionMode.None);
+//            this.getView().byId("TreeTable_ModificaCondizioni").setSelectionMode(sap.ui.table.SelectionMode.None);
         },
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
         ConfermaModifica: function () {
@@ -380,6 +387,7 @@ sap.ui.define([
             var now = new Date();
             this.Item.fine = this.DateToStandard(now);
             this.AggiornaGuasti();
+//            this.getView().byId("TreeTable_RipristinoCondizioni").setSelectionMode(sap.ui.table.SelectionMode.None);
         },
 //      FUNZIONE CHE AGGIORNA IL MODELLO DEI GUASTI
         AggiornaGuasti: function () {
@@ -414,7 +422,7 @@ sap.ui.define([
                 this.CheckSingoloCausa.push(0);
             }
 //            this.getView().byId("TotaleTable").setSelectionMode(sap.ui.table.SelectionMode.None);
-            this.getView().byId("SingoliTable").setSelectionMode(sap.ui.table.SelectionMode.None);
+//            this.getView().byId("SingoliTable").setSelectionMode(sap.ui.table.SelectionMode.None);
         },
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedCausa: function (event) {
@@ -657,8 +665,11 @@ sap.ui.define([
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("overview", true);
             }
+        },
+        
+        ciao: function (event) {
+            console.log("");
         }
-
 
 //        onAfterRendering: function () {
 //            if (this.bool_expanded == true) {

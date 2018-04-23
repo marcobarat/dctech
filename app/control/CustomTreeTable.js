@@ -16,21 +16,37 @@ sap.ui.define([
                 renderer: {},
 
                 onAfterRendering: function () {
-                    this.expandToLevel(100);
-                    var that = this;
-                    setTimeout(function () {
-                        var num = that._iBindingLength;
-                        var temp;
-                        for (var i = num - 1; i >= 0; i--) {
-                            temp = that.getContextByIndex(i).getObject();
-                            if (temp.expand == 0) {
-                                that.collapse(i);
+                    this.expandToLevel(20);
+//                    var that = this;
+                    var num = this.getBinding("rows").getLength();
+                    var temp;
+                    for (var i = num - 1; i >= 0; i--) {
+                        temp = this.getBinding("rows").getContextByIndex(i);
+                        if (typeof temp != "undefined") {
+                            if (temp.getObject().expand == 0) {
+                                this.collapse(i);
                             }
                         }
-                    }, 0);
+                    }
+
+//                    setTimeout(function () {
+//                        var num = that.getBinding("rows").getLength();
+//                        var temp;
+//                        for (var i = num - 1; i >= 0; i--) {
+////                            try {
+//                            temp = that.getBinding("rows").getContextByIndex(i).getObject();
+////                            } catch (err) {
+////                            }
+////                            if (typeof temp != "undefined") {
+//                            if (temp.expand == 0) {
+//                                that.collapse(i);
+//                            }
+////                            }
+//                        }
+//                    }, 0);
                     if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
                         sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
                     }
-                }
+                },
             });
         });
