@@ -5,34 +5,82 @@
         {
             "icon": "sap-icon://machine",
             "linea": "Linea 1",
-            "info": "Libera",
+            "info": "Produzione",
             "infoState": "Success",
-            "idlinea": "1",
+            "idlinea": "1P",
             "linea_desc": "1"
         },
         {
             "icon": "sap-icon://machine",
             "linea": "Linea 2",
-            "info": "Libera",
+            "info": "Produzione",
             "infoState": "Success",
-            "idlinea": "2",
+            "idlinea": "2P",
             "linea_desc": "2"
         },
         {
             "icon": "sap-icon://machine",
             "linea": "Linea 3",
-            "info": "Libera",
+            "info": "Produzione",
             "infoState": "Success",
-            "idlinea": "3",
+            "idlinea": "3P",
             "linea_desc": "3"
         },
         {
             "icon": "sap-icon://machine",
             "linea": "Linea 4",
-            "info": "Libera",
+            "info": "Produzione",
             "infoState": "Success",
-            "idlinea": "4",
+            "idlinea": "4P",
             "linea_desc": "4"
+        },
+        {
+            "icon": "sap-icon://machine",
+            "linea": "Linea 5",
+            "info": "Produzione",
+            "infoState": "Success",
+            "idlinea": "5P",
+            "linea_desc": "5"
+        },
+        {
+            "icon": "sap-icon://machine",
+            "linea": "Linea 1",
+            "info": "Attrezzaggio",
+            "infoState": "Error",
+            "idlinea": "1A",
+            "linea_desc": "1"
+        },
+        {
+            "icon": "sap-icon://machine",
+            "linea": "Linea 2",
+            "info": "Attrezzaggio",
+            "infoState": "Error",
+            "idlinea": "2A",
+            "linea_desc": "2"
+        },
+        {
+            "icon": "sap-icon://machine",
+            "linea": "Linea 3",
+            "info": "Attrezzaggio",
+            "infoState": "Error",
+            "idlinea": "3A",
+            "linea_desc": "3"
+        },
+        {
+            "icon": "sap-icon://machine",
+            "linea": "Linea 4",
+            "info": "Attrezzaggio",
+            "infoState": "Error",
+            "idlinea": "4A",
+            "linea_desc": "4"
+        },
+        {
+            "icon": "sap-icon://machine",
+            "linea": "Linea 5",
+            "info": "Attrezzaggio",
+            "infoState": "Error",
+            "idlinea": "5A",
+            "linea_desc": "5"
         }
     ]
 }

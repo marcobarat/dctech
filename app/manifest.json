@@ -36,9 +36,9 @@
         "_version": "1.1.0",
         "resources": {
             "css": [{
-                "uri": "css/style.css",
-                "id": "customstyle"
-            }]
+                    "uri": "css/style.css",
+                    "id": "customstyle"
+                }]
         },
         "contentDensities": {
             "compact": true,
@@ -75,15 +75,23 @@
                 "controlAggregation": "pages",
                 "viewType": "XML"
             },
-            "routes": [{
-                "name": "main",
-                "pattern": "",
-                "target": "main"
-            }, {
-                "name": "tmp",
-                "pattern": "tmp",
-                "target": "tmp"
-            }],
+            "routes": [
+                {
+                    "name": "main",
+                    "pattern": "",
+                    "target": "main"
+                }, 
+                {
+                    "name": "tmp",
+                    "pattern": "tmp",
+                    "target": "tmp"
+                },
+                {
+                    "name": "Operatore",
+                    "pattern": "Operatore",
+                    "target": "Operatore"
+                }
+            ],
             "targets": {
                 "main": {
                     "viewName": "view.Main",
@@ -91,6 +99,10 @@
                 },
                 "tmp": {
                     "viewName": "view.Tmp",
+                    "viewLevel": 1
+                },
+                "Operatore": {
+                    "viewName": "view.Operatore",
                     "viewLevel": 1
                 }
             }

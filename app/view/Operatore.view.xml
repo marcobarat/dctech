@@ -3,11 +3,7 @@
           xmlns:u="sap.ui.unified" xmlns:comp="myapp.component" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
           xmlns:wt="myapp.control"
           
-          controllerName="myapp.controller.Tmp">
-    <!--            <headerContent>
-        <Button icon="sap-icon://arrow-left" press="onNavBack" text="{locale>myapp.view.tmp.back}"
-                ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
-    </headerContent>-->
+          controllerName="myapp.controller.Operatore">
     <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" > 
         <detailPages>
                     
@@ -21,7 +17,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -44,7 +40,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -63,7 +59,7 @@
                                     collapseRecursive="true"
                                     enableSelectAll="false"
                                     ariaLabelledBy="title"
-                                    visibleRowCount="10"
+                                    visibleRowCount="15"
                                     rowSelectionChange="ciao">
                                     <wt:toolbar>
                                         <Toolbar>
@@ -112,7 +108,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -142,7 +138,7 @@
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
                                                     ariaLabelledBy="title"
-                                                    visibleRowCount="10">
+                                                    visibleRowCount="15">
                                                     <wt:toolbar>
                                                         <Toolbar>
                                                             <Title text="Attributi prodotto"/>
@@ -195,7 +191,7 @@
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"
                                                             ariaLabelledBy="title"
-                                                            visibleRowCount="10">
+                                                            visibleRowCount="14">
                                                             <wt:toolbar>
                                                                 <Toolbar>
                                                                     <Title text="Standard"/>
@@ -234,7 +230,7 @@
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"
                                                             ariaLabelledBy="title"
-                                                            visibleRowCount="10"
+                                                            visibleRowCount="14"
                                                             cellClick="LinkClick">
                                                             <wt:toolbar>
                                                                 <Toolbar>
@@ -285,7 +281,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -377,7 +373,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -407,7 +403,7 @@
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
                                                     ariaLabelledBy="title"
-                                                    visibleRowCount="10">
+                                                    visibleRowCount="15">
                                                     <wt:toolbar>
                                                         <Toolbar>
                                                             <Title text="Attributi prodotto"/>
@@ -458,7 +454,7 @@
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
                                                     ariaLabelledBy="title"
-                                                    visibleRowCount="6">
+                                                    visibleRowCount="7">
                                                     <wt:toolbar>
                                                         <Toolbar>
                                                             <Title text="Modifica condizioni"/>
@@ -538,7 +534,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -609,7 +605,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -674,6 +670,7 @@
                                         class="mysapMTable"
                                         id="SingoliTable"
                                         alternateRowColors="true"
+                                        visibleRowCount="5"
                                         items="{GeneralModel>/Causalizzazione/NoCause/guasti/}">
                                         <columns>
                                             <Column hAlign="Center" width="15%">
@@ -819,7 +816,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -849,7 +846,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -868,10 +865,10 @@
                                     collapseRecursive="true"
                                     enableSelectAll="false"
                                     ariaLabelledBy="title"
-                                    visibleRowCount="7">
+                                    visibleRowCount="8">
                                     <wt:toolbar>
                                         <Toolbar>
-                                            <Title text="SKU"/>
+                                            <Title text="Riavvio linea"/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_RipristinoCondizioni"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_RipristinoCondizioni"/>
                                             <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_RipristinoCondizioni"/>
@@ -924,7 +921,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -951,7 +948,6 @@
                                             <ToolbarSpacer/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_Chiusura"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_Chiusura"/>
-                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_Chiusura"/>
                                         </Toolbar>
                                     </wt:toolbar>
                                     <wt:columns>
@@ -1220,7 +1216,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -1239,8 +1235,7 @@
                                     collapseRecursive="true"
                                     enableSelectAll="false"
                                     ariaLabelledBy="title"
-                                    visibleRowCount="10"
-                                    rowSelectionChange="ciao">
+                                    visibleRowCount="15">
                                     <wt:toolbar>
                                         <Toolbar>
                                             <Title text="Attributi prodotto"/>
@@ -1281,7 +1276,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -1308,7 +1303,7 @@
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
                                                     ariaLabelledBy="title"
-                                                    visibleRowCount="10">
+                                                    visibleRowCount="15">
                                                     <wt:toolbar>
                                                         <Toolbar>
                                                             <Title text="Attributi prodotto"/>
@@ -1353,7 +1348,7 @@
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"
                                                             ariaLabelledBy="title"
-                                                            visibleRowCount="10">
+                                                            visibleRowCount="14">
                                                             <wt:toolbar>
                                                                 <Toolbar>
                                                                     <Title text="Standard"/>
@@ -1388,7 +1383,7 @@
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"
                                                             ariaLabelledBy="title"
-                                                            visibleRowCount="10"
+                                                            visibleRowCount="14"
                                                             cellClick="LinkClick">
                                                             <wt:toolbar>
                                                                 <Toolbar>
@@ -1432,7 +1427,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -1471,10 +1466,7 @@
                     <VBox height="100%" width="100%">
                         <Panel id="panel_processi">
                             <VBox height="60%" width="100%" justifyContent="center" alignItems="start">
-                                <!--                                        <Button text="Home" enabled="true" pressed="true" press="onInit" width="100%" class="styleButton">
-                                </Button>
-                                <Text text=""/>-->
-                                <Button id="ButtonPresaInCarico" text="Presa in carico nuovo confezionamento" enabled="true" pressed="true" press="PresaInCarico" width="100%" class="styleLongButton">
+                                <Button id="ButtonPresaInCarico" text="Presa in carico nuovo confezionamento" enabled="false" pressed="true" press="PresaInCarico" width="100%" class="styleLongButton">
                                 </Button>
                                 <Text/>
                                 <Button id="ButtonFinePredisposizione" text="Fine predisposizione inizio confezionamento" enabled="false" pressed="true" press="FinePredisposizione" width="100%" class="styleLongButton">
@@ -1501,7 +1493,7 @@
                                 <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />
                             </VBox>-->
                             <VBox height="30%" width="100%">
-                                <Button id="ButtonBatchAttrezzaggio" text="Predisposizione nuovo confezionamento" enabled="true" pressed="true" press="BatchAttrezzaggio" width="100%" class="styleLongButton">
+                                <Button id="ButtonBatchAttrezzaggio" text="Predisposizione nuovo confezionamento" enabled="false" pressed="true" press="BatchAttrezzaggio" width="100%" class="styleLongButton">
                                 </Button>
                                 <Text/>
                                 <Button id="ButtonFinePredisposizioneAttrezzaggio" text="Fine predisposizione" enabled="false" pressed="true" press="FinePredisposizioneAttrezzaggio" width="100%" class="styleButton">

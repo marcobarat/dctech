@@ -19,7 +19,7 @@
                     number="{linea_desc}"
                     info="{info}"
                     infoState="{infoState}"
-                    press="onToTmpPage"/>
+                    press="GoToOperatore"/>
             </TileContainer>
         </content>
     </Page>

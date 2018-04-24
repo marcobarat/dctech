@@ -7,9 +7,10 @@ sap.ui.define([
     'myapp/control/CustomTreeTable'
 ], function (jQuery, History, Controller, JSONModel, StyleInputTreeTableValue, CustomTreeTable) {
     "use strict";
-    var TmpController = Controller.extend("myapp.controller.Tmp", {
+    var TmpController = Controller.extend("myapp.controller.Operatore", {
 
 //      VARIABILI GLOBALI
+        Global: null,
         ModelDetailPages: new JSONModel({}),
         View: null,
         total: null,
@@ -24,47 +25,47 @@ sap.ui.define([
         TreeTable: null,
         Button: null,
         Panel: null,
+        CLOSED: 0,
 //      NELL'ONINIT CARICO I VARI MODELLI E FACCIO TUTTE LE CHIAMATE AJAX
 
 //------------------------------------------------------------------------------
 
         onInit: function () {
 
-            this.ModelDetailPages.setProperty("/PresaInCarico/", {});
-            this.ModelDetailPages.setProperty("/ConfermaBatch/", {});
-            this.ModelDetailPages.setProperty("/Fermo/", {});
-            this.ModelDetailPages.setProperty("/Causalizzazione/", {});
+            this.Global = this.getOwnerComponent().getModel("Global");
 
-            this.ModelDetailPages.setProperty("/BatchAttrezzaggio/", {});
-            this.ModelDetailPages.setProperty("/ConfermaBatchAttrezzaggio/", {});
-            this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
-//          CARICAMENTO MODELLI DATI
+            if (this.Global.getData().Choice === "Produzione") {
+                this.ModelDetailPages.setProperty("/PresaInCarico/", {});
+                this.ModelDetailPages.setProperty("/ConfermaBatch/", {});
+                this.ModelDetailPages.setProperty("/Fermo/", {});
+                this.ModelDetailPages.setProperty("/Causalizzazione/", {});
 
-//          CARICAMENTO MODELLO
+                this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
+                this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableStandard/");
+                this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableCurrent/");
+                this.AjaxCaller("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
+                this.AjaxCaller("model/JSON_FermoTesti.json", this.ModelDetailPages, "/Fermo/Testi/");
+                this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
+                this.AjaxCaller("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
+
+                this.getView().byId("ButtonPresaInCarico").setEnabled(true);
+            } else if (this.Global.getData().Choice === "Attrezzaggio") {
+                this.ModelDetailPages.setProperty("/BatchAttrezzaggio/", {});
+                this.ModelDetailPages.setProperty("/ConfermaBatchAttrezzaggio/", {});
+                this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
+
+                this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/BatchAttrezzaggio/TreeTable/");
+                this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableStandard/");
+                this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableCurrent/");
+
+                this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(true);
+            }
+
             this.AjaxCaller("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
-            this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
-            this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableStandard/");
-            this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableCurrent/");
-            this.AjaxCaller("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
-            this.AjaxCaller("model/JSON_FermoTesti.json", this.ModelDetailPages, "/Fermo/Testi/");
-            this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
-            this.AjaxCaller("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
-
-            this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/BatchAttrezzaggio/TreeTable/");
-            this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableStandard/");
-            this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableCurrent/");
-
-
+            this.ModelDetailPages.setProperty("/Globale/", {});
+            this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-
-//            DA CANCELLARE
-//            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-            this.getView().byId("ButtonFermo").setEnabled(true);
-            this.getView().byId("ButtonRiavvio").setEnabled(true);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
         },
 
 //        DI SEGUITO LE 4 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
@@ -111,6 +112,7 @@ sap.ui.define([
         PresaInCarico: function (event) {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -119,14 +121,13 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColor("yellow");
-            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
-            this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
             this.TabContainer = this.getView().byId("TabContainer");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
             this.openedTabs = [];
             this.nextTab = "tab4";
+            this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -161,7 +162,7 @@ sap.ui.define([
                     collapseRecursive: true,
                     enableSelectAll: false,
                     ariaLabelledBy: "title",
-                    visibleRowCount: 7,
+                    visibleRowCount: 8,
                     columns: [
                         new sap.ui.table.Column({
                             label: "Attributi",
@@ -204,19 +205,17 @@ sap.ui.define([
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
+            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
         },
 //      RICHIAMATO DAL PULSANTE CONFERMA ALLA FINE DELLA PREDISPOSIZIONE
         ConfermaPredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColor("green");
-//            this.getView().byId("progressBar").addStyleClass("customText");
-//            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
-//            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-//            this.getView().byId("ButtonFermo").setEnabled(true);
-//            this.getView().byId("ButtonRiavvio").setEnabled(true);
-//            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-//            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
+            this.getView().byId("ButtonFermo").setEnabled(true);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
         },
 //------------------------------------------------------------------------------
 
@@ -235,10 +234,18 @@ sap.ui.define([
             this.RemoveClosingButtons(2);
             this.Item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(this.Item);
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
+            this.getView().byId("ButtonFermo").setEnabled(false);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
         },
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
         ConfermaModifica: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
+            this.getView().byId("ButtonFermo").setEnabled(true);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
         },
 //------------------------------------------------------------------------------
 
@@ -253,6 +260,10 @@ sap.ui.define([
                 var now = new Date();
                 this.Item.inizio = this.DateToStandard(now);
             }
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
+            this.getView().byId("ButtonFermo").setEnabled(false);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
         },
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedFermo: function (event) {
@@ -283,12 +294,7 @@ sap.ui.define([
                 this.Item.causa = CB.getProperty("text");
                 this.SwitchColor("red");
                 this.getSplitAppObj().toDetail(this.createId("Fault"));
-                this.getView().byId("ButtonPresaInCarico").setEnabled(false);
-                this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
-                this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-                this.getView().byId("ButtonFermo").setEnabled(false);
                 this.getView().byId("ButtonRiavvio").setEnabled(true);
-                this.getView().byId("ButtonCausalizzazione").setEnabled(false);
                 this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
             } else {
                 var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
@@ -307,7 +313,7 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data);
                 this.ModelDetailPages.setProperty("/Causalizzazione/All/", data_All);
                 this.UpdateFaultsModels();
-                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
         },
@@ -320,12 +326,14 @@ sap.ui.define([
             var now = new Date();
             this.Item.fine = this.DateToStandard(now);
             this.AggiornaGuasti();
+            this.getView().byId("ButtonRiavvio").setEnabled(false);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
         },
 //      FUNZIONE CHE AGGIORNA IL MODELLO DEI GUASTI
         AggiornaGuasti: function () {
             this.Item.intervallo = this.MillisecsToStandard(this.StandardToMillisecs(this.Item.fine) - this.StandardToMillisecs(this.Item.inizio));
             var faults = this.ModelDetailPages.getData().Causalizzazione.All;
-            faults.Totale.tempoGuastoTotale[0] = this.MillisecsToStandard(this.StandardToMillisecs(faults.Totale.tempoGuastoTotale[0]) + this.StandardToMillisecs(this.Item.intervallo));
+            faults.Totale.tempoGuastoTotale = this.MillisecsToStandard(this.StandardToMillisecs(faults.Totale.tempoGuastoTotale) + this.StandardToMillisecs(this.Item.intervallo));
             faults.guasti.push(this.Item);
             this.ModelDetailPages.setProperty("/Causalizzazione/All/", faults);
         },
@@ -335,7 +343,6 @@ sap.ui.define([
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
             this.getView().byId("ButtonFermo").setEnabled(true);
-            this.getView().byId("ButtonRiavvio").setEnabled(false);
             this.getView().byId("ButtonCausalizzazione").setEnabled(true);
             this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
             this.SwitchColor("green");
@@ -351,6 +358,10 @@ sap.ui.define([
             for (var i in this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti) {
                 this.CheckSingoloCausa.push(0);
             }
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
+            this.getView().byId("ButtonFermo").setEnabled(false);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
         },
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedCausa: function (event) {
@@ -401,8 +412,22 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE DI ESCI NELLA CAUSALIZZAZIONE
         EsciCausalizzazione: function () {
-            this.getSplitAppObj().toDetail(this.createId("InProgress"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            if (this.CLOSED === 0) {
+                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
+                this.getView().byId("ButtonFermo").setEnabled(true);
+                this.getView().byId("ButtonCausalizzazione").setEnabled(true);
+                this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            } else {
+                this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+                this.AggiornaChiusura();
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
+                this.getView().byId("ButtonFermo").setEnabled(false);
+                this.getView().byId("ButtonCausalizzazione").setEnabled(true);
+                this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            }
         },
 //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
         UpdateFaultsModels: function () {
@@ -421,15 +446,15 @@ sap.ui.define([
 //      
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
+            this.CLOSED = 1;
             this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
-            var data = this.ModelDetailPages.getData();
-            var index = this.GetIndex(data.Chiusura.attributi, "Totale tempi di fermo");
-            data.Chiusura.attributi[index].value = data.Causalizzazione.All.Totale.tempoGuastoTotale;
-            var index1 = this.GetIndex(data.Chiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
-            data.Chiusura.attributi[index].attributi[index1].value = data.Causalizzazione.NoCause.Totale.tempoGuastoTotale;
-            this.ModelDetailPages.setProperty("/", data);
+            this.AggiornaChiusura();
             this.SwitchColor("brown");
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
+            this.getView().byId("ButtonFermo").setEnabled(false);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
         },
 
         ConfermaChiusura: function () {
@@ -457,13 +482,7 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColor("");
-            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
-            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-            this.getView().byId("ButtonFermo").setEnabled(false);
-            this.getView().byId("ButtonRiavvio").setEnabled(false);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(false);
         },
         //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -472,7 +491,6 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatchAttrezzaggio"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColorAttrezzaggio("yellow");
-            this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(false);
             this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(true);
             this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(true);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
@@ -518,7 +536,7 @@ sap.ui.define([
                     collapseRecursive: true,
                     enableSelectAll: false,
                     ariaLabelledBy: "title",
-                    visibleRowCount: 7,
+                    visibleRowCount: 8,
                     columns: [
                         new sap.ui.table.Column({
                             label: "Attributi",
@@ -594,7 +612,7 @@ sap.ui.define([
                     collapseRecursive: true,
                     enableSelectAll: false,
                     ariaLabelledBy: "title",
-                    visibleRowCount: 7,
+                    visibleRowCount: 8,
                     columns: [
                         new sap.ui.table.Column({
                             label: "Attributi",
@@ -678,6 +696,14 @@ sap.ui.define([
                 this.TabContainer.addItem(Item);
                 this.TabContainer.setSelectedItem(Item);
             }
+        },
+        AggiornaChiusura: function () {
+            var data = this.ModelDetailPages.getData();
+            var index = this.GetIndex(data.Chiusura.attributi, "Totale tempi di fermo");
+            data.Chiusura.attributi[index].value = data.Causalizzazione.All.Totale.tempoGuastoTotale;
+            var index1 = this.GetIndex(data.Chiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
+            data.Chiusura.attributi[index].attributi[index1].value = data.Causalizzazione.NoCause.Totale.tempoGuastoTotale;
+            this.ModelDetailPages.setProperty("/", data);
         },
 
 //      Funzione che collassa tutti i nodi della treetable
