@@ -67,7 +67,7 @@
                                     rowSelectionChange="ciao">
                                     <wt:toolbar>
                                         <Toolbar>
-                                            <Title id="title" text="Attributi prodotto"/>
+                                            <Title text="Attributi prodotto"/>
                                             <ToolbarSpacer/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_PresaInCarico"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_PresaInCarico"/>
@@ -322,7 +322,7 @@
                                     <Text text="Disponibilità: {GeneralModel>/InProgress/disponibilita}" class="customText"/>
                                 </VBox>
                                 <VBox height="33%" width="100%">
-                                    <Text text="Fermi automatici non causalizzati: {GeneralModel>/InProgress/fermiAutomatici}" class="customText"/>
+                                    <Text text="Fermi automatici non causalizzati: {GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}" class="customText"/>
                                 </VBox>
                             </VBox>
                         </HBox>
@@ -550,45 +550,45 @@
                         </VBox>
                         <VBox height="80%" width="100%">
                             <VBox>
-                                <Panel>
-                                    <VBox>
-                                        <HBox height="100%">
-                                            <VBox width="15%"/>
-                                            <VBox width="85%">
-                                                <VBox height="50%">
-                                                    <HBox>
-                                                        <VBox width="50%">
-                                                            <Text text="{GeneralModel>/Fermo/Testi/titolo1}" class="customTextFermo"/>
-                                                            <CheckBox id="CBFermo1" text="{GeneralModel>/Fermo/Testi/CBFermo1}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo1}" select="ChangeCheckedFermo" />
-                                                        </VBox>
-                                                        <VBox width="50%">
-                                                            <Text text="{GeneralModel>/Fermo/Testi/titolo2}" class="customTextFermo"/>
-                                                            <CheckBox id="CBFermo2" text="{GeneralModel>/Fermo/Testi/CBFermo2}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo2}" select="ChangeCheckedFermo" />
-                                                            <CheckBox id="CBFermo3" text="{GeneralModel>/Fermo/Testi/CBFermo3}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo3}" select="ChangeCheckedFermo" />
-                                                        </VBox>
-                                                    </HBox>
-                                                </VBox>
-                                                <VBox height="50%">
-                                                    <HBox>
-                                                        <VBox width="50%">
-                                                            <Text text="{GeneralModel>/Fermo/Testi/titolo3}" class="customTextFermo"/>
-                                                            <CheckBox id="CBFermo4" text="{GeneralModel>/Fermo/Testi/CBFermo4}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo4}" select="ChangeCheckedFermo" />
-                                                            <CheckBox id="CBFermo5" text="{GeneralModel>/Fermo/Testi/CBFermo5}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo5}" select="ChangeCheckedFermo" />
-                                                            <CheckBox id="CBFermo6" text="{GeneralModel>/Fermo/Testi/CBFermo6}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo6}" select="ChangeCheckedFermo" />
-                                                            <CheckBox id="CBFermo7" text="{GeneralModel>/Fermo/Testi/CBFermo7}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo7}" select="ChangeCheckedFermo" />
-                                                        </VBox>
-                                                        <VBox width="50%">
-                                                            <Text text="{GeneralModel>/Fermo/Testi/titolo4}" class="customTextFermo"/>
-                                                            <CheckBox id="CBFermo8" text="{GeneralModel>/Fermo/Testi/CBFermo8}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo8}" select="ChangeCheckedFermo" />
-                                                            <CheckBox id="CBFermo9" text="{GeneralModel>/Fermo/Testi/CBFermo9}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo9}" select="ChangeCheckedFermo" />
-                                                            <CheckBox id="CBFermo10" text="{GeneralModel>/Fermo/Testi/CBFermo10}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo10}" select="ChangeCheckedFermo" />
-                                                        </VBox>
-                                                    </HBox>
-                                                </VBox>
+                                <!--<Panel>-->
+                                <VBox>
+                                    <HBox height="100%">
+                                        <VBox width="15%"/>
+                                        <VBox width="85%">
+                                            <VBox height="40%">
+                                                <HBox>
+                                                    <VBox width="50%">
+                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo1}" class="customTextFermo"/>
+                                                        <CheckBox id="CBFermo1" text="{GeneralModel>/Fermo/Testi/CBFermo1}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo1}" select="ChangeCheckedFermo" />
+                                                    </VBox>
+                                                    <VBox width="50%">
+                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo2}" class="customTextFermo"/>
+                                                        <CheckBox id="CBFermo2" text="{GeneralModel>/Fermo/Testi/CBFermo2}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo2}" select="ChangeCheckedFermo" />
+                                                        <CheckBox id="CBFermo3" text="{GeneralModel>/Fermo/Testi/CBFermo3}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo3}" select="ChangeCheckedFermo" />
+                                                    </VBox>
+                                                </HBox>
                                             </VBox>
-                                        </HBox>
-                                    </VBox>
-                                </Panel>
+                                            <VBox height="60%">
+                                                <HBox>
+                                                    <VBox width="50%">
+                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo3}" class="customTextFermo"/>
+                                                        <CheckBox id="CBFermo4" text="{GeneralModel>/Fermo/Testi/CBFermo4}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo4}" select="ChangeCheckedFermo" />
+                                                        <CheckBox id="CBFermo5" text="{GeneralModel>/Fermo/Testi/CBFermo5}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo5}" select="ChangeCheckedFermo" />
+                                                        <CheckBox id="CBFermo6" text="{GeneralModel>/Fermo/Testi/CBFermo6}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo6}" select="ChangeCheckedFermo" />
+                                                        <CheckBox id="CBFermo7" text="{GeneralModel>/Fermo/Testi/CBFermo7}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo7}" select="ChangeCheckedFermo" />
+                                                    </VBox>
+                                                    <VBox width="50%">
+                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo4}" class="customTextFermo"/>
+                                                        <CheckBox id="CBFermo8" text="{GeneralModel>/Fermo/Testi/CBFermo8}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo8}" select="ChangeCheckedFermo" />
+                                                        <CheckBox id="CBFermo9" text="{GeneralModel>/Fermo/Testi/CBFermo9}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo9}" select="ChangeCheckedFermo" />
+                                                        <CheckBox id="CBFermo10" text="{GeneralModel>/Fermo/Testi/CBFermo10}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo10}" select="ChangeCheckedFermo" />
+                                                    </VBox>
+                                                </HBox>
+                                            </VBox>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                                <!--</Panel>-->
                             </VBox>
                             <VBox height="10%">
                                 <Text/>
@@ -620,131 +620,193 @@
                             </VBox>
                         </VBox>
                         <VBox height="80%" width="100%">
-                            <Panel>
-                                <VBox>
-                                    <VBox height="15%">
-                                        <HBox>
-                                            <VBox width="10%"/>
-                                            <VBox width="25%">
-                                                <Button text="Esci" width="100%" press="EsciCausalizzazione"/>
-                                            </VBox>
-                                            <VBox width="30%"/>
-                                            <VBox width="25%">
-                                                <Button id="ConfermaCausalizzazione" text="Conferma" width="100%" enabled="false" press="Fermo"/>
-                                            </VBox>
-                                            <VBox width="10%"/>
-                                        </HBox>
-                                    </VBox>
-                                    <VBox height="5%">
-                                        <Text/>
-                                    </VBox>
-                                    <VBox height="30%">
-<!--                                        <t:Table id="TotaleTable"
-                                                 inset="false">
-                                                                                        <headerToolbar>
-                                                <Toolbar>
-                                                    <Label text="Products"></Label>
-                                                </Toolbar>
-                                            </headerToolbar>
-                                            <t:columns>
-                                                <t:Column width="30%" hAlign="Center"/>
-                                                <t:Column
-                                                    width="15%"
-                                                    hAlign="Center">
-                                                    <Text text="Tempo" />
-                                                </t:Column>
-                                                <t:Column
-                                                    width="45%"
-                                                    hAlign="Center">
-                                                    <Text text="Causale" />
-                                                </t:Column>
-                                                <t:Column width="10%" hAlign="Center"/>
-                                            </t:columns>
-                                            <t:Row>
-                                                                                            <items>
-                                                <ColumnListItem>
-                                                <t:cells>
+                            <VBox>
+                                <VBox height="15%">
+                                    <HBox>
+                                        <VBox width="10%"/>
+                                        <VBox width="25%">
+                                            <Button text="Esci" width="100%" press="EsciCausalizzazione"/>
+                                        </VBox>
+                                        <VBox width="30%"/>
+                                        <VBox width="25%">
+                                            <Button id="ConfermaCausalizzazione" text="Causalizza" width="100%" enabled="false" press="Fermo"/>
+                                        </VBox>
+                                        <VBox width="10%"/>
+                                    </HBox>
+                                </VBox>
+                                <VBox height="5%">
+                                    <Text/>
+                                </VBox>
+                                <VBox height="30%">
+                                    <Table
+                                        class="mysapMTable"
+                                        id="TotaleTable"
+                                        selectionMode="None">
+                                        <columns>
+                                            <Column width="30%" hAlign="Center">
+                                            </Column>
+                                            <Column width="15%" hAlign="Center">
+                                                <Text text="Tempo"/>                                                       
+                                            </Column>
+                                            <Column width="45%" hAlign="Center">
+                                                <Text text="Causale"/>
+                                            </Column>
+                                            <Column width="10%" hAlign="Center">
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem class="mysapMListTblCell mysapMText mysapMCb">
+                                                <cells>
+                                                    <Text textAlign="Center" text="Totale Complessivo"/>
+                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
+                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
+                                                    <CheckBox textAlign="Center" id="CBTotaleCausa" select="ChangeCheckedCausa"/>                                                    
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </VBox>
+                                <VBox height="10%">
+                                    <Text/>
+                                </VBox>
+                                <VBox height="40%">
+                                    <Table
+                                        class="mysapMTable"
+                                        id="SingoliTable"
+                                        alternateRowColors="true"
+                                        items="{GeneralModel>/Causalizzazione/NoCause/guasti/}">
+                                        <columns>
+                                            <Column hAlign="Center" width="15%">
+                                                <Text text="Inizio"/>
+                                            </Column>
+                                            <Column hAlign="Center" width="15%">
+                                                <Text text="Fine"/>
+                                            </Column>
+                                            <Column hAlign="Center" width="15%">
+                                                <Text text="Tempo"/>
+                                            </Column>
+                                            <Column hAlign="Center" width="45%">
+                                                <Text text="Causale"/>
+                                            </Column>
+                                            <Column hAlign="Center" width="10%">
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem class="mysapMListTblCell mysapMText mysapMCb">
+                                                <cells>
+                                                    <Text textAlign="Center" text="{GeneralModel>inizio}"/>
+                                                    <Text textAlign="Center" text="{GeneralModel>fine}"/>
+                                                    <Text textAlign="Center" text="{GeneralModel>intervallo}"/>
+                                                    <Text textAlign="Center" text="{GeneralModel>causa}"/>
+                                                    <CheckBox id="CBSingoloCausa" select="ChangeCheckedCausa"/>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+
+
+
+                                    <!--                                        <t:Table id="TotaleTable"
+                                             inset="false">
+                                                                                    <headerToolbar>
+                                            <Toolbar>
+                                                <Label text="Products"></Label>
+                                            </Toolbar>
+                                        </headerToolbar>
+                                        <t:columns>
+                                            <t:Column width="30%" hAlign="Center"/>
+                                            <t:Column
+                                                width="15%"
+                                                hAlign="Center">
+                                                <Text text="Tempo" />
+                                            </t:Column>
+                                            <t:Column
+                                                width="45%"
+                                                hAlign="Center">
+                                                <Text text="Causale" />
+                                            </t:Column>
+                                            <t:Column width="10%" hAlign="Center"/>
+                                        </t:columns>
+                                        <t:Row>
+                                                                                        <items>
+                                            <ColumnListItem>
+                                            <t:cells>
+                                                <Text text="Totale complessivo"/>
+                                                <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
+                                                <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
+                                                <CheckBox id="CBTotaleCausa" select="ChangeCheckedCausa"/>
+                                            </t:cells>
+                                        </t:Row>
+                                        </ColumnListItem>
+                                        </items>
+                                    </t:Table>-->
+                                    <!--                                                <t:Table
+                                        id="TotaleTable"
+                                        alternateRowColors="true"
+                                        selectionMode="None"
+                                        visibleRowCount="1">
+                                        <t:columns>
+                                            <t:Column hAlign="Center" width="30%"/>
+                                            <t:Column hAlign="Center" width="15%">
+                                                <Label text="Tempo"/>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="45%">
+                                                <Label text="Causale"/>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="10%"/>
+                                        </t:columns>
+                                        <t:rows>
+                                            <ColumnListItem>
+                                                <cells>
                                                     <Text text="Totale complessivo"/>
                                                     <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
                                                     <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
                                                     <CheckBox id="CBTotaleCausa" select="ChangeCheckedCausa"/>
-                                                </t:cells>
-                                            </t:Row>
+                                                </cells>
                                             </ColumnListItem>
-                                            </items>
-                                        </t:Table>-->
-                                        <!--                                                <t:Table
-                                            id="TotaleTable"
-                                            alternateRowColors="true"
-                                            selectionMode="None"
-                                            visibleRowCount="1">
-                                            <t:columns>
-                                                <t:Column hAlign="Center" width="30%"/>
-                                                <t:Column hAlign="Center" width="15%">
-                                                    <Label text="Tempo"/>
-                                                </t:Column>
-                                                <t:Column hAlign="Center" width="45%">
-                                                    <Label text="Causale"/>
-                                                </t:Column>
-                                                <t:Column hAlign="Center" width="10%"/>
-                                            </t:columns>
-                                            <t:rows>
-                                                <ColumnListItem>
-                                                    <cells>
-                                                        <Text text="Totale complessivo"/>
-                                                        <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
-                                                        <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
-                                                        <CheckBox id="CBTotaleCausa" select="ChangeCheckedCausa"/>
-                                                    </cells>
-                                                </ColumnListItem>
-                                            </t:rows>
-                                        </t:Table>-->
-                                    </VBox>
-                                    <VBox height="10%">
-                                        <Text/>
-                                    </VBox>
-                                    <VBox height="40%">
-                                        <t:Table
-                                            id="SingoliTable"
-                                            visibleRowCount="5"
-                                            alternateRowColors="true"
-                                            selectionMode="None"
-                                            rows="{GeneralModel>/Causalizzazione/NoCause/guasti}">
-                                            <t:columns>
-                                                <t:Column hAlign="Center" width="15%">
-                                                    <Label text="Inizio"/>
-                                                    <t:template>
-                                                        <Text text="{GeneralModel>inizio}"/>
-                                                    </t:template>
-                                                </t:Column>
-                                                <t:Column hAlign="Center" width="15%">
-                                                    <Label text="Fine"/>
-                                                    <t:template>
-                                                        <Text text="{GeneralModel>fine}"/>
-                                                    </t:template>
-                                                </t:Column>
-                                                <t:Column hAlign="Center" width="15%">
-                                                    <Label text="Tempo"/>
-                                                    <t:template>
-                                                        <Text text="{GeneralModel>intervallo}"/>
-                                                    </t:template>
-                                                </t:Column>
-                                                <t:Column hAlign="Center" width="45%">
-                                                    <Label text="Causale"/>
-                                                    <t:template>
-                                                        <Text text="{GeneralModel>causa}"/>
-                                                    </t:template>
-                                                </t:Column>
-                                                <t:Column hAlign="Center" width="10%">
-                                                    <t:template>
-                                                        <CheckBox id="CBSingoloCausa" select="ChangeCheckedCausa"/>
-                                                    </t:template>
-                                                </t:Column>
-                                            </t:columns>
-                                        </t:Table>
-                                    </VBox>
+                                        </t:rows>
+                                    </t:Table>-->
+                                    
+                                    <!--                                        <t:Table
+                                        id="SingoliTable"
+                                        visibleRowCount="5"
+                                        alternateRowColors="true"
+                                        selectionMode="None"
+                                        rows="{GeneralModel>/Causalizzazione/NoCause/guasti}">
+                                        <t:columns>
+                                            <t:Column hAlign="Center" width="15%">
+                                                <Label text="Inizio"/>
+                                                <t:template>
+                                                    <Text text="{GeneralModel>inizio}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="15%">
+                                                <Label text="Fine"/>
+                                                <t:template>
+                                                    <Text text="{GeneralModel>fine}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="15%">
+                                                <Label text="Tempo"/>
+                                                <t:template>
+                                                    <Text text="{GeneralModel>intervallo}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="45%">
+                                                <Label text="Causale"/>
+                                                <t:template>
+                                                    <Text text="{GeneralModel>causa}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="10%">
+                                                <t:template>
+                                                    <CheckBox id="CBSingoloCausa" select="ChangeCheckedCausa"/>
+                                                </t:template>
+                                            </t:Column>
+                                        </t:columns>
+                                    </t:Table>-->
                                 </VBox>
-                            </Panel>
+                            </VBox>
                         </VBox>
                     </VBox>
                 </content>
@@ -856,6 +918,65 @@
             </Page>
                     
                     
+            <Page id="ChiusuraConfezionamento" showHeader="false" class="sapUiStdPage"> 
+                <content>
+                    <VBox height="100%" width="100%">
+                        <VBox height="20%" width="100%">
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                </FlexBox>
+                            </VBox>
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                </FlexBox>
+                            </VBox>
+                        </VBox>
+                        <VBox height="80%" width="100%">
+                            <Panel>
+                                <wt:CustomTreeTable
+                                    id="TreeTable_Chiusura"
+                                    rows="{path:'GeneralModel>/Chiusura', parameters: {arrayNames:['attributi']}}"
+                                    selectionMode="None"
+                                    collapseRecursive="true"
+                                    enableSelectAll="false"
+                                    ariaLabelledBy="title"
+                                    visibleRowCount="7"
+                                    rowSelectionChange="ciao">
+                                    <wt:toolbar>
+                                        <Toolbar>
+                                            <Title text="Dati confezionamento"/>
+                                            <ToolbarSpacer/>
+                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_Chiusura"/>
+                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_Chiusura"/>
+                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_Chiusura"/>
+                                        </Toolbar>
+                                    </wt:toolbar>
+                                    <wt:columns>
+                                        <t:Column width="10rem" >
+                                            <Label text="Attibuti" hAlign="Center"/>
+                                            <t:template>
+                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="10rem" >
+                                            <Label text="Valore"/>
+                                            <t:template>
+                                                <HBox>
+                                                    <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" hAlign="Center" />
+                                                </HBox>
+                                            </t:template>
+                                        </t:Column>
+                                    </wt:columns>
+                                </wt:CustomTreeTable>
+                            </Panel>
+                            <Button text="Conferma" width="100%" press="ConfermaChiusura"/>
+                        </VBox>
+                    </VBox>
+                </content>
+            </Page>
                     
                     
                     
@@ -1090,6 +1211,252 @@
                     </Panel>
                 </content>
             </Page>-->
+            
+            
+            
+            <Page id="BatchAttrezzaggio" showHeader="false" class="sapUiStdPage"> 
+                <content>
+                    <VBox height="100%" width="100%">
+                        <VBox height="20%" width="100%">
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                </FlexBox>
+                            </VBox>
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                </FlexBox>
+                            </VBox>
+                        </VBox>
+                        <VBox height="80%" width="100%">
+                            <Panel>
+                                <wt:CustomTreeTable
+                                    id="TreeTable_BatchAttrezzaggio"
+                                    rows="{path:'GeneralModel>/BatchAttrezzaggio/TreeTable', parameters: {arrayNames:['attributi']}}"
+                                    selectionMode="None"
+                                    collapseRecursive="true"
+                                    enableSelectAll="false"
+                                    ariaLabelledBy="title"
+                                    visibleRowCount="10"
+                                    rowSelectionChange="ciao">
+                                    <wt:toolbar>
+                                        <Toolbar>
+                                            <Title text="Attributi prodotto"/>
+                                            <ToolbarSpacer/>
+                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                        </Toolbar>
+                                    </wt:toolbar>
+                                    <wt:columns>
+                                        <t:Column width="10rem">
+                                            <Label text="Attibuti"/>
+                                            <t:template>
+                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="10rem">
+                                            <Label text="Valore"/>
+                                            <t:template>
+                                                <HBox>
+                                                    <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                </HBox>
+                                            </t:template>
+                                        </t:Column>
+                                    </wt:columns>
+                                </wt:CustomTreeTable>
+                            </Panel>
+                            <Button text="Conferma" width="100%" press="ConfermaBatchAttrezzaggio"/>
+                        </VBox>
+                    </VBox>
+                </content>
+            </Page>
+            
+            
+            <Page id="ConfermaBatchAttrezzaggio" showHeader="false" class="sapUiStdPage">
+                <content>
+                    <VBox height="100%" width="100%">
+                        <VBox height="20%" width="100%">
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                </FlexBox>
+                            </VBox>
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                </FlexBox>
+                            </VBox>
+                        </VBox>
+                        <VBox height="80%" width="100%">
+                            <TabContainer id="TabContainerAttrezzaggio"
+                                          class="sapUiResponsiveContentPadding"
+                                          itemClose="UpdateTabs">
+                                <items>
+                                    <TabContainerItem 
+                                        id="tab1A"
+                                        name="Attributi prodotto">
+                                        <content>
+                                            <Panel>
+                                                <wt:CustomTreeTable
+                                                    id="TreeTable_AttributiAttrezzaggio"
+                                                    rows="{path:'GeneralModel>/BatchAttrezzaggio/TreeTable', parameters: {arrayNames:['attributi']}}"
+                                                    selectionMode="None"
+                                                    collapseRecursive="true"
+                                                    enableSelectAll="false"
+                                                    ariaLabelledBy="title"
+                                                    visibleRowCount="10">
+                                                    <wt:toolbar>
+                                                        <Toolbar>
+                                                            <Title text="Attributi prodotto"/>
+                                                            <ToolbarSpacer/>
+                                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                        </Toolbar>
+                                                    </wt:toolbar>
+                                                    <wt:columns>
+                                                        <t:Column width="13rem">
+                                                            <Label text="Attibuti"/>
+                                                            <t:template>
+                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                            </t:template>
+                                                        </t:Column>
+                                                        <t:Column width="7rem">
+                                                            <Label text="Valore"/>
+                                                            <t:template>
+                                                                <HBox>
+                                                                    <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                </HBox>
+                                                            </t:template>
+                                                        </t:Column>
+                                                    </wt:columns>
+                                                </wt:CustomTreeTable>
+                                            </Panel>                                                   
+                                        </content>
+                                    </TabContainerItem>
+                                    <TabContainerItem 
+                                        id="tab2A"
+                                        name="Attrezzaggio linea">
+                                        <content>
+                                            <FlexBox width="100%" alignItems="Start"
+                                                     justifyContent="Center">
+                                                <HBox height="100%" width="50%">
+                                                    <Panel>
+                                                        <wt:CustomTreeTable
+                                                            id="TreeTable_AttrezzaggioOld"
+                                                            rows="{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableStandard', parameters: {arrayNames:['attributi']}}"
+                                                            selectionMode="None"
+                                                            collapseRecursive="true"
+                                                            enableSelectAll="false"
+                                                            ariaLabelledBy="title"
+                                                            visibleRowCount="10">
+                                                            <wt:toolbar>
+                                                                <Toolbar>
+                                                                    <Title text="Standard"/>
+                                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                </Toolbar>
+                                                            </wt:toolbar>
+                                                            <wt:columns>
+                                                                <t:Column width="13rem">
+                                                                    <Label text="Attibuti"/>
+                                                                    <t:template>
+                                                                        <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                    </t:template>
+                                                                </t:Column>
+                                                                <t:Column width="7rem">
+                                                                    <Label text="Valore"/>
+                                                                    <t:template>
+                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                    </t:template>
+                                                                </t:Column>
+                                                            </wt:columns>
+                                                        </wt:CustomTreeTable>
+                                                    </Panel>
+                                                </HBox>
+                                                <HBox height="100%" width="50%">
+                                                    <Panel>
+                                                        <wt:CustomTreeTable
+                                                            id="TreeTable_AttrezzaggioNew"
+                                                            rows="{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableCurrent', parameters: {arrayNames:['attributi']}}"
+                                                            selectionMode="None"
+                                                            collapseRecursive="true"
+                                                            enableSelectAll="false"
+                                                            ariaLabelledBy="title"
+                                                            visibleRowCount="10"
+                                                            cellClick="LinkClick">
+                                                            <wt:toolbar>
+                                                                <Toolbar>
+                                                                    <Title text="Attuale"/>
+                                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioNew"/>
+                                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioNew"/> 
+                                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioNew"/>
+                                                                </Toolbar>
+                                                            </wt:toolbar>
+                                                            <wt:columns>
+                                                                <t:Column width="13rem">
+                                                                    <Label text="Attibuti"/>
+                                                                    <t:template>
+                                                                        <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                    </t:template>
+                                                                </t:Column>
+                                                                <t:Column width="7rem">
+                                                                    <Label text="Valore"/>
+                                                                    <t:template>
+                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                    </t:template>
+                                                                </t:Column>
+                                                            </wt:columns>
+                                                        </wt:CustomTreeTable>
+                                                    </Panel>
+                                                </HBox>
+                                            </FlexBox>
+                                        </content>
+                                    </TabContainerItem>
+                                </items>
+                            </TabContainer>
+                        </VBox>
+                    </VBox>
+                </content>
+            </Page>
+            
+            
+            <Page id="ConfermaAttrezzaggio" showHeader="false" class="sapUiStdPage"> 
+                <content>
+                    <VBox height="100%" width="100%">
+                        <VBox height="20%" width="100%">
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                </FlexBox>
+                            </VBox>
+                            <VBox width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                </FlexBox>
+                            </VBox>
+                        </VBox>
+                        <VBox height="10%" width="100%">
+                            <Text/>
+                        </VBox>
+                        <VBox height="60%" width="100%">
+                            <FlexBox alignItems="Start" justifyContent="Center">
+                                <Text text="Svuotamento linea - {GeneralModel>/FineAttrezzaggio/stringa}" class="textTop"/>
+                            </FlexBox>
+                        </VBox>
+                        <VBox height="10%" width="100%">
+                            <Button text="Conferma" width="100%" press="FineAttrezzaggio"/>
+                        </VBox>
+                    </VBox>
+                </content>
+            </Page>
+            
                     
         </detailPages>
                 
@@ -1125,22 +1492,22 @@
                                 <Button id="ButtonCausalizzazione" text="Causalizzazione fermi automatici" enabled="false" pressed="true" press="Causalizzazione" width="100%" class="styleButton">
                                 </Button>
                                 <Text/>
-                                <Button id="ButtonChiusuraConfezionamento" text="Chiusura confezionamento svuotamento linea" enabled="false" pressed="true" width="100%" class="styleLongButton">
+                                <Button id="ButtonChiusuraConfezionamento" text="Chiusura confezionamento svuotamento linea" enabled="false" pressed="true" press="ChiusuraConfezionamento" width="100%" class="styleLongButton">
                                 </Button>
                             </VBox>
                         </Panel>
-                        <Panel>
+                        <Panel id="panel_attrezzaggio">
                             <!--                                    <VBox height="10%" width="100%">
                                 <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />
                             </VBox>-->
                             <VBox height="30%" width="100%">
-                                <Button text="Predisposizione nuovo confezionamento" enabled="false" pressed="true" width="100%" class="styleLongButton">
+                                <Button id="ButtonBatchAttrezzaggio" text="Predisposizione nuovo confezionamento" enabled="true" pressed="true" press="BatchAttrezzaggio" width="100%" class="styleLongButton">
                                 </Button>
                                 <Text/>
-                                <Button text="Fine predisposizione" enabled="false" pressed="true" width="100%" class="styleButton">
+                                <Button id="ButtonFinePredisposizioneAttrezzaggio" text="Fine predisposizione" enabled="false" pressed="true" press="FinePredisposizioneAttrezzaggio" width="100%" class="styleButton">
                                 </Button>
                                 <Text/>
-                                <Button text="Sospensione predisposizione" enabled="false" pressed="true" width="100%" class="styleButton">
+                                <Button id="ButtonSospensioneAttrezzaggio" text="Sospensione predisposizione" enabled="false" pressed="true" press="SospensioneAttrezzaggio" width="100%" class="styleButton">
                                 </Button>
                             </VBox>
                         </Panel>

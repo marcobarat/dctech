@@ -253,17 +253,17 @@
                         {
                             "name": "qtaConfezionePrimaria",
                             "value": "24",
-                            "expand": "1"
+                            "expand": "2"
                         },
                         {
                             "name": "schema",
                             "value": "6x4",
-                            "expand": "1"
+                            "expand": "2"
                         },
                         {
                             "name": "controlloPeso",
                             "value": "std",
-                            "expand": "1"
+                            "expand": "2"
                         },
                         {
                             "name": "etichettaturaS",

@@ -1,23 +1,17 @@
 sap.ui.define([
     'jquery.sap.global',
-    'sap/m/MessageToast',
     'sap/ui/core/routing/History',
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'myapp/control/StyleInputTreeTableValue',
     'myapp/control/CustomTreeTable'
-], function (jQuery, MessageToast, History, Controller, JSONModel, StyleInputTreeTableValue, CustomTreeTable) {
+], function (jQuery, History, Controller, JSONModel, StyleInputTreeTableValue, CustomTreeTable) {
     "use strict";
     var TmpController = Controller.extend("myapp.controller.Tmp", {
 
 //      VARIABILI GLOBALI
         ModelDetailPages: new JSONModel({}),
         View: null,
-//        ModelBatch: new JSONModel({}),
-//        ModelSetupOld: new JSONModel({}),
-//        ModelSetupNew: new JSONModel({}),
-//        ModelFaults: new JSONModel({}),
-//        ModelFaultsNoCause: new JSONModel({}),
         total: null,
         oGlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
@@ -40,13 +34,13 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/ConfermaBatch/", {});
             this.ModelDetailPages.setProperty("/Fermo/", {});
             this.ModelDetailPages.setProperty("/Causalizzazione/", {});
-//          CARICAMENTO MODELLI DATI
-//            this.AjaxCaller("model/SKU.json", this.ModelBatch, "/");
-//            this.AjaxCaller("model/allestimentoOld.json", this.ModelSetupOld, "");
-//            this.AjaxCaller("model/allestimentoNew.json", this.ModelSetupNew, "");
-//            this.AjaxCaller("model/guasti.json", this.ModelFaults, "", true);
 
-//          CARICAMENTO MODELLO INTESTAZIONE
+            this.ModelDetailPages.setProperty("/BatchAttrezzaggio/", {});
+            this.ModelDetailPages.setProperty("/ConfermaBatchAttrezzaggio/", {});
+            this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
+//          CARICAMENTO MODELLI DATI
+
+//          CARICAMENTO MODELLO
             this.AjaxCaller("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
             this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
             this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableStandard/");
@@ -54,6 +48,12 @@ sap.ui.define([
             this.AjaxCaller("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
             this.AjaxCaller("model/JSON_FermoTesti.json", this.ModelDetailPages, "/Fermo/Testi/");
             this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
+            this.AjaxCaller("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
+
+            this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/BatchAttrezzaggio/TreeTable/");
+            this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableStandard/");
+            this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableCurrent/");
+
 
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -67,9 +67,6 @@ sap.ui.define([
             this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
         },
 
-//        onAfterRendering: function () {
-//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//        },
 //        DI SEGUITO LE 4 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
         AjaxCaller: function (addressOfJSON, model, targetAddress, faults) {
             if (faults === undefined) {
@@ -114,8 +111,6 @@ sap.ui.define([
         PresaInCarico: function (event) {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.getView().byId("TreeTable_PresaInCarico").setSelectionMode(sap.ui.table.SelectionMode.None);
-//            this.getView().setModel(this.ModelBatch, "TreeTable_PresaInCarico");
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -123,52 +118,15 @@ sap.ui.define([
         ConfermaBatch: function () {
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.FillTable(this.ModelBatch, "TreeTable_AttributiPredisposizione");
-//            this.FillTable(this.ModelSetupOld, "TreeTable_ConfermaSetupOld");
-//            this.FillTable(this.ModelSetupNew, "TreeTable_ConfermaSetupNew");
-//            this.getView().byId("TreeTable_AttributiPredisposizione").setSelectionMode(sap.ui.table.SelectionMode.None);
-//            this.getView().byId("TreeTable_ConfermaSetupOld").setSelectionMode(sap.ui.table.SelectionMode.None);
-//            this.getView().byId("TreeTable_ConfermaSetupNew").setSelectionMode(sap.ui.table.SelectionMode.None);
-            this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
+            this.SwitchColor("yellow");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
             this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
             this.TabContainer = this.getView().byId("TabContainer");
-            var that = this;
-            setTimeout(function () {
-                var oTabStrip = that.TabContainer.getAggregation("_tabStrip");
-                var oItems = oTabStrip.getItems();
-                for (var i = 0; i < 2; i++) {
-                    var oCloseButton = oItems[i].getAggregation("_closeButton");
-                    oCloseButton.setVisible(false);
-                }
-            }, 0);
-            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
+            this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
             this.openedTabs = [];
             this.nextTab = "tab4";
-        },
-//      RICHIAMATO QUANDO VIENE CLICCATO UN TESTO DI TIPO LINK
-//        Questa funzione controlla in quale riga/colonna si è cliccato e, se
-//        c'è un link, lancia l'evento di creare una nuova tab chiudible con al
-//        momento un'immagine.
-        LinkClick: function (event) {
-            var clicked_row = event.getParameters().rowBindingContext.getObject();
-            var clicked_column = event.getParameters().columnIndex;
-            if (clicked_row.expand == 2 && clicked_column == 1) {
-                this.TabContainer = this.getView().byId("TabContainer");
-                var Item = new sap.m.TabContainerItem();
-//                var Item = new sap.m.TabContainerItem({id: this.nextTab});
-//                this.openedTabs.push(this.nextTab);
-//                this.nextTab = this.NewTabName(this.nextTab);
-                Item.setName(clicked_row.value);
-                var image = new sap.m.Image();
-                image.setSrc("img/dececco.jpg");
-                image.setWidth("60%");
-                Item.addContent(image);
-                this.TabContainer.addItem(Item);
-                this.TabContainer.setSelectedItem(Item);
-            }
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -231,7 +189,6 @@ sap.ui.define([
                                 value: "{GeneralModel>codeValue}"})})
                     ]
                 });
-//                this.TreeTable.setSelectionMode(sap.ui.table.SelectionMode.None);
             }
             if (!this.Button) {
                 this.Button = new sap.m.Button({
@@ -246,22 +203,13 @@ sap.ui.define([
             this.Item.addContent(this.Panel);
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
-//            this.FillTable(this.ModelSetupNew, "TreeTable_FinePredisposizione");
-            var that = this;
-            setTimeout(function () {
-                var oTabStrip = that.TabContainer.getAggregation("_tabStrip");
-                var oItems = oTabStrip.getItems();
-                for (var i = 0; i < 3; i++) {
-                    var oCloseButton = oItems[i].getAggregation("_closeButton");
-                    oCloseButton.setVisible(false);
-                }
-            }, 0);
+            this.RemoveClosingButtons(3);
         },
 //      RICHIAMATO DAL PULSANTE CONFERMA ALLA FINE DELLA PREDISPOSIZIONE
         ConfermaPredisposizione: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
+            this.SwitchColor("green");
 //            this.getView().byId("progressBar").addStyleClass("customText");
 //            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
 //            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
@@ -281,26 +229,12 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
         ModificaCondizioni: function () {
-//            this.ModelSetupNew = this.getView().getModel("ModelSetupNew");
             this.getSplitAppObj().toDetail(this.createId("ModificaCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.FillTable(this.ModelBatch, "TreeTable_AttributiModifica");
-//            this.FillTable(this.ModelSetupNew, "TreeTable_ModificaCondizioni");
             this.TabContainer = this.getView().byId("TabContainer-mod");
-            var that = this;
-            setTimeout(function () {
-                var oTabStrip = that.TabContainer.getAggregation("_tabStrip");
-                var oItems = oTabStrip.getItems();
-                for (var i = 0; i < 2; i++) {
-                    var oCloseButton = oItems[i].getAggregation("_closeButton");
-                    oCloseButton.setVisible(false);
-                }
-            }, 0);
-            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
+            this.RemoveClosingButtons(2);
             this.Item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(this.Item);
-//            this.getView().byId("TreeTable_AttributiModifica").setSelectionMode(sap.ui.table.SelectionMode.None);
-//            this.getView().byId("TreeTable_ModificaCondizioni").setSelectionMode(sap.ui.table.SelectionMode.None);
         },
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
         ConfermaModifica: function () {
@@ -347,7 +281,7 @@ sap.ui.define([
             var CB = this.getView().byId(this.id_split[0] + this.id_split[1]);
             if (this.discr.indexOf("ButtonFermo") > -1) {
                 this.Item.causa = CB.getProperty("text");
-                this.getView().byId("panel_processi").addStyleClass("stylePanelRed");
+                this.SwitchColor("red");
                 this.getSplitAppObj().toDetail(this.createId("Fault"));
                 this.getView().byId("ButtonPresaInCarico").setEnabled(false);
                 this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
@@ -381,13 +315,11 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTE "RIAVVIO"
         Riavvio: function () {
-//            this.FillTable(this.ModelSetupNew, "TreeTable_RipristinoCondizioni");
             this.getSplitAppObj().toDetail(this.createId("RipristinoCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var now = new Date();
             this.Item.fine = this.DateToStandard(now);
             this.AggiornaGuasti();
-//            this.getView().byId("TreeTable_RipristinoCondizioni").setSelectionMode(sap.ui.table.SelectionMode.None);
         },
 //      FUNZIONE CHE AGGIORNA IL MODELLO DEI GUASTI
         AggiornaGuasti: function () {
@@ -406,7 +338,7 @@ sap.ui.define([
             this.getView().byId("ButtonRiavvio").setEnabled(false);
             this.getView().byId("ButtonCausalizzazione").setEnabled(true);
             this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
-            this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
+            this.SwitchColor("green");
         },
 
 //------------------------------------------------------------------------------
@@ -415,14 +347,10 @@ sap.ui.define([
         Causalizzazione: function () {
             this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.FillTable(this.ModelFaultsNoCause, "TotaleTable");
-//            this.FillTable(this.ModelFaultsNoCause, "SingoliTable");
             this.CheckSingoloCausa = [];
             for (var i in this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti) {
                 this.CheckSingoloCausa.push(0);
             }
-//            this.getView().byId("TotaleTable").setSelectionMode(sap.ui.table.SelectionMode.None);
-//            this.getView().byId("SingoliTable").setSelectionMode(sap.ui.table.SelectionMode.None);
         },
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedCausa: function (event) {
@@ -432,7 +360,7 @@ sap.ui.define([
             var i, temp_id;
             if (id.indexOf(root_name_totale) > -1) {
                 for (i in this.CheckSingoloCausa) {
-                    temp_id = this.getView().byId("SingoliTable").getAggregation("rows")[i].getAggregation("cells")[4].getId();
+                    temp_id = this.getView().byId("SingoliTable").getAggregation("items")[i].getAggregation("cells")[4].getId();
                     this.getView().byId(temp_id).setSelected(CB.getSelected());
                     this.getView().byId(temp_id).setEnabled(!CB.getSelected());
                 }
@@ -450,7 +378,7 @@ sap.ui.define([
             } else {
                 var discr_id = event.getSource().getParent().getId();
                 for (i in this.CheckSingoloCausa) {
-                    temp_id = event.getSource().getParent().getParent().getAggregation("rows")[i].getId();
+                    temp_id = event.getSource().getParent().getParent().getAggregation("items")[i].getId();
                     if (discr_id === temp_id) {
                         break;
                     }
@@ -483,17 +411,274 @@ sap.ui.define([
                 var temp_item = data_NOcause.guasti[i];
                 if (temp_item.causa !== "") {
                     data_NOcause.guasti.splice(i, 1);
-                    data_NOcause.Totale.tempoGuastoTotale[0] = this.MillisecsToStandard(this.StandardToMillisecs(data_NOcause.Totale.tempoGuastoTotale[0]) - this.StandardToMillisecs(temp_item.intervallo));
+                    data_NOcause.Totale.tempoGuastoTotale = this.MillisecsToStandard(this.StandardToMillisecs(data_NOcause.Totale.tempoGuastoTotale) - this.StandardToMillisecs(temp_item.intervallo));
                 }
             }
             this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data_NOcause);
         },
+
+//------------------------------------------------------------------------------
+//      
+//      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
+        ChiusuraConfezionamento: function () {
+            this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+            var data = this.ModelDetailPages.getData();
+            var index = this.GetIndex(data.Chiusura.attributi, "Totale tempi di fermo");
+            data.Chiusura.attributi[index].value = data.Causalizzazione.All.Totale.tempoGuastoTotale;
+            var index1 = this.GetIndex(data.Chiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
+            data.Chiusura.attributi[index].attributi[index1].value = data.Causalizzazione.NoCause.Totale.tempoGuastoTotale;
+            this.ModelDetailPages.setProperty("/", data);
+            this.SwitchColor("brown");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+        },
+
+        ConfermaChiusura: function () {
+            this.getSplitAppObj().toDetail(this.createId("Home"));
+            this.SwitchColor("");
+            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
+            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
+            this.getView().byId("ButtonFermo").setEnabled(false);
+            this.getView().byId("ButtonRiavvio").setEnabled(false);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+        },
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+//-------------------------------  ATTREZZAGGIO  -------------------------------
+
+
+        BatchAttrezzaggio: function () {
+            this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.SwitchColor("");
+            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
+            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
+            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
+            this.getView().byId("ButtonFermo").setEnabled(false);
+            this.getView().byId("ButtonRiavvio").setEnabled(false);
+            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
+            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+        },
+        //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
+//          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
+//          chiudere le tabs e imposta il colore giallo al pannello laterale.
+        ConfermaBatchAttrezzaggio: function () {
+            this.getSplitAppObj().toDetail(this.createId("ConfermaBatchAttrezzaggio"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.SwitchColorAttrezzaggio("yellow");
+            this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(false);
+            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(true);
+            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(true);
+            this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
+            this.RemoveClosingButtons(2);
+            var item = this.TabContainer.getItems()[1];
+            this.TabContainer.setSelectedItem(item);
+            this.openedTabs = [];
+            this.nextTab = "tab4A";
+        },
+//        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
+//          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
+//          nella quale viene messa la TreeTabledi fine predisposizione ed il bottone
+//          di conferma. Alla fine aggiunge il tab al tab container e rimuove tutti i
+//          pulsanti che possono chiudere le tabs.
+        FinePredisposizioneAttrezzaggio: function () {
+
+            var data = {"stringa": "solo predisposizione"};
+            this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
+            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
+            this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var length = this.TabContainer.getItems().length;
+            var array = [];
+            for (var i = 2; i < length; i++) {
+                array.push(this.TabContainer.getItems()[i]);
+            }
+            for (i = 0; i < array.length; i++) {
+                this.TabContainer.removeItem(array[i]);
+            }
+            if (!this.Item) {
+                this.Item = new sap.m.TabContainerItem({
+                    id: "tab3A"});
+            }
+            this.Item.setName("Conferma predisposizione");
+            if (!this.Panel) {
+                this.Panel = new sap.m.Panel();
+            }
+            if (!this.TreeTable) {
+                this.TreeTable = new CustomTreeTable({
+                    id: "TreeTable_FinePredisposizioneAttrezzaggio",
+                    rows: "{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableCurrent', parameters: {arrayNames:['attributi']}}",
+                    selectionMode: "None",
+                    collapseRecursive: true,
+                    enableSelectAll: false,
+                    ariaLabelledBy: "title",
+                    visibleRowCount: 7,
+                    columns: [
+                        new sap.ui.table.Column({
+                            label: "Attributi",
+                            width: "15rem",
+                            template: new sap.m.Text({
+                                text: "{GeneralModel>name}"})}),
+                        new sap.ui.table.Column({
+                            label: "Valore",
+                            width: "5rem",
+                            template: new sap.m.Text({
+                                text: "{GeneralModel>value}"})}),
+                        new sap.ui.table.Column({
+                            label: "Modifica",
+                            width: "5rem",
+                            template: new StyleInputTreeTableValue({
+                                value: "{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}",
+                                diff: "{GeneralModel>modify}",
+                                editable: "{= ${GeneralModel>modify} === '1'}"})}),
+                        new sap.ui.table.Column({
+                            label: "Sigle",
+                            width: "5rem",
+                            template: new sap.m.Input({
+                                placeholder: "{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}",
+                                editable: "{= ${GeneralModel>code} === '1'}",
+                                value: "{GeneralModel>codeValue}"})})
+                    ]
+                });
+            }
+            if (!this.Button) {
+                this.Button = new sap.m.Button({
+                    text: "Conferma",
+                    width: "100%",
+                    press: [this.ConfermaAttrezzaggio, this]});
+                this.Panel.addContent(this.TreeTable);
+                this.Panel.addContent(this.Button);
+            }
+            this.Item.addContent(this.Panel);
+            this.TabContainer.addItem(this.Item);
+            this.TabContainer.setSelectedItem(this.Item);
+            this.RemoveClosingButtons(3);
+            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
+            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
+        },
+
+        SospensioneAttrezzaggio: function () {
+
+            var data = {"stringa": "sospensione predisposizione"};
+            this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
+            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
+            this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var length = this.TabContainer.getItems().length;
+            var array = [];
+            for (var i = 2; i < length; i++) {
+                array.push(this.TabContainer.getItems()[i]);
+            }
+            for (i = 0; i < array.length; i++) {
+                this.TabContainer.removeItem(array[i]);
+            }
+            if (!this.Item) {
+                this.Item = new sap.m.TabContainerItem({
+                    id: "tab3A"});
+            }
+            this.Item.setName("Sospensione predisposizione");
+            if (!this.Panel) {
+                this.Panel = new sap.m.Panel();
+            }
+            if (!this.TreeTable) {
+                this.TreeTable = new CustomTreeTable({
+                    id: "TreeTable_FinePredisposizioneAttrezzaggio",
+                    rows: "{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableCurrent', parameters: {arrayNames:['attributi']}}",
+                    selectionMode: "None",
+                    collapseRecursive: true,
+                    enableSelectAll: false,
+                    ariaLabelledBy: "title",
+                    visibleRowCount: 7,
+                    columns: [
+                        new sap.ui.table.Column({
+                            label: "Attributi",
+                            width: "15rem",
+                            template: new sap.m.Text({
+                                text: "{GeneralModel>name}"})}),
+                        new sap.ui.table.Column({
+                            label: "Valore",
+                            width: "5rem",
+                            template: new sap.m.Text({
+                                text: "{GeneralModel>value}"})}),
+                        new sap.ui.table.Column({
+                            label: "Modifica",
+                            width: "5rem",
+                            template: new StyleInputTreeTableValue({
+                                value: "{= ${GeneralModel>modify} === '1' ? '#ND': ''}",
+                                diff: "{GeneralModel>modify}",
+                                editable: "{= ${GeneralModel>modify} === '1'}"})}),
+                        new sap.ui.table.Column({
+                            label: "Sigle",
+                            width: "5rem",
+                            template: new sap.m.Input({
+                                placeholder: "",
+                                editable: "{= ${GeneralModel>code} === '1'}",
+                                value: ""})})
+                    ]
+                });
+            }
+            if (!this.Button) {
+                this.Button = new sap.m.Button({
+                    text: "Conferma",
+                    width: "100%",
+                    press: [this.ConfermaAttrezzaggio, this]});
+                this.Panel.addContent(this.TreeTable);
+                this.Panel.addContent(this.Button);
+            }
+            this.Item.addContent(this.Panel);
+            this.TabContainer.addItem(this.Item);
+            this.TabContainer.setSelectedItem(this.Item);
+            this.RemoveClosingButtons(3);
+            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
+            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
+        },
+
+        ConfermaAttrezzaggio: function () {
+            this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.SwitchColorAttrezzaggio("brown");
+        },
+
+        FineAttrezzaggio: function () {
+            this.getSplitAppObj().toDetail(this.createId("Home"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.SwitchColorAttrezzaggio("");
+        },
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
 
 //      !!!!!  FUNZIONI CONDIVISE DA PIU' FRAMES  !!!!!
 
 //      FUNZIONI CHE AGISCONO SUL FRONT-END
+
+//      RICHIAMATO QUANDO VIENE CLICCATO UN TESTO DI TIPO LINK
+//        Questa funzione controlla in quale riga/colonna si è cliccato e, se
+//        c'è un link, lancia l'evento di creare una nuova tab chiudible con al
+//        momento un'immagine.
+        LinkClick: function (event) {
+            var clicked_row = event.getParameters().rowBindingContext.getObject();
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_row.expand == 3 && clicked_column == 1) {
+                var Item = new sap.m.TabContainerItem();
+                Item.setName(clicked_row.value);
+                var image = new sap.m.Image();
+                image.setSrc("img/dececco.jpg");
+                image.setWidth("60%");
+                Item.addContent(image);
+                this.TabContainer.addItem(Item);
+                this.TabContainer.setSelectedItem(Item);
+            }
+        },
 
 //      Funzione che collassa tutti i nodi della treetable
         CollapseAll: function (event) {
@@ -531,17 +716,6 @@ sap.ui.define([
         },
 //      FUNZIONI CHE AGISCONO INTERNAMENTE
 
-//      Funzione che va ad associare il modello alla rispettiva treetable
-        FillTable: function (model, TableName) {
-//            if (this.getView().byId(TableName).getModel()) {
-//                this.getView().byId(TableName).getModel().setData(null);
-//            }
-            this.getView().setModel(model, TableName);
-//            this.View = this.getView().byId(TableName);
-//            this.oGlobalBusyDialog.open();
-//            setTimeout(jQuery.proxy(this.Expander, this, TreeName), 200);
-//            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, TreeName), 400);
-        },
 //      Funzione che calcola il time gap di tutti i guasti e li ritorna come array
         AddTimeGaps: function (data) {
             var millisec_diff = [];
@@ -569,14 +743,6 @@ sap.ui.define([
             data.Totale.causaleTotale = "";
             return data;
         },
-//        Funzione che rimuove l'offset del giorno in millisecondi
-//        DateToMillisecNoOffset: function(date) {
-//            var year = date.getFullYear();
-//            var month = date.getMonth();
-//            var day = date.getDate();
-//            var offset = new Date(year,month,day).getTime();
-//            return (date.getTime() - offset);
-//        },
 //      Funzione che estrae il formato standard dal formato ISO
         DateToStandard: function (date) {
             var hours = this.StringTime(date.getHours());
@@ -666,9 +832,100 @@ sap.ui.define([
                 oRouter.navTo("overview", true);
             }
         },
-        
-        ciao: function (event) {
-            console.log("");
+
+        GetIndex: function (array, name) {
+            for (var key in array) {
+                if (array[key].name == name) {
+                    break;
+                }
+            }
+            return key;
+        },
+
+        RemoveClosingButtons: function (n_tabs) {
+            var oTabStrip = this.TabContainer.getAggregation("_tabStrip");
+            var oItems = oTabStrip.getItems();
+            for (var i = 0; i < n_tabs; i++) {
+                var oCloseButton = oItems[i].getAggregation("_closeButton");
+                oCloseButton.setVisible(false);
+            }
+            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
+        },
+
+        SwitchColor: function (color) {
+            var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
+            var col;
+            if (color == "yellow" || color == "Yellow") {
+                for (col in CSS_classes) {
+                    if (col !== 0) {
+                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
+            } else if (color == "green" || color == "Green") {
+                for (col in CSS_classes) {
+                    if (col !== 1) {
+                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
+            } else if (color == "red" || color == "Red") {
+                for (col in CSS_classes) {
+                    if (col !== 2) {
+                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_processi").addStyleClass("stylePanelRed");
+            } else if (color == "brown" || color == "Brown") {
+                for (col in CSS_classes) {
+                    if (col !== 3) {
+                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_processi").addStyleClass("stylePanelBrown");
+            } else {
+                for (col in CSS_classes) {
+                    this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
+                }
+            }
+        },
+
+        SwitchColorAttrezzaggio: function (color) {
+            var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
+            var col;
+            if (color == "yellow" || color == "Yellow") {
+                for (col in CSS_classes) {
+                    if (col !== 0) {
+                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelYellow");
+            } else if (color == "green" || color == "Green") {
+                for (col in CSS_classes) {
+                    if (col !== 1) {
+                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelGreen");
+            } else if (color == "red" || color == "Red") {
+                for (col in CSS_classes) {
+                    if (col !== 2) {
+                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelRed");
+            } else if (color == "brown" || color == "Brown") {
+                for (col in CSS_classes) {
+                    if (col !== 3) {
+                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
+                    }
+                }
+                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelBrown");
+            } else {
+                for (col in CSS_classes) {
+                    this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
+                }
+            }
         }
 
 //        onAfterRendering: function () {

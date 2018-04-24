@@ -62,6 +62,10 @@
     background-color: red; 
 }
 
+.stylePanelBrown {
+    background-color: brown; 
+}
+
 .diffLink {
     color : blue;
     text-decoration: underline;
@@ -104,4 +108,21 @@
 
     border-left: 1px solid #ccc;
 
+}
+
+.mysapMListTblCell .sapMListTblCell {
+    padding-left:0.5rem;
+}
+
+.mysapMText .sapMText {
+    padding-top: 0.75rem;
+}
+
+.mysapMCb .sapMCb {
+    left: 0.375rem;
+}
+
+.mysapMTable {
+    border-top : 1px solid #dddddd;
+    border-right : 1px solid #dddddd;
 }

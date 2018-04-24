@@ -30,7 +30,7 @@
                                 {
                                     "name": "semilavorato",
                                     "value": "Farfalle 093",
-                                    "expand": "1",
+                                    "expand": "2",
                                     "modify": "0",
                                     "code": "1",
                                     "codeValue": "",
@@ -39,7 +39,7 @@
                                 {
                                     "name": "programma bilancia",
                                     "value": "KZ911",
-                                    "expand": "1",
+                                    "expand": "2",
                                     "modify": "1",
                                     "code": "0",
                                     "codeValue": "",
@@ -57,7 +57,7 @@
                                 {
                                     "name": "film",
                                     "value": "1SXGH005",
-                                    "expand": "1",
+                                    "expand": "2",
                                     "modify": "1",
                                     "code": "1",
                                     "codeValue": "",
@@ -77,7 +77,7 @@
                                 {
                                     "name": "* stampa film",
                                     "value": "CEE",
-                                    "expand": "2",
+                                    "expand": "3",
                                     "modify": "1",
                                     "code": "0",
                                     "codeValue": "",
@@ -97,7 +97,7 @@
                                 {
                                     "name": "* regole intervallo peso",
                                     "value": "normBRA",
-                                    "expand": "1",
+                                    "expand": "2",
                                     "modify": "1",
                                     "code": "0",
                                     "codeValue": "",
@@ -106,7 +106,7 @@
                                 {
                                     "name": "campionatura temporale",
                                     "value": "stdDC",
-                                    "expand": "2",
+                                    "expand": "3",
                                     "modify": "1",
                                     "code": "0",
                                     "codeValue": "",

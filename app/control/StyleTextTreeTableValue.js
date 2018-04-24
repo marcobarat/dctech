@@ -27,9 +27,9 @@ sap.ui.define([
 
         onAfterRendering: function () {
 
-            if (this.getDiff() === "1") {
+            if (this.getDiff() === "2") {
                 this.addStyleClass('diffRed');
-            } else if (this.getDiff() === "2") {
+            } else if (this.getDiff() === "3") {
                 this.addStyleClass('diffLink');
             } else {
                 this.removeStyleClass('diffRed');
