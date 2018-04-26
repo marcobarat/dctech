@@ -126,3 +126,27 @@
     border-top : 1px solid #dddddd;
     border-right : 1px solid #dddddd;
 }
+
+/*.alternate-color .sapUiTableRowEven {
+    background-color: #0c0;
+}*/
+
+/*.alternate-color .sapUiTableRowEven:hover td {
+    background-color: #0f0 !important;
+}*/
+
+.alternate-color .sapUiTableRowOdd {
+    background-color: #C79900;
+}
+
+.alternate-color .sapUiTableRowOdd input {
+    color: #fff;
+}
+
+.alternate-color .sapUiTableRowOdd:hover td {
+    background-color: #C79900 !important;
+}
+
+.alternate-color .sapUiTableRowOdd:hover  input {
+    color: #fff;
+}

@@ -49,6 +49,7 @@ sap.ui.define([
                 this.AjaxCaller("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
 
                 this.getView().byId("ButtonPresaInCarico").setEnabled(true);
+//                this.getView().byId("ButtonCausalizzazione").setEnabled(true);
             } else if (this.Global.getData().Choice === "Attrezzaggio") {
                 this.ModelDetailPages.setProperty("/BatchAttrezzaggio/", {});
                 this.ModelDetailPages.setProperty("/ConfermaBatchAttrezzaggio/", {});
@@ -109,7 +110,7 @@ sap.ui.define([
 
 
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
-        PresaInCarico: function (event) {
+        PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
@@ -315,6 +316,21 @@ sap.ui.define([
                 this.UpdateFaultsModels();
                 this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
+                if (this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti.length == 0) {
+                    this.getView().byId("TotaleTable").destroy();
+                    var text = new sap.m.Text({
+                        text: "Tutti i fermi automatici sono stati causalizzati",
+                        textAlign: "Center"
+                    });
+                    text.addStyleClass("textTop");
+                    var flexy = new sap.m.FlexBox({
+                        alignItems: "Start",
+                        justifyContent: "Center"
+                    });
+                    flexy.addItem(text);
+                    this.getView().byId("vbox_table").addItem(flexy);
+                }
             }
         },
 //------------------------------------------------------------------------------
@@ -371,7 +387,8 @@ sap.ui.define([
             var i, temp_id;
             if (id.indexOf(root_name_totale) > -1) {
                 for (i in this.CheckSingoloCausa) {
-                    temp_id = this.getView().byId("SingoliTable").getAggregation("items")[i].getAggregation("cells")[4].getId();
+//                    temp_id = this.getView().byId("SingoliTable").getAggregation("items")[i].getAggregation("cells")[4].getId();
+                    temp_id = this.getView().byId("SingoliTable").getAggregation("rows")[i].getAggregation("cells")[4].getId();
                     this.getView().byId(temp_id).setSelected(CB.getSelected());
                     this.getView().byId(temp_id).setEnabled(!CB.getSelected());
                 }
@@ -389,7 +406,8 @@ sap.ui.define([
             } else {
                 var discr_id = event.getSource().getParent().getId();
                 for (i in this.CheckSingoloCausa) {
-                    temp_id = event.getSource().getParent().getParent().getAggregation("items")[i].getId();
+//                    temp_id = event.getSource().getParent().getParent().getAggregation("items")[i].getId();
+                    temp_id = event.getSource().getParent().getParent().getAggregation("rows")[i].getId();
                     if (discr_id === temp_id) {
                         break;
                     }
@@ -432,13 +450,19 @@ sap.ui.define([
 //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
         UpdateFaultsModels: function () {
             var data_NOcause = this.ModelDetailPages.getData().Causalizzazione.NoCause;
-            for (var i = data_NOcause.guasti.length - 1; i >= 0; i--) {
+            var i;
+            for (i = data_NOcause.guasti.length - 1; i >= 0; i--) {
                 var temp_item = data_NOcause.guasti[i];
                 if (temp_item.causa !== "") {
                     data_NOcause.guasti.splice(i, 1);
                     data_NOcause.Totale.tempoGuastoTotale = this.MillisecsToStandard(this.StandardToMillisecs(data_NOcause.Totale.tempoGuastoTotale) - this.StandardToMillisecs(temp_item.intervallo));
                 }
             }
+            this.CheckSingoloCausa = [];
+            for (i in data_NOcause.guasti) {
+                this.CheckSingoloCausa.push(0);
+            }
+            data_NOcause.Totale.select = false;
             this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data_NOcause);
         },
 
@@ -767,6 +791,7 @@ sap.ui.define([
             data.Totale = {};
             data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);
             data.Totale.causaleTotale = "";
+            data.Totale.select = false;
             return data;
         },
 //      Funzione che estrae il formato standard dal formato ISO
@@ -822,6 +847,7 @@ sap.ui.define([
 //      Funzione che rimuove i guasti non causalizzati
         RemoveCaused: function (data) {
             for (var i = data.guasti.length - 1; i >= 0; i--) {
+                data.guasti[i].select = false;
                 if (data.guasti[i].causa !== "") {
                     data.guasti.splice(i, 1);
                 }
