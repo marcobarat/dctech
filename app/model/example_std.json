@@ -1,0 +1,48 @@
+{
+    "attributi": [
+        {
+            "name": "Formato",
+            "value": "",
+            "expand": "0",
+            "attributi": [
+                {
+                    "name": "Formato",
+                    "value": "093 Semola",
+                    "expand": "0"
+                },
+                {
+                    "name": "formatoProduttivo",
+                    "value": "Farfalle 093",
+                    "expand": "0"
+                },
+                {
+                    "name": "tipologiaImpasto",
+                    "value": "Semola",
+                    "expand": "0"
+                }
+            ]   
+        },
+        {
+            "name": "ciao",
+            "value": "",
+            "expand": "0",
+            "attributi": [
+                {
+                    "name": "ciao",
+                    "value": "091 Semola",
+                    "expand": "0"
+                },
+                {
+                    "name": "cc",
+                    "value": "Farfalle 093",
+                    "expand": "0"
+                },
+                {
+                    "name": "qsqw",
+                    "value": "Crusca",
+                    "expand": "0"
+                }
+            ]   
+        }
+    ]
+}

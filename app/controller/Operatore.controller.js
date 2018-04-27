@@ -26,6 +26,7 @@ sap.ui.define([
         Button: null,
         Panel: null,
         CLOSED: 0,
+        change: [],
 //      NELL'ONINIT CARICO I VARI MODELLI E FACCIO TUTTE LE CHIAMATE AJAX
 
 //------------------------------------------------------------------------------
@@ -33,32 +34,31 @@ sap.ui.define([
         onInit: function () {
 
             this.Global = this.getOwnerComponent().getModel("Global");
+            this.ModelDetailPages.setProperty("/Standard/", {});
+            this.ModelDetailPages.setProperty("/PresaInCarico/", {});
 
             if (this.Global.getData().Choice === "Produzione") {
-                this.ModelDetailPages.setProperty("/PresaInCarico/", {});
+
                 this.ModelDetailPages.setProperty("/ConfermaBatch/", {});
                 this.ModelDetailPages.setProperty("/Fermo/", {});
                 this.ModelDetailPages.setProperty("/Causalizzazione/", {});
-
-                this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
+                this.AjaxCaller("model/SKU_standard.json", this.ModelDetailPages, "/Standard/SKU/");
+                this.AjaxCaller("model/SKU_bckend.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
+//                this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
                 this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableStandard/");
                 this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableCurrent/");
                 this.AjaxCaller("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
                 this.AjaxCaller("model/JSON_FermoTesti.json", this.ModelDetailPages, "/Fermo/Testi/");
                 this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
                 this.AjaxCaller("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
-
                 this.getView().byId("ButtonPresaInCarico").setEnabled(true);
-//                this.getView().byId("ButtonCausalizzazione").setEnabled(true);
             } else if (this.Global.getData().Choice === "Attrezzaggio") {
                 this.ModelDetailPages.setProperty("/BatchAttrezzaggio/", {});
                 this.ModelDetailPages.setProperty("/ConfermaBatchAttrezzaggio/", {});
                 this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
-
                 this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/BatchAttrezzaggio/TreeTable/");
                 this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableStandard/");
                 this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableCurrent/");
-
                 this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(true);
             }
 
@@ -68,7 +68,6 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
-
 //        DI SEGUITO LE 4 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
         AjaxCaller: function (addressOfJSON, model, targetAddress, faults) {
             if (faults === undefined) {
@@ -112,6 +111,18 @@ sap.ui.define([
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
         PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
+//            var standard = this.ModelDetailPages.getData().Standard.SKU;
+//            var backend = this.ModelDetailPages.getData().PresaInCarico.TreeTable;
+//            backend = this.JSONTreeTableCompare(standard.attributi, backend.attributi, "attributi");
+//            this.ModelDetailPages.setProperty("/PresaInCarico/TreeTable", backend);
+
+
+            var std = this.ModelDetailPages.getData().Standard.SKU;
+            var bck = this.ModelDetailPages.getData().PresaInCarico.TreeTable;
+            bck = this.RecursiveJSONComparison(std, bck, "attributi");
+            bck = this.RecursiveParentExpansion(bck);
+            this.ModelDetailPages.setProperty("/PresaInCarico/TreeTable", bck);
+
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
         },
@@ -126,6 +137,14 @@ sap.ui.define([
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
+
+            
+            var std = this.ModelDetailPages.getData().ConfermaBatch.TreeTableStandard;
+            var bck = this.ModelDetailPages.getData().ConfermaBatch.TreeTableCurrent;
+            bck = this.RecursiveJSONComparison(std, bck, "attributi");
+            bck = this.RecursiveParentExpansion(bck);
+            this.ModelDetailPages.setProperty("/ConfermaBatch/TreeTableCurrent", bck);
+
             this.openedTabs = [];
             this.nextTab = "tab4";
             this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
@@ -363,7 +382,6 @@ sap.ui.define([
             this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
             this.SwitchColor("green");
         },
-
 //------------------------------------------------------------------------------
 //      
 //      RICHIAMATO DAL PULSANTE "CAUSALIZZAZIONE FERMI AUTOMATICI"
@@ -465,7 +483,6 @@ sap.ui.define([
             data_NOcause.Totale.select = false;
             this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data_NOcause);
         },
-
 //------------------------------------------------------------------------------
 //      
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
@@ -480,7 +497,6 @@ sap.ui.define([
             this.getView().byId("ButtonCausalizzazione").setEnabled(true);
             this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
         },
-
         ConfermaChiusura: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.SwitchColor("");
@@ -492,7 +508,6 @@ sap.ui.define([
             this.getView().byId("ButtonCausalizzazione").setEnabled(false);
             this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
         },
-
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -604,7 +619,6 @@ sap.ui.define([
             this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
             this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
         },
-
         SospensioneAttrezzaggio: function () {
 
             var data = {"stringa": "sospensione predisposizione"};
@@ -680,19 +694,16 @@ sap.ui.define([
             this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
             this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
         },
-
         ConfermaAttrezzaggio: function () {
             this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColorAttrezzaggio("brown");
         },
-
         FineAttrezzaggio: function () {
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColorAttrezzaggio("");
         },
-
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -729,7 +740,6 @@ sap.ui.define([
             data.Chiusura.attributi[index].attributi[index1].value = data.Causalizzazione.NoCause.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/", data);
         },
-
 //      Funzione che collassa tutti i nodi della treetable
         CollapseAll: function (event) {
             var name = event.getSource().data("mydata");
@@ -884,7 +894,6 @@ sap.ui.define([
                 oRouter.navTo("overview", true);
             }
         },
-
         GetIndex: function (array, name) {
             for (var key in array) {
                 if (array[key].name == name) {
@@ -893,7 +902,6 @@ sap.ui.define([
             }
             return key;
         },
-
         RemoveClosingButtons: function (n_tabs) {
             var oTabStrip = this.TabContainer.getAggregation("_tabStrip");
             var oItems = oTabStrip.getItems();
@@ -903,7 +911,6 @@ sap.ui.define([
             }
             this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
         },
-
         SwitchColor: function (color) {
             var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
             var col;
@@ -941,7 +948,6 @@ sap.ui.define([
                 }
             }
         },
-
         SwitchColorAttrezzaggio: function (color) {
             var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
             var col;
@@ -978,6 +984,51 @@ sap.ui.define([
                     this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
                 }
             }
+        },
+//        JSONTreeTableCompare: function (standard, backend) {
+//            var good;
+//            good = this.RecursiveJSON(standard, backend).json;
+//            return good;
+//        },
+        RecursiveJSONComparison: function (std, bck, arrayName) {
+            for (var key in std) {
+                if (typeof std[key] === "object") {
+                    bck[key] = this.RecursiveJSONComparison(std[key], bck[key], arrayName);
+                } else {
+                    if (key === "value") {
+                        if (bck[key] !== std[key]) {
+                            bck.expand = "2";
+                        }
+                    }
+                }
+            }
+            return bck;
+        },
+        RecursiveParentExpansion: function (bck) {
+            for (var key in bck) {
+                if (typeof bck[key] === "object") {
+                    if (bck.expand) {
+                        this.change.push(bck);
+                    }
+                    if (bck[key].expand) {
+                        this.change.push(bck[key]);
+                    }
+                    bck[key] = this.RecursiveParentExpansion(bck[key]);
+                } else {
+                    if (key === "expand") {
+                        if (bck[key] === "2" || bck[key] === "1") {
+                            this.exp = "1";
+                            for (var i = 0; i < this.change.length; i++) {
+                                if (this.change[i].expand === "0") {
+                                    this.change[i].expand = "1";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            this.change.splice(-1, 1);
+            return bck;
         }
 
 //        onAfterRendering: function () {

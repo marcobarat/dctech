@@ -615,7 +615,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-<!--                        <VBox height="10%">
+                        <!--                        <VBox height="10%">
                             <Text/>
                         </VBox>-->
                         <VBox height="50%">
@@ -633,7 +633,7 @@
                                         <VBox width="10%"/>
                                     </HBox>
                                 </VBox>
-<!--                                <VBox height="15%">
+                                <!--                                <VBox height="15%">
                                     <Text/>
                                 </VBox>-->
                                 <VBox id="vbox_table" height="40%">
@@ -665,11 +665,11 @@
                                         </items>
                                     </Table>
                                 </VBox>
-<!--                                <VBox height="10%">
+                                <!--                                <VBox height="10%">
                                     <Text/>
                                 </VBox>-->
                                 <VBox height="65%">
-<!--                                    <Table
+                                    <!--                                    <Table
                                         class="mysapMTable"
                                         id="SingoliTable"
                                         alternateRowColors="true"
@@ -955,7 +955,7 @@
                                     </wt:toolbar>
                                     <wt:columns>
                                         <t:Column width="10rem" >
-                                            <Label text="Attibuti" hAlign="Center"/>
+                                            <Label text="Attibuti"/>
                                             <t:template>
                                                 <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                             </t:template>
@@ -964,7 +964,7 @@
                                             <Label text="Valore"/>
                                             <t:template>
                                                 <HBox>
-                                                    <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" hAlign="Center" />
+                                                    <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
                                                 </HBox>
                                             </t:template>
                                         </t:Column>
