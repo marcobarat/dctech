@@ -34,35 +34,28 @@ sap.ui.define([
         onInit: function () {
 
             this.Global = this.getOwnerComponent().getModel("Global");
-            this.ModelDetailPages.setProperty("/Standard/", {});
-            this.ModelDetailPages.setProperty("/PresaInCarico/", {});
+            this.ModelDetailPages.setProperty("/SKU/", {});
+            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+            this.AjaxCaller("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
+            this.AjaxCaller("model/SKU_standard.json", this.ModelDetailPages, "/SKU/Standard/");
+            this.AjaxCaller("model/SKU_backend.json", this.ModelDetailPages, "/SKU/Backend/");
+            this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/SetupLinea/Old/");
+            this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/New/");
 
             if (this.Global.getData().Choice === "Produzione") {
 
-                this.ModelDetailPages.setProperty("/ConfermaBatch/", {});
                 this.ModelDetailPages.setProperty("/Fermo/", {});
                 this.ModelDetailPages.setProperty("/Causalizzazione/", {});
-                this.AjaxCaller("model/SKU_standard.json", this.ModelDetailPages, "/Standard/SKU/");
-                this.AjaxCaller("model/SKU_bckend.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
-//                this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/PresaInCarico/TreeTable/");
-                this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableStandard/");
-                this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatch/TreeTableCurrent/");
                 this.AjaxCaller("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
                 this.AjaxCaller("model/JSON_FermoTesti.json", this.ModelDetailPages, "/Fermo/Testi/");
                 this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
                 this.AjaxCaller("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
                 this.getView().byId("ButtonPresaInCarico").setEnabled(true);
             } else if (this.Global.getData().Choice === "Attrezzaggio") {
-                this.ModelDetailPages.setProperty("/BatchAttrezzaggio/", {});
-                this.ModelDetailPages.setProperty("/ConfermaBatchAttrezzaggio/", {});
                 this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
-                this.AjaxCaller("model/SKU.json", this.ModelDetailPages, "/BatchAttrezzaggio/TreeTable/");
-                this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableStandard/");
-                this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/ConfermaBatchAttrezzaggio/TreeTableCurrent/");
                 this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(true);
             }
 
-            this.AjaxCaller("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
             this.ModelDetailPages.setProperty("/Globale/", {});
             this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
             this.getSplitAppObj().toDetail(this.createId("Home"));
@@ -111,17 +104,12 @@ sap.ui.define([
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
         PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-//            var standard = this.ModelDetailPages.getData().Standard.SKU;
-//            var backend = this.ModelDetailPages.getData().PresaInCarico.TreeTable;
-//            backend = this.JSONTreeTableCompare(standard.attributi, backend.attributi, "attributi");
-//            this.ModelDetailPages.setProperty("/PresaInCarico/TreeTable", backend);
 
-
-            var std = this.ModelDetailPages.getData().Standard.SKU;
-            var bck = this.ModelDetailPages.getData().PresaInCarico.TreeTable;
+            var std = this.ModelDetailPages.getData().SKU.Standard;
+            var bck = this.ModelDetailPages.getData().SKU.Backend;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
-            this.ModelDetailPages.setProperty("/PresaInCarico/TreeTable", bck);
+            this.ModelDetailPages.setProperty("/SKU/Backend", bck);
 
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getView().byId("ButtonPresaInCarico").setEnabled(false);
@@ -138,12 +126,13 @@ sap.ui.define([
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
 
-            
-            var std = this.ModelDetailPages.getData().ConfermaBatch.TreeTableStandard;
-            var bck = this.ModelDetailPages.getData().ConfermaBatch.TreeTableCurrent;
+            var std = this.ModelDetailPages.getData().SetupLinea.Old;
+            var bck = this.ModelDetailPages.getData().SetupLinea.New;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
-            this.ModelDetailPages.setProperty("/ConfermaBatch/TreeTableCurrent", bck);
+            std = this.RecursiveStandardAdapt(std, bck);
+            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
+            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
 
             this.openedTabs = [];
             this.nextTab = "tab4";
@@ -171,55 +160,68 @@ sap.ui.define([
                     id: "tab3"});
             }
             this.Item.setName("Conferma predisposizione");
-            if (!this.Panel) {
-                this.Panel = new sap.m.Panel();
-            }
-            if (!this.TreeTable) {
-                this.TreeTable = new CustomTreeTable({
-                    id: "TreeTable_FinePredisposizione",
-                    rows: "{path:'GeneralModel>/ConfermaBatch/TreeTableCurrent', parameters: {arrayNames:['attributi']}}",
-                    selectionMode: "None",
-                    collapseRecursive: true,
-                    enableSelectAll: false,
-                    ariaLabelledBy: "title",
-                    visibleRowCount: 8,
-                    columns: [
-                        new sap.ui.table.Column({
-                            label: "Attributi",
-                            width: "15rem",
-                            template: new sap.m.Text({
-                                text: "{GeneralModel>name}"})}),
-                        new sap.ui.table.Column({
-                            label: "Valore",
-                            width: "5rem",
-                            template: new sap.m.Text({
-                                text: "{GeneralModel>value}"})}),
-                        new sap.ui.table.Column({
-                            label: "Modifica",
-                            width: "5rem",
-                            template: new StyleInputTreeTableValue({
-                                value: "{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}",
-                                diff: "{GeneralModel>modify}",
-                                editable: "{= ${GeneralModel>modify} === '1'}"})}),
-                        new sap.ui.table.Column({
-                            label: "Sigle",
-                            width: "5rem",
-                            template: new sap.m.Input({
-                                placeholder: "{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}",
-                                editable: "{= ${GeneralModel>code} === '1'}",
-                                value: "{GeneralModel>codeValue}"})})
-                    ]
-                });
-            }
-            if (!this.Button) {
-                this.Button = new sap.m.Button({
-                    text: "Conferma",
-                    width: "100%",
-                    press: [this.ConfermaPredisposizione, this]});
-                this.Panel.addContent(this.TreeTable);
-                this.Panel.addContent(this.Button);
-            }
-
+//            if (!this.Panel) {
+            this.Panel = new sap.m.Panel();
+//            }
+//            if (!this.TreeTable) {
+            this.TreeTable = new CustomTreeTable({
+                id: "TreeTable_FinePredisposizione",
+                rows: "{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}",
+                selectionMode: "None",
+                collapseRecursive: true,
+                enableSelectAll: false,
+                ariaLabelledBy: "title",
+                visibleRowCount: 8,
+                columns: [
+                    new sap.ui.table.Column({
+                        label: "Attributi",
+                        width: "15rem",
+                        template: new sap.m.Text({
+                            text: "{GeneralModel>name}"})}),
+                    new sap.ui.table.Column({
+                        label: "Valore",
+                        width: "5rem",
+                        template: new sap.m.Text({
+                            text: "{GeneralModel>value}"})}),
+                    new sap.ui.table.Column({
+                        label: "Modifica",
+                        width: "5rem",
+                        template: new StyleInputTreeTableValue({
+                            value: "{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}",
+                            diff: "{GeneralModel>modify}",
+                            editable: "{= ${GeneralModel>modify} === '1'}"})}),
+                    new sap.ui.table.Column({
+                        label: "Sigle",
+                        width: "5rem",
+                        template: new sap.m.Input({
+                            placeholder: "{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}",
+                            editable: "{= ${GeneralModel>code} === '1'}",
+                            value: "{GeneralModel>codeValue}"})})
+                ]
+            });
+//            }
+//            if (!this.Button) {
+            var hbox = new sap.m.HBox({});
+            var vb1 = new sap.m.VBox({width: "47%"});
+            var vb2 = new sap.m.VBox({width: "6%"});
+            var vb3 = new sap.m.VBox({width: "47%"});
+            var bt1 = new sap.m.Button({
+                text: "Annulla",
+                width: "100%",
+                press: [this.ConfermaPredisposizione, this]});
+            var bt2 = new sap.m.Button({
+                text: "Conferma",
+                width: "100%",
+                press: [this.ConfermaPredisposizione, this]});
+            vb3.addItem(bt2);
+            vb1.addItem(bt1);
+            vb2.addItem(new sap.m.Text({}));
+            hbox.addItem(vb1);
+            hbox.addItem(vb2);
+            hbox.addItem(vb3);
+            this.Panel.addContent(this.TreeTable);
+            this.Panel.addContent(hbox);
+//            }
 
             this.Item.addContent(this.Panel);
             this.TabContainer.addItem(this.Item);
@@ -519,6 +521,13 @@ sap.ui.define([
 
         BatchAttrezzaggio: function () {
             this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
+
+            var std = this.ModelDetailPages.getData().SKU.Standard;
+            var bck = this.ModelDetailPages.getData().SKU.Backend;
+            bck = this.RecursiveJSONComparison(std, bck, "attributi");
+            bck = this.RecursiveParentExpansion(bck);
+            this.ModelDetailPages.setProperty("/SKU/Backend", bck);
+
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColor("");
             this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(false);
@@ -528,6 +537,17 @@ sap.ui.define([
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatchAttrezzaggio: function () {
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatchAttrezzaggio"));
+
+            var std = this.ModelDetailPages.getData().SetupLinea.Old;
+            var bck = this.ModelDetailPages.getData().SetupLinea.New;
+            bck = this.RecursiveJSONComparison(std, bck, "attributi");
+            bck = this.RecursiveParentExpansion(bck);
+            var temp = this.RecursiveStandardAdapt(std, bck);
+            std = temp.std;
+            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
+            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
+
+
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColorAttrezzaggio("yellow");
             this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(true);
@@ -570,7 +590,7 @@ sap.ui.define([
             if (!this.TreeTable) {
                 this.TreeTable = new CustomTreeTable({
                     id: "TreeTable_FinePredisposizioneAttrezzaggio",
-                    rows: "{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableCurrent', parameters: {arrayNames:['attributi']}}",
+                    rows: "{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}",
                     selectionMode: "None",
                     collapseRecursive: true,
                     enableSelectAll: false,
@@ -645,7 +665,7 @@ sap.ui.define([
             if (!this.TreeTable) {
                 this.TreeTable = new CustomTreeTable({
                     id: "TreeTable_FinePredisposizioneAttrezzaggio",
-                    rows: "{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableCurrent', parameters: {arrayNames:['attributi']}}",
+                    rows: "{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}",
                     selectionMode: "None",
                     collapseRecursive: true,
                     enableSelectAll: false,
@@ -985,11 +1005,6 @@ sap.ui.define([
                 }
             }
         },
-//        JSONTreeTableCompare: function (standard, backend) {
-//            var good;
-//            good = this.RecursiveJSON(standard, backend).json;
-//            return good;
-//        },
         RecursiveJSONComparison: function (std, bck, arrayName) {
             for (var key in std) {
                 if (typeof std[key] === "object") {
@@ -1016,7 +1031,7 @@ sap.ui.define([
                     bck[key] = this.RecursiveParentExpansion(bck[key]);
                 } else {
                     if (key === "expand") {
-                        if (bck[key] === "2" || bck[key] === "1") {
+                        if (bck[key] === "3" || bck[key] === "2" || bck[key] === "1") {
                             this.exp = "1";
                             for (var i = 0; i < this.change.length; i++) {
                                 if (this.change[i].expand === "0") {
@@ -1029,6 +1044,25 @@ sap.ui.define([
             }
             this.change.splice(-1, 1);
             return bck;
+        },
+        RecursiveStandardAdapt: function (std, bck) {
+            for (var key in std) {
+                if (typeof std[key] === "object") {
+                    if (key === "expand") {
+                        if (bck[key] === "3" || bck[key] === "2" || bck[key] === "1") {
+                            std[key] = "1";
+                        }
+                    }
+                    std[key] = this.RecursiveStandardAdapt(std[key], bck[key]);
+                } else {
+                    if (key === "expand") {
+                        if (bck[key] === "3" || bck[key] === "2" || bck[key] === "1") {
+                            std[key] = "1";
+                        }
+                    }
+                }
+            }
+            return std;
         }
 
 //        onAfterRendering: function () {

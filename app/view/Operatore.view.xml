@@ -54,7 +54,7 @@
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_PresaInCarico"
-                                    rows="{path:'GeneralModel>/PresaInCarico/TreeTable', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -94,7 +94,7 @@
                                     </wt:columns>
                                 </wt:CustomTreeTable>
                             </Panel>
-                            <Button text="Conferma" width="100%" press="ConfermaBatch"/>
+                            <Button text="Continua" width="100%" press="ConfermaBatch"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -133,7 +133,7 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_AttributiPredisposizione"
-                                                    rows="{path:'GeneralModel>/PresaInCarico/TreeTable', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
@@ -186,7 +186,7 @@
                                                     <Panel>
                                                         <wt:CustomTreeTable
                                                             id="TreeTable_ConfermaSetupOld"
-                                                            rows="{path:'GeneralModel>/ConfermaBatch/TreeTableStandard', parameters: {arrayNames:['attributi']}}"
+                                                            rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
                                                             selectionMode="None"
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"
@@ -194,7 +194,7 @@
                                                             visibleRowCount="14">
                                                             <wt:toolbar>
                                                                 <Toolbar>
-                                                                    <Title text="Standard"/>
+                                                                    <Title text="Precedente"/>
                                                                     <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaSetupOld"/>
                                                                     <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaSetupOld"/>
                                                                     <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupOld"/>
@@ -225,7 +225,7 @@
                                                     <Panel>
                                                         <wt:CustomTreeTable
                                                             id="TreeTable_ConfermaSetupNew"
-                                                            rows="{path:'GeneralModel>/ConfermaBatch/TreeTableCurrent', parameters: {arrayNames:['attributi']}}"
+                                                            rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
                                                             selectionMode="None"
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"
@@ -398,7 +398,7 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_AttributiModifica"
-                                                    rows="{path:'GeneralModel>/PresaInCarico/TreeTable', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
@@ -449,7 +449,7 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_ModificaCondizioni"
-                                                    rows="{path:'GeneralModel>/ConfermaBatch/TreeTableCurrent', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
@@ -517,7 +517,17 @@
                                                     </wt:columns>
                                                 </wt:CustomTreeTable>
                                             </Panel>
-                                            <Button text="Conferma" width="100%" press="ConfermaModifica"/>
+                                            <HBox>
+                                                <VBox width="47%">
+                                                    <Button text="Annulla" width="100%" press="ConfermaModifica"/>
+                                                </VBox>
+                                                <VBox  width="6%">
+                                                    <Text/>
+                                                </VBox>
+                                                <VBox width="47%">
+                                                    <Button text="Conferma" width="100%" press="ConfermaModifica"/>
+                                                </VBox> 
+                                            </HBox>
                                         </content>
                                     </TabContainerItem>
                                 </items>
@@ -863,7 +873,7 @@
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_RipristinoCondizioni"
-                                    rows="{path:'GeneralModel>/ConfermaBatch/TreeTableCurrent', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -971,7 +981,7 @@
                                     </wt:columns>
                                 </wt:CustomTreeTable>
                             </Panel>
-                            <Button text="Conferma" width="100%" press="ConfermaChiusura"/>
+                            <Button text="Chiusura Batch" width="100%" press="ConfermaChiusura"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -1233,7 +1243,7 @@
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_BatchAttrezzaggio"
-                                    rows="{path:'GeneralModel>/BatchAttrezzaggio/TreeTable', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -1301,7 +1311,7 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_AttributiAttrezzaggio"
-                                                    rows="{path:'GeneralModel>/BatchAttrezzaggio/TreeTable', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
@@ -1346,7 +1356,7 @@
                                                     <Panel>
                                                         <wt:CustomTreeTable
                                                             id="TreeTable_AttrezzaggioOld"
-                                                            rows="{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableStandard', parameters: {arrayNames:['attributi']}}"
+                                                            rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
                                                             selectionMode="None"
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"
@@ -1381,7 +1391,7 @@
                                                     <Panel>
                                                         <wt:CustomTreeTable
                                                             id="TreeTable_AttrezzaggioNew"
-                                                            rows="{path:'GeneralModel>/ConfermaBatchAttrezzaggio/TreeTableCurrent', parameters: {arrayNames:['attributi']}}"
+                                                            rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
                                                             selectionMode="None"
                                                             collapseRecursive="true"
                                                             enableSelectAll="false"

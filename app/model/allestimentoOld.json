@@ -3,7 +3,7 @@
         {
             "name": "confezionamento primario",
             "value": "",
-            "expand": "1",
+            "expand": "0",
             "modify": "0",
             "code": "0",
             "codeValue": "",
@@ -12,7 +12,7 @@
                 {
                     "name": "sezione 1",
                     "value": "",
-                    "expand": "1",
+                    "expand": "0",
                     "modify": "0",
                     "code": "0",
                     "codeValue": "",
@@ -21,7 +21,7 @@
                         {
                             "name": "confezionatrice",
                             "value": "",
-                            "expand": "1",
+                            "expand": "0",
                             "modify": "0",
                             "code": "0",
                             "codeValue": "",
@@ -68,7 +68,7 @@
                         {
                             "name": "marcatore",
                             "value": "",
-                            "expand": "1",
+                            "expand": "0",
                             "modify": "0",
                             "code": "0",
                             "codeValue": "",
@@ -88,7 +88,7 @@
                         {
                             "name": "controllo peso",
                             "value": "",
-                            "expand": "1",
+                            "expand": "0",
                             "modify": "0",
                             "code": "0",
                             "codeValue": "",

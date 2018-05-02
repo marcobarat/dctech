@@ -3,7 +3,7 @@
         {
             "name": "confezionamento primario",
             "value": "",
-            "expand": "1",
+            "expand": "0",
             "modify": "0",
             "code": "0",
             "codeValue": "",
@@ -12,7 +12,7 @@
                 {
                     "name": "sezione 1",
                     "value": "",
-                    "expand": "1",
+                    "expand": "0",
                     "modify": "0",
                     "code": "0",
                     "codeValue": "",
@@ -21,7 +21,7 @@
                         {
                             "name": "confezionatrice",
                             "value": "",
-                            "expand": "1",
+                            "expand": "0",
                             "modify": "0",
                             "code": "0",
                             "codeValue": "",
@@ -30,7 +30,7 @@
                                 {
                                     "name": "semilavorato",
                                     "value": "Farfalle 093",
-                                    "expand": "2",
+                                    "expand": "0",
                                     "modify": "0",
                                     "code": "1",
                                     "codeValue": "",
@@ -39,7 +39,7 @@
                                 {
                                     "name": "programma bilancia",
                                     "value": "KZ911",
-                                    "expand": "2",
+                                    "expand": "0",
                                     "modify": "1",
                                     "code": "0",
                                     "codeValue": "",
@@ -47,7 +47,7 @@
                                 },
                                 {
                                     "name": "tubo formatore",
-                                    "value": "TF045.4",
+                                    "value": "TF045.3",
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "1",
@@ -57,7 +57,7 @@
                                 {
                                     "name": "film",
                                     "value": "1SXGH005",
-                                    "expand": "2",
+                                    "expand": "0",
                                     "modify": "1",
                                     "code": "1",
                                     "codeValue": "",
@@ -68,7 +68,7 @@
                         {
                             "name": "marcatore",
                             "value": "",
-                            "expand": "1",
+                            "expand": "0",
                             "modify": "0",
                             "code": "0",
                             "codeValue": "",
@@ -88,7 +88,7 @@
                         {
                             "name": "controllo peso",
                             "value": "",
-                            "expand": "1",
+                            "expand": "0",
                             "modify": "0",
                             "code": "0",
                             "codeValue": "",
@@ -97,7 +97,7 @@
                                 {
                                     "name": "* regole intervallo peso",
                                     "value": "normBRA",
-                                    "expand": "2",
+                                    "expand": "0",
                                     "modify": "1",
                                     "code": "0",
                                     "codeValue": "",
@@ -163,7 +163,7 @@
                                 },
                                 {
                                     "name": "id",
-                                    "value": "123456",
+                                    "value": "1234856",
                                     "expand": "0",
                                     "modify": "0",
                                     "code": "0",
