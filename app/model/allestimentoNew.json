@@ -47,7 +47,7 @@
                                 },
                                 {
                                     "name": "tubo formatore",
-                                    "value": "TF045.3",
+                                    "value": "TF045.4",
                                     "expand": "0",
                                     "modify": "1",
                                     "code": "1",
@@ -78,7 +78,7 @@
                                     "name": "* stampa film",
                                     "value": "CEE",
                                     "expand": "3",
-                                    "modify": "1",
+                                    "modify": "0",
                                     "code": "0",
                                     "codeValue": "",
                                     "codePlaceholder": ""
@@ -116,7 +116,7 @@
                         },
                         {
                             "name": "metal detector",
-                            "value": "dert",
+                            "value": "",
                             "expand": "0",
                             "modify": "0",
                             "code": "0",

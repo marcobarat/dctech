@@ -1,0 +1,52 @@
+{
+  "gerarchie": [
+    {
+      "gerarchia": "Fermata Programmata",
+      "attributi": [
+        {
+          "fermo": "Sostituzione deteriorabili",
+          "id": "4"
+        }
+      ]
+    },
+    {
+      "gerarchia": "Guasto",
+      "attributi": [
+        {
+          "fermo": "Attesa intervento manutenzione",
+          "id": "6"
+        },
+        {
+          "fermo": "Collaudo",
+          "id": "8"
+        },
+        {
+          "fermo": "Manutenzione",
+          "id": "7"
+        },
+        {
+          "fermo": "Svuotamento",
+          "id": "5"
+        }
+      ]
+    },
+    {
+      "gerarchia": "Mancanza personale",
+      "attributi": [
+        {
+          "fermo": "Altro",
+          "id": "13"
+        }
+      ]
+    },
+    {
+      "gerarchia": "Organizzazione Reparto",
+      "attributi": [
+        {
+          "fermo": "Attesa produzione precedente",
+          "id": "9"
+        }
+      ]
+    }
+  ]
+}

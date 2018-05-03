@@ -78,7 +78,7 @@
                                     "name": "* stampa film",
                                     "value": "CEE",
                                     "expand": "0",
-                                    "modify": "1",
+                                    "modify": "0",
                                     "code": "0",
                                     "codeValue": "",
                                     "codePlaceholder": ""

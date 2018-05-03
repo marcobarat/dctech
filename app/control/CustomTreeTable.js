@@ -17,18 +17,6 @@ sap.ui.define([
 
                 onAfterRendering: function () {
                     this.expandToLevel(20);
-//                    var num = this.getBinding("rows").getLength();
-//                    var temp;
-//                    for (var i = num - 1; i >= 0; i--) {
-//                        temp = this.getBinding("rows").getContextByIndex(i);
-//                        if (typeof temp != "undefined") {
-//                            if (temp.getObject().expand == 0) {
-//                                this.collapse(i);
-//                            }
-//                        }
-//                    }
-
-
                     var that = this;
                     setTimeout(function () {
                         var num = that.getBinding("rows").getLength();

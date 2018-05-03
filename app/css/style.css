@@ -136,7 +136,7 @@
 }*/
 
 .alternate-color .sapUiTableRowOdd {
-    background-color: #C79900;
+    background-color: #efeff5;
 }
 
 .alternate-color .sapUiTableRowOdd input {
@@ -144,7 +144,7 @@
 }
 
 .alternate-color .sapUiTableRowOdd:hover td {
-    background-color: #C79900 !important;
+    background-color: #efeff5 !important;
 }
 
 .alternate-color .sapUiTableRowOdd:hover  input {

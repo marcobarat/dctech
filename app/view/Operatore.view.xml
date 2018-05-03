@@ -449,10 +449,8 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_ModificaCondizioni"
-                                                    rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
-                                                    collapseRecursive="true"
-                                                    enableSelectAll="false"
                                                     ariaLabelledBy="title"
                                                     visibleRowCount="7">
                                                     <wt:toolbar>
@@ -485,7 +483,7 @@
                                                             <t:template>
                                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                                 <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                                <Text text="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codeValue}: ''}" />
+                                                                <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === '1'}" />
                                                                 <!--<Input placeholder="{= ${TreeTable_ModificaCondizioni>code} === '1' ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === '1'}" />-->
                                                                 <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === '0'}" />-->
                                                                 <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
@@ -499,8 +497,9 @@
                                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                                 <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
                                                                 <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == '0'}" />-->
-                                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}" diff="{GeneralModel>modify}" editable="{= ${GeneralModel>modify} === '1'}" />
-                                                                <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>modify} === '0'}" />-->
+                                                                <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === '1'}" visible="{= ${GeneralModel>modify} === '1'}" class="diffStandard"/>
+                                                                <!--<wt:StyleInputTreeTableValue editable="{= ${GeneralModel>modify} === '1'}" />-->
+                                                                <!--<Input value="{GeneralModel>value}"/>-->
                                                                 <!--<wt:StyleInputTreeTableModify diff="{TreeTable_ModificaCondizioni>modify}"/>-->
                                                             </t:template>
                                                         </t:Column>
@@ -509,7 +508,8 @@
                                                             <t:template>
                                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                                 <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === '1'}" />
+                                                                <!--<wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === '1'}" />-->
+                                                                <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === '1'}" class="diffStandard"/>
                                                                 <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === '0'}" />-->
                                                                 <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
                                                             </t:template>
@@ -518,13 +518,19 @@
                                                 </wt:CustomTreeTable>
                                             </Panel>
                                             <HBox>
-                                                <VBox width="47%">
-                                                    <Button text="Annulla" width="100%" press="ConfermaModifica"/>
+                                                <VBox width="20%">
+                                                    <Button text="Default" width="100%" press="RestoreDefault"/>
                                                 </VBox>
-                                                <VBox  width="6%">
+                                                <VBox  width="7%">
                                                     <Text/>
                                                 </VBox>
-                                                <VBox width="47%">
+                                                <VBox width="35%">
+                                                    <Button text="Annulla" width="100%" press="AnnullaModifica"/>
+                                                </VBox>
+                                                <VBox  width="3%">
+                                                    <Text/>
+                                                </VBox>
+                                                <VBox width="35%">
                                                     <Button text="Conferma" width="100%" press="ConfermaModifica"/>
                                                 </VBox> 
                                             </HBox>
@@ -554,55 +560,43 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
-                            <VBox>
-                                <!--<Panel>-->
-                                <VBox>
-                                    <HBox height="100%">
-                                        <VBox width="15%"/>
-                                        <VBox width="85%">
-                                            <VBox height="40%">
-                                                <HBox>
-                                                    <VBox width="50%">
-                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo1}" class="customTextFermo"/>
-                                                        <CheckBox id="CBFermo1" text="{GeneralModel>/Fermo/Testi/CBFermo1}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo1}" select="ChangeCheckedFermo" />
-                                                    </VBox>
-                                                    <VBox width="50%">
-                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo2}" class="customTextFermo"/>
-                                                        <CheckBox id="CBFermo2" text="{GeneralModel>/Fermo/Testi/CBFermo2}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo2}" select="ChangeCheckedFermo" />
-                                                        <CheckBox id="CBFermo3" text="{GeneralModel>/Fermo/Testi/CBFermo3}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo3}" select="ChangeCheckedFermo" />
-                                                    </VBox>
-                                                </HBox>
+                        <VBox id="vboxFermo" height="80%" width="100%">
+                            <!--                            <HBox height="100%">
+                                <VBox width="15%"/>
+                                <VBox width="85%">
+                                    <VBox height="40%">
+                                        <HBox>
+                                            <VBox width="50%">
+                                                <Text text="{GeneralModel>/Fermo/Testi/titolo1}" class="customTextFermo"/>
+                                                <CheckBox id="CBFermo1" text="{GeneralModel>/Fermo/Testi/CBFermo1}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo1}" select="ChangeCheckedFermo" />
                                             </VBox>
-                                            <VBox height="60%">
-                                                <HBox>
-                                                    <VBox width="50%">
-                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo3}" class="customTextFermo"/>
-                                                        <CheckBox id="CBFermo4" text="{GeneralModel>/Fermo/Testi/CBFermo4}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo4}" select="ChangeCheckedFermo" />
-                                                        <CheckBox id="CBFermo5" text="{GeneralModel>/Fermo/Testi/CBFermo5}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo5}" select="ChangeCheckedFermo" />
-                                                        <CheckBox id="CBFermo6" text="{GeneralModel>/Fermo/Testi/CBFermo6}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo6}" select="ChangeCheckedFermo" />
-                                                        <CheckBox id="CBFermo7" text="{GeneralModel>/Fermo/Testi/CBFermo7}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo7}" select="ChangeCheckedFermo" />
-                                                    </VBox>
-                                                    <VBox width="50%">
-                                                        <Text text="{GeneralModel>/Fermo/Testi/titolo4}" class="customTextFermo"/>
-                                                        <CheckBox id="CBFermo8" text="{GeneralModel>/Fermo/Testi/CBFermo8}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo8}" select="ChangeCheckedFermo" />
-                                                        <CheckBox id="CBFermo9" text="{GeneralModel>/Fermo/Testi/CBFermo9}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo9}" select="ChangeCheckedFermo" />
-                                                        <CheckBox id="CBFermo10" text="{GeneralModel>/Fermo/Testi/CBFermo10}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo10}" select="ChangeCheckedFermo" />
-                                                    </VBox>
-                                                </HBox>
+                                            <VBox width="50%">
+                                                <Text text="{GeneralModel>/Fermo/Testi/titolo2}" class="customTextFermo"/>
+                                                <CheckBox id="CBFermo2" text="{GeneralModel>/Fermo/Testi/CBFermo2}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo2}" select="ChangeCheckedFermo" />
+                                                <CheckBox id="CBFermo3" text="{GeneralModel>/Fermo/Testi/CBFermo3}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo3}" select="ChangeCheckedFermo" />
                                             </VBox>
-                                        </VBox>
-                                    </HBox>
+                                        </HBox>
+                                    </VBox>
+                                    <VBox height="60%">
+                                        <HBox>
+                                            <VBox width="50%">
+                                                <Text text="{GeneralModel>/Fermo/Testi/titolo3}" class="customTextFermo"/>
+                                                <CheckBox id="CBFermo4" text="{GeneralModel>/Fermo/Testi/CBFermo4}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo4}" select="ChangeCheckedFermo" />
+                                                <CheckBox id="CBFermo5" text="{GeneralModel>/Fermo/Testi/CBFermo5}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo5}" select="ChangeCheckedFermo" />
+                                                <CheckBox id="CBFermo6" text="{GeneralModel>/Fermo/Testi/CBFermo6}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo6}" select="ChangeCheckedFermo" />
+                                                <CheckBox id="CBFermo7" text="{GeneralModel>/Fermo/Testi/CBFermo7}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo7}" select="ChangeCheckedFermo" />
+                                            </VBox>
+                                            <VBox width="50%">
+                                                <Text text="{GeneralModel>/Fermo/Testi/titolo4}" class="customTextFermo"/>
+                                                <CheckBox id="CBFermo8" text="{GeneralModel>/Fermo/Testi/CBFermo8}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo8}" select="ChangeCheckedFermo" />
+                                                <CheckBox id="CBFermo9" text="{GeneralModel>/Fermo/Testi/CBFermo9}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo9}" select="ChangeCheckedFermo" />
+                                                <CheckBox id="CBFermo10" text="{GeneralModel>/Fermo/Testi/CBFermo10}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo10}" select="ChangeCheckedFermo" />
+                                            </VBox>
+                                        </HBox>
+                                    </VBox>
                                 </VBox>
-                                <!--</Panel>-->
-                            </VBox>
-                            <VBox height="10%">
-                                <Text/>
-                            </VBox>
-                            <VBox height="10%">
-                                <!--</Panel>-->
-                                <Button id="ConfermaFermo" text="Conferma" width="100%" enabled="false" press="ConfermaFermo"/>
-                            </VBox>
+                            </HBox>
+                            <Button id="ConfermaFermo" text="Conferma" width="100%" enabled="false" press="ConfermaFermo"/>-->
                         </VBox>
                     </VBox>
                 </content>
@@ -873,7 +867,7 @@
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_RipristinoCondizioni"
-                                    rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -921,7 +915,17 @@
                                     </wt:columns>
                                 </wt:CustomTreeTable>
                             </Panel>
-                            <Button text="Conferma" width="100%" press="ConfermaRipristino"/>
+                            <HBox>
+                                <VBox width="47%">
+                                    <Button text="Annulla" width="100%" press="AnnullaRipristino"/>
+                                </VBox>
+                                <VBox width="6%">
+                                    <Text/>
+                                </VBox>
+                                <VBox width="47%">
+                                    <Button text="Conferma" width="100%" press="ConfermaRipristino"/>
+                                </VBox> 
+                            </HBox>
                         </VBox>
                     </VBox>
                 </content>
@@ -1459,7 +1463,7 @@
                             </FlexBox>
                         </VBox>
                         <VBox height="10%" width="100%">
-                            <Button text="Conferma" width="100%" press="FineAttrezzaggio"/>
+                            <Button text="Fine attrezzaggio" width="100%" press="FineAttrezzaggio"/>
                         </VBox>
                     </VBox>
                 </content>
