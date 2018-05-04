@@ -23,7 +23,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -46,7 +46,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -75,7 +75,7 @@
                                             <Label text="Attibuti"/>
                                             <t:template>
                                                 <!--<Text text="{name}" wrapping="false" />-->
-                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}" />-->
+                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}" />-->
                                                 <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                             </t:template>
                                         </t:Column>
@@ -85,9 +85,9 @@
                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                 <HBox>
                                                     <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
-                                                    <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
+                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
+                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
+                                                    <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
                                                 </HBox>
                                             </t:template>
                                         </t:Column>
@@ -114,7 +114,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -153,7 +153,7 @@
                                                             <Label text="Attibuti"/>
                                                             <t:template>
                                                                 <!--<Text text="{name}" wrapping="false" />-->
-                                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}" />-->
+                                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}" />-->
                                                                 <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                             </t:template>
                                                         </t:Column>
@@ -163,9 +163,9 @@
                                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                                 <HBox>
                                                                     <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
-                                                                    <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
+                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
+                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
+                                                                    <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
                                                                 </HBox>
                                                             </t:template>
                                                         </t:Column>
@@ -205,7 +205,7 @@
                                                                     <Label text="Attibuti"/>
                                                                     <t:template>
                                                                         <!--                                                                                <Text text="{name}" wrapping="false" />
-                                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>-->
+                                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>-->
                                                                         <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                     </t:template>
                                                                 </t:Column>
@@ -213,7 +213,7 @@
                                                                     <Label text="Valore"/>
                                                                     <t:template>
                                                                         <!--                                                                                <Text text="{value}" wrapping="false" />
-                                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
                                                                         <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
                                                                     </t:template>
                                                                 </t:Column>
@@ -245,7 +245,7 @@
                                                                     <Label text="Attibuti"/>
                                                                     <t:template>
                                                                         <!--                                                                                <Text text="{name}" wrapping="false" />
-                                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>-->
+                                                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>-->
                                                                         <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                     </t:template>
                                                                 </t:Column>
@@ -253,7 +253,7 @@
                                                                     <Label text="Valore"/>
                                                                     <t:template>
                                                                         <!--                                                                                <Text text="{value}" wrapping="false" />
-                                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
                                                                         <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
                                                                     </t:template>
                                                                 </t:Column>
@@ -287,7 +287,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -379,7 +379,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -418,7 +418,7 @@
                                                             <Label text="Attibuti"/>
                                                             <t:template>
                                                                 <!--<Text text="{name}" wrapping="false" />-->
-                                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}" />-->
+                                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}" />-->
                                                                 <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                             </t:template>
                                                         </t:Column>
@@ -428,9 +428,9 @@
                                                                 <!--<Text text="{value}" wrapping="false" />-->
                                                                 <HBox>
                                                                     <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
-                                                                    <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
+                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
+                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
+                                                                    <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
                                                                 </HBox>
                                                             </t:template>
                                                         </t:Column>
@@ -466,7 +466,7 @@
                                                             <Label text="Attibuti"/>
                                                             <t:template>
                                                                 <!--<Text text="{name}" wrapping="false" />-->
-                                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>-->
+                                                                <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>-->
                                                                 <Text text="{GeneralModel>name}" />
                                                             </t:template>
                                                         </t:Column>
@@ -474,7 +474,7 @@
                                                             <Label text="Valore"/>
                                                             <t:template>
                                                                 <!--<Text text="{value}" wrapping="false" />-->
-                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
+                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
                                                                 <Text text="{GeneralModel>value}" />
                                                             </t:template>
                                                         </t:Column>
@@ -482,23 +482,23 @@
                                                             <Label text="Sigle"/>
                                                             <t:template>
                                                                 <!--<Text text="{value}" wrapping="false" />-->
-                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                                <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === '1'}" />
-                                                                <!--<Input placeholder="{= ${TreeTable_ModificaCondizioni>code} === '1' ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === '1'}" />-->
-                                                                <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === '0'}" />-->
+                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
+                                                                <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" />
+                                                                <!--<Input placeholder="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === 1}" />-->
+                                                                <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />-->
                                                                 <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
                                                             </t:template>
                                                         </t:Column>
                                                         <t:Column width="5rem">
                                                             <Label text="Modifica Valore"/>
                                                             <t:template>
-                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>-->
-                                                                <!--<Button text="{value}" visible="{= ${expand} === '0'}"/>-->
+                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
+                                                                <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
                                                                 <!--<Text text="{value}" wrapping="false" />-->
-                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                                <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == '0'}" />-->
-                                                                <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === '1'}" visible="{= ${GeneralModel>modify} === '1'}" class="diffStandard"/>
-                                                                <!--<wt:StyleInputTreeTableValue editable="{= ${GeneralModel>modify} === '1'}" />-->
+                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
+                                                                <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == 0}" />-->
+                                                                <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
+                                                                <!--<wt:StyleInputTreeTableValue editable="{= ${GeneralModel>modify} === 1}" />-->
                                                                 <!--<Input value="{GeneralModel>value}"/>-->
                                                                 <!--<wt:StyleInputTreeTableModify diff="{TreeTable_ModificaCondizioni>modify}"/>-->
                                                             </t:template>
@@ -507,10 +507,10 @@
                                                             <Label text="Modifica Sigle"/>
                                                             <t:template>
                                                                 <!--<Text text="{value}" wrapping="false" />-->
-                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>-->
-                                                                <!--<wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === '1'}" />-->
-                                                                <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === '1'}" class="diffStandard"/>
-                                                                <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === '0'}" />-->
+                                                                <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
+                                                                <!--<wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === 1}" />-->
+                                                                <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
+                                                                <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />-->
                                                                 <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
                                                             </t:template>
                                                         </t:Column>
@@ -556,7 +556,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -615,7 +615,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -829,7 +829,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -859,7 +859,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -897,19 +897,19 @@
                                         <t:Column width="5rem">
                                             <Label text="Sigle"/>
                                             <t:template>
-                                                <Text text="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codeValue}: ''}" />
+                                                <Text text="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codeValue}: ''}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem">
                                             <Label text="Modifica Valore"/>
                                             <t:template>
-                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}" diff="{GeneralModel>modify}" editable="{= ${GeneralModel>modify} === '1'}" />
+                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>modify} === 1 ? ${GeneralModel>value}: ''}" diff="{GeneralModel>modify}" editable="{= ${GeneralModel>modify} === 1}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem">
                                             <Label text="Modifica Sigle"/>
                                             <t:template>
-                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === '1'}" />
+                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === 1}" />
                                             </t:template>
                                         </t:Column>
                                     </wt:columns>
@@ -944,7 +944,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -1021,7 +1021,7 @@
                                             <Label text="Attibuti"/>
                                             <t:template>
                                                 <Text text="{name}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
+                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
                                                 <wt:StyleTextTreeTableAttr text="{TreeTable_ConfermaBatchOld>name}" diff="{TreeTable_ConfermaBatchOld>expand}" discr="{TreeTable_ConfermaBatchOld>value}" />
                                             </t:template>
                                         </t:Column>
@@ -1029,7 +1029,7 @@
                                             <Label text="Valore"/>
                                             <t:template>
                                                 <Text text="{value}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
                                                 <wt:StyleTextTreeTableValue text="{TreeTable_ConfermaBatchOld>value}" diff="{TreeTable_ConfermaBatchOld>expand}" />
                                             </t:template>
                                         </t:Column>
@@ -1060,7 +1060,7 @@
                                             <Label text="Attibuti"/>
                                             <t:template>
                                                 <Text text="{name}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
+                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
                                                 <wt:StyleTextTreeTableAttr text="{TreeTable_ConfermaBatchNew>name}" diff="{TreeTable_ConfermaBatchNew>expand}" discr="{TreeTable_ConfermaBatchNew>value}" />
                                             </t:template>
                                         </t:Column>
@@ -1068,7 +1068,7 @@
                                             <Label text="Valore"/>
                                             <t:template>
                                                 <Text text="{value}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
                                                 <wt:StyleTextTreeTableValue text="{TreeTable_ConfermaBatchNew>value}" diff="{TreeTable_ConfermaBatchNew>expand}" />
                                             </t:template>
                                         </t:Column>
@@ -1104,7 +1104,7 @@
                                     <Label text="Attibuti"/>
                                     <t:template>
                                         <Text text="{name}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
+                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
                                         <Text text="{TreeTable_FinePredisposizione>name}" />
                                     </t:template>
                                 </t:Column>
@@ -1112,20 +1112,20 @@
                                     <Label text="Valore"/>
                                     <t:template>
                                         <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
                                         <Text text="{TreeTable_FinePredisposizione>value}" />
                                     </t:template>
                                 </t:Column>
                                 <t:Column width="5rem">
                                     <Label text="Modifica"/>
                                     <t:template>
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>
-                                        <Button text="{value}" visible="{= ${expand} === '0'}"/>
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>
+                                        <Button text="{value}" visible="{= ${expand} === 0}"/>
                                         <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
-                                        <wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" visible="{= ${modify} == '0'}" />
-                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_FinePredisposizione>modify} === '1' ? ${TreeTable_FinePredisposizione>value}: ''}" diff="{TreeTable_FinePredisposizione>modify}" editable="{= ${TreeTable_FinePredisposizione>modify} === '1'}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>modify} === '0'}" />
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
+                                        <wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" visible="{= ${modify} == 0}" />
+                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_FinePredisposizione>modify} === 1 ? ${TreeTable_FinePredisposizione>value}: ''}" diff="{TreeTable_FinePredisposizione>modify}" editable="{= ${TreeTable_FinePredisposizione>modify} === 1}" />
+                                        <Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>modify} === 0}" />
                                         <wt:StyleInputTreeTableModify diff="{TreeTable_FinePredisposizione>modify}"/>
                                     </t:template>
                                 </t:Column>
@@ -1133,9 +1133,9 @@
                                     <Label text="Sigle"/>
                                     <t:template>
                                         <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
-                                        <Input placeholder="{= ${TreeTable_FinePredisposizione>code} === '1' ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}" editable="{= ${TreeTable_FinePredisposizione>code} === '1'}" value="{TreeTable_FinePredisposizione>codeValue}"/>
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>code} === '0'}" />
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
+                                        <Input placeholder="{= ${TreeTable_FinePredisposizione>code} === 1 ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}" editable="{= ${TreeTable_FinePredisposizione>code} === 1}" value="{TreeTable_FinePredisposizione>codeValue}"/>
+                                        <Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>code} === 0}" />
                                         <wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" />
                                     </t:template>
                                 </t:Column>
@@ -1172,7 +1172,7 @@
                                     <Label text="Attibuti"/>
                                     <t:template>
                                         <Text text="{name}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === '1'}"/>
+                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
                                         <Text text="{TreeTable_ModificaCondizioni>name}" />
                                     </t:template>
                                 </t:Column>
@@ -1180,7 +1180,7 @@
                                     <Label text="Valore"/>
                                     <t:template>
                                         <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
                                         <Text text="{TreeTable_ModificaCondizioni>value}" />
                                     </t:template>
                                 </t:Column>
@@ -1188,23 +1188,23 @@
                                     <Label text="Sigle"/>
                                     <t:template>
                                         <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
-                                        <Text text="{= ${TreeTable_ModificaCondizioni>code} === '1' ? ${TreeTable_ModificaCondizioni>codeValue}: ''}" />
-                                        <Input placeholder="{= ${TreeTable_ModificaCondizioni>code} === '1' ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === '1'}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === '0'}" />
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
+                                        <Text text="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codeValue}: ''}" />
+                                        <Input placeholder="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === 1}" />
+                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />
                                         <wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />
                                     </t:template>
                                 </t:Column>
                                 <t:Column width="5rem">
                                     <Label text="Modifica Valore"/>
                                     <t:template>
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}" visible="{= ${expand} === '1'}"/>
-                                        <Button text="{value}" visible="{= ${expand} === '0'}"/>
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>
+                                        <Button text="{value}" visible="{= ${expand} === 0}"/>
                                         <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
-                                        <wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == '0'}" />
-                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_ModificaCondizioni>modify} === '1' ? ${TreeTable_ModificaCondizioni>value}: ''}" diff="{TreeTable_ModificaCondizioni>modify}" editable="{= ${TreeTable_ModificaCondizioni>modify} === '1'}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>modify} === '0'}" />
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
+                                        <wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == 0}" />
+                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_ModificaCondizioni>modify} === 1 ? ${TreeTable_ModificaCondizioni>value}: ''}" diff="{TreeTable_ModificaCondizioni>modify}" editable="{= ${TreeTable_ModificaCondizioni>modify} === 1}" />
+                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>modify} === 0}" />
                                         <wt:StyleInputTreeTableModify diff="{TreeTable_ModificaCondizioni>modify}"/>
                                     </t:template>
                                 </t:Column>
@@ -1212,9 +1212,9 @@
                                     <Label text="Modifica Sigle"/>
                                     <t:template>
                                         <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === '1'}"/>
-                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_ModificaCondizioni>code} === '1' ? ${TreeTable_ModificaCondizioni>codeValue}: ''}" diff="{TreeTable_ModificaCondizioni>code}" placeholder="{= ${TreeTable_ModificaCondizioni>code} === '1' ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === '1'}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === '0'}" />
+                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
+                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codeValue}: ''}" diff="{TreeTable_ModificaCondizioni>code}" placeholder="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === 1}" />
+                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />
                                         <wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />
                                     </t:template>
                                 </t:Column>
@@ -1239,7 +1239,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -1299,7 +1299,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -1450,7 +1450,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTopRed" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>

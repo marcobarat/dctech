@@ -24,7 +24,7 @@ sap.ui.define([
                         for (var i = num - 1; i >= 0; i--) {
                             temp = that.getBinding("rows").getContextByIndex(i).getObject();
                             if (typeof temp !== "undefined") {
-                                if (temp.expand === "0") {
+                                if (temp.expand === 0) {
                                     that.collapse(i);
                                 }
                             }

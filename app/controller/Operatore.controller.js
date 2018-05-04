@@ -26,9 +26,10 @@ sap.ui.define([
         Button: null,
         Panel: null,
         CLOSED: 0,
-        change: [],
         backupSetupModify: null,
         outerVBox: null,
+        dataXML: null,
+        exp: null,
 //      NELL'ONINIT CARICO I VARI MODELLI E FACCIO TUTTE LE CHIAMATE AJAX
 
 //------------------------------------------------------------------------------
@@ -162,13 +163,13 @@ sap.ui.define([
             this.Item.setName("Conferma predisposizione");
             this.Panel = new sap.m.Panel();
             var inputValueMod = new sap.m.Input({
-                editable: "{= ${GeneralModel>modify} === '1'}",
-                visible: "{= ${GeneralModel>modify} === '1'}",
+                editable: "{= ${GeneralModel>modify} === 1}",
+                visible: "{= ${GeneralModel>modify} === 1}",
                 value: "{GeneralModel>valueModify}"});
             inputValueMod.addStyleClass("diffStandard");
             var inputCodeValue = new sap.m.Input({
                 placeholder: "{GeneralModel>codePlaceholder}",
-                editable: "{= ${GeneralModel>code} === '1'}",
+                editable: "{= ${GeneralModel>code} === 1}",
                 value: "{GeneralModel>codeValue}"});
             inputCodeValue.addStyleClass("diffStandard");
             this.TreeTable = new CustomTreeTable({
@@ -252,6 +253,7 @@ sap.ui.define([
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValueModify", "codeValue");
+            var XML = this.XMLSetupUpdates(data);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -309,6 +311,7 @@ sap.ui.define([
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
+            var XML = this.XMLSetupUpdates(data);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
@@ -523,6 +526,12 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA"
         ConfermaRipristino: function () {
+            var data = this.ModelDetailPages.getData().SetupLinea.Modify;
+            data = this.RecursivePropertyCopy(data, "value", "valueModify");
+            data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
+            var XML = this.XMLSetupUpdates(data);
+            this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             var now = new Date();
             this.Item.fine = this.DateToStandard(now);
@@ -599,14 +608,17 @@ sap.ui.define([
             } else {
                 this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
             }
-        }, 
+        },
         UncheckCause: function () {
             var i, temp_id;
             for (i in this.CheckSingoloCausa) {
 //                    temp_id = this.getView().byId("SingoliTable").getAggregation("items")[i].getAggregation("cells")[4].getId();
                 temp_id = this.getView().byId("SingoliTable").getAggregation("rows")[i].getAggregation("cells")[4].getId();
                 this.getView().byId(temp_id).setSelected(false);
+                this.getView().byId(temp_id).setEnabled(true);
             }
+            this.getView().byId("CBTotaleCausa").setSelected(false);
+            this.getView().byId("CBTotaleCausa").setEnabled(true);
             this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
         },
 //      RICHIAMATO DAL PULSANTE DI ESCI NELLA CAUSALIZZAZIONE
@@ -761,15 +773,15 @@ sap.ui.define([
                         label: "Modifica",
                         width: "5rem",
                         template: new StyleInputTreeTableValue({
-                            value: "{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}",
+                            value: "{= ${GeneralModel>modify} === 1 ? ${GeneralModel>value}: ''}",
                             diff: "{GeneralModel>modify}",
-                            editable: "{= ${GeneralModel>modify} === '1'}"})}),
+                            editable: "{= ${GeneralModel>modify} === 1}"})}),
                     new sap.ui.table.Column({
                         label: "Sigle",
                         width: "5rem",
                         template: new sap.m.Input({
-                            placeholder: "{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}",
-                            editable: "{= ${GeneralModel>code} === '1'}",
+                            placeholder: "{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}",
+                            editable: "{= ${GeneralModel>code} === 1}",
                             value: "{GeneralModel>codeValue}"})})
                 ]
             });
@@ -839,15 +851,15 @@ sap.ui.define([
                         label: "Modifica",
                         width: "5rem",
                         template: new StyleInputTreeTableValue({
-                            value: "{= ${GeneralModel>modify} === '1' ? '#ND': ''}",
+                            value: "{= ${GeneralModel>modify} === 1 ? '#ND': ''}",
                             diff: "{GeneralModel>modify}",
-                            editable: "{= ${GeneralModel>modify} === '1'}"})}),
+                            editable: "{= ${GeneralModel>modify} === 1}"})}),
                     new sap.ui.table.Column({
                         label: "Sigle",
                         width: "5rem",
                         template: new sap.m.Input({
                             placeholder: "",
-                            editable: "{= ${GeneralModel>code} === '1'}",
+                            editable: "{= ${GeneralModel>code} === 1}",
                             value: ""})})
                 ]
             });
@@ -914,7 +926,7 @@ sap.ui.define([
         LinkClick: function (event) {
             var clicked_row = event.getParameters().rowBindingContext.getObject();
             var clicked_column = event.getParameters().columnIndex;
-            if (clicked_row.expand == 3 && clicked_column == 1) {
+            if (clicked_row.expand === 3 && clicked_column === 1) {
                 var Item = new sap.m.TabContainerItem();
                 Item.setName(clicked_row.value);
                 var image = new sap.m.Image();
@@ -961,7 +973,7 @@ sap.ui.define([
             var temp;
             for (var i = this.total - 1; i >= 0; i--) {
                 temp = this.View.getContextByIndex(i).getObject();
-                if (temp.expand == 0) {
+                if (temp.expand === 0) {
                     this.View.collapse(i);
                 }
             }
@@ -1091,7 +1103,7 @@ sap.ui.define([
         },
         GetIndex: function (array, name) {
             for (var key in array) {
-                if (array[key].name == name) {
+                if (array[key].name === name) {
                     break;
                 }
             }
@@ -1109,28 +1121,28 @@ sap.ui.define([
         SwitchColor: function (color) {
             var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
             var col;
-            if (color == "yellow" || color == "Yellow") {
+            if (color === "yellow" || color === "Yellow") {
                 for (col in CSS_classes) {
                     if (col !== 0) {
                         this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
                     }
                 }
                 this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
-            } else if (color == "green" || color == "Green") {
+            } else if (color === "green" || color === "Green") {
                 for (col in CSS_classes) {
                     if (col !== 1) {
                         this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
                     }
                 }
                 this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
-            } else if (color == "red" || color == "Red") {
+            } else if (color === "red" || color === "Red") {
                 for (col in CSS_classes) {
                     if (col !== 2) {
                         this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
                     }
                 }
                 this.getView().byId("panel_processi").addStyleClass("stylePanelRed");
-            } else if (color == "brown" || color == "Brown") {
+            } else if (color === "brown" || color === "Brown") {
                 for (col in CSS_classes) {
                     if (col !== 3) {
                         this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
@@ -1146,28 +1158,28 @@ sap.ui.define([
         SwitchColorAttrezzaggio: function (color) {
             var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
             var col;
-            if (color == "yellow" || color == "Yellow") {
+            if (color === "yellow" || color === "Yellow") {
                 for (col in CSS_classes) {
                     if (col !== 0) {
                         this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
                     }
                 }
                 this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelYellow");
-            } else if (color == "green" || color == "Green") {
+            } else if (color === "green" || color === "Green") {
                 for (col in CSS_classes) {
                     if (col !== 1) {
                         this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
                     }
                 }
                 this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelGreen");
-            } else if (color == "red" || color == "Red") {
+            } else if (color === "red" || color === "Red") {
                 for (col in CSS_classes) {
                     if (col !== 2) {
                         this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
                     }
                 }
                 this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelRed");
-            } else if (color == "brown" || color == "Brown") {
+            } else if (color === "brown" || color === "Brown") {
                 for (col in CSS_classes) {
                     if (col !== 3) {
                         this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
@@ -1187,7 +1199,7 @@ sap.ui.define([
                 } else {
                     if (key === "value") {
                         if (bck[key] !== std[key]) {
-                            bck.expand = "2";
+                            bck.expand = 2;
                         }
                     }
                 }
@@ -1197,42 +1209,43 @@ sap.ui.define([
         RecursiveParentExpansion: function (bck) {
             for (var key in bck) {
                 if (typeof bck[key] === "object") {
-                    if (bck.expand) {
-                        this.change.push(bck);
-                    }
-                    if (bck[key].expand) {
-                        this.change.push(bck[key]);
+                    this.exp = 0;
+                    bck[key] = this.RecursiveJSONExpansionFinder(bck[key]);
+                    if (typeof bck[key].expand !== "undefined" && bck[key].expand === 0) {
+                        bck[key].expand = this.exp;
                     }
                     bck[key] = this.RecursiveParentExpansion(bck[key]);
+                }
+            }
+            return bck;
+        },
+        RecursiveJSONExpansionFinder: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveJSONExpansionFinder(json[key]);
                 } else {
                     if (key === "expand") {
-                        if (bck[key] === "3" || bck[key] === "2" || bck[key] === "1") {
-                            this.exp = "1";
-                            for (var i = 0; i < this.change.length; i++) {
-                                if (this.change[i].expand === "0") {
-                                    this.change[i].expand = "1";
-                                }
-                            }
+                        if (json[key] > 0) {
+                            this.exp = 1;
                         }
                     }
                 }
             }
-            this.change.splice(-1, 1);
-            return bck;
+            return json;
         },
         RecursiveStandardAdapt: function (std, bck) {
             for (var key in std) {
                 if (typeof std[key] === "object") {
                     if (key === "expand") {
-                        if (bck[key] === "3" || bck[key] === "2" || bck[key] === "1") {
-                            std[key] = "1";
+                        if (bck[key] === 3 || bck[key] === 2 || bck[key] === 1) {
+                            std[key] = 1;
                         }
                     }
                     std[key] = this.RecursiveStandardAdapt(std[key], bck[key]);
                 } else {
                     if (key === "expand") {
-                        if (bck[key] === "3" || bck[key] === "2" || bck[key] === "1") {
-                            std[key] = "1";
+                        if (bck[key] === 3 || bck[key] === 2 || bck[key] === 1) {
+                            std[key] = 1;
                         }
                     }
                 }
@@ -1245,8 +1258,8 @@ sap.ui.define([
                     bck[key] = this.RecursiveLinkRemoval(bck[key]);
                 } else {
                     if (key === "expand") {
-                        if (bck[key] === "3") {
-                            bck[key] = "0";
+                        if (bck[key] === 3) {
+                            bck[key] = 0;
                         }
                     }
                 }
@@ -1259,8 +1272,8 @@ sap.ui.define([
                     bck[key] = this.RecursiveModifyExpansion(bck[key]);
                 } else {
                     if (key === "modify" || key === "code") {
-                        if (bck[key] === "1") {
-                            bck.expand = "1";
+                        if (bck[key] === 1) {
+                            bck.expand = 1;
                         }
                     }
                 }
@@ -1276,7 +1289,59 @@ sap.ui.define([
                 }
             }
             return bck;
+        },
+        XMLSetupUpdates: function (setup) {
+            var heading = "<Parameters>" +
+                    "<LineaID>1</LineaID>" +
+                    "<SKUID>1</SKUID>" +
+                    "<ParameterList>";
+            var bottom = "</ParameterList>" +
+                    "</Parameters>";
+            this.dataXML = [];
+            setup = this.RecursiveJSONChangesFinder(setup);
+            var body = "";
+            for (var i in this.dataXML) {
+                body += "<Parameter>";
+                for (var key in this.dataXML[i]) {
+                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
+                }
+                body += "</Parameter>";
+            }
+            var XMLstring = heading + body + bottom;
+            return $.parseXML(XMLstring);
+        },
+        RecursiveJSONChangesFinder: function (setup) {
+            var temp = {};
+            for (var key in setup) {
+                if (typeof setup[key] === "object") {
+                    setup[key] = this.RecursiveJSONChangesFinder(setup[key]);
+                } else {
+                    if (typeof setup.code !== "undefined") {
+                        if (setup.code === 1 || setup.modify === 1) {
+                            if (setup.code === 1) {
+                                if (setup.codePlaceholder === "Lotto") {
+                                    temp.Type = "l";
+                                } else if (setup.codePlaceholder === "Matricola") {
+                                    temp.Type = "m";
+                                }
+                            } else if (setup.modify === 1) {
+                                temp.Type = "v";
+                            }
+                            temp.IDParametro = setup.name;
+                            temp.ValueML = setup.codeValue;
+                            temp.Value = setup.value;
+                            if (temp !== this.dataXML[this.dataXML.length - 1]) {
+                                this.dataXML.push(temp);
+                            }
+                        }
+                    }
+                }
+            }
+            return setup;
         }
+
+
+
 
 
 //        onAfterRendering: function () {

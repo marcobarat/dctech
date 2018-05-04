@@ -17,7 +17,7 @@ sap.ui.define([
             },
 
             properties: {
-                diff: {type: "string", defaultValue: 0}
+                diff: {type: "number", defaultValue: 0}
             }
         },
         renderer: function (oRm, oControl) {
@@ -27,7 +27,7 @@ sap.ui.define([
 
         onAfterRendering: function () {
 
-            if (this.getDiff() === "1") {
+            if (this.getDiff() === 1) {
                 this.addStyleClass('diffStandard');
             } else {
                 this.removeStyleClass('diffStandard');
