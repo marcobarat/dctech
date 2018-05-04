@@ -253,7 +253,7 @@ sap.ui.define([
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValueModify", "codeValue");
-            var XML = this.XMLSetupUpdates(data);
+            var XMLstring = this.XMLSetupUpdates(data);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -311,7 +311,7 @@ sap.ui.define([
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
-            var XML = this.XMLSetupUpdates(data);
+            var XMLstring = this.XMLSetupUpdates(data);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
@@ -529,7 +529,7 @@ sap.ui.define([
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
-            var XML = this.XMLSetupUpdates(data);
+            var XMLstring = this.XMLSetupUpdates(data);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
@@ -1307,8 +1307,7 @@ sap.ui.define([
                 }
                 body += "</Parameter>";
             }
-            var XMLstring = heading + body + bottom;
-            return $.parseXML(XMLstring);
+            return (heading + body + bottom);
         },
         RecursiveJSONChangesFinder: function (setup) {
             var temp = {};
@@ -1327,7 +1326,7 @@ sap.ui.define([
                             } else if (setup.modify === 1) {
                                 temp.Type = "v";
                             }
-                            temp.IDParametro = setup.name;
+                            temp.IDParametro = setup.id;
                             temp.ValueML = setup.codeValue;
                             temp.Value = setup.value;
                             if (temp !== this.dataXML[this.dataXML.length - 1]) {
