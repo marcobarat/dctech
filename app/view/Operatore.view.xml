@@ -17,7 +17,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -40,7 +40,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -109,7 +109,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -282,7 +282,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -374,7 +374,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -551,7 +551,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -610,7 +610,7 @@
                         <VBox height="20%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -633,7 +633,7 @@
                                         </VBox>
                                         <VBox width="30%"/>
                                         <VBox width="25%">
-                                            <Button id="ConfermaCausalizzazione" text="Causalizza" width="100%" enabled="false" press="Fermo"/>
+                                            <Button id="ConfermaCausalizzazione" text="Causalizza" width="100%" enabled="false" press="Causalizza"/>
                                         </VBox>
                                         <VBox width="10%"/>
                                     </HBox>
@@ -824,7 +824,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -854,7 +854,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -939,7 +939,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -1234,7 +1234,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -1294,7 +1294,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -1445,7 +1445,7 @@
                         <VBox height="20%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Globale/Linea}" class="textTop"/>
+                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                             <VBox width="100%">
@@ -1493,7 +1493,7 @@
                                 <Button id="ButtonModificaCondizioni" text="Modifica condizioni operative" enabled="false" press="ModificaCondizioni" width="100%" class="styleButton">
                                 </Button>
                                 <Text/>
-                                <Button id="ButtonFermo" text="Fermo" enabled="false" press="Fermo" width="100%" class="styleButton">
+                                <Button id="ButtonFermo" text="Fermo" enabled="false" press="FermoCall" width="100%" class="styleButton">
                                 </Button>
                                 <Text/>
                                 <Button id="ButtonRiavvio" text="Riavvio" enabled="false" press="Riavvio" width="100%" class="styleButton">

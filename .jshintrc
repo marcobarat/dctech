@@ -12,6 +12,7 @@
         "accounting" : false,
 		"alert": false,
 		"setTimeout": false,
-		"document": false
+		"document": false,
+		"setInterval": false
     }
 }

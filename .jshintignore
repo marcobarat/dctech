@@ -1,5 +1,6 @@
 node_modules/**
 alert
 setTimeout
+setInterval
 app/component/**
 document

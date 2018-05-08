@@ -37,5 +37,8 @@
         "grunt-openui5": "^0.8.1",
         "grunt-sync": "^0.6.2",
         "grunt-string-replace": "^1.2.1"
+    },
+    "dependencies": {
+        "connect-proxy": "^1.0.2"
     }
 }

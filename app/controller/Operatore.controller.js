@@ -38,54 +38,49 @@ sap.ui.define([
 
         onInit: function () {
 
-            this.Global = this.getOwnerComponent().getModel("Global");
-            this.ModelDetailPages.setProperty("/Globale/", {});
-            this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
-
-
-
-
 
 //            this.ModelDetailPages.setProperty("/SKUBatch/", {});
 //            this.AjaxCallerData("model/SKU_standard.json", this.ModelDetailPages, "/SKUBatch/SKUstandard/");
 //            this.AjaxCallerData("model/SKU_backend.json", this.ModelDetailPages, "/SKUBatch/SKUattuale/");
 //            this.AjaxCallerData("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
-            
-            this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            this.AjaxCallerData("model/allestimentoOld.json", this.ModelDetailPages, "/SetupLinea/Old/");
-            this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/New/");
-            this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/Modify/");
-            if (this.Global.getData().Choice === "Produzione") {
-                this.ModelDetailPages.setProperty("/Fermo/", {});
-                this.ModelDetailPages.setProperty("/Causalizzazione/", {});
-                this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
-                this.AjaxCallerData("model/JSON_FermoTestiNew.json", this.ModelDetailPages, "/Fermo/Testi/");
-                this.AjaxCallerData("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
-                this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
-                this.EnableButtons(["ButtonPresaInCarico"]);
-            } else if (this.Global.getData().Choice === "Attrezzaggio") {
-                this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
-                this.EnableButtons(["ButtonBatchAttrezzaggio"]);
-            }
 
 
+//            this.AjaxCallerData("model/allestimentoOld.json", this.ModelDetailPages, "/SetupLinea/Old/");
+//            this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/New/");
+//            this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/Modify/");
+//            if (this.Global.getData().Choice === "Produzione") {
+////                this.ModelDetailPages.setProperty("/Causalizzazione/", {});
+////                this.AjaxCallerData("model/JSON_FermoTestiNew.json", this.ModelDetailPages, "/Fermi/");
+//                this.AjaxCallerData("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
+////                this.EnableButtons(["ButtonPresaInCarico"]);
+//            } else if (this.Global.getData().Choice === "Attrezzaggio") {
+//                this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
+//                this.EnableButtons(["ButtonBatchAttrezzaggio"]);
+//            }
 
             this.RefreshCall();
-
-
-
-            this.getSplitAppObj().toDetail(this.createId("Home"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            setInterval(this.RefreshCall, 1000);
+//            this.getSplitAppObj().toDetail(this.createId("Home"));
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
         RefreshCall: function () {
-            var link, data;
-            link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea + "&OutputParameter=JSON";
+
+            this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
+            this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
+
+
+            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+            this.ModelDetailPages.setProperty("/Causalizzazione/", {});
+            this.Global = this.getOwnerComponent().getModel("Global");
+            this.ModelDetailPages.setProperty("/Globale/", {});
+            this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea + "&OutputParameter=JSON";
             this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
             var model = this.ModelDetailPages.getData();
-            data = this.ModelDetailPages.getData().SKUBatch;
-            var descr = data.attributi[2].attributi[2].value + " " + data.attributi[2].attributi[3].value + " " + data.attributi[3].attributi[0].value;
-            model.Intestazione = {"linea": this.Global.getData().idLinea, "descrizione": descr, "conforme": true};
+            var data = model.SKUBatch;
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
+                var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
+                model.Intestazione = {"linea": this.Global.getData().Linea, "descrizione": descr, "conforme": true};
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
                 data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
                 this.exp = 0;
@@ -93,94 +88,108 @@ sap.ui.define([
                 if (this.exp === 1) {
                     model.Intestazione.conforme = false;
                 }
-            }
-            if (data.Batch.IsAttrezzaggio === "0") {
+                if (data.Batch[0].IsAttrezzaggio === "0") {
+                    switch (data.StatoLinea) {
+                        case "Disponibile.Vuota":
+                            this.getSplitAppObj().toDetail(this.createId("Home"));
+                            this.SwitchColor("");
+                            this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                            break;
+                        case "Disponibile.AttesaPresaInCarico":
+                            this.SwitchColor("");
+                            this.SwitchColorAttrezzaggio("");
+                            this.EnableButtons(["ButtonPresaInCarico"]);
+                            break;
+                        case "Disponibile.Attrezzaggio":
+                            this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
+                            this.SwitchColor("yellow");
+                            this.SwitchColorAttrezzaggio("");
+                            this.DisableButtons(["ButtonPresaInCarico"]);
+                            this.EnableButtons(["ButtonFinePredisposizione"]);
+                            this.ConfermaBatch();
+                            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                            break;
+                        case "Disponibile.Lavorazione":
+                            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                            this.SwitchColor("green");
+                            this.SwitchColorAttrezzaggio("");
+                            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                            break;
+                        case "Disponibile.Fermo":
+                            this.SwitchColor("red");
+                            this.SwitchColorAttrezzaggio("");
+                            this.getSplitAppObj().toDetail(this.createId("Fault"));
+                            this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
+                            break;
+                        case "Disponibile.Svuotamento":
+                            this.CLOSED = 1;
+                            this.SwitchColor("brown");
+                            this.SwitchColorAttrezzaggio("");
+                            this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+                            this.AggiornaChiusura();
+                            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+                            this.EnableButtons(["ButtonCausalizzazione"]);
+                            break;
+                        case "NonDisponibile":
+                            this.SwitchColor("");
+                            this.SwitchColorAttrezzaggio("");
+                            break;
+                    }
+                } else {
+                    switch (data.StatoLinea) {
+                        case "Disponibile.Vuota":
+                            this.SwitchColor("");
+                            this.SwitchColorAttrezzaggio("");
+                            break;
+                        case "Disponibile.AttesaPresaInCarico":
+                            this.SwitchColor("");
+                            this.SwitchColorAttrezzaggio("");
+                            this.EnableButtons(["ButtonBatchAttrezzaggio"]);
+                            break;
+                        case "Disponibile.Attrezzaggio":
+                            this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
+                            this.SwitchColor("");
+                            this.SwitchColorAttrezzaggio("yellow");
+                            this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
+                            this.DisableButtons(["ButtonBatchAttrezzaggio"]);
+                            break;
+                        case "Disponibile.Svuotamento":
+                            this.SwitchColor("");
+                            this.SwitchColorAttrezzaggio("brown");
+                            break;
+                        case "NonDisponibile":
+                            this.SwitchColor("");
+                            this.SwitchColorAttrezzaggio("");
+                            break;
+                        default:
+                            console.log("C'è un problema.");
+                    }
+                }
+            } else {
                 switch (data.StatoLinea) {
                     case "Disponibile.Vuota":
                         this.getSplitAppObj().toDetail(this.createId("Home"));
                         this.SwitchColor("");
                         this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
                         break;
-                    case "Disponibile.AttesaPresaInCarico":
-                        this.SwitchColor("");
-                        this.SwitchColorAttrezzaggio("");
-                        this.EnableButtons(["ButtonPresaInCarico"]);
-                        break;
-                    case "Disponibile.Attrezzaggio":
-                        this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
-                        this.SwitchColor("yellow");
-                        this.SwitchColorAttrezzaggio("");
-                        this.DisableButtons(["ButtonPresaInCarico"]);
-                        this.EnableButtons(["ButtonFinePredisposizione"]);
-                        this.ConfermaBatch();
-                        break;
-                    case "Disponibile.Lavorazione":
-                        this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                        this.SwitchColor("green");
-                        this.SwitchColorAttrezzaggio("");
-                        this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                        this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-                        break;
-                    case "Disponibile.Fermo":
-                        this.SwitchColor("red");
-                        this.SwitchColorAttrezzaggio("");
-                        this.getSplitAppObj().toDetail(this.createId("Fault"));
-                        this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
-                        break;
-                    case "Disponibile.Svuotamento":
-                        this.CLOSED = 1;
-                        this.SwitchColor("brown");
-                        this.SwitchColorAttrezzaggio("");
-                        this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
-                        this.AggiornaChiusura();
-                        this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                        this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
-                        this.EnableButtons(["ButtonCausalizzazione"]);
-                        break;
                     case "NonDisponibile":
                         this.SwitchColor("");
                         this.SwitchColorAttrezzaggio("");
                         break;
                 }
-            } else {
-                switch (data.StatoLinea) {
-                    case "Disponibile.Vuota":
-                        this.SwitchColor("");
-                        this.SwitchColorAttrezzaggio("");
-                        break;
-                    case "Disponibile.AttesaPresaInCarico":
-                        this.SwitchColor("");
-                        this.SwitchColorAttrezzaggio("");
-                        this.EnableButtons(["ButtonBatchAttrezzaggio"]);
-                        break;
-                    case "Disponibile.Attrezzaggio":
-                        this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
-                        this.SwitchColor("");
-                        this.SwitchColorAttrezzaggio("yellow");
-                        this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
-                        this.DisableButtons(["ButtonBatchAttrezzaggio"]);
-                        break;
-                    case "Disponibile.Svuotamento":
-                        this.SwitchColor("");
-                        this.SwitchColorAttrezzaggio("brown");
-                        break;
-                    case "NonDisponibile":
-                        this.SwitchColor("");
-                        this.SwitchColorAttrezzaggio("");
-                        break;
-                    default:
-                        console.log("C'è un problema.");
-                }
-
+                model.Intestazione = {"linea": "", "descrizione": "", "conforme": ""};
             }
         },
-//        DI SEGUITO LE 2 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
+//        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
         AjaxCallerVoid: function (address) {
             jQuery.ajax({
                 url: address,
-                async: false,
+                async: false
             });
         },
+//        DI SEGUITO LE 2 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
         AjaxCallerData: function (addressOfJSON, model, targetAddress, faults) {
             if (faults === undefined) {
                 faults = false;
@@ -189,7 +198,7 @@ sap.ui.define([
                 url: addressOfJSON,
                 method: "GET",
                 dataType: "json",
-                async: false,
+                async: false
             });
             var passer = {};
             passer.model = model;
@@ -220,9 +229,7 @@ sap.ui.define([
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
         PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-
-
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
+//            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
 //            this.AjaxCallerVoid(link);
 
 
@@ -231,8 +238,6 @@ sap.ui.define([
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
             this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
-
-
             this.DisableButtons(["ButtonPresaInCarico"]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
@@ -243,16 +248,20 @@ sap.ui.define([
 //            this.RefreshCall();
 
 
-            this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.SwitchColor("yellow");
-
-
-
+//            this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
             this.TabContainer = this.getView().byId("TabContainer");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
+
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
+
+            link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+            this.ModelDetailPages.setProperty("SetupLinea/Modify/", this.ModelDetailPages.getData().SetupLinea.New);
+
+
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
@@ -266,10 +275,12 @@ sap.ui.define([
             mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
             this.backupSetupModify = JSON.parse(JSON.stringify(mod));
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.SwitchColor("yellow");
 //            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
 //            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
 //            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
-            this.EnableButtons(["ButtonFinePredisposizione"]);
+//            this.EnableButtons(["ButtonFinePredisposizione"]);
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -395,29 +406,24 @@ sap.ui.define([
 
 
 
-//                var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
-//                this.AjaxCallerVoid(link);
-//
-//
-//                var XMLstring = this.XMLSetupUpdates(data);
-//                var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
-//                this.AjaxCallerVoid(link);
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
+                this.AjaxCallerVoid(link);
 
 
-//            this.RefreshCall();
+                var XMLstring = this.XMLSetupUpdates(data);
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
+                this.AjaxCallerVoid(link);
 
 
-
-
-                this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                this.SwitchColor("green");
-                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                this.RefreshCall();
 
 
 
 
-
+//                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+//                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//                this.SwitchColor("green");
+//                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
             } else {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
             }
@@ -443,6 +449,11 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
         ModificaCondizioni: function () {
+            if (typeof this.ModelDetailPages.getData().SetupLinea.Modify === "undefined") {
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
+            }
+
             this.getSplitAppObj().toDetail(this.createId("ModificaCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.TabContainer = this.getView().byId("TabContainer-mod");
@@ -458,7 +469,6 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
-
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
         ConfermaModifica: function () {
             var setupData = this.ModelDetailPages.getData().SKUBatch.Batch;
@@ -466,29 +476,29 @@ sap.ui.define([
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
+            var XMLstring = this.XMLSetupUpdates(data);
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
+            this.AjaxCallerVoid(link);
 
 
 
-//            var XMLstring = this.XMLSetupUpdates(data);
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
-//            this.AjaxCallerVoid(link);
-
-
-
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getSplitAppObj().toDetail(this.createId("InProgress"));
-            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-
-
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+//            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //------------------------------------------------------------------------------
 
 //      RICHIAMATO DAL PULSANTE "FERMO"
-        Fermo: function (event) {
-            this.discr = event.getParameters().id;
+        FermoCall: function () {
+            this.discr = "FermoManuale";
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaFermi&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+            this.AjaxCallerData(link, this.ModelDetailPages, "/Fermi/");
+            this.Fermo();
+        },
+        Fermo: function () {
             this.getSplitAppObj().toDetail(this.createId("Fermo"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            var data = this.ModelDetailPages.getData().Fermo.Testi.gerarchie;
+            var data = this.ModelDetailPages.getData().Fermi.gerarchie;
             var num_gerarchie = data.length;
             var ID, CB;
             var cols = 2;
@@ -533,7 +543,6 @@ sap.ui.define([
             hbox.addItem(vb1);
             hbox.addItem(VB1);
             this.outerVBox.addItem(hbox);
-
             var hbox1 = new sap.m.HBox({});
             var vb0 = new sap.m.VBox({width: "47%"});
             var vb2 = new sap.m.VBox({width: "6%"});
@@ -556,7 +565,6 @@ sap.ui.define([
             hbox1.addItem(vb0);
             hbox1.addItem(vb2);
             hbox1.addItem(vb3);
-
             this.outerVBox.addItem(hbox1);
             this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
@@ -594,7 +602,7 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE DI ANNULLA NEL FERMO
         AnnullaFermo: function () {
-            if (this.discr.indexOf("ButtonFermo") > -1) {
+            if (this.discr === "FermoManuale") {
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             } else {
@@ -608,15 +616,24 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NEL FERMO
         ConfermaFermo: function () {
             var CB = sap.ui.getCore().byId(this.id_split[1]);
-            if (this.discr.indexOf("ButtonFermo") > -1) {
-                this.Item = {};
-                var now = new Date();
-                this.Item.inizio = this.DateToStandard(now);
-                this.Item.causa = CB.getProperty("text");
-                this.SwitchColor("red");
-                this.getSplitAppObj().toDetail(this.createId("Fault"));
-                this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
+            if (this.discr === "FermoManuale") {
+
+                var idGross = CB.getProperty("id");
+                var root = "CBFermo";
+                var id = idGross.substring(root.length, idGross.length);
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea + "&CausaleEventoID=" + id;
+                this.AjaxCallerVoid(link);
+
+
+//                this.Item = {};
+//                var now = new Date();
+//                this.Item.inizio = this.DateToStandard(now);
+//                this.Item.causa = CB.getProperty("text");
+//                this.SwitchColor("red");
+//                this.getSplitAppObj().toDetail(this.createId("Fault"));
+//                this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
             } else {
+//                "XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogFermiAutoSenzaCausale&Content-Type=text/json&ListLogID=105#107&CausaleID=16"
                 var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
                 var data_All = this.ModelDetailPages.getData().Causalizzazione.All;
                 for (var i in this.CheckSingoloCausa) {
@@ -633,7 +650,8 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data);
                 this.ModelDetailPages.setProperty("/Causalizzazione/All/", data_All);
                 this.UpdateFaultsModels();
-                this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
+                this.Causalizzazione();
+//                this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
                 if (this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti.length === 0) {
@@ -657,6 +675,10 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTE "RIAVVIO"
         Riavvio: function () {
+            if (typeof this.ModelDetailPages.getData().SetupLinea.Modify === "undefined") {
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
+            }
             this.getSplitAppObj().toDetail(this.createId("RipristinoCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.DisableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
@@ -685,32 +707,36 @@ sap.ui.define([
 
 
 
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
-//            this.AjaxCallerVoid(link);
-//
-//            var XMLstring = this.XMLSetupUpdates(data);
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
-//            this.AjaxCallerVoid(link);
-//
-//
-//            this.RefreshCall();
+
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
+            this.AjaxCallerVoid(link);
+
+            var XMLstring = this.XMLSetupUpdates(data);
+            link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
+            this.AjaxCallerVoid(link);
+
+
+            this.RefreshCall();
 
 
 
 
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getSplitAppObj().toDetail(this.createId("InProgress"));
-            var now = new Date();
-            this.Item.fine = this.DateToStandard(now);
-            this.AggiornaGuasti();
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-            this.SwitchColor("green");
+
+//            var now = new Date();
+//            this.Item.fine = this.DateToStandard(now);
+//            this.AggiornaGuasti();
+//            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+//            this.SwitchColor("green");
         },
 //------------------------------------------------------------------------------
 //      
 //      RICHIAMATO DAL PULSANTE "CAUSALIZZAZIONE FERMI AUTOMATICI"
         Causalizzazione: function () {
+
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            this.AjaxCallerData(link, this.ModelDetailPages, "/Causalizzazione/NoCause/");
             this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.CheckSingoloCausa = [];
@@ -782,19 +808,27 @@ sap.ui.define([
             this.getView().byId("CBTotaleCausa").setEnabled(true);
             this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
         },
+//      RICHIAMATO DAL PULSANTE DI CAUSALIZZA
+        Causalizza: function () {
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaFermi&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
+            this.AjaxCallerData(link, this.ModelDetailPages, "/Fermi/");
+            this.Fermo();
+        },
 //      RICHIAMATO DAL PULSANTE DI ESCI NELLA CAUSALIZZAZIONE
         EsciCausalizzazione: function () {
-            if (this.CLOSED === 0) {
-                this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-            } else {
-                this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
-                this.AggiornaChiusura();
-                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
-                this.EnableButtons(["ButtonCausalizzazione"]);
-            }
+            this.RefreshCall();
+
+//            if (this.CLOSED === 0) {
+//                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+//                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+//            } else {
+//                this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+//                this.AggiornaChiusura();
+//                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//                this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+//                this.EnableButtons(["ButtonCausalizzazione"]);
+//            }
         },
 //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
         UpdateFaultsModels: function () {
@@ -819,29 +853,29 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
 
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
-//            this.AjaxCallerVoid(link);
-//            this.RefreshCall();
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
+            this.AjaxCallerVoid(link);
+            this.RefreshCall();
 
 
 
-            this.CLOSED = 1;
-            this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
-            this.AggiornaChiusura();
-            this.SwitchColor("brown");
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
-            this.EnableButtons(["ButtonCausalizzazione"]);
+//            this.CLOSED = 1;
+//            this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+//            this.AggiornaChiusura();
+//            this.SwitchColor("brown");
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+//            this.EnableButtons(["ButtonCausalizzazione"]);
         },
         ConfermaChiusura: function () {
 
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=1" + this.Global.getData().idLinea;
-//            this.AjaxCallerVoid(link);
-//            this.RefreshCall();
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=1" + this.Global.getData().idLinea;
+            this.AjaxCallerVoid(link);
+            this.RefreshCall();
 
-            this.getSplitAppObj().toDetail(this.createId("Home"));
-            this.SwitchColor("");
-            this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+//            this.getSplitAppObj().toDetail(this.createId("Home"));
+//            this.SwitchColor("");
+//            this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
