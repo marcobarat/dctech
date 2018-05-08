@@ -38,13 +38,20 @@ sap.ui.define([
 
         onInit: function () {
 
-//            this.RefreshCall();
             this.Global = this.getOwnerComponent().getModel("Global");
-            this.ModelDetailPages.setProperty("/SKUBatch/", {});
+            this.ModelDetailPages.setProperty("/Globale/", {});
+            this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
+
+
+
+
+
+//            this.ModelDetailPages.setProperty("/SKUBatch/", {});
+//            this.AjaxCallerData("model/SKU_standard.json", this.ModelDetailPages, "/SKUBatch/SKUstandard/");
+//            this.AjaxCallerData("model/SKU_backend.json", this.ModelDetailPages, "/SKUBatch/SKUattuale/");
+//            this.AjaxCallerData("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
+            
             this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            this.AjaxCallerData("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
-            this.AjaxCallerData("model/SKU_standard.json", this.ModelDetailPages, "/SKUBatch/SKUstandard/");
-            this.AjaxCallerData("model/SKU_backend.json", this.ModelDetailPages, "/SKUBatch/SKUattuale/");
             this.AjaxCallerData("model/allestimentoOld.json", this.ModelDetailPages, "/SetupLinea/Old/");
             this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/New/");
             this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/Modify/");
@@ -61,19 +68,23 @@ sap.ui.define([
                 this.EnableButtons(["ButtonBatchAttrezzaggio"]);
             }
 
-            this.ModelDetailPages.setProperty("/Globale/", {});
-            this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
+
+
+            this.RefreshCall();
+
+
+
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
         RefreshCall: function () {
             var link, data;
-            link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.Global.idLinea + "&OutputParameter=JSON";
+            link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea + "&OutputParameter=JSON";
             this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
             var model = this.ModelDetailPages.getData();
             data = this.ModelDetailPages.getData().SKUBatch;
             var descr = data.attributi[2].attributi[2].value + " " + data.attributi[2].attributi[3].value + " " + data.attributi[3].attributi[0].value;
-            model.Intestazione = {"linea": this.Global.idLinea, "descrizione": descr, "conforme": true};
+            model.Intestazione = {"linea": this.Global.getData().idLinea, "descrizione": descr, "conforme": true};
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
                 data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
@@ -211,7 +222,7 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
 
 
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
 //            this.AjaxCallerVoid(link);
 
 
@@ -384,7 +395,7 @@ sap.ui.define([
 
 
 
-//                var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//                var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
 //                this.AjaxCallerVoid(link);
 //
 //
@@ -674,7 +685,7 @@ sap.ui.define([
 
 
 
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
 //            this.AjaxCallerVoid(link);
 //
 //            var XMLstring = this.XMLSetupUpdates(data);
@@ -808,7 +819,7 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
 
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
 //            this.AjaxCallerVoid(link);
 //            this.RefreshCall();
 
@@ -824,7 +835,7 @@ sap.ui.define([
         },
         ConfermaChiusura: function () {
 
-//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=1" + this.Global.idLinea;
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=1" + this.Global.getData().idLinea;
 //            this.AjaxCallerVoid(link);
 //            this.RefreshCall();
 
