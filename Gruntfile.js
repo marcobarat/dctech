@@ -36,14 +36,33 @@
                     }
                 },
 
-                connect: {
-                    options: {
-                        port: 9876,
-                        hostname: '*'
-                    },
-                    src: {},
-                    dist: {}
+            connect: {
+                options: {
+                    port: 9876,
+                    hostname: '*',
+                    middleware: function (connect, options, defaultMiddleware) {
+	var proxy;
+                        proxy = require('grunt-connect-proxy/lib/utils').proxyRequest; // jshint ignore:line
+                        return [
+                            // Include the proxy first
+                            proxy
+                        ].concat(defaultMiddleware);
+                    }
                 },
+                src: {},
+                dist: {},
+	proxies: [
+                    {
+                        context: "/XMII", // When the url contains this...
+                        host: "sapmiiappdev", // Proxy to this host
+                        port: 50100,
+                        changeOrigin: true,
+	headers: {
+                            "Authorization": "Basic bWJhcmF0ZWxsYTpJbml0MTIzNA=="
+                        },
+                    }
+                ]
+            },
 
                 openui5_connect: {
                     options: {
@@ -68,7 +87,7 @@
                         }
                     }
                 },
-/*
+
                 openui5_preload: {
                     component: {
                         options: {
@@ -80,7 +99,7 @@
                         },
                         components: true
                     }
-                },*/
+                },
 
                 clean: {
                     dist: {
@@ -189,6 +208,7 @@
             });
 
             // These plugins provide necessary tasks.
+	grunt.loadNpmTasks('grunt-connect-proxy');
             grunt.loadNpmTasks('grunt-contrib-jshint');
             grunt.loadNpmTasks('grunt-jsvalidate');
             grunt.loadNpmTasks('grunt-contrib-connect');
@@ -216,8 +236,7 @@
 
             // Build task
             //grunt.registerTask('build', ['compile', 'openui5_preload', 'copy:dist', 'string-replace']);
-            //grunt.registerTask('build', ['compile', 'openui5_preload', 'copy:dist']);
-			grunt.registerTask('build', ['compile', 'copy:dist']);
+            grunt.registerTask('build', ['compile', 'openui5_preload', 'copy:dist']);
 
             // Copy sync mode
             grunt.registerTask('copySync', 'sync');
@@ -232,11 +251,12 @@
             grunt.registerTask('mywatch', ['watch']);
 
             // Default task
-            grunt.registerTask('default', [
-                'build_test',
-                'serve:dist',
-                'watch'
-            ]);
+	grunt.registerTask('default', [
+	   'build_test',
+	   'configureProxies:server',
+	   'serve:dist',
+	   'watch'
+	   ]);
         };
 
     }

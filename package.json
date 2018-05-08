@@ -24,6 +24,7 @@
     },
     "homepage": "https://github.com/eltony81/sapui5skeleton/issues#readme",
     "devDependencies": {
+        "grunt-connect-proxy": "^0.2.0",
         "grunt": "^0.4.5",
         "grunt-cli": "^1.2.0",
         "grunt-contrib-clean": "^1.0.0",
