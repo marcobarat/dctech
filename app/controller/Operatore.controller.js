@@ -55,10 +55,10 @@ sap.ui.define([
                 this.AjaxCallerData("model/JSON_FermoTestiNew.json", this.ModelDetailPages, "/Fermo/Testi/");
                 this.AjaxCallerData("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
                 this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
-                this.getView().byId("ButtonPresaInCarico").setEnabled(true);
+                this.EnableButtons(["ButtonPresaInCarico"]);
             } else if (this.Global.getData().Choice === "Attrezzaggio") {
                 this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
-                this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(true);
+                this.EnableButtons(["ButtonBatchAttrezzaggio"]);
             }
 
             this.ModelDetailPages.setProperty("/Globale/", {});
@@ -86,8 +86,9 @@ sap.ui.define([
             if (data.Batch.IsAttrezzaggio === "0") {
                 switch (data.StatoLinea) {
                     case "Disponibile.Vuota":
+                        this.getSplitAppObj().toDetail(this.createId("Home"));
                         this.SwitchColor("");
-                        this.SwitchColorAttrezzaggio("");
+                        this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
                         break;
                     case "Disponibile.AttesaPresaInCarico":
                         this.SwitchColor("");
@@ -106,7 +107,6 @@ sap.ui.define([
                         this.getSplitAppObj().toDetail(this.createId("InProgress"));
                         this.SwitchColor("green");
                         this.SwitchColorAttrezzaggio("");
-
                         this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                         this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
                         break;
@@ -117,6 +117,7 @@ sap.ui.define([
                         this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
                         break;
                     case "Disponibile.Svuotamento":
+                        this.CLOSED = 1;
                         this.SwitchColor("brown");
                         this.SwitchColorAttrezzaggio("");
                         this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
@@ -354,11 +355,11 @@ sap.ui.define([
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
-            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
+            this.DisableButtons(["ButtonFinePredisposizione"]);
         },
 //      RICHIAMATO DAL PULSANTE ANNULLA ALLA FINE DELLA PREDISPOSIZIONE
         AnnullaPredisposizione: function () {
-            this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
+            this.EnableButtons(["ButtonFinePredisposizione"]);
             this.TabContainer = this.getView().byId("TabContainer");
             var tab = this.TabContainer.getItems()[2];
             this.TabContainer.removeItem(tab);
@@ -370,6 +371,7 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE CONFERMA ALLA FINE DELLA PREDISPOSIZIONE
         ConfermaPredisposizione: function () {
 
+            var setupData = this.ModelDetailPages.getData().SKUBatch.Batch;
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValueModify", "codeValue");
@@ -379,22 +381,32 @@ sap.ui.define([
             if (this.codeCheck === 0) {
 
 
+
+
+
 //                var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.Global.idLinea;
 //                this.AjaxCallerVoid(link);
 //
 //
 //                var XMLstring = this.XMLSetupUpdates(data);
-//                link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + XMLstring;
+//                var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
 //                this.AjaxCallerVoid(link);
 
 
 //            this.RefreshCall();
 
 
+
+
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.SwitchColor("green");
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+
+
+
+
+
             } else {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
             }
@@ -438,16 +450,25 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
         ConfermaModifica: function () {
+            var setupData = this.ModelDetailPages.getData().SKUBatch.Batch;
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
-            var XMLstring = this.XMLSetupUpdates(data);
-            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + XMLstring;
-            this.AjaxCallerVoid(link);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
+
+
+
+//            var XMLstring = this.XMLSetupUpdates(data);
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
+//            this.AjaxCallerVoid(link);
+
+
+
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+
+
         },
 //------------------------------------------------------------------------------
 
@@ -627,8 +648,7 @@ sap.ui.define([
         Riavvio: function () {
             this.getSplitAppObj().toDetail(this.createId("RipristinoCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getView().byId("ButtonRiavvio").setEnabled(false);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            this.DisableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
         },
 //      FUNZIONE CHE AGGIORNA IL MODELLO DEI GUASTI
         AggiornaGuasti: function () {
@@ -642,26 +662,38 @@ sap.ui.define([
         AnnullaRipristino: function () {
             this.getSplitAppObj().toDetail(this.createId("Fault"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getView().byId("ButtonRiavvio").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA"
         ConfermaRipristino: function () {
+            var setupData = this.ModelDetailPages.getData().SKUBatch.Batch;
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
-            var XMLstring = this.XMLSetupUpdates(data);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
+
+
+
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//            this.AjaxCallerVoid(link);
+//
+//            var XMLstring = this.XMLSetupUpdates(data);
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
+//            this.AjaxCallerVoid(link);
+//
+//
+//            this.RefreshCall();
+
+
+
+
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             var now = new Date();
             this.Item.fine = this.DateToStandard(now);
             this.AggiornaGuasti();
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-            this.getView().byId("ButtonFermo").setEnabled(true);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
             this.SwitchColor("green");
         },
 //------------------------------------------------------------------------------
@@ -676,10 +708,7 @@ sap.ui.define([
                 this.CheckSingoloCausa.push(0);
             }
             this.UncheckCause();
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-            this.getView().byId("ButtonFermo").setEnabled(false);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedCausa: function (event) {
@@ -747,18 +776,13 @@ sap.ui.define([
             if (this.CLOSED === 0) {
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-                this.getView().byId("ButtonFermo").setEnabled(true);
-                this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-                this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
             } else {
                 this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
                 this.AggiornaChiusura();
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-                this.getView().byId("ButtonFermo").setEnabled(false);
-                this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-                this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+                this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+                this.EnableButtons(["ButtonCausalizzazione"]);
             }
         },
 //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
@@ -783,26 +807,30 @@ sap.ui.define([
 //      
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
+
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//            this.AjaxCallerVoid(link);
+//            this.RefreshCall();
+
+
+
             this.CLOSED = 1;
             this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
             this.AggiornaChiusura();
             this.SwitchColor("brown");
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-            this.getView().byId("ButtonFermo").setEnabled(false);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+            this.EnableButtons(["ButtonCausalizzazione"]);
         },
         ConfermaChiusura: function () {
+
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=1" + this.Global.idLinea;
+//            this.AjaxCallerVoid(link);
+//            this.RefreshCall();
+
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.SwitchColor("");
-            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
-            this.getView().byId("ButtonFinePredisposizione").setEnabled(false);
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-            this.getView().byId("ButtonFermo").setEnabled(false);
-            this.getView().byId("ButtonRiavvio").setEnabled(false);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -822,7 +850,7 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColor("");
-            this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(false);
+            this.DisableButtons(["ButtonBatchAttrezzaggio"]);
         },
         //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -843,8 +871,7 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColorAttrezzaggio("yellow");
-            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(true);
-            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(true);
+            this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
@@ -859,7 +886,7 @@ sap.ui.define([
 
             var data = {"stringa": "solo predisposizione"};
             this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
-            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
+            this.DisableButtons(["ButtonSospensioneAttrezzaggio"]);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var length = this.TabContainer.getItems().length;
@@ -930,14 +957,12 @@ sap.ui.define([
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
-            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
-            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
+            this.DisableButtons(["ButtonSospensioneAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio"]);
         },
         SospensioneAttrezzaggio: function () {
 
             var data = {"stringa": "sospensione predisposizione"};
             this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
-            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var length = this.TabContainer.getItems().length;
@@ -1008,12 +1033,10 @@ sap.ui.define([
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
-            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(false);
-            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(false);
+            this.DisableButtons(["ButtonSospensioneAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio"]);
         },
         AnnullaAttrezzaggio: function () {
-            this.getView().byId("ButtonFinePredisposizioneAttrezzaggio").setEnabled(true);
-            this.getView().byId("ButtonSospensioneAttrezzaggio").setEnabled(true);
+            this.EnableButtons(["ButtonSospensioneAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio"]);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             var tab = this.TabContainer.getItems()[2];
             this.TabContainer.removeItem(tab);
