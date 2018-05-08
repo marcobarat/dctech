@@ -4,8 +4,9 @@ sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'myapp/control/StyleInputTreeTableValue',
-    'myapp/control/CustomTreeTable'
-], function (jQuery, History, Controller, JSONModel, StyleInputTreeTableValue, CustomTreeTable) {
+    'myapp/control/CustomTreeTable',
+    'sap/m/MessageToast'
+], function (jQuery, History, Controller, JSONModel, StyleInputTreeTableValue, CustomTreeTable, MessageToast) {
     "use strict";
     var TmpController = Controller.extend("myapp.controller.Operatore", {
 
@@ -30,29 +31,30 @@ sap.ui.define([
         outerVBox: null,
         dataXML: null,
         exp: null,
+        codeCheck: null,
 //      NELL'ONINIT CARICO I VARI MODELLI E FACCIO TUTTE LE CHIAMATE AJAX
 
 //------------------------------------------------------------------------------
 
         onInit: function () {
 
+//            this.RefreshCall();
             this.Global = this.getOwnerComponent().getModel("Global");
-            this.ModelDetailPages.setProperty("/SKU/", {});
+            this.ModelDetailPages.setProperty("/SKUBatch/", {});
             this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            this.AjaxCaller("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
-            this.AjaxCaller("model/SKU_standard.json", this.ModelDetailPages, "/SKU/Standard/");
-            this.AjaxCaller("model/SKU_backend.json", this.ModelDetailPages, "/SKU/Backend/");
-            this.AjaxCaller("model/allestimentoOld.json", this.ModelDetailPages, "/SetupLinea/Old/");
-            this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/New/");
-            this.AjaxCaller("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/Modify/");
+            this.AjaxCallerData("model/JSON_Intestazione.json", this.ModelDetailPages, "/Intestazione/");
+            this.AjaxCallerData("model/SKU_standard.json", this.ModelDetailPages, "/SKUBatch/SKUstandard/");
+            this.AjaxCallerData("model/SKU_backend.json", this.ModelDetailPages, "/SKUBatch/SKUattuale/");
+            this.AjaxCallerData("model/allestimentoOld.json", this.ModelDetailPages, "/SetupLinea/Old/");
+            this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/New/");
+            this.AjaxCallerData("model/allestimentoNew.json", this.ModelDetailPages, "/SetupLinea/Modify/");
             if (this.Global.getData().Choice === "Produzione") {
-
                 this.ModelDetailPages.setProperty("/Fermo/", {});
                 this.ModelDetailPages.setProperty("/Causalizzazione/", {});
-                this.AjaxCaller("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
-                this.AjaxCaller("model/JSON_FermoTestiNew.json", this.ModelDetailPages, "/Fermo/Testi/");
-                this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
-                this.AjaxCaller("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
+                this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
+                this.AjaxCallerData("model/JSON_FermoTestiNew.json", this.ModelDetailPages, "/Fermo/Testi/");
+                this.AjaxCallerData("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
+                this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
                 this.getView().byId("ButtonPresaInCarico").setEnabled(true);
             } else if (this.Global.getData().Choice === "Attrezzaggio") {
                 this.ModelDetailPages.setProperty("/FineAttrezzaggio/", {});
@@ -64,19 +66,118 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("Home"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
-//        DI SEGUITO LE 4 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
-        AjaxCaller: function (addressOfJSON, model, targetAddress, faults) {
+        RefreshCall: function () {
+            var link, data;
+            link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.Global.idLinea + "&OutputParameter=JSON";
+            this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
+            var model = this.ModelDetailPages.getData();
+            data = this.ModelDetailPages.getData().SKUBatch;
+            var descr = data.attributi[2].attributi[2].value + " " + data.attributi[2].attributi[3].value + " " + data.attributi[3].attributi[0].value;
+            model.Intestazione = {"linea": this.Global.idLinea, "descrizione": descr, "conforme": true};
+            if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
+                data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
+                data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
+                this.exp = 0;
+                data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
+                if (this.exp === 1) {
+                    model.Intestazione.conforme = false;
+                }
+            }
+            if (data.Batch.IsAttrezzaggio === "0") {
+                switch (data.StatoLinea) {
+                    case "Disponibile.Vuota":
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("");
+                        break;
+                    case "Disponibile.AttesaPresaInCarico":
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("");
+                        this.EnableButtons(["ButtonPresaInCarico"]);
+                        break;
+                    case "Disponibile.Attrezzaggio":
+                        this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
+                        this.SwitchColor("yellow");
+                        this.SwitchColorAttrezzaggio("");
+                        this.DisableButtons(["ButtonPresaInCarico"]);
+                        this.EnableButtons(["ButtonFinePredisposizione"]);
+                        this.ConfermaBatch();
+                        break;
+                    case "Disponibile.Lavorazione":
+                        this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                        this.SwitchColor("green");
+                        this.SwitchColorAttrezzaggio("");
+
+                        this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                        this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                        break;
+                    case "Disponibile.Fermo":
+                        this.SwitchColor("red");
+                        this.SwitchColorAttrezzaggio("");
+                        this.getSplitAppObj().toDetail(this.createId("Fault"));
+                        this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
+                        break;
+                    case "Disponibile.Svuotamento":
+                        this.SwitchColor("brown");
+                        this.SwitchColorAttrezzaggio("");
+                        this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+                        this.AggiornaChiusura();
+                        this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                        this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+                        this.EnableButtons(["ButtonCausalizzazione"]);
+                        break;
+                    case "NonDisponibile":
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("");
+                        break;
+                }
+            } else {
+                switch (data.StatoLinea) {
+                    case "Disponibile.Vuota":
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("");
+                        break;
+                    case "Disponibile.AttesaPresaInCarico":
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("");
+                        this.EnableButtons(["ButtonBatchAttrezzaggio"]);
+                        break;
+                    case "Disponibile.Attrezzaggio":
+                        this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("yellow");
+                        this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
+                        this.DisableButtons(["ButtonBatchAttrezzaggio"]);
+                        break;
+                    case "Disponibile.Svuotamento":
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("brown");
+                        break;
+                    case "NonDisponibile":
+                        this.SwitchColor("");
+                        this.SwitchColorAttrezzaggio("");
+                        break;
+                    default:
+                        console.log("C'è un problema.");
+                }
+
+            }
+        },
+//        DI SEGUITO LE 2 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
+        AjaxCallerVoid: function (address) {
+            jQuery.ajax({
+                url: address,
+                async: false,
+            });
+        },
+        AjaxCallerData: function (addressOfJSON, model, targetAddress, faults) {
             if (faults === undefined) {
                 faults = false;
             }
-            var param = {};
             var req = jQuery.ajax({
                 url: addressOfJSON,
-                data: param,
                 method: "GET",
                 dataType: "json",
-                async: true,
-                Selected: true
+                async: false,
             });
             var passer = {};
             passer.model = model;
@@ -107,21 +208,35 @@ sap.ui.define([
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
         PresaInCarico: function () {
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-            var std = this.ModelDetailPages.getData().SKU.Standard;
-            var bck = this.ModelDetailPages.getData().SKU.Backend;
+
+
+//            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//            this.AjaxCallerVoid(link);
+
+
+            var std = this.ModelDetailPages.getData().SKUBatch.SKUstandard;
+            var bck = this.ModelDetailPages.getData().SKUBatch.SKUattuale;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
-            this.ModelDetailPages.setProperty("/SKU/Backend", bck);
+            this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
+
+
+            this.DisableButtons(["ButtonPresaInCarico"]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getView().byId("ButtonPresaInCarico").setEnabled(false);
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatch: function () {
+//            this.RefreshCall();
+
+
             this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColor("yellow");
+
+
+
             this.TabContainer = this.getView().byId("TabContainer");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
@@ -139,10 +254,10 @@ sap.ui.define([
             mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
             this.backupSetupModify = JSON.parse(JSON.stringify(mod));
-            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
-            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
-            this.getView().byId("ButtonFinePredisposizione").setEnabled(true);
+//            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
+//            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
+//            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
+            this.EnableButtons(["ButtonFinePredisposizione"]);
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -219,6 +334,10 @@ sap.ui.define([
                 text: "Conferma",
                 width: "100%",
                 press: [this.ConfermaPredisposizione, this]});
+//            var bt3 = new sap.m.Button({
+//                text: "Conferma",
+//                width: "100%",
+//                press: [this.RefreshCall, this]});
             vb5.addItem(bt3);
             vb3.addItem(bt2);
             vb1.addItem(bt1);
@@ -250,18 +369,35 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE CONFERMA ALLA FINE DELLA PREDISPOSIZIONE
         ConfermaPredisposizione: function () {
+
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValueModify", "codeValue");
-            var XMLstring = this.XMLSetupUpdates(data);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
-            this.getSplitAppObj().toDetail(this.createId("InProgress"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.SwitchColor("green");
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-            this.getView().byId("ButtonFermo").setEnabled(true);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            this.codeCheck = 0;
+            data = this.RecursiveJSONCodeCheck(data);
+            if (this.codeCheck === 0) {
+
+
+//                var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.Global.idLinea;
+//                this.AjaxCallerVoid(link);
+//
+//
+//                var XMLstring = this.XMLSetupUpdates(data);
+//                link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + XMLstring;
+//                this.AjaxCallerVoid(link);
+
+
+//            this.RefreshCall();
+
+
+                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.SwitchColor("green");
+                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            } else {
+                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
+            }
         },
         RecursivePropertyCopy: function (data, P1, P2) {
             for (var key in data) {
@@ -290,20 +426,14 @@ sap.ui.define([
             this.RemoveClosingButtons(2);
             this.Item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(this.Item);
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-            this.getView().byId("ButtonFermo").setEnabled(false);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //      RICHIAMATO DAL PULSANTE DI ANNULLA NELLE MODIFICHE
         AnnullaModifica: function () {
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             var data = JSON.parse(JSON.stringify(this.backupSetupModify));
             this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-            this.getView().byId("ButtonFermo").setEnabled(true);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
@@ -312,13 +442,12 @@ sap.ui.define([
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
             var XMLstring = this.XMLSetupUpdates(data);
+            var link = "http://sapmiiappdev:50100/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + XMLstring;
+            this.AjaxCallerVoid(link);
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-            this.getView().byId("ButtonFermo").setEnabled(true);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //------------------------------------------------------------------------------
 
@@ -397,11 +526,7 @@ sap.ui.define([
             hbox1.addItem(vb3);
 
             this.outerVBox.addItem(hbox1);
-
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(false);
-            this.getView().byId("ButtonFermo").setEnabled(false);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(false);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(false);
+            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedFermo: function (event) {
@@ -445,10 +570,7 @@ sap.ui.define([
                 this.UncheckCause();
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
-            this.getView().byId("ButtonModificaCondizioni").setEnabled(true);
-            this.getView().byId("ButtonFermo").setEnabled(true);
-            this.getView().byId("ButtonCausalizzazione").setEnabled(true);
-            this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
             this.outerVBox.destroyItems();
         },
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NEL FERMO
@@ -461,8 +583,7 @@ sap.ui.define([
                 this.Item.causa = CB.getProperty("text");
                 this.SwitchColor("red");
                 this.getSplitAppObj().toDetail(this.createId("Fault"));
-                this.getView().byId("ButtonRiavvio").setEnabled(true);
-                this.getView().byId("ButtonChiusuraConfezionamento").setEnabled(true);
+                this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
             } else {
                 var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
                 var data_All = this.ModelDetailPages.getData().Causalizzazione.All;
@@ -694,11 +815,11 @@ sap.ui.define([
 
         BatchAttrezzaggio: function () {
             this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
-            var std = this.ModelDetailPages.getData().SKU.Standard;
-            var bck = this.ModelDetailPages.getData().SKU.Backend;
+            var std = this.ModelDetailPages.getData().SKUBatch.SKUstandard;
+            var bck = this.ModelDetailPages.getData().SKUBatch.SKUattuale;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
-            this.ModelDetailPages.setProperty("/SKU/Backend", bck);
+            this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.SwitchColor("");
             this.getView().byId("ButtonBatchAttrezzaggio").setEnabled(false);
@@ -945,6 +1066,16 @@ sap.ui.define([
             data.Chiusura.attributi[index].attributi[index1].value = data.Causalizzazione.NoCause.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/", data);
         },
+        EnableButtons: function (vec) {
+            for (var i in vec) {
+                this.getView().byId(vec[i]).setEnabled(true);
+            }
+        },
+        DisableButtons: function (vec) {
+            for (var i in vec) {
+                this.getView().byId(vec[i]).setEnabled(false);
+            }
+        },
 //      Funzione che collassa tutti i nodi della treetable
         CollapseAll: function (event) {
             var name = event.getSource().data("mydata");
@@ -1120,76 +1251,44 @@ sap.ui.define([
         },
         SwitchColor: function (color) {
             var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
-            var col;
-            if (color === "yellow" || color === "Yellow") {
-                for (col in CSS_classes) {
-                    if (col !== 0) {
-                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_processi").addStyleClass("stylePanelYellow");
-            } else if (color === "green" || color === "Green") {
-                for (col in CSS_classes) {
-                    if (col !== 1) {
-                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_processi").addStyleClass("stylePanelGreen");
-            } else if (color === "red" || color === "Red") {
-                for (col in CSS_classes) {
-                    if (col !== 2) {
-                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_processi").addStyleClass("stylePanelRed");
-            } else if (color === "brown" || color === "Brown") {
-                for (col in CSS_classes) {
-                    if (col !== 3) {
-                        this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_processi").addStyleClass("stylePanelBrown");
-            } else {
-                for (col in CSS_classes) {
-                    this.getView().byId("panel_processi").removeStyleClass(CSS_classes[col]);
-                }
+            var panel = this.getView().byId("panel_processi");
+            for (var col in CSS_classes) {
+                panel.removeStyleClass(CSS_classes[col]);
+            }
+            switch (color) {
+                case "yellow":
+                    panel.addStyleClass("stylePanelYellow");
+                    break;
+                case "green":
+                    panel.addStyleClass("stylePanelGreen");
+                    break;
+                case "red":
+                    panel.addStyleClass("stylePanelRed");
+                    break;
+                case "brown":
+                    panel.addStyleClass("stylePanelBrown");
+                    break;
             }
         },
         SwitchColorAttrezzaggio: function (color) {
             var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
-            var col;
-            if (color === "yellow" || color === "Yellow") {
-                for (col in CSS_classes) {
-                    if (col !== 0) {
-                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelYellow");
-            } else if (color === "green" || color === "Green") {
-                for (col in CSS_classes) {
-                    if (col !== 1) {
-                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelGreen");
-            } else if (color === "red" || color === "Red") {
-                for (col in CSS_classes) {
-                    if (col !== 2) {
-                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelRed");
-            } else if (color === "brown" || color === "Brown") {
-                for (col in CSS_classes) {
-                    if (col !== 3) {
-                        this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
-                    }
-                }
-                this.getView().byId("panel_attrezzaggio").addStyleClass("stylePanelBrown");
-            } else {
-                for (col in CSS_classes) {
-                    this.getView().byId("panel_attrezzaggio").removeStyleClass(CSS_classes[col]);
-                }
+            var panel = this.getView().byId("panel_attrezzaggio");
+            for (var col in CSS_classes) {
+                panel.removeStyleClass(CSS_classes[col]);
+            }
+            switch (color) {
+                case "yellow":
+                    panel.addStyleClass("stylePanelYellow");
+                    break;
+                case "green":
+                    panel.addStyleClass("stylePanelGreen");
+                    break;
+                case "red":
+                    panel.addStyleClass("stylePanelRed");
+                    break;
+                case "brown":
+                    panel.addStyleClass("stylePanelBrown");
+                    break;
             }
         },
         RecursiveJSONComparison: function (std, bck, arrayName) {
@@ -1206,18 +1305,18 @@ sap.ui.define([
             }
             return bck;
         },
-        RecursiveParentExpansion: function (bck) {
-            for (var key in bck) {
-                if (typeof bck[key] === "object") {
+        RecursiveParentExpansion: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
                     this.exp = 0;
-                    bck[key] = this.RecursiveJSONExpansionFinder(bck[key]);
-                    if (typeof bck[key].expand !== "undefined" && bck[key].expand === 0) {
-                        bck[key].expand = this.exp;
+                    json[key] = this.RecursiveJSONExpansionFinder(json[key]);
+                    if (typeof json[key].expand !== "undefined" && json[key].expand === 0) {
+                        json[key].expand = this.exp;
                     }
-                    bck[key] = this.RecursiveParentExpansion(bck[key]);
+                    json[key] = this.RecursiveParentExpansion(json[key]);
                 }
             }
-            return bck;
+            return json;
         },
         RecursiveJSONExpansionFinder: function (json) {
             for (var key in json) {
@@ -1237,14 +1336,14 @@ sap.ui.define([
             for (var key in std) {
                 if (typeof std[key] === "object") {
                     if (key === "expand") {
-                        if (bck[key] === 3 || bck[key] === 2 || bck[key] === 1) {
+                        if (bck[key] > 0) {
                             std[key] = 1;
                         }
                     }
                     std[key] = this.RecursiveStandardAdapt(std[key], bck[key]);
                 } else {
                     if (key === "expand") {
-                        if (bck[key] === 3 || bck[key] === 2 || bck[key] === 1) {
+                        if (bck[key] > 0) {
                             std[key] = 1;
                         }
                     }
@@ -1252,43 +1351,43 @@ sap.ui.define([
             }
             return std;
         },
-        RecursiveLinkRemoval: function (bck) {
-            for (var key in bck) {
-                if (typeof bck[key] === "object") {
-                    bck[key] = this.RecursiveLinkRemoval(bck[key]);
+        RecursiveLinkRemoval: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveLinkRemoval(json[key]);
                 } else {
                     if (key === "expand") {
-                        if (bck[key] === 3) {
-                            bck[key] = 0;
+                        if (json[key] === 3) {
+                            json[key] = 0;
                         }
                     }
                 }
             }
-            return bck;
+            return json;
         },
-        RecursiveModifyExpansion: function (bck) {
-            for (var key in bck) {
-                if (typeof bck[key] === "object") {
-                    bck[key] = this.RecursiveModifyExpansion(bck[key]);
+        RecursiveModifyExpansion: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveModifyExpansion(json[key]);
                 } else {
                     if (key === "modify" || key === "code") {
-                        if (bck[key] === 1) {
-                            bck.expand = 1;
+                        if (json[key] === 1) {
+                            json.expand = 1;
                         }
                     }
                 }
             }
-            return bck;
+            return json;
         },
-        RecursivePropertyAdder: function (bck, prop_name) {
-            for (var key in bck) {
-                if (typeof bck[key] === "object") {
-                    bck[key] = this.RecursivePropertyAdder(bck[key], prop_name);
+        RecursivePropertyAdder: function (json, prop_name) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursivePropertyAdder(json[key], prop_name);
                 } else {
-                    bck[prop_name] = "";
+                    json[prop_name] = "";
                 }
             }
-            return bck;
+            return json;
         },
         XMLSetupUpdates: function (setup) {
             var heading = "<Parameters>" +
@@ -1337,6 +1436,23 @@ sap.ui.define([
                 }
             }
             return setup;
+        },
+        RecursiveJSONCodeCheck: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveJSONCodeCheck(json[key]);
+                } else {
+                    if (key === "code") {
+                        if (json[key] === 1) {
+                            if (json.codeValue === "") {
+                                this.codeCheck = 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return json;
         }
 
 

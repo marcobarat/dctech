@@ -30,7 +30,7 @@ sap.ui.define([
         GoToOperatore: function (event) {
             var line_num = event.getSource().getProperty("title");
             var chooser = event.getSource().getProperty("info");
-            this.Global.setProperty("/", {"Linea": line_num,"Choice": chooser});
+            this.Global.setProperty("/", {"Linea": line_num, "idLinea": "1", "Choice": chooser});
             this.getOwnerComponent().getRouter().navTo("Operatore");
         },
         FillModel: function (model, data) {

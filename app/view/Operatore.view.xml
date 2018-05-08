@@ -54,7 +54,7 @@
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_PresaInCarico"
-                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -95,6 +95,7 @@
                                 </wt:CustomTreeTable>
                             </Panel>
                             <Button text="Continua" width="100%" press="ConfermaBatch"/>
+                            <!--<Button text="Continua" width="100%" press="RefreshCall"/>-->
                         </VBox>
                     </VBox>
                 </content>
@@ -133,7 +134,7 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_AttributiPredisposizione"
-                                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
@@ -398,7 +399,7 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_AttributiModifica"
-                                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
@@ -1247,7 +1248,7 @@
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_BatchAttrezzaggio"
-                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -1315,7 +1316,7 @@
                                             <Panel>
                                                 <wt:CustomTreeTable
                                                     id="TreeTable_AttributiAttrezzaggio"
-                                                    rows="{path:'GeneralModel>/SKU/Backend', parameters: {arrayNames:['attributi']}}"
+                                                    rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     collapseRecursive="true"
                                                     enableSelectAll="false"
