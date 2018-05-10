@@ -1,7 +1,22 @@
+/*Panel Styles*/
+.MasterPanels {
+    border-style: double;
+    justify-content: center;
+}
+.colorPage {
+    background-color: white;
+}
+.FaultPanel {
+    border-style: double;
+    justify-content: center;
+    background-color: #A71930;
+}
+
+
 /* Custom Styles  */
 .myButton
 {
-    background-color: red;
+    background-color: #A71930;
 }
 
 .middleImg {
@@ -9,76 +24,69 @@
 }
 
 .diffStandard input {
-    color : red;
+    color : #A71930;
 }
 
 .diffRed {
-    color : red;
+    color : #A71930;
     font-weight: bold;
 }
 
+
 .styleButton * {
-    /*margin: 5px;*/
-    /*width: 110%;*/
-    /*padding: 1px;*/
-    display: block; /* Make the buttons appear below each other */
     font-size: 12pt;
-    line-height: 15pt;
-    white-space: normal;
-    text-align: center;
-    padding-top:5px;
-    height: 2.5em;
-    /*height: 50px;*/
-    /*margin: 1em;*/
-    /*display: inline-flex;*/
+    text-decoration: none;
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
 }
 
 .styleLongButton * {
-    /*margin: 5px;*/
-    /*width: 110%;*/
-    /*padding: 1px;*/
-    display: block; /* Make the buttons appear below each other */
     font-size: 12pt;
+    text-decoration: none;
     line-height: 15pt;
     white-space: normal;
-    text-align: center;
-    height: 3em;
-    padding-top:3px;
-    /*padding-top:5px;*/
-    /*height: 50px;*/
-    /*margin: 1em;*/
-    /*display: inline-flex;*/
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
 }
 
 .stylePanelYellow {
-    background-color: yellow; 
+    background-color: #FFD300; 
 }
 
 .stylePanelGreen {
-    background-color: green; 
+    background-color: #7CA295; 
 }
 
 .stylePanelRed {
-    background-color: red; 
+    background-color: #A71930; 
 }
 
 .stylePanelBrown {
-    background-color: brown; 
+    background-color: #5E3032; 
 }
 
 .diffLink {
-    color : blue;
+    color : #003A6B;
     text-decoration: underline;
     font-weight: bold;
 }
 
 .textTop {
     font-size: 30pt;
+    color : #003A6B;
 }
-
-.textTopRed {
+.textTopWhite {
     font-size: 30pt;
-    color: red;
+    color : white;
+}
+.textTopRed {
+    font-size: 40pt;
+    color: #A71930;
+    /*font-weight: bold;*/
 }
 
 .customTextBar * {
@@ -99,7 +107,7 @@
 
 .progressBarButton * {
     height: 120px;
-    background-color: green !important;
+    background-color: #7CA295 !important;
     background-image: none !important;
     border: 2px solid;
 }
@@ -149,4 +157,9 @@
 
 .alternate-color .sapUiTableRowOdd:hover  input {
     color: #fff;
+}
+.Logo {
+    width: 55%;
+    margin-left: 22%;
+    margin-top: 3%;
 }

@@ -1,17 +1,14 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
           xmlns:u="sap.ui.unified" xmlns:comp="myapp.component" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-          xmlns:wt="myapp.control"
+          xmlns:wt="myapp.control" 
           
           controllerName="myapp.controller.Operatore">
     <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" > 
         <detailPages>
                     
                     
-            <Page
-                id="Home"
-                showHeader="false"
-                class="sapUiStdPage">
+            <Page id="Home" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -34,7 +31,7 @@
             </Page>
                     
                     
-            <Page id="PresaInCarico" showHeader="false" class="sapUiStdPage"> 
+            <Page id="PresaInCarico" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -103,7 +100,7 @@
         
         
         
-            <Page id="PredisposizioneLinea" showHeader="false" class="sapUiStdPage">
+            <Page id="PredisposizioneLinea" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -276,7 +273,7 @@
                    
                     
                     
-            <Page id="InProgress" showHeader="false" class="sapUiStdPage">
+            <Page id="InProgress" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -297,8 +294,8 @@
                                 <ProgressIndicator
                                     id="progressBar"
                                     class="customTextBar"
-                                    percentValue="{GeneralModel>/InProgress/avanzamento}"
-                                    displayValue="{GeneralModel>/InProgress/perc_avanzamento}"
+                                    percentValue="{GeneralModel>/DatiOEE/avanzamento}"
+                                    displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
                                     showValue="true"
                                     state="Success"
                                     displayOnly="true"
@@ -313,13 +310,13 @@
                             <VBox height="100%" width="10%"/>
                             <VBox height="100%" width="90%">
                                 <VBox height="33%" width="100%">
-                                    <Text text="Efficienza: {GeneralModel>/InProgress/efficienza}" class="customText"/>
+                                    <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
                                 </VBox>
                                 <VBox height="33%" width="100%">
-                                    <Text text="Disponibilità: {GeneralModel>/InProgress/disponibilita}" class="customText"/>
+                                    <Text text="Disponibilità: {GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
                                 </VBox>
                                 <VBox height="33%" width="100%">
-                                    <Text text="Fermi automatici non causalizzati: {GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}" class="customText"/>
+                                    <Text text="Fermi automatici non causalizzati: {GeneralModel>/FermiNonCausalizzati/Totale/tempoGuastoTotale}" class="customText"/>
                                 </VBox>
                             </VBox>
                         </HBox>
@@ -337,13 +334,13 @@
                                         <Text text="Valori consuntivi" class="customText"/>
                                     </VBox>
                                     <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/InProgress/massaConsuntiva}" class="customText"/>
+                                        <Text text="-> {GeneralModel>/DatiOEE/massaConsuntiva}" class="customText"/>
                                     </VBox>
                                     <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/InProgress/tempoConsuntivo}" class="customText"/>
+                                        <Text text="-> {GeneralModel>/DatiOEE/tempoConsuntivo}" class="customText"/>
                                     </VBox>
                                     <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/InProgress/cartoniConsuntivi}" class="customText"/>
+                                        <Text text="-> {GeneralModel>/DatiOEE/cartoniConsuntivi}" class="customText"/>
                                     </VBox>
                                 </VBox>
                                 <VBox height="100%" width="30%">
@@ -351,13 +348,13 @@
                                         <Text text="Valori residui" class="customText"/>
                                     </VBox>
                                     <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/InProgress/massaResidua}" class="customText"/>
+                                        <Text text="-> {GeneralModel>/DatiOEE/massaResidua}" class="customText"/>
                                     </VBox>
                                     <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/InProgress/tempoResiduo}" class="customText"/>
+                                        <Text text="-> {GeneralModel>/DatiOEE/tempoResiduo}" class="customText"/>
                                     </VBox>
                                     <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/InProgress/cartoniResidui}" class="customText"/>
+                                        <Text text="-> {GeneralModel>/DatiOEE/cartoniResidui}" class="customText"/>
                                     </VBox>
                                 </VBox>
                                 <VBox height="100%" width="12%"/>
@@ -368,7 +365,7 @@
             </Page>
                     
                     
-            <Page id="ModificaCondizioni" showHeader="false" class="sapUiStdPage">
+            <Page id="ModificaCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -545,7 +542,7 @@
             </Page>
                     
                     
-            <Page id="Fermo" showHeader="false" class="sapUiStdPage">
+            <Page id="Fermo" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -604,7 +601,7 @@
             </Page>
                     
                     
-            <Page id="Causalizzazione" showHeader="false" class="sapUiStdPage" enableScrolling="false">
+            <Page id="Causalizzazione" showHeader="false" class="colorPage" enableScrolling="false">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%">
@@ -662,9 +659,9 @@
                                             <ColumnListItem class="mysapMListTblCell mysapMText mysapMCb">
                                                 <cells>
                                                     <Text textAlign="Center" text="Totale Complessivo"/>
-                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
-                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
-                                                    <CheckBox textAlign="Center" id="CBTotaleCausa" selected="{GeneralModel>/Causalizzazione/NoCause/Totale/select}" select="ChangeCheckedCausa"/>                                                    
+                                                    <Text text="{GeneralModel>/FermiNonCausalizzati/Totale/tempoGuastoTotale}"/>
+                                                    <Text text="{GeneralModel>/FermiNonCausalizzati/Totale/causaTotale}"/>
+                                                    <CheckBox textAlign="Center" id="CBTotaleCausa" selected="{GeneralModel>/FermiNonCausalizzati/Totale/select}" select="ChangeCheckedCausa"/>                                                    
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
@@ -777,7 +774,7 @@
                                         visibleRowCount="7"
                                         class="alternate-color"
                                         selectionMode="None"
-                                        rows="{GeneralModel>/Causalizzazione/NoCause/fermi}">
+                                        rows="{GeneralModel>/FermiNonCausalizzati/fermi}">
                                         <t:columns>
                                             <t:Column hAlign="Center" width="15%">
                                                 <Label text="Inizio"/>
@@ -818,7 +815,7 @@
             </Page>
                     
                     
-            <Page id="Fault" showHeader="false" class="sapUiStdPage">
+            <Page id="Fault" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -835,20 +832,26 @@
                             </VBox>
                         </VBox>
                         <VBox height="80%" width="100%">
-                            <VBox>
-                                <Panel height="100%">
-                                    <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="Fermo - {GeneralModel>/CausaFermo}" class="textTop"/>
-                                    </FlexBox>
-                                </Panel>
+<!--                            <VBox height="25%" width="100%">
+                                <Text/>
+                            </VBox>-->
+                            <VBox height="20%" width="100%">
+                                <!--<Panel height="100%" class="FaultPanel">-->
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="{GeneralModel>/CausaFermo}" class="textTopRed"/>
+                                </FlexBox>
+                                <!--</Panel>-->
                             </VBox>
+<!--                            <VBox height="25%" width="100%">
+                                <Text/>
+                            </VBox>-->
                         </VBox>
                     </VBox>
                 </content>
             </Page>
                     
                     
-            <Page id="RipristinoCondizioni" showHeader="false" class="sapUiStdPage">
+            <Page id="RipristinoCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -933,7 +936,7 @@
             </Page>
                     
                     
-            <Page id="ChiusuraConfezionamento" showHeader="false" class="sapUiStdPage"> 
+            <Page id="ChiusuraConfezionamento" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -953,7 +956,7 @@
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_Chiusura"
-                                    rows="{path:'GeneralModel>/Chiusura', parameters: {arrayNames:['attributi']}}"
+                                    rows="{path:'GeneralModel>/ParametriChiusura', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
                                     collapseRecursive="true"
                                     enableSelectAll="false"
@@ -1228,7 +1231,7 @@
             
             
             
-            <Page id="BatchAttrezzaggio" showHeader="false" class="sapUiStdPage"> 
+            <Page id="BatchAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -1288,7 +1291,7 @@
             </Page>
             
             
-            <Page id="PredisposizioneLineaAttrezzaggio" showHeader="false" class="sapUiStdPage">
+            <Page id="PredisposizioneLineaAttrezzaggio" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -1439,7 +1442,7 @@
             </Page>
             
             
-            <Page id="ConfermaAttrezzaggio" showHeader="false" class="sapUiStdPage"> 
+            <Page id="ConfermaAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -1476,52 +1479,55 @@
                 
                 
         <masterPages>
-            <Page
-                id="processi"
-                showHeader="false"
-                class="sapUiStdPage">
+            <Page id="processi" showHeader="false" class="colorPage">
                 <content>
-                    <VBox height="100%" width="100%">
-                        <Panel id="panel_processi">
-                            <VBox height="60%" width="100%" justifyContent="center" alignItems="start">
-                                <Button id="ButtonPresaInCarico" text="Presa in carico nuovo confezionamento" enabled="false" press="PresaInCarico" width="100%" class="styleLongButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonFinePredisposizione" text="Fine predisposizione inizio confezionamento" enabled="false" press="FinePredisposizione" width="100%" class="styleLongButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonModificaCondizioni" text="Modifica condizioni operative" enabled="false" press="ModificaCondizioni" width="100%" class="styleButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonFermo" text="Fermo" enabled="false" press="FermoCall" width="100%" class="styleButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonRiavvio" text="Riavvio" enabled="false" press="Riavvio" width="100%" class="styleButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonCausalizzazione" text="Causalizzazione fermi automatici" enabled="false" press="Causalizzazione" width="100%" class="styleButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonChiusuraConfezionamento" text="Chiusura confezionamento svuotamento linea" enabled="false" press="ChiusuraConfezionamento" width="100%" class="styleLongButton">
-                                </Button>
-                            </VBox>
-                        </Panel>
-                        <Panel id="panel_attrezzaggio">
-                            <!--                                    <VBox height="10%" width="100%">
-                                <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />
-                            </VBox>-->
-                            <VBox height="30%" width="100%">
-                                <Button id="ButtonBatchAttrezzaggio" text="Predisposizione nuovo confezionamento" enabled="false" press="BatchAttrezzaggio" width="100%" class="styleLongButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonFinePredisposizioneAttrezzaggio" text="Fine predisposizione" enabled="false" press="FinePredisposizioneAttrezzaggio" width="100%" class="styleButton">
-                                </Button>
-                                <Text/>
-                                <Button id="ButtonSospensioneAttrezzaggio" text="Sospensione predisposizione" enabled="false" press="SospensioneAttrezzaggio" width="100%" class="styleButton">
-                                </Button>
-                            </VBox>
-                        </Panel>
+                    <!--<VBox height="100%" width="100%">-->
+                    <!--<Panel id="panel_processi" class="MasterPanels" height="70%" width="100%">-->
+                    <VBox class="colorPage" height="25%" width="100%" justifyContent="center" alignItems="start">
+                        <image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
                     </VBox>
+                    <VBox id="panel_processi" class="MasterPanels" height="75%" width="100%" justifyContent="center" alignItems="start">
+                    </VBox>
+<!--                    <VBox id="panel_processi" class="MasterPanels" height="50%" width="100%" justifyContent="center" alignItems="start">
+                        <Button id="ButtonPresaInCarico" text="Presa in carico nuovo confezionamento" enabled="false" press="PresaInCarico" width="100%" class="styleLongButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonFinePredisposizione" text="Fine predisposizione inizio confezionamento" enabled="false" press="FinePredisposizione" width="100%" class="styleLongButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonModificaCondizioni" text="Modifica condizioni operative" enabled="false" press="ModificaCondizioni" width="100%" class="styleButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonFermo" text="Fermo" enabled="false" press="FermoCall" width="100%" class="styleButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonRiavvio" text="Riavvio" enabled="false" press="Riavvio" width="100%" class="styleButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonCausalizzazione" text="Causalizzazione fermi automatici" enabled="false" press="Causalizzazione" width="100%" class="styleLongButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonChiusuraConfezionamento" text="Chiusura confezionamento svuotamento linea" enabled="false" press="ChiusuraConfezionamento" width="100%" class="styleLongButton">
+                        </Button>
+                    </VBox>
+                    </Panel>
+                    <Panel id="panel_attrezzaggio" class="MasterPanels" height="30%" width="100%">
+                    <VBox id="panel_attrezzaggio" class="MasterPanels" height="25%" width="100%" justifyContent="center" alignItems="start">
+                                                            <VBox height="10%" width="100%">
+                            <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />
+                        </VBox>
+                        <VBox height="30%" width="100%">
+                        <Button id="ButtonBatchAttrezzaggio" text="Predisposizione nuovo confezionamento" enabled="false" press="BatchAttrezzaggio" width="100%" class="styleLongButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonFinePredisposizioneAttrezzaggio" text="Fine predisposizione" enabled="false" press="FinePredisposizioneAttrezzaggio" width="100%" class="styleButton">
+                        </Button>
+                        <Text/>
+                        <Button id="ButtonSospensioneAttrezzaggio" text="Sospensione predisposizione" enabled="false" press="SospensioneAttrezzaggio" width="100%" class="styleButton">
+                        </Button>
+                        </VBox>
+                        </Panel>
+                    </VBox>-->
                 </content>
             </Page>
         </masterPages>

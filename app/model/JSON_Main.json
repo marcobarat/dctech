@@ -41,46 +41,6 @@
             "infoState": "Success",
             "idlinea": "5P",
             "linea_desc": "5"
-        },
-        {
-            "icon": "sap-icon://machine",
-            "linea": "Linea 1",
-            "info": "Attrezzaggio",
-            "infoState": "Error",
-            "idlinea": "1A",
-            "linea_desc": "1"
-        },
-        {
-            "icon": "sap-icon://machine",
-            "linea": "Linea 2",
-            "info": "Attrezzaggio",
-            "infoState": "Error",
-            "idlinea": "2A",
-            "linea_desc": "2"
-        },
-        {
-            "icon": "sap-icon://machine",
-            "linea": "Linea 3",
-            "info": "Attrezzaggio",
-            "infoState": "Error",
-            "idlinea": "3A",
-            "linea_desc": "3"
-        },
-        {
-            "icon": "sap-icon://machine",
-            "linea": "Linea 4",
-            "info": "Attrezzaggio",
-            "infoState": "Error",
-            "idlinea": "4A",
-            "linea_desc": "4"
-        },
-        {
-            "icon": "sap-icon://machine",
-            "linea": "Linea 5",
-            "info": "Attrezzaggio",
-            "infoState": "Error",
-            "idlinea": "5A",
-            "linea_desc": "5"
         }
     ]
 }
