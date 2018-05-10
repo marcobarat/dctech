@@ -23,7 +23,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -46,7 +46,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -103,7 +103,7 @@
         
         
         
-            <Page id="ConfermaBatch" showHeader="false" class="sapUiStdPage">
+            <Page id="PredisposizioneLinea" showHeader="false" class="sapUiStdPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -115,7 +115,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -288,7 +288,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -380,7 +380,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -557,7 +557,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -616,7 +616,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -777,7 +777,7 @@
                                         visibleRowCount="7"
                                         class="alternate-color"
                                         selectionMode="None"
-                                        rows="{GeneralModel>/Causalizzazione/NoCause/guasti}">
+                                        rows="{GeneralModel>/Causalizzazione/NoCause/fermi}">
                                         <t:columns>
                                             <t:Column hAlign="Center" width="15%">
                                                 <Label text="Inizio"/>
@@ -830,7 +830,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -838,7 +838,7 @@
                             <VBox>
                                 <Panel height="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="Guasto - attesa intervento manutenzione" class="textTop"/>
+                                        <Text text="Fermo - {GeneralModel>/CausaFermo}" class="textTop"/>
                                     </FlexBox>
                                 </Panel>
                             </VBox>
@@ -860,7 +860,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -945,7 +945,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -1240,7 +1240,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -1288,7 +1288,7 @@
             </Page>
             
             
-            <Page id="ConfermaBatchAttrezzaggio" showHeader="false" class="sapUiStdPage">
+            <Page id="PredisposizioneLineaAttrezzaggio" showHeader="false" class="sapUiStdPage">
                 <content>
                     <VBox height="100%" width="100%">
                         <VBox height="20%" width="100%">
@@ -1300,7 +1300,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop" />
                                 </FlexBox>
                             </VBox>
                         </VBox>
@@ -1451,7 +1451,7 @@
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="***" class="textTop" visible="{= ${GeneralModel>/Intestazione/conforme} === false}"/>
+                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop" />
                                 </FlexBox>
                             </VBox>
                         </VBox>

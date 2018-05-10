@@ -32,6 +32,7 @@ sap.ui.define([
         dataXML: null,
         exp: null,
         codeCheck: null,
+        State: null,
 //      NELL'ONINIT CARICO I VARI MODELLI E FACCIO TUTTE LE CHIAMATE AJAX
 
 //------------------------------------------------------------------------------
@@ -58,110 +59,124 @@ sap.ui.define([
 //                this.EnableButtons(["ButtonBatchAttrezzaggio"]);
 //            }
 
-            this.RefreshCall();
-            setInterval(this.RefreshCall, 1000);
+            this.RefreshCall(this);
+            setInterval(this.RefreshCall.bind(this), 5000);
 //            this.getSplitAppObj().toDetail(this.createId("Home"));
 //            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
         RefreshCall: function () {
-
-            this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
-            this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
-
-
-            this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            this.ModelDetailPages.setProperty("/Causalizzazione/", {});
-            this.Global = this.getOwnerComponent().getModel("Global");
-            this.ModelDetailPages.setProperty("/Globale/", {});
-            this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea + "&OutputParameter=JSON";
+//            this.Global = this.getOwnerComponent().getModel("Global");
+            var global = {"Linea": "Linea 1", "idLinea": "1"};
+            this.ModelDetailPages.setProperty("/Globale/", global);
+//            this.ModelDetailPages.setProperty("/Globale/", {});
+//            this.ModelDetailPages.setProperty("/Globale/Linea", this.Global.getData().Linea);
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea + "&OutputParameter=JSON";
             this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
             var model = this.ModelDetailPages.getData();
             var data = model.SKUBatch;
+            model.Intestazione = {"linea": model.Globale.Linea, "descrizione": "", "conforme": ""};
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
+
                 var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
-                model.Intestazione = {"linea": this.Global.getData().Linea, "descrizione": descr, "conforme": true};
+                model.Intestazione.descrizione = descr;
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
                 data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
                 this.exp = 0;
                 data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
                 if (this.exp === 1) {
-                    model.Intestazione.conforme = false;
+                    model.Intestazione.conforme = "***";
                 }
+
                 if (data.Batch[0].IsAttrezzaggio === "0") {
                     switch (data.StatoLinea) {
-                        case "Disponibile.Vuota":
-                            this.getSplitAppObj().toDetail(this.createId("Home"));
-                            this.SwitchColor("");
-                            this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-                            break;
                         case "Disponibile.AttesaPresaInCarico":
-                            this.SwitchColor("");
-                            this.SwitchColorAttrezzaggio("");
-                            this.EnableButtons(["ButtonPresaInCarico"]);
+                            if (this.State !== "Disponibile.AttesaPresaInCarico") {
+                                this.SwitchColor("");
+                                this.SwitchColorAttrezzaggio("");
+                                this.EnableButtons(["ButtonPresaInCarico"]);
+                            }
                             break;
                         case "Disponibile.Attrezzaggio":
-                            this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
-                            this.SwitchColor("yellow");
-                            this.SwitchColorAttrezzaggio("");
-                            this.DisableButtons(["ButtonPresaInCarico"]);
-                            this.EnableButtons(["ButtonFinePredisposizione"]);
-                            this.ConfermaBatch();
-                            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                            if (this.State !== "Disponibile.Attrezzaggio") {
+                                this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
+                                this.SwitchColor("yellow");
+                                this.SwitchColorAttrezzaggio("");
+                                this.DisableButtons(["ButtonPresaInCarico"]);
+                                this.EnableButtons(["ButtonFinePredisposizione"]);
+                                this.PredisposizioneLinea();
+                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                            }
                             break;
                         case "Disponibile.Lavorazione":
-                            this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                            this.SwitchColor("green");
-                            this.SwitchColorAttrezzaggio("");
+                            this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/InProgress/");
+                            if (this.State !== "Disponibile.Lavorazione") {
+                                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                                this.SwitchColor("green");
+                                this.SwitchColorAttrezzaggio("");
+                                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                            }
                             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
                             break;
                         case "Disponibile.Fermo":
-                            this.SwitchColor("red");
-                            this.SwitchColorAttrezzaggio("");
-                            this.getSplitAppObj().toDetail(this.createId("Fault"));
-                            this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
+                            if (this.State !== "Disponibile.Fermo") {
+                                if (typeof this.ModelDetailPages.getData().CausaFermo === "undefined") {
+                                    this.ModelDetailPages.setProperty("/CausaFermo/", data.CausaleEvento);
+                                }
+                                this.SwitchColor("red");
+                                this.SwitchColorAttrezzaggio("");
+                                this.getSplitAppObj().toDetail(this.createId("Fault"));
+                                this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
+                            }
                             break;
                         case "Disponibile.Svuotamento":
-                            this.CLOSED = 1;
-                            this.SwitchColor("brown");
-                            this.SwitchColorAttrezzaggio("");
-                            this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
-                            this.AggiornaChiusura();
-                            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                            this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
-                            this.EnableButtons(["ButtonCausalizzazione"]);
-                            break;
-                        case "NonDisponibile":
-                            this.SwitchColor("");
-                            this.SwitchColorAttrezzaggio("");
+                            if (this.State !== "Disponibile.Svuotamento") {
+                                if (typeof this.ModelDetailPages.getData().Causalizzazione === "undefined") {
+//                                    this.Causalizzazione();
+                                    this.ModelDetailPages.setProperty("/Causalizzazione/", {});
+                                    link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
+                                    this.AjaxCallerData(link, this.ModelDetailPages, "/Causalizzazione/NoCause/");
+                                    var dataC = this.ModelDetailPages.getData().Causalizzazione.NoCause;
+                                    dataC = this.AddTimeGaps(dataC);
+                                    this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", dataC);
+                                }
+                                this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/Chiusura/");
+                                this.SwitchColor("brown");
+                                this.SwitchColorAttrezzaggio("");
+                                this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                                this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+                                this.EnableButtons(["ButtonCausalizzazione"]);
+                                this.AggiornaChiusura();
+                            }
                             break;
                     }
                 } else {
                     switch (data.StatoLinea) {
-                        case "Disponibile.Vuota":
-                            this.SwitchColor("");
-                            this.SwitchColorAttrezzaggio("");
-                            break;
                         case "Disponibile.AttesaPresaInCarico":
-                            this.SwitchColor("");
-                            this.SwitchColorAttrezzaggio("");
-                            this.EnableButtons(["ButtonBatchAttrezzaggio"]);
+                            if (this.State !== "Disponibile.AttesaPresaInCarico") {
+                                this.SwitchColor("");
+                                this.SwitchColorAttrezzaggio("");
+                                this.EnableButtons(["ButtonBatchAttrezzaggio"]);
+                            }
                             break;
                         case "Disponibile.Attrezzaggio":
-                            this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
-                            this.SwitchColor("");
-                            this.SwitchColorAttrezzaggio("yellow");
-                            this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
-                            this.DisableButtons(["ButtonBatchAttrezzaggio"]);
+                            if (this.State !== "Disponibile.Attrezzaggio") {
+                                this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
+                                this.SwitchColor("");
+                                this.SwitchColorAttrezzaggio("yellow");
+                                this.PredisposizioneLineaAttrezzaggio();
+                                this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
+                                this.DisableButtons(["ButtonBatchAttrezzaggio"]);
+                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                            }
                             break;
                         case "Disponibile.Svuotamento":
-                            this.SwitchColor("");
-                            this.SwitchColorAttrezzaggio("brown");
-                            break;
-                        case "NonDisponibile":
-                            this.SwitchColor("");
-                            this.SwitchColorAttrezzaggio("");
+                            if (this.State !== "Disponibile.Svuotamento") {
+                                this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
+                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                                this.SwitchColorAttrezzaggio("brown");
+                                this.SwitchColor("");
+                            }
                             break;
                         default:
                             console.log("C'è un problema.");
@@ -173,14 +188,17 @@ sap.ui.define([
                         this.getSplitAppObj().toDetail(this.createId("Home"));
                         this.SwitchColor("");
                         this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                        this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                         break;
                     case "NonDisponibile":
                         this.SwitchColor("");
                         this.SwitchColorAttrezzaggio("");
+                        this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                         break;
                 }
-                model.Intestazione = {"linea": "", "descrizione": "", "conforme": ""};
             }
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.State = data.StatoLinea;
         },
 //        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
         AjaxCallerVoid: function (address) {
@@ -190,10 +208,10 @@ sap.ui.define([
             });
         },
 //        DI SEGUITO LE 2 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
-        AjaxCallerData: function (addressOfJSON, model, targetAddress, faults) {
-            if (faults === undefined) {
-                faults = false;
-            }
+        AjaxCallerData: function (addressOfJSON, model, targetAddress) {
+//            if (faults === undefined) {
+//                faults = false;
+//            }
             var req = jQuery.ajax({
                 url: addressOfJSON,
                 method: "GET",
@@ -203,65 +221,62 @@ sap.ui.define([
             var passer = {};
             passer.model = model;
             passer.target = targetAddress;
-            passer.faults = faults;
+//            passer.faults = faults;
             var tempfunc = jQuery.proxy(this.FillModel, this, passer);
             req.done(tempfunc);
         },
         FillModel: function (struct, data) {
             var model = struct.model;
             var target = struct.target;
-            var faults = struct.faults;
-            if (!faults) {
-                model.setProperty(target, data);
-            } else {
-                var dataAll = JSON.parse(JSON.stringify(data));
-                var dataReduced = JSON.parse(JSON.stringify(data));
-                dataAll = this.AddTimeGaps(dataAll);
-                model.setProperty(target + "All/", dataAll);
-                dataReduced = this.RemoveCaused(dataReduced);
-                dataReduced = this.AddTimeGaps(dataReduced);
-                model.setProperty(target + "NoCause/", dataReduced);
-            }
+//            var faults = struct.faults;
+//            if (!faults) {
+            model.setProperty(target, data);
+//            } else {
+//                var dataAll = JSON.parse(JSON.stringify(data));
+//                var dataReduced = JSON.parse(JSON.stringify(data));
+//                dataAll = this.AddTimeGaps(dataAll);
+//                model.setProperty(target + "All/", dataAll);
+//                dataReduced = this.RemoveCaused(dataReduced);
+//                dataReduced = this.AddTimeGaps(dataReduced);
+//                model.setProperty(target + "NoCause/", dataReduced);
+//            }
         },
 //------------------------------------------------------------------------------
 
 
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
         PresaInCarico: function () {
-            this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
-//            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
-//            this.AjaxCallerVoid(link);
-
 
             var std = this.ModelDetailPages.getData().SKUBatch.SKUstandard;
             var bck = this.ModelDetailPages.getData().SKUBatch.SKUattuale;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
-            this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
+//            this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
             this.DisableButtons(["ButtonPresaInCarico"]);
+            this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatch: function () {
-//            this.RefreshCall();
 
-
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
+            this.AjaxCallerVoid(link);
+            this.RefreshCall();
+        },
+        PredisposizioneLinea: function () {
 //            this.getSplitAppObj().toDetail(this.createId("ConfermaBatch"));
             this.TabContainer = this.getView().byId("TabContainer");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
-
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
             this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
-
-            link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
             this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
-            this.ModelDetailPages.setProperty("SetupLinea/Modify/", this.ModelDetailPages.getData().SetupLinea.New);
-
-
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.New)));
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
@@ -303,11 +318,14 @@ sap.ui.define([
             var inputValueMod = new sap.m.Input({
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
+//                editable: "{= ${GeneralModel>modify} === '1'}",
+//                visible: "{= ${GeneralModel>modify} === '1'}",
                 value: "{GeneralModel>valueModify}"});
             inputValueMod.addStyleClass("diffStandard");
             var inputCodeValue = new sap.m.Input({
                 placeholder: "{GeneralModel>codePlaceholder}",
                 editable: "{= ${GeneralModel>code} === 1}",
+//                editable: "{= ${GeneralModel>code} === '1'}",
                 value: "{GeneralModel>codeValue}"});
             inputCodeValue.addStyleClass("diffStandard");
             this.TreeTable = new CustomTreeTable({
@@ -406,20 +424,12 @@ sap.ui.define([
 
 
 
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
                 this.AjaxCallerVoid(link);
-
-
                 var XMLstring = this.XMLSetupUpdates(data);
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
                 this.AjaxCallerVoid(link);
-
-
                 this.RefreshCall();
-
-
-
-
 //                this.getSplitAppObj().toDetail(this.createId("InProgress"));
 //                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
 //                this.SwitchColor("green");
@@ -449,8 +459,9 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
         ModificaCondizioni: function () {
-            if (typeof this.ModelDetailPages.getData().SetupLinea.Modify === "undefined") {
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            if (typeof this.ModelDetailPages.getData().SetupLinea === "undefined") {
+                this.ModelDetailPages.setProperty("/SetupLinea/", {});
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
                 this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
             }
 
@@ -479,12 +490,9 @@ sap.ui.define([
             var XMLstring = this.XMLSetupUpdates(data);
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
             this.AjaxCallerVoid(link);
-
-
-
-//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.getSplitAppObj().toDetail(this.createId("InProgress"));
-//            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //------------------------------------------------------------------------------
 
@@ -605,7 +613,7 @@ sap.ui.define([
             if (this.discr === "FermoManuale") {
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            } else {
+            } else if (this.discr === "FermoAutomatico") {
                 this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
                 this.UncheckCause();
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -616,15 +624,17 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NEL FERMO
         ConfermaFermo: function () {
             var CB = sap.ui.getCore().byId(this.id_split[1]);
+            var idGross = CB.getId();
+            var root = "CBFermo";
+            var id = idGross.substring(root.length, idGross.length);
+            var link;
             if (this.discr === "FermoManuale") {
 
-                var idGross = CB.getProperty("id");
-                var root = "CBFermo";
-                var id = idGross.substring(root.length, idGross.length);
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea + "&CausaleEventoID=" + id;
+                this.ModelDetailPages.setProperty("/CausaFermo/", CB.getProperty("text"));
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea + "&CausaleEventoID=" + id;
                 this.AjaxCallerVoid(link);
-
-
+                this.RefreshCall();
 //                this.Item = {};
 //                var now = new Date();
 //                this.Item.inizio = this.DateToStandard(now);
@@ -632,51 +642,75 @@ sap.ui.define([
 //                this.SwitchColor("red");
 //                this.getSplitAppObj().toDetail(this.createId("Fault"));
 //                this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
-            } else {
-//                "XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogFermiAutoSenzaCausale&Content-Type=text/json&ListLogID=105#107&CausaleID=16"
-                var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
-                var data_All = this.ModelDetailPages.getData().Causalizzazione.All;
-                for (var i in this.CheckSingoloCausa) {
-                    if (this.CheckSingoloCausa[i] > 0) {
-                        data.guasti[i].causa = CB.getProperty("text");
-                        for (var j in data_All.guasti) {
-                            if (data.guasti[i].inizio === data_All.guasti[j].inizio) {
-                                data_All.guasti[j].causa = CB.getProperty("text");
-                                break;
-                            }
-                        }
-                    }
-                }
-                this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data);
-                this.ModelDetailPages.setProperty("/Causalizzazione/All/", data_All);
-                this.UpdateFaultsModels();
-                this.Causalizzazione();
-//                this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
+            } else if (this.discr === "FermoAutomatico") {
+
+                var string = this.GetStringIDFermiAuto(this.CheckSingoloCausa);
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogFermiAutoSenzaCausale&Content-Type=text/json&ListLogID=" + string + "&CausaleID=" + id;
+                this.AjaxCallerVoid(link);
+//                var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
+//                var data_All = this.ModelDetailPages.getData().Causalizzazione.All;
+//                for (var i in this.CheckSingoloCausa) {
+//                    if (this.CheckSingoloCausa[i].checked > 0) {
+//                        data.fermi[i].causa = CB.getProperty("text");
+//                        for (var j in data_All.fermi) {
+//                            if (data.fermi[i].inizio === data_All.fermi[j].inizio) {
+//                                data_All.fermi[j].causa = CB.getProperty("text");
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//                this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data);
+//                this.ModelDetailPages.setProperty("/Causalizzazione/All/", data_All);
+//                this.UpdateFaultsModels();
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
-                if (this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti.length === 0) {
-                    this.getView().byId("TotaleTable").destroy();
-                    var text = new sap.m.Text({
-                        text: "Tutti i fermi automatici sono stati causalizzati",
-                        textAlign: "Center"
-                    });
-                    text.addStyleClass("textTop");
-                    var flexy = new sap.m.FlexBox({
-                        alignItems: "Start",
-                        justifyContent: "Center"
-                    });
-                    flexy.addItem(text);
-                    this.getView().byId("vbox_table").addItem(flexy);
-                }
+                this.Causalizzazione();
+//                this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
+
+//                if (this.ModelDetailPages.getData().Causalizzazione.NoCause.fermi.length === 0) {
+//                    this.getView().byId("TotaleTable").destroy();
+//                    var text = new sap.m.Text({
+//                        text: "Tutti i fermi automatici sono stati causalizzati",
+//                        textAlign: "Center"
+//                    });
+//                    text.addStyleClass("textTop");
+//                    var flexy = new sap.m.FlexBox({
+//                        alignItems: "Start",
+//                        justifyContent: "Center"
+//                    });
+//                    flexy.addItem(text);
+//                    this.getView().byId("vbox_table").addItem(flexy);
+//                }
             }
             this.outerVBox.destroyItems();
+        },
+        GetStringIDFermiAuto: function (vec) {
+            var IDs = [];
+            var i;
+            for (i in vec) {
+                if (vec[i].checked > 0) {
+                    IDs.push(vec[i].id);
+                }
+            }
+            var string = "";
+            if (IDs.length === 1) {
+                string = String(IDs[0]);
+            } else {
+                for (i in IDs) {
+                    string += (String(IDs[i]) + "#");
+                }
+                string = string.substring(0, string.length - 1);
+            }
+            return string;
         },
 //------------------------------------------------------------------------------
 
 //      RICHIAMATO DAL PULSANTE "RIAVVIO"
         Riavvio: function () {
-            if (typeof this.ModelDetailPages.getData().SetupLinea.Modify === "undefined") {
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            if (typeof this.ModelDetailPages.getData().SetupLinea === "undefined") {
+                this.ModelDetailPages.setProperty("/SetupLinea/", {});
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
                 this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
             }
             this.getSplitAppObj().toDetail(this.createId("RipristinoCondizioni"));
@@ -688,7 +722,7 @@ sap.ui.define([
             this.Item.intervallo = this.MillisecsToStandard(this.StandardToMillisecs(this.Item.fine) - this.StandardToMillisecs(this.Item.inizio));
             var faults = this.ModelDetailPages.getData().Causalizzazione.All;
             faults.Totale.tempoGuastoTotale = this.MillisecsToStandard(this.StandardToMillisecs(faults.Totale.tempoGuastoTotale) + this.StandardToMillisecs(this.Item.intervallo));
-            faults.guasti.push(this.Item);
+            faults.fermi.push(this.Item);
             this.ModelDetailPages.setProperty("/Causalizzazione/All/", faults);
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA"
@@ -704,24 +738,12 @@ sap.ui.define([
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
-
-
-
-
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
             this.AjaxCallerVoid(link);
-
             var XMLstring = this.XMLSetupUpdates(data);
             link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
             this.AjaxCallerVoid(link);
-
-
             this.RefreshCall();
-
-
-
-
-
 //            var now = new Date();
 //            this.Item.fine = this.DateToStandard(now);
 //            this.AggiornaGuasti();
@@ -735,15 +757,39 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "CAUSALIZZAZIONE FERMI AUTOMATICI"
         Causalizzazione: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.Global.getData().idLinea;
+            this.ModelDetailPages.setProperty("/Causalizzazione/", {});
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
             this.AjaxCallerData(link, this.ModelDetailPages, "/Causalizzazione/NoCause/");
-            this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
+            data = this.AddTimeGaps(data);
+            this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data);
+            if (this.ModelDetailPages.getData().Causalizzazione.NoCause.fermi.length === 0) {
+                if (typeof this.getView().byId("TotaleTable") !== "undefined") {
+                    this.getView().byId("TotaleTable").destroy();
+                    var text = new sap.m.Text({
+                        text: "Tutti i fermi automatici sono stati causalizzati",
+                        textAlign: "Center"
+                    });
+                    text.addStyleClass("textTop");
+                    var flexy = new sap.m.FlexBox({
+                        alignItems: "Start",
+                        justifyContent: "Center"
+                    });
+                    flexy.addItem(text);
+                    this.getView().byId("vbox_table").addItem(flexy);
+                }
+            }
+
             this.CheckSingoloCausa = [];
             var i;
-            for (i in this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti) {
-                this.CheckSingoloCausa.push(0);
+            var temp = {};
+            for (i in this.ModelDetailPages.getData().Causalizzazione.NoCause.fermi) {
+                temp.id = this.ModelDetailPages.getData().Causalizzazione.NoCause.fermi[i].LogID;
+                temp.checked = 0;
+                this.CheckSingoloCausa.push(temp);
             }
+            this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.UncheckCause();
             this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
@@ -763,12 +809,12 @@ sap.ui.define([
                 if (CB.getSelected()) {
                     this.CheckTotaleCausa = 1;
                     for (i in this.CheckSingoloCausa) {
-                        this.CheckSingoloCausa[i] = 1;
+                        this.CheckSingoloCausa[i].checked = 1;
                     }
                 } else {
                     this.CheckTotaleCausa = 0;
                     for (i in this.CheckSingoloCausa) {
-                        this.CheckSingoloCausa[i] = 0;
+                        this.CheckSingoloCausa[i].checked = 0;
                     }
                 }
             } else {
@@ -781,14 +827,14 @@ sap.ui.define([
                     }
                 }
                 if (CB.getSelected()) {
-                    this.CheckSingoloCausa[i] = 1;
+                    this.CheckSingoloCausa[i].checked = 1;
                 } else {
-                    this.CheckSingoloCausa[i] = 0;
+                    this.CheckSingoloCausa[i].checked = 0;
                 }
             }
             temp_id = 0;
             for (i in this.CheckSingoloCausa) {
-                temp_id += this.CheckSingoloCausa[i];
+                temp_id += this.CheckSingoloCausa[i].checked;
             }
             if (temp_id > 0) {
                 this.getView().byId("ConfermaCausalizzazione").setEnabled(true);
@@ -804,20 +850,31 @@ sap.ui.define([
                 this.getView().byId(temp_id).setSelected(false);
                 this.getView().byId(temp_id).setEnabled(true);
             }
-            this.getView().byId("CBTotaleCausa").setSelected(false);
-            this.getView().byId("CBTotaleCausa").setEnabled(true);
+            if (typeof this.getView().byId("TotaleTable") !== "undefined") {
+                this.getView().byId("CBTotaleCausa").setSelected(false);
+                this.getView().byId("CBTotaleCausa").setEnabled(true);
+            }
             this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
         },
 //      RICHIAMATO DAL PULSANTE DI CAUSALIZZA
         Causalizza: function () {
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaFermi&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
             this.AjaxCallerData(link, this.ModelDetailPages, "/Fermi/");
+            this.discr = "FermoAutomatico";
             this.Fermo();
         },
 //      RICHIAMATO DAL PULSANTE DI ESCI NELLA CAUSALIZZAZIONE
         EsciCausalizzazione: function () {
-            this.RefreshCall();
-
+            if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disponibile.Lavorazione") {
+                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            } else if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disponibile.Svuotamento") {
+                this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.DisableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonChiusuraConfezionamento"]);
+                this.EnableButtons(["ButtonCausalizzazione"]);
+            }
 //            if (this.CLOSED === 0) {
 //                this.getSplitAppObj().toDetail(this.createId("InProgress"));
 //                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -834,16 +891,19 @@ sap.ui.define([
         UpdateFaultsModels: function () {
             var data_NOcause = this.ModelDetailPages.getData().Causalizzazione.NoCause;
             var i;
-            for (i = data_NOcause.guasti.length - 1; i >= 0; i--) {
-                var temp_item = data_NOcause.guasti[i];
+            for (i = data_NOcause.fermi.length - 1; i >= 0; i--) {
+                var temp_item = data_NOcause.fermi[i];
                 if (temp_item.causa !== "") {
-                    data_NOcause.guasti.splice(i, 1);
+                    data_NOcause.fermi.splice(i, 1);
                     data_NOcause.Totale.tempoGuastoTotale = this.MillisecsToStandard(this.StandardToMillisecs(data_NOcause.Totale.tempoGuastoTotale) - this.StandardToMillisecs(temp_item.intervallo));
                 }
             }
             this.CheckSingoloCausa = [];
-            for (i in data_NOcause.guasti) {
-                this.CheckSingoloCausa.push(0);
+            var temp = {};
+            for (i in data_NOcause.fermi) {
+                temp.id = data_NOcause.fermi[i].LogID;
+                temp.checked = 0;
+                this.CheckSingoloCausa.push(temp);
             }
             data_NOcause.Totale.select = false;
             this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data_NOcause);
@@ -853,12 +913,9 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.Global.getData().idLinea;
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
             this.AjaxCallerVoid(link);
             this.RefreshCall();
-
-
-
 //            this.CLOSED = 1;
 //            this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
 //            this.AggiornaChiusura();
@@ -868,11 +925,11 @@ sap.ui.define([
 //            this.EnableButtons(["ButtonCausalizzazione"]);
         },
         ConfermaChiusura: function () {
-
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=1" + this.Global.getData().idLinea;
+            var temp = {"linea": this.ModelDetailPages.getData().Globale.Linea, "descrizione": "", "conforme": ""};
+            this.ModelDetailPages.setProperty("/Intestazione/", temp);
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
             this.AjaxCallerVoid(link);
             this.RefreshCall();
-
 //            this.getSplitAppObj().toDetail(this.createId("Home"));
 //            this.SwitchColor("");
 //            this.DisableButtons(["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
@@ -892,16 +949,22 @@ sap.ui.define([
             var bck = this.ModelDetailPages.getData().SKUBatch.SKUattuale;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
-            this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
+//            this.ModelDetailPages.setProperty("/SKUBatch/SKUattuale", bck);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.SwitchColor("");
+//            this.SwitchColor("");
             this.DisableButtons(["ButtonBatchAttrezzaggio"]);
         },
         //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatchAttrezzaggio: function () {
-            this.getSplitAppObj().toDetail(this.createId("ConfermaBatchAttrezzaggio"));
+
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
+            this.AjaxCallerVoid(link);
+            this.RefreshCall();
+        },
+        PredisposizioneLineaAttrezzaggio: function () {
+            this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
@@ -911,12 +974,12 @@ sap.ui.define([
             mod = this.RecursiveLinkRemoval(mod);
             mod = this.RecursiveModifyExpansion(mod);
             mod = this.RecursiveParentExpansion(mod);
-            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
-            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.SwitchColorAttrezzaggio("yellow");
-            this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
+//            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
+//            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
+//            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.SwitchColorAttrezzaggio("yellow");
+//            this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
@@ -967,14 +1030,18 @@ sap.ui.define([
                         width: "5rem",
                         template: new StyleInputTreeTableValue({
                             value: "{= ${GeneralModel>modify} === 1 ? ${GeneralModel>value}: ''}",
+//                            value: "{= ${GeneralModel>modify} === '1' ? ${GeneralModel>value}: ''}",
                             diff: "{GeneralModel>modify}",
                             editable: "{= ${GeneralModel>modify} === 1}"})}),
+//                            editable: "{= ${GeneralModel>modify} === '1'}"})}),
                     new sap.ui.table.Column({
                         label: "Sigle",
                         width: "5rem",
                         template: new sap.m.Input({
                             placeholder: "{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}",
                             editable: "{= ${GeneralModel>code} === 1}",
+//                            placeholder: "{= ${GeneralModel>code} === '1' ? ${GeneralModel>codePlaceholder}: ''}",
+//                            editable: "{= ${GeneralModel>code} === '1'}",
                             value: "{GeneralModel>codeValue}"})})
                 ]
             });
@@ -1043,14 +1110,17 @@ sap.ui.define([
                         width: "5rem",
                         template: new StyleInputTreeTableValue({
                             value: "{= ${GeneralModel>modify} === 1 ? '#ND': ''}",
+//                            value: "{= ${GeneralModel>modify} === '1' ? '#ND': ''}",
                             diff: "{GeneralModel>modify}",
                             editable: "{= ${GeneralModel>modify} === 1}"})}),
+//                            editable: "{= ${GeneralModel>modify} === '1'}"})}),
                     new sap.ui.table.Column({
                         label: "Sigle",
                         width: "5rem",
                         template: new sap.m.Input({
                             placeholder: "",
                             editable: "{= ${GeneralModel>code} === 1}",
+//                            editable: "{= ${GeneralModel>code} === '1'}",
                             value: ""})})
                 ]
             });
@@ -1089,14 +1159,22 @@ sap.ui.define([
             this.Item.destroyContent();
         },
         ConfermaAttrezzaggio: function () {
-            this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.SwitchColorAttrezzaggio("brown");
+
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
+            this.AjaxCallerVoid(link);
+            this.RefreshCall();
+//            this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.SwitchColorAttrezzaggio("brown");
         },
         FineAttrezzaggio: function () {
-            this.getSplitAppObj().toDetail(this.createId("Home"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.SwitchColorAttrezzaggio("");
+
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().Globale.idLinea;
+            this.AjaxCallerVoid(link);
+            this.RefreshCall();
+//            this.getSplitAppObj().toDetail(this.createId("Home"));
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            this.SwitchColorAttrezzaggio("");
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1129,7 +1207,7 @@ sap.ui.define([
         AggiornaChiusura: function () {
             var data = this.ModelDetailPages.getData();
             var index = this.GetIndex(data.Chiusura.attributi, "Totale tempi di fermo");
-            data.Chiusura.attributi[index].value = data.Causalizzazione.All.Totale.tempoGuastoTotale;
+//            data.Chiusura.attributi[index].value = data.Causalizzazione.All.Totale.tempoGuastoTotale;
             var index1 = this.GetIndex(data.Chiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
             data.Chiusura.attributi[index].attributi[index1].value = data.Causalizzazione.NoCause.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/", data);
@@ -1160,7 +1238,7 @@ sap.ui.define([
         ShowRelevant: function (event) {
             var name = event.getSource().data("mydata");
             this.View = this.getView().byId(name);
-            this.View.expandToLevel(100);
+            this.View.expandToLevel(20);
             this.oGlobalBusyDialog.open();
             setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, name), 400);
         },
@@ -1189,12 +1267,12 @@ sap.ui.define([
         AddTimeGaps: function (data) {
             var millisec_diff = [];
             var start, end;
-            for (var iter in data.guasti) {
-                start = new Date(data.guasti[iter].inizio);
-                end = new Date(data.guasti[iter].fine);
+            for (var iter in data.fermi) {
+                start = new Date(data.fermi[iter].inizio);
+                end = new Date(data.fermi[iter].fine);
                 millisec_diff.push(end - start);
-                data.guasti[iter].inizio = this.DateToStandard(start);
-                data.guasti[iter].fine = this.DateToStandard(end);
+                data.fermi[iter].inizio = this.DateToStandard(start);
+                data.fermi[iter].fine = this.DateToStandard(end);
             }
             var temp;
             var sum = 0;
@@ -1205,7 +1283,7 @@ sap.ui.define([
                 arrayGaps.push(this.MillisecsToStandard(temp));
             }
             for (var i = 0; i < arrayGaps.length; i++) {
-                data.guasti[i].intervallo = arrayGaps[i];
+                data.fermi[i].intervallo = arrayGaps[i];
             }
             data.Totale = {};
             data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);
@@ -1265,10 +1343,10 @@ sap.ui.define([
         },
 //      Funzione che rimuove i guasti non causalizzati
         RemoveCaused: function (data) {
-            for (var i = data.guasti.length - 1; i >= 0; i--) {
-                data.guasti[i].select = false;
-                if (data.guasti[i].causa !== "") {
-                    data.guasti.splice(i, 1);
+            for (var i = data.fermi.length - 1; i >= 0; i--) {
+                data.fermi[i].select = false;
+                if (data.fermi[i].causa !== "") {
+                    data.fermi.splice(i, 1);
                 }
             }
             return data;
@@ -1379,6 +1457,7 @@ sap.ui.define([
                     this.exp = 0;
                     json[key] = this.RecursiveJSONExpansionFinder(json[key]);
                     if (typeof json[key].expand !== "undefined" && json[key].expand === 0) {
+//                        json[key].expand = String(this.exp);
                         json[key].expand = this.exp;
                     }
                     json[key] = this.RecursiveParentExpansion(json[key]);
@@ -1393,6 +1472,7 @@ sap.ui.define([
                 } else {
                     if (key === "expand") {
                         if (json[key] > 0) {
+//                        if (json[key] !== "0") {
                             this.exp = 1;
                         }
                     }
@@ -1405,6 +1485,7 @@ sap.ui.define([
                 if (typeof std[key] === "object") {
                     if (key === "expand") {
                         if (bck[key] > 0) {
+//                        if (bck[key] !== "0") {
                             std[key] = 1;
                         }
                     }
@@ -1412,6 +1493,7 @@ sap.ui.define([
                 } else {
                     if (key === "expand") {
                         if (bck[key] > 0) {
+//                        if (bck[key] !== "0") {
                             std[key] = 1;
                         }
                     }
