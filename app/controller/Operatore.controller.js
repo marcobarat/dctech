@@ -56,10 +56,16 @@ sap.ui.define([
                 }
 
                 if (data.Batch[0].IsAttrezzaggio === "0") {
-                    this.CreateButtons();
+                    if (typeof sap.ui.getCore().byId("ButtonBatchAttrezzaggio") !== "undefined") {
+                        this.DestroyButtons();
+                    }
+                    if (typeof sap.ui.getCore().byId("ButtonPresaInCarico") === "undefined") {
+                        this.CreateButtons();
+                    }
                     switch (data.StatoLinea) {
                         case "Disponibile.AttesaPresaInCarico":
                             if (this.State !== "Disponibile.AttesaPresaInCarico") {
+                                this.getSplitAppObj().toDetail(this.createId("Home"));
                                 this.SwitchColor("");
 //                                this.SwitchColorAttrezzaggio("");
                                 this.EnableButtons(["ButtonPresaInCarico"]);
@@ -120,7 +126,12 @@ sap.ui.define([
                             break;
                     }
                 } else {
-                    this.CreateButtonsAttr();
+                    if (typeof sap.ui.getCore().byId("ButtonPresaInCarico") !== "undefined") {
+                        this.DestroyButtons();
+                    }
+                    if (typeof sap.ui.getCore().byId("ButtonBatchAttrezzaggio") === "undefined") {
+                        this.CreateButtonsAttr();
+                    }
                     switch (data.StatoLinea) {
                         case "Disponibile.AttesaPresaInCarico":
                             if (this.State !== "Disponibile.AttesaPresaInCarico") {
@@ -153,20 +164,22 @@ sap.ui.define([
                     }
                 }
             } else {
-                this.DestroyButtons();
+                if (typeof sap.ui.getCore().byId("ButtonPresaInCarico") !== "undefined" || typeof sap.ui.getCore().byId("ButtonBatchAttrezzaggio") !== "undefined") {
+                    this.DestroyButtons();
+                }
                 switch (data.StatoLinea) {
                     case "Disponibile.Vuota":
                         this.getSplitAppObj().toDetail(this.createId("Home"));
                         this.SwitchColor("");
-                        this.EnableButtons([]);
-                        this.EnableButtonsAttr([]);
+//                        this.EnableButtons([]);
+//                        this.EnableButtonsAttr([]);
                         this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                         break;
                     case "NonDisponibile":
                         this.SwitchColor("red");
 //                        this.SwitchColorAttrezzaggio("red");
-                        this.EnableButtons([]);
-                        this.EnableButtonsAttr([]);
+//                        this.EnableButtons([]);
+//                        this.EnableButtonsAttr([]);
                         model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "NON DISPONIBILE", "conforme": ""};
                         this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                         break;
@@ -356,19 +369,18 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE CONFERMA ALLA FINE DELLA PREDISPOSIZIONE
         ConfermaPredisposizione: function () {
 
-            var setupData = this.ModelDetailPages.getData().SKUBatch.Batch;
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             data = this.RecursivePropertyCopy(data, "codeValueModify", "codeValue");
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.codeCheck = 0;
-            data = this.RecursiveJSONCodeCheck(data);
+            data = this.RecursiveJSONCodeCheck(data, "codeValue");
             if (this.codeCheck === 0) {
 
                 var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
                 var XMLstring = this.XMLSetupUpdates(data);
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
                 this.RefreshCall();
             } else {
@@ -388,9 +400,19 @@ sap.ui.define([
         ModificaCondizioni: function () {
             if (typeof this.ModelDetailPages.getData().SetupLinea === "undefined") {
                 this.ModelDetailPages.setProperty("/SetupLinea/", {});
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
             }
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
+            var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
+            mod = this.RecursiveLinkRemoval(mod);
+            mod = this.RecursiveModifyExpansion(mod);
+            mod = this.RecursiveParentExpansion(mod);
+            mod = this.RecursivePropertyAdder(mod, "valueModify");
+            mod = this.RecursivePropertyAdder(mod, "codeValueModify");
+            mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
+            mod = this.RecursivePropertyCopy(mod, "codeValueModify", "codeValue");
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
+            this.backupSetupModify = JSON.parse(JSON.stringify(mod));
             this.getSplitAppObj().toDetail(this.createId("ModificaCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.TabContainer = this.getView().byId("TabContainer-mod");
@@ -408,17 +430,24 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
         ConfermaModifica: function () {
-            var setupData = this.ModelDetailPages.getData().SKUBatch.Batch;
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
-            data = this.RecursivePropertyCopy(data, "value", "valueModify");
-            data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
-            this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
-            var XMLstring = this.XMLSetupUpdates(data);
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
-            this.AjaxCallerVoid(link);
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.getSplitAppObj().toDetail(this.createId("InProgress"));
-            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            this.codeCheck = 0;
+            data = this.RecursiveJSONCodeCheck(data, "codeValueModify");
+            if (this.codeCheck === 0) {
+
+                data = this.RecursivePropertyCopy(data, "value", "valueModify");
+                data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
+                this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
+                this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
+                var XMLstring = this.XMLSetupUpdates(data);
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link);
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            } else {
+                MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
+            }
         },
 //------------------------------------------------------------------------------
 
@@ -556,7 +585,7 @@ sap.ui.define([
             var link;
             if (this.discr === "FermoManuale") {
 
-                this.ModelDetailPages.setProperty("/CausaFermo/", CB.getProperty("text"));
+                this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + CB.getProperty("text"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleEventoID=" + id;
                 this.AjaxCallerVoid(link);
@@ -597,9 +626,19 @@ sap.ui.define([
         Riavvio: function () {
             if (typeof this.ModelDetailPages.getData().SetupLinea === "undefined") {
                 this.ModelDetailPages.setProperty("/SetupLinea/", {});
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
             }
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
+            var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
+            mod = this.RecursiveLinkRemoval(mod);
+            mod = this.RecursiveModifyExpansion(mod);
+            mod = this.RecursiveParentExpansion(mod);
+            mod = this.RecursivePropertyAdder(mod, "valueModify");
+            mod = this.RecursivePropertyAdder(mod, "codeValueModify");
+            mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
+            mod = this.RecursivePropertyCopy(mod, "codeValueModify", "codeValue");
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
+            this.backupSetupModify = JSON.parse(JSON.stringify(mod));
             this.getSplitAppObj().toDetail(this.createId("RipristinoCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.EnableButtons([]);
@@ -612,17 +651,25 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA"
         ConfermaRipristino: function () {
-            var setupData = this.ModelDetailPages.getData().SKUBatch.Batch;
+
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
-            data = this.RecursivePropertyCopy(data, "value", "valueModify");
-            data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
-            this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link);
-            var XMLstring = this.XMLSetupUpdates(data);
-            link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&batchid=" + setupData.BatchID + "&SKUID=" + setupData.SKUID + "&xml=" + XMLstring;
-            this.AjaxCallerVoid(link);
-            this.RefreshCall();
+            this.codeCheck = 0;
+            data = this.RecursiveJSONCodeCheck(data, "codeValueModify");
+            if (this.codeCheck === 0) {
+
+                data = this.RecursivePropertyCopy(data, "value", "valueModify");
+                data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
+                this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
+                this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link);
+                var XMLstring = this.XMLSetupUpdates(data);
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link);
+                this.RefreshCall();
+            } else {
+                MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
+            }
         },
 //------------------------------------------------------------------------------
 //      
@@ -635,20 +682,54 @@ sap.ui.define([
             data = this.AddTimeGaps(data);
             this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
             if (this.ModelDetailPages.getData().FermiNonCausalizzati.fermi.length === 0) {
-                if (typeof this.getView().byId("TotaleTable") !== "undefined") {
-                    this.getView().byId("TotaleTable").destroy();
-                    var text = new sap.m.Text({
-                        text: "Tutti i fermi automatici sono stati causalizzati",
-                        textAlign: "Center"
-                    });
-                    text.addStyleClass("textTop");
-                    var flexy = new sap.m.FlexBox({
-                        alignItems: "Start",
-                        justifyContent: "Center"
-                    });
-                    flexy.addItem(text);
-                    this.getView().byId("vbox_table").addItem(flexy);
-                }
+//                if (typeof this.getView().byId("TotaleTable") !== "undefined") {
+//                    this.getView().byId("TotaleTable").destroy();
+                var text = new sap.m.Text({
+                    text: "Tutti i fermi automatici sono stati causalizzati",
+                    textAlign: "Center"
+                });
+                text.addStyleClass("textTop");
+                var flexy = new sap.m.FlexBox({
+                    alignItems: "Start",
+                    justifyContent: "Center"
+                });
+                flexy.addItem(text);
+                this.getView().byId("vbox_table").addItem(flexy);
+//                }
+            } else {
+                var tot = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale;
+                var table = new sap.m.Table({
+                    id: "TotaleTable",
+                    columns: [
+                        new sap.m.Column({
+                            hAlign: "Center",
+//                            text: new sap.m.Text({text: "Tempo"}),
+                            width: "30%"}),
+                        new sap.m.Column({
+                            hAlign: "Center",
+//                            text: new sap.m.Text({text: "Tempo"}),
+                            width: "15%"}),
+                        new sap.m.Column({
+                            hAlign: "Center",
+//                            text: new sap.m.Text({text: "Tempo"}),
+                            width: "45%"}),
+                        new sap.m.Column({
+                            hAlign: "Center",
+//                            text: new sap.m.Text({text: "Tempo"}),
+                            width: "10%"})
+                    ]
+                });
+                table.addStyleClass("mysapMTable");
+                var ColumnList = new sap.m.ColumnListItem();
+                ColumnList.addCell(new sap.m.Text({text: "Totale Complessivo", textAlign: "Center"}));
+                ColumnList.addCell(new sap.m.Text({text: tot.tempoGuastoTotale}));
+                ColumnList.addCell(new sap.m.Text({text: tot.causaTotale}));
+                ColumnList.addCell(new sap.m.CheckBox({textAlign: "Center", id: "CBTotaleCausa", selected: tot.select, select: [this.ChangeCheckedCausa, this]}));
+                ColumnList.addStyleClass("mysapMListTblCell");
+                ColumnList.addStyleClass("mysapMText");
+                ColumnList.addStyleClass("mysapMCb");
+                table.addItem(ColumnList);
+                this.getView().byId("vbox_table").addItem(table);
             }
 
             this.CheckSingoloCausa = [];
@@ -667,7 +748,8 @@ sap.ui.define([
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedCausa: function (event) {
             var id = event.getSource().getId();
-            var CB = this.getView().byId(id);
+//            var CB = this.getView().byId(id);
+            var CB = sap.ui.getCore().byId(id);
             var root_name_totale = "CBTotaleCausa";
             var i, temp_id;
             if (id.indexOf(root_name_totale) > -1) {
@@ -732,6 +814,10 @@ sap.ui.define([
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
             this.AjaxCallerData(link, this.ModelDetailPages, "/CausaliFermi/");
             this.discr = "FermoAutomatico";
+
+            var vbox = this.getView().byId("vbox_table");
+            vbox.destroyItems();
+
             this.Fermo();
         },
 //      RICHIAMATO DAL PULSANTE DI ESCI NELLA CAUSALIZZAZIONE
@@ -745,6 +831,8 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.EnableButtons(["ButtonCausalizzazione"]);
             }
+            var vbox = this.getView().byId("vbox_table");
+            vbox.destroyItems();
         },
 //------------------------------------------------------------------------------
 //      
@@ -1273,11 +1361,11 @@ sap.ui.define([
 //        },
         CreateButtons: function () {
             var vbox = this.getView().byId("panel_processi");
-            var btn;
+            var btn, btn_vbox;
             var IDs = ["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"];
             var texts = ["Presa in carico nuovo confezionamento", "Fine predisposizione inizio confezionamento", "Modifica condizioni operative", "Fermo", "Riavvio", "Causalizzazione fermi automatici", "Chiusura confezionamento svuotamento linea"];
             var press = [[this.PresaInCarico, this], [this.FinePredisposizione, this], [this.ModificaCondizioni, this], [this.FermoCall, this], [this.Riavvio, this], [this.Causalizzazione, this], [this.ChiusuraConfezionamento, this]];
-            var classes = ["styleLongButton", "styleLongButton", "styleButton", "styleButton", "styleButton", "styleLongButton", "styleLongButton"];
+            var classes = ["styleLongButton", "styleLongButton", "styleButton", "styleButton", "styleButton", "styleButton", "styleLongButton"];
             for (var i in IDs) {
                 btn = new sap.m.Button({
                     id: IDs[i],
@@ -1286,12 +1374,20 @@ sap.ui.define([
                     width: "100%",
                     press: press[i]});
                 btn.addStyleClass(classes[i]);
-                vbox.addItem(btn);
+                btn_vbox = new sap.m.VBox({height: "13%", width: "100%"});
+                btn_vbox.addItem(btn);
+                vbox.addItem(btn_vbox);
+                if (i === "1" || i === "5") {
+                    btn_vbox = new sap.m.VBox({height: "4.5%", width: "100%"});
+                    btn_vbox.addItem(new sap.m.Text({}));
+                    vbox.addItem(btn_vbox);
+                }
             }
         },
         CreateButtonsAttr: function () {
             var vbox = this.getView().byId("panel_processi");
-            var btn;
+            var btn, btn_vbox;
+            var container_vbox = new sap.m.VBox({height: "43.5%", width: "100%"});
             var IDs = ["ButtonBatchAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"];
             var texts = ["Predisposizione nuovo confezionamento", "Fine predisposizione", "Sospensione predisposizione"];
             var press = [[this.BatchAttrezzaggio, this], [this.FinePredisposizioneAttrezzaggio, this], [this.SospensioneAttrezzaggio, this]];
@@ -1304,8 +1400,19 @@ sap.ui.define([
                     width: "100%",
                     press: press[i]});
                 btn.addStyleClass(classes[i]);
-                vbox.addItem(btn);
+                btn_vbox = new sap.m.VBox({height: "29.9%", width: "100%"});
+                btn_vbox.addItem(btn);
+                container_vbox.addItem(btn_vbox);
+                if (i === "1") {
+                    btn_vbox = new sap.m.VBox({height: "10.3%", width: "100%"});
+                    btn_vbox.addItem(new sap.m.Text({}));
+                    container_vbox.addItem(btn_vbox);
+                }
             }
+            vbox.addItem(container_vbox);
+            btn_vbox = new sap.m.VBox({height: "56.5%", width: "100%"});
+            btn_vbox.addItem(new sap.m.Text({}));
+            vbox.addItem(btn_vbox);
         },
         DestroyButtons: function () {
             var vbox = this.getView().byId("panel_processi");
@@ -1459,7 +1566,7 @@ sap.ui.define([
                             } else if (setup.modify === 1) {
                                 temp.Type = "v";
                             }
-                            temp.IDParametro = setup.id;
+                            temp.IDParametro = setup.IDParametro;
                             temp.ValueML = setup.codeValue;
                             temp.Value = setup.value;
                             if (temp !== this.dataXML[this.dataXML.length - 1]) {
@@ -1471,14 +1578,14 @@ sap.ui.define([
             }
             return setup;
         },
-        RecursiveJSONCodeCheck: function (json) {
+        RecursiveJSONCodeCheck: function (json, attr) {
             for (var key in json) {
                 if (typeof json[key] === "object") {
-                    json[key] = this.RecursiveJSONCodeCheck(json[key]);
+                    json[key] = this.RecursiveJSONCodeCheck(json[key], attr);
                 } else {
                     if (key === "code") {
                         if (json[key] === 1) {
-                            if (json.codeValue === "") {
+                            if (json[attr] === "") {
                                 this.codeCheck = 1;
                                 break;
                             }

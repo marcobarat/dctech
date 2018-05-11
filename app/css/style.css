@@ -1,38 +1,25 @@
-/*Panel Styles*/
-.MasterPanels {
-    border-style: double;
-    justify-content: center;
-}
+/*STILE PAGINE SETTATO A BIANCO*/
 .colorPage {
     background-color: white;
 }
-.FaultPanel {
-    border-style: double;
+
+/*STILE MASTER PAGE*/
+.MasterPanels {
     justify-content: center;
-    background-color: #A71930;
 }
-
-
-/* Custom Styles  */
-.myButton
-{
-    background-color: #A71930;
+.stylePanelYellow {
+    background-color: #FFD300; 
 }
-
-.middleImg {
-    text-align: center;
+.stylePanelGreen {
+    background-color: #7CA295; 
 }
-
-.diffStandard input {
-    color : #A71930;
+.stylePanelRed {
+    background-color: #A71930; 
 }
-
-.diffRed {
-    color : #A71930;
-    font-weight: bold;
+.stylePanelBrown {
+    background-color: #5E3032; 
 }
-
-
+/*STILE BOTTONI SULLA MASTER PAGE*/
 .styleButton * {
     font-size: 12pt;
     text-decoration: none;
@@ -40,8 +27,8 @@
     width:90%;
     height:130%;
     padding:1%;
+    color: #003A6B;
 }
-
 .styleLongButton * {
     font-size: 12pt;
     text-decoration: none;
@@ -51,98 +38,88 @@
     width:90%;
     height:130%;
     padding:1%;
+    color: #003A6B;
 }
 
-.stylePanelYellow {
-    background-color: #FFD300; 
+/*STILE TESTI E INPUT TREETABLE*/
+.diffStandard input {
+    color : #A71930;
 }
-
-.stylePanelGreen {
-    background-color: #7CA295; 
+.diffRed {
+    color : #A71930;
+    font-weight: bold;
 }
-
-.stylePanelRed {
-    background-color: #A71930; 
-}
-
-.stylePanelBrown {
-    background-color: #5E3032; 
-}
-
 .diffLink {
     color : #003A6B;
     text-decoration: underline;
     font-weight: bold;
 }
-
+.sapMTB-Transparent-CTX .sapMBtnInner {
+    color: #003A6B;
+    background-color:#efeff5;
+}
+.sapUiTableColHdrCnt {
+    color: #0085ca;
+}
+/*STILE TESTI VARI*/
+/*.sapMText {
+    color : #003A6B;
+}*/
 .textTop {
     font-size: 30pt;
     color : #003A6B;
 }
-.textTopWhite {
-    font-size: 30pt;
-    color : white;
-}
 .textTopRed {
     font-size: 40pt;
     color: #A71930;
-    /*font-weight: bold;*/
 }
-
-.customTextBar * {
-    font-size: 25pt;
-    font-weight: bold;
-}
-
 .customText {
     font-size: 15pt;
     font-weight: bold;
+    color : #003A6B;
 }
-
-.customTextFermo {
+.customTextFermo  {
     font-size: 15pt;
     font-weight: bold;
     text-align: center;
+    color : #003A6B;
 }
 
+
+/*STILE PROGRESS BAR*/
 .progressBarButton * {
     height: 120px;
     background-color: #7CA295 !important;
     background-image: none !important;
-    border: 2px solid;
+    /*border: solid;*/
+}
+.customTextBar * {
+    font-size: 25pt;
+    font-weight: bold;
+}
+.sapMPIBarPositive {
+    background: #7CA295;
 }
 
+/*STILE TABELLA TOTALE CAUSALIZZAZIONE EDO*/
 .sapMListTblCell {
-
     border-left: 1px solid #ccc;
-
 }
-
 .mysapMListTblCell .sapMListTblCell {
     padding-left:0.5rem;
 }
-
 .mysapMText .sapMText {
     padding-top: 0.75rem;
 }
-
 .mysapMCb .sapMCb {
     left: 0.375rem;
 }
 
+/*STILE TABELLA SINGOLI CAUSALIZZAZIONE*/
 .mysapMTable {
     border-top : 1px solid #dddddd;
     border-right : 1px solid #dddddd;
 }
-
-/*.alternate-color .sapUiTableRowEven {
-    background-color: #0c0;
-}*/
-
-/*.alternate-color .sapUiTableRowEven:hover td {
-    background-color: #0f0 !important;
-}*/
-
 .alternate-color .sapUiTableRowOdd {
     background-color: #efeff5;
 }
@@ -158,6 +135,8 @@
 .alternate-color .sapUiTableRowOdd:hover  input {
     color: #fff;
 }
+
+/*LOGO*/
 .Logo {
     width: 55%;
     margin-left: 22%;

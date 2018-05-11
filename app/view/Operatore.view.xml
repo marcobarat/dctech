@@ -11,7 +11,7 @@
             <Page id="Home" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -24,7 +24,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                         </VBox>
                     </VBox>
                 </content>
@@ -34,7 +34,7 @@
             <Page id="PresaInCarico" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -47,7 +47,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_PresaInCarico"
@@ -60,7 +60,6 @@
                                     rowSelectionChange="ciao">
                                     <wt:toolbar>
                                         <Toolbar>
-                                            <Title text="Attributi prodotto"/>
                                             <ToolbarSpacer/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_PresaInCarico"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_PresaInCarico"/>
@@ -103,7 +102,7 @@
             <Page id="PredisposizioneLinea" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -116,7 +115,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                             <TabContainer id="TabContainer"
                                           class="sapUiResponsiveContentPadding"
                                           itemClose="UpdateTabs">
@@ -139,7 +138,6 @@
                                                     visibleRowCount="15">
                                                     <wt:toolbar>
                                                         <Toolbar>
-                                                            <Title text="Attributi prodotto"/>
                                                             <ToolbarSpacer/>
                                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiPredisposizione"/>
                                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiPredisposizione"/>
@@ -192,7 +190,6 @@
                                                             visibleRowCount="14">
                                                             <wt:toolbar>
                                                                 <Toolbar>
-                                                                    <Title text="Precedente"/>
                                                                     <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaSetupOld"/>
                                                                     <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaSetupOld"/>
                                                                     <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupOld"/>
@@ -232,7 +229,6 @@
                                                             cellClick="LinkClick">
                                                             <wt:toolbar>
                                                                 <Toolbar>
-                                                                    <Title text="Attuale"/>
                                                                     <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaSetupNew"/>
                                                                     <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaSetupNew"/> 
                                                                     <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupNew"/>
@@ -276,7 +272,7 @@
             <Page id="InProgress" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="24.4%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -289,76 +285,79 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <HBox height="25%" width="100%">
-                            <VBox width="80%">
-                                <ProgressIndicator
-                                    id="progressBar"
-                                    class="customTextBar"
-                                    percentValue="{GeneralModel>/DatiOEE/avanzamento}"
-                                    displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
-                                    showValue="true"
-                                    state="Success"
-                                    displayOnly="true"
-                                    height="120px"/>
-                            </VBox>
-                            <VBox width="4%"/>
-                            <VBox width="16%">
-                                <Button width="85%" class="progressBarButton" press="SPCGraph"/>
-                            </VBox>
-                        </HBox>
-                        <HBox height="15%" width="100%">
-                            <VBox height="100%" width="10%"/>
-                            <VBox height="100%" width="90%">
-                                <VBox height="33%" width="100%">
-                                    <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                        <VBox height="75.6%" width="100%">
+                            <HBox height="20%" width="100%">
+                                <VBox width="80%">
+                                    <ProgressIndicator
+                                        id="progressBar"
+                                        class="customTextBar"
+                                        percentValue="{GeneralModel>/DatiOEE/avanzamento}"
+                                        displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
+                                        showValue="true"
+                                        state="Success"
+                                        displayOnly="true"
+                                        height="120px"/>
                                 </VBox>
-                                <VBox height="33%" width="100%">
-                                    <Text text="Disponibilità: {GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
+                                <VBox width="4%"/>
+                                <VBox width="16%">
+                                    <Button width="85%" class="progressBarButton" press="SPCGraph"/>
                                 </VBox>
-                                <VBox height="33%" width="100%">
-                                    <Text text="Fermi automatici non causalizzati: {GeneralModel>/FermiNonCausalizzati/Totale/tempoGuastoTotale}" class="customText"/>
-                                </VBox>
-                            </VBox>
-                        </HBox>
-                        <VBox height="10%" width="100%"/>
-                        <VBox height="10%" width="100%">
-                            <FlexBox alignItems="Start" justifyContent="Center">
-                                <Text  text="Avanzamento confezionamento" class="customText"/>
-                            </FlexBox>
-                        </VBox>
-                        <VBox height="30%" width="100%">
-                            <HBox>
-                                <VBox height="100%" width="28%"/>
-                                <VBox height="100%" width="30%">
-                                    <VBox height="25%" width="100%">
-                                        <Text text="Valori consuntivi" class="customText"/>
-                                    </VBox>
-                                    <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/DatiOEE/massaConsuntiva}" class="customText"/>
-                                    </VBox>
-                                    <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/DatiOEE/tempoConsuntivo}" class="customText"/>
-                                    </VBox>
-                                    <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/DatiOEE/cartoniConsuntivi}" class="customText"/>
-                                    </VBox>
-                                </VBox>
-                                <VBox height="100%" width="30%">
-                                    <VBox height="25%" width="100%">
-                                        <Text text="Valori residui" class="customText"/>
-                                    </VBox>
-                                    <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/DatiOEE/massaResidua}" class="customText"/>
-                                    </VBox>
-                                    <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/DatiOEE/tempoResiduo}" class="customText"/>
-                                    </VBox>
-                                    <VBox height="25%" width="100%">
-                                        <Text text="-> {GeneralModel>/DatiOEE/cartoniResidui}" class="customText"/>
-                                    </VBox>
-                                </VBox>
-                                <VBox height="100%" width="12%"/>
                             </HBox>
+                            <VBox height="10%" width="100%"/>
+                            <HBox height="15%" width="100%">
+                                <VBox height="100%" width="10%"/>
+                                <VBox height="100%" width="90%">
+                                    <VBox height="33%" width="100%">
+                                        <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                                    </VBox>
+                                    <VBox height="33%" width="100%">
+                                        <Text text="Disponibilità: {GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
+                                    </VBox>
+                                    <VBox height="33%" width="100%">
+                                        <Text text="Fermi automatici non causalizzati: {GeneralModel>/FermiNonCausalizzati/Totale/tempoGuastoTotale}" class="customText"/>
+                                    </VBox>
+                                </VBox>
+                            </HBox>
+                            <VBox height="10%" width="100%"/>
+                            <VBox height="10%" width="100%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text  text="Avanzamento confezionamento" class="customText"/>
+                                </FlexBox>
+                            </VBox>
+                            <VBox height="35%" width="100%">
+                                <HBox>
+                                    <VBox height="100%" width="28%"/>
+                                    <VBox height="100%" width="30%">
+                                        <VBox height="25%" width="100%">
+                                            <Text text="Valori consuntivi" class="customText"/>
+                                        </VBox>
+                                        <VBox height="25%" width="100%">
+                                            <Text text="-> {GeneralModel>/DatiOEE/massaConsuntiva}" class="customText"/>
+                                        </VBox>
+                                        <VBox height="25%" width="100%">
+                                            <Text text="-> {GeneralModel>/DatiOEE/tempoConsuntivo}" class="customText"/>
+                                        </VBox>
+                                        <VBox height="25%" width="100%">
+                                            <Text text="-> {GeneralModel>/DatiOEE/cartoniConsuntivi}" class="customText"/>
+                                        </VBox>
+                                    </VBox>
+                                    <VBox height="100%" width="30%">
+                                        <VBox height="25%" width="100%">
+                                            <Text text="Valori residui" class="customText"/>
+                                        </VBox>
+                                        <VBox height="25%" width="100%">
+                                            <Text text="-> {GeneralModel>/DatiOEE/massaResidua}" class="customText"/>
+                                        </VBox>
+                                        <VBox height="25%" width="100%">
+                                            <Text text="-> {GeneralModel>/DatiOEE/tempoResiduo}" class="customText"/>
+                                        </VBox>
+                                        <VBox height="25%" width="100%">
+                                            <Text text="-> {GeneralModel>/DatiOEE/cartoniResidui}" class="customText"/>
+                                        </VBox>
+                                    </VBox>
+                                    <VBox height="100%" width="12%"/>
+                                </HBox>
+                            </VBox>
                         </VBox>
                     </VBox>
                 </content>
@@ -368,7 +367,7 @@
             <Page id="ModificaCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -381,7 +380,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                             <TabContainer id="TabContainer-mod"
                                           class="sapUiResponsiveContentPadding"
                                           itemClose="UpdateTabs">
@@ -404,9 +403,7 @@
                                                     visibleRowCount="15">
                                                     <wt:toolbar>
                                                         <Toolbar>
-                                                            <Title text="Attributi prodotto"/>
-                                                            <ToolbarSpacer/>
-                                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiModifica"/>
+                                                            <Button text="Collassa" press="CollapseAll" class="TTButtons textBlue" app:mydata="TreeTable_AttributiModifica"/>
                                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiModifica"/>
                                                             <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttributiModifica"/>
                                                         </Toolbar>
@@ -450,10 +447,9 @@
                                                     rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                     selectionMode="None"
                                                     ariaLabelledBy="title"
-                                                    visibleRowCount="7">
+                                                    visibleRowCount="6">
                                                     <wt:toolbar>
                                                         <Toolbar>
-                                                            <Title text="Modifica condizioni"/>
                                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ModificaCondizioni"/>
                                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ModificaCondizioni"/>
                                                             <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni"/>
@@ -545,7 +541,7 @@
             <Page id="Fermo" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -559,42 +555,6 @@
                             </VBox>
                         </VBox>
                         <VBox id="vboxFermo" height="80%" width="100%">
-                            <!--                            <HBox height="100%">
-                                <VBox width="15%"/>
-                                <VBox width="85%">
-                                    <VBox height="40%">
-                                        <HBox>
-                                            <VBox width="50%">
-                                                <Text text="{GeneralModel>/Fermo/Testi/titolo1}" class="customTextFermo"/>
-                                                <CheckBox id="CBFermo1" text="{GeneralModel>/Fermo/Testi/CBFermo1}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo1}" select="ChangeCheckedFermo" />
-                                            </VBox>
-                                            <VBox width="50%">
-                                                <Text text="{GeneralModel>/Fermo/Testi/titolo2}" class="customTextFermo"/>
-                                                <CheckBox id="CBFermo2" text="{GeneralModel>/Fermo/Testi/CBFermo2}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo2}" select="ChangeCheckedFermo" />
-                                                <CheckBox id="CBFermo3" text="{GeneralModel>/Fermo/Testi/CBFermo3}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo3}" select="ChangeCheckedFermo" />
-                                            </VBox>
-                                        </HBox>
-                                    </VBox>
-                                    <VBox height="60%">
-                                        <HBox>
-                                            <VBox width="50%">
-                                                <Text text="{GeneralModel>/Fermo/Testi/titolo3}" class="customTextFermo"/>
-                                                <CheckBox id="CBFermo4" text="{GeneralModel>/Fermo/Testi/CBFermo4}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo4}" select="ChangeCheckedFermo" />
-                                                <CheckBox id="CBFermo5" text="{GeneralModel>/Fermo/Testi/CBFermo5}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo5}" select="ChangeCheckedFermo" />
-                                                <CheckBox id="CBFermo6" text="{GeneralModel>/Fermo/Testi/CBFermo6}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo6}" select="ChangeCheckedFermo" />
-                                                <CheckBox id="CBFermo7" text="{GeneralModel>/Fermo/Testi/CBFermo7}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo7}" select="ChangeCheckedFermo" />
-                                            </VBox>
-                                            <VBox width="50%">
-                                                <Text text="{GeneralModel>/Fermo/Testi/titolo4}" class="customTextFermo"/>
-                                                <CheckBox id="CBFermo8" text="{GeneralModel>/Fermo/Testi/CBFermo8}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo8}" select="ChangeCheckedFermo" />
-                                                <CheckBox id="CBFermo9" text="{GeneralModel>/Fermo/Testi/CBFermo9}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo9}" select="ChangeCheckedFermo" />
-                                                <CheckBox id="CBFermo10" text="{GeneralModel>/Fermo/Testi/CBFermo10}" selected="{GeneralModel>/Fermo/Selezioni/CBFermo10}" select="ChangeCheckedFermo" />
-                                            </VBox>
-                                        </HBox>
-                                    </VBox>
-                                </VBox>
-                            </HBox>
-                            <Button id="ConfermaFermo" text="Conferma" width="100%" enabled="false" press="ConfermaFermo"/>-->
                         </VBox>
                     </VBox>
                 </content>
@@ -604,7 +564,7 @@
             <Page id="Causalizzazione" showHeader="false" class="colorPage" enableScrolling="false">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%">
+                        <VBox height="25%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -617,11 +577,11 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <!--                        <VBox height="10%">
-                            <Text/>
-                        </VBox>-->
-                        <VBox height="50%">
-                            <VBox>
+                        <HBox height="75%">
+                            <VBox height="100%" width="10%">
+                                <Text/>
+                            </VBox>
+                            <VBox height="100%" width="80%">
                                 <VBox height="15%">
                                     <HBox>
                                         <VBox width="10%"/>
@@ -635,24 +595,21 @@
                                         <VBox width="10%"/>
                                     </HBox>
                                 </VBox>
-                                <!--                                <VBox height="15%">
-                                    <Text/>
-                                </VBox>-->
-                                <VBox id="vbox_table" height="40%">
-                                    <Table
+                                <VBox id="vbox_table" height="25%" width="100%">
+<!--                                    <Table
                                         class="mysapMTable"
                                         id="TotaleTable"
                                         selectionMode="None">
                                         <columns>
                                             <Column width="30%" hAlign="Center">
                                             </Column>
-                                            <Column width="14.5%" hAlign="Center">
+                                            <Column width="15%" hAlign="Center">
                                                 <Text text="Tempo"/>                                                       
                                             </Column>
-                                            <Column width="47.5%" hAlign="Center">
+                                            <Column width="45%" hAlign="Center">
                                                 <Text text="Causale"/>
                                             </Column>
-                                            <Column width="8.5%" hAlign="Center">
+                                            <Column width="10%" hAlign="Center">
                                             </Column>
                                         </columns>
                                         <items>
@@ -665,113 +622,12 @@
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
-                                    </Table>
-                                </VBox>
-                                <!--                                <VBox height="10%">
-                                    <Text/>
-                                </VBox>-->
-                                <VBox height="65%">
-                                    <!--                                    <Table
-                                        class="mysapMTable"
-                                        id="SingoliTable"
-                                        alternateRowColors="true"
-                                        visibleRowCount="5"
-                                        items="{GeneralModel>/Causalizzazione/NoCause/guasti/}">
-                                        <columns>
-                                            <Column hAlign="Center" width="15%">
-                                                <Text text="Inizio"/>
-                                            </Column>
-                                            <Column hAlign="Center" width="15%">
-                                                <Text text="Fine"/>
-                                            </Column>
-                                            <Column hAlign="Center" width="15%">
-                                                <Text text="Tempo"/>
-                                            </Column>
-                                            <Column hAlign="Center" width="45%">
-                                                <Text text="Causale"/>
-                                            </Column>
-                                            <Column hAlign="Center" width="10%">
-                                            </Column>
-                                        </columns>
-                                        <items>
-                                            <ColumnListItem class="mysapMListTblCell mysapMText mysapMCb">
-                                                <cells>
-                                                    <Text textAlign="Center" text="{GeneralModel>inizio}"/>
-                                                    <Text textAlign="Center" text="{GeneralModel>fine}"/>
-                                                    <Text textAlign="Center" text="{GeneralModel>intervallo}"/>
-                                                    <Text textAlign="Center" text="{GeneralModel>causa}"/>
-                                                    <CheckBox id="CBSingoloCausa" select="ChangeCheckedCausa"/>
-                                                </cells>
-                                            </ColumnListItem>
-                                        </items>
                                     </Table>-->
-
-
-
-                                    <!--                                        <t:Table id="TotaleTable"
-                                             inset="false">
-                                                                                    <headerToolbar>
-                                            <Toolbar>
-                                                <Label text="Products"></Label>
-                                            </Toolbar>
-                                        </headerToolbar>
-                                        <t:columns>
-                                            <t:Column width="30%" hAlign="Center"/>
-                                            <t:Column
-                                                width="15%"
-                                                hAlign="Center">
-                                                <Text text="Tempo" />
-                                            </t:Column>
-                                            <t:Column
-                                                width="45%"
-                                                hAlign="Center">
-                                                <Text text="Causale" />
-                                            </t:Column>
-                                            <t:Column width="10%" hAlign="Center"/>
-                                        </t:columns>
-                                        <t:Row>
-                                                                                        <items>
-                                            <ColumnListItem>
-                                            <t:cells>
-                                                <Text text="Totale complessivo"/>
-                                                <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
-                                                <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
-                                                <CheckBox id="CBTotaleCausa" select="ChangeCheckedCausa"/>
-                                            </t:cells>
-                                        </t:Row>
-                                        </ColumnListItem>
-                                        </items>
-                                    </t:Table>-->
-                                    <!--                                                <t:Table
-                                        id="TotaleTable"
-                                        alternateRowColors="true"
-                                        selectionMode="None"
-                                        visibleRowCount="1">
-                                        <t:columns>
-                                            <t:Column hAlign="Center" width="30%"/>
-                                            <t:Column hAlign="Center" width="15%">
-                                                <Label text="Tempo"/>
-                                            </t:Column>
-                                            <t:Column hAlign="Center" width="45%">
-                                                <Label text="Causale"/>
-                                            </t:Column>
-                                            <t:Column hAlign="Center" width="10%"/>
-                                        </t:columns>
-                                        <t:rows>
-                                            <ColumnListItem>
-                                                <cells>
-                                                    <Text text="Totale complessivo"/>
-                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
-                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
-                                                    <CheckBox id="CBTotaleCausa" select="ChangeCheckedCausa"/>
-                                                </cells>
-                                            </ColumnListItem>
-                                        </t:rows>
-                                    </t:Table>-->
-                                    
+                                </VBox>
+                                <VBox height="60%" width="100%">
                                     <t:Table
                                         id="SingoliTable"
-                                        visibleRowCount="7"
+                                        visibleRowCount="5"
                                         class="alternate-color"
                                         selectionMode="None"
                                         rows="{GeneralModel>/FermiNonCausalizzati/fermi}">
@@ -809,7 +665,10 @@
                                     </t:Table>
                                 </VBox>
                             </VBox>
-                        </VBox>
+                            <VBox height="100%" width="10%">
+                                <Text/>
+                            </VBox>
+                        </HBox>
                     </VBox>
                 </content>
             </Page>
@@ -818,7 +677,7 @@
             <Page id="Fault" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -831,8 +690,8 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
-<!--                            <VBox height="25%" width="100%">
+                        <VBox height="75%" width="100%">
+                            <!--                            <VBox height="25%" width="100%">
                                 <Text/>
                             </VBox>-->
                             <VBox height="20%" width="100%">
@@ -842,7 +701,7 @@
                                 </FlexBox>
                                 <!--</Panel>-->
                             </VBox>
-<!--                            <VBox height="25%" width="100%">
+                            <!--                            <VBox height="25%" width="100%">
                                 <Text/>
                             </VBox>-->
                         </VBox>
@@ -854,7 +713,7 @@
             <Page id="RipristinoCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -867,7 +726,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_RipristinoCondizioni"
@@ -876,10 +735,9 @@
                                     collapseRecursive="true"
                                     enableSelectAll="false"
                                     ariaLabelledBy="title"
-                                    visibleRowCount="8">
+                                    visibleRowCount="7">
                                     <wt:toolbar>
                                         <Toolbar>
-                                            <Title text="Riavvio linea"/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_RipristinoCondizioni"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_RipristinoCondizioni"/>
                                             <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_RipristinoCondizioni"/>
@@ -901,32 +759,38 @@
                                         <t:Column width="5rem">
                                             <Label text="Sigle"/>
                                             <t:template>
-                                                <Text text="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codeValue}: ''}" />
+                                                <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" />
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem">
                                             <Label text="Modifica Valore"/>
                                             <t:template>
-                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>modify} === 1 ? ${GeneralModel>value}: ''}" diff="{GeneralModel>modify}" editable="{= ${GeneralModel>modify} === 1}" />
+                                                <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem">
                                             <Label text="Modifica Sigle"/>
                                             <t:template>
-                                                <wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === 1}" />
+                                                <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
                                             </t:template>
                                         </t:Column>
                                     </wt:columns>
                                 </wt:CustomTreeTable>
                             </Panel>
                             <HBox>
-                                <VBox width="47%">
-                                    <Button text="Annulla" width="100%" press="AnnullaRipristino"/>
+                                <VBox width="20%">
+                                    <Button text="Default" width="100%" press="RestoreDefault"/>
                                 </VBox>
-                                <VBox width="6%">
+                                <VBox  width="7%">
                                     <Text/>
                                 </VBox>
-                                <VBox width="47%">
+                                <VBox width="35%">
+                                    <Button text="Annulla" width="100%" press="AnnullaRipristino"/>
+                                </VBox>
+                                <VBox  width="3%">
+                                    <Text/>
+                                </VBox>
+                                <VBox width="35%">
                                     <Button text="Conferma" width="100%" press="ConfermaRipristino"/>
                                 </VBox> 
                             </HBox>
@@ -939,7 +803,7 @@
             <Page id="ChiusuraConfezionamento" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -952,7 +816,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_Chiusura"
@@ -961,11 +825,9 @@
                                     collapseRecursive="true"
                                     enableSelectAll="false"
                                     ariaLabelledBy="title"
-                                    visibleRowCount="7"
-                                    rowSelectionChange="ciao">
+                                    visibleRowCount="6">
                                     <wt:toolbar>
                                         <Toolbar>
-                                            <Title text="Dati confezionamento"/>
                                             <ToolbarSpacer/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_Chiusura"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_Chiusura"/>
@@ -1234,7 +1096,7 @@
             <Page id="BatchAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -1247,7 +1109,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                             <Panel>
                                 <wt:CustomTreeTable
                                     id="TreeTable_BatchAttrezzaggio"
@@ -1259,7 +1121,6 @@
                                     visibleRowCount="15">
                                     <wt:toolbar>
                                         <Toolbar>
-                                            <Title text="Attributi prodotto"/>
                                             <ToolbarSpacer/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
@@ -1294,7 +1155,7 @@
             <Page id="PredisposizioneLineaAttrezzaggio" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -1307,7 +1168,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="80%" width="100%">
+                        <VBox height="75%" width="100%">
                             <TabContainer id="TabContainerAttrezzaggio"
                                           class="sapUiResponsiveContentPadding"
                                           itemClose="UpdateTabs">
@@ -1327,7 +1188,6 @@
                                                     visibleRowCount="15">
                                                     <wt:toolbar>
                                                         <Toolbar>
-                                                            <Title text="Attributi prodotto"/>
                                                             <ToolbarSpacer/>
                                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
                                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
@@ -1372,7 +1232,6 @@
                                                             visibleRowCount="14">
                                                             <wt:toolbar>
                                                                 <Toolbar>
-                                                                    <Title text="Standard"/>
                                                                     <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioOld"/>
                                                                     <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioOld"/>
                                                                     <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioOld"/>
@@ -1408,7 +1267,6 @@
                                                             cellClick="LinkClick">
                                                             <wt:toolbar>
                                                                 <Toolbar>
-                                                                    <Title text="Attuale"/>
                                                                     <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioNew"/>
                                                                     <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioNew"/> 
                                                                     <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioNew"/>
@@ -1445,7 +1303,7 @@
             <Page id="ConfermaAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="20%" width="100%">
+                        <VBox height="25%" width="100%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -1488,7 +1346,7 @@
                     </VBox>
                     <VBox id="panel_processi" class="MasterPanels" height="75%" width="100%" justifyContent="center" alignItems="start">
                     </VBox>
-<!--                    <VBox id="panel_processi" class="MasterPanels" height="50%" width="100%" justifyContent="center" alignItems="start">
+                    <!--                    <VBox id="panel_processi" class="MasterPanels" height="50%" width="100%" justifyContent="center" alignItems="start">
                         <Button id="ButtonPresaInCarico" text="Presa in carico nuovo confezionamento" enabled="false" press="PresaInCarico" width="100%" class="styleLongButton">
                         </Button>
                         <Text/>
