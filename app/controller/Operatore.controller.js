@@ -51,7 +51,7 @@ sap.ui.define([
             } else {
                 this.State = this.ModelDetailPages.getData().SKUBatch.StatoLinea;
             }
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
             this.AjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatusLocal: function (Jdata) {
@@ -133,7 +133,8 @@ sap.ui.define([
                             }
                             break;
                         case "Disponibile.Lavorazione":
-                            this.AjaxCallerData("model/JSON_Progress.json", this.InProgress.bind(this));
+                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEEBatchInCorso&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                            this.AjaxCallerData(link, this.InProgress.bind(this));
                             break;
                         case "Disponibile.Fermo":
                             if (this.State !== "Disponibile.Fermo") {
@@ -151,7 +152,7 @@ sap.ui.define([
                         case "Disponibile.Svuotamento":
                             if (this.State !== "Disponibile.Svuotamento") {
                                 if (typeof this.ModelDetailPages.getData().FermiNonCausalizzati === "undefined") {
-                                    link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                                     this.AjaxCallerData(link, this.GetFermiNC.bind(this));
                                 }
                                 this.AjaxCallerData("model/JSON_Chiusura.json", this.SetChiusura.bind(this));
@@ -237,11 +238,11 @@ sap.ui.define([
         },
 //        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
         AjaxCallerVoid: function (address, Func) {
-            jQuery.ajax({
+            var req = jQuery.ajax({
                 url: address,
-                async: true,
-                always: Func
+                async: true
             });
+            req.always(Func);
         },
 //        DI SEGUITO LE 2 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
         AjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
@@ -290,7 +291,7 @@ sap.ui.define([
                 this.PredisposizioneLinea();
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             } else {
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
         },
@@ -306,7 +307,7 @@ sap.ui.define([
                 link = "model/JSON_SetupOld.json";
                 this.AjaxCallerData(link, this.JSONOldSetupIsUp.bind(this));
             } else {
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerData(link, this.JSONOldSetupIsUp.bind(this));
             }
         },
@@ -317,7 +318,7 @@ sap.ui.define([
                 link = "model/JSON_SetupNew.json";
                 this.AjaxCallerData(link, this.JSONNewSetupIsUp.bind(this));
             } else {
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerData(link, this.JSONNewSetupIsUp.bind(this));
             }
         },
@@ -480,7 +481,7 @@ sap.ui.define([
                 if (this.ISLOCAL === 1) {
                     this.AjaxCallerData("model/JSON_Progress.json", this.InProgressLocal.bind(this));
                 } else {
-                    link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                     this.AjaxCallerVoid(link, this.XMLLogger.bind(this));
                 }
             } else {
@@ -497,7 +498,7 @@ sap.ui.define([
         XMLLogger: function () {
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             var XMLstring = this.XMLSetupUpdates(data);
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
 //------------------------------------------------------------------------------
@@ -514,7 +515,7 @@ sap.ui.define([
             if (typeof this.ModelDetailPages.getData().SetupLinea === "undefined") {
                 this.ModelDetailPages.setProperty("/SetupLinea/", {});
             }
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerData(link, this.ModifyCallBack.bind(this));
         },
         ModifyCallBack: function (Jdata) {
@@ -556,7 +557,7 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
                 this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
                 var XMLstring = this.XMLSetupUpdates(data);
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link, this.ModifyToProgress.bind(this));
             } else {
                 MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
@@ -572,7 +573,7 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "FERMO"
         FermoCall: function () {
             this.discr = "FermoManuale";
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
             this.AjaxCallerData(link, this.Fermo.bind(this));
         },
         Fermo: function (Jdata) {
@@ -713,7 +714,7 @@ sap.ui.define([
 
                 this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + CB.getProperty("text"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleEventoID=" + id;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleEventoID=" + id;
                 this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             } else if (this.discr === "FermoAutomatico") {
 
@@ -721,7 +722,7 @@ sap.ui.define([
                 var vbox = this.getView().byId("vbox_table");
                 vbox.destroyItems();
                 var string = this.GetStringIDFermiAuto(this.CheckSingoloCausa);
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogFermiAutoSenzaCausale&Content-Type=text/json&ListLogID=" + string + "&CausaleID=" + id;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogFermiAutoSenzaCausale&Content-Type=text/json&ListLogID=" + string + "&CausaleID=" + id;
                 this.AjaxCallerVoid(link, this.FermoToCausa.bind(this));
             }
             this.outerVBox.destroyItems();
@@ -756,7 +757,7 @@ sap.ui.define([
             if (typeof this.ModelDetailPages.getData().SetupLinea === "undefined") {
                 this.ModelDetailPages.setProperty("/SetupLinea/", {});
             }
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerData(link, this.RiavvioCallBack.bind(this));
         },
         RiavvioCallBack: function (Jdata) {
@@ -793,13 +794,13 @@ sap.ui.define([
                 data = this.RecursivePropertyCopy(data, "codeValue", "codeValueModify");
                 this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
                 this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link, this.ConfermaRiavvioCallBack.bind(this));
                 var XMLstring = this.XMLSetupUpdates(data);
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
                 if (this.ModelDetailPages.getData().CausaFermo === "FERMO AUTOMATICO") {
-                    link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                     this.AjaxCallerData(link, this.GetFermiNC.bind(this));
                 }
                 this.RefreshCall();
@@ -811,12 +812,12 @@ sap.ui.define([
         ConfermaRiavvioCallBack: function () {
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
             var XMLstring = this.XMLSetupUpdates(data);
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.FromFermoToProgress.bind(this));
         },
         FromFermoToProgress: function () {
             if (this.ModelDetailPages.getData().CausaFermo === "FERMO AUTOMATICO") {
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerData(link, this.GetFermiNC.bind(this));
             }
             this.RefreshCall();
@@ -826,7 +827,7 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "CAUSALIZZAZIONE FERMI AUTOMATICI"
         Causalizzazione: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerData(link, this.FermiNC.bind(this));
         },
         FermiNC: function (Jdata) {
@@ -968,7 +969,7 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE DI CAUSALIZZA
         Causalizza: function () {
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
             this.discr = "FermoAutomatico";
             this.AjaxCallerData(link, this.Fermo.bind(this));
         },
@@ -993,13 +994,13 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
         ConfermaChiusura: function () {
             var temp = {"linea": this.ModelDetailPages.getData().DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
             this.ModelDetailPages.setProperty("/Intestazione/", temp);
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
 //------------------------------------------------------------------------------
@@ -1025,7 +1026,7 @@ sap.ui.define([
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatchAttrezzaggio: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
         PredisposizioneLineaAttrezzaggio: function () {
@@ -1035,7 +1036,7 @@ sap.ui.define([
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
             this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerData(link, this.JSONOldSetupIsUp.bind(this));
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
@@ -1231,20 +1232,20 @@ sap.ui.define([
                 this.TabContainer.removeItem(tab);
                 this.Item.destroyContent();
                 var XMLstring = this.XMLSetupUpdates(data);
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link, this.FromAttrToChiusura.bind(this));
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
                 this.RefreshCall();
             }
         },
         FromAttrToChiusura: function () {
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
         FineAttrezzaggio: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
 //------------------------------------------------------------------------------
