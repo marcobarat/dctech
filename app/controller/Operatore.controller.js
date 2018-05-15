@@ -41,9 +41,13 @@ sap.ui.define([
                 var link = "model/JSON_SKUBatch.json";
                 this.AjaxCallerData(link, this.CheckStatusLocal.bind(this));
             } else {
-                this.RefreshCall(this);
-                setInterval(this.RefreshCall.bind(this), 5000);
+//                this.RefreshCall(this);
+//                setInterval(this.RefreshCall.bind(this), 5000);
+                this.RefreshCall();
             }
+        },
+        RefreshFunction: function () {
+            setTimeout(this.RefreshCall.bind(this), 5000);
         },
         RefreshCall: function () {
             if (typeof this.ModelDetailPages.getData().SKUBatch === "undefined") {
@@ -51,38 +55,9 @@ sap.ui.define([
             } else {
                 this.State = this.ModelDetailPages.getData().SKUBatch.StatoLinea;
             }
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
             this.AjaxCallerData(link, this.CheckStatus.bind(this));
-        },
-        CheckStatusLocal: function (Jdata) {
-
-            this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
-            var model = this.ModelDetailPages.getData();
-            var data = model.SKUBatch;
-            model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
-            data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
-            data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
-            data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
-            data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
-            var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
-            model.Intestazione.descrizione = descr;
-            data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
-            data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
-            this.exp = 0;
-            data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
-            if (this.exp === 1) {
-                model.Intestazione.conforme = "***";
-            }
-            this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
-            if (data.Batch[0].IsAttrezzaggio === "0") {
-                this.CreateButtons();
-                this.SwitchColor("");
-                this.EnableButtons(["ButtonPresaInCarico"]);
-            } else {
-                this.CreateButtonsAttr();
-                this.SwitchColor("");
-                this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
-            }
         },
         CheckStatus: function (Jdata) {
             this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
@@ -133,7 +108,8 @@ sap.ui.define([
                             }
                             break;
                         case "Disponibile.Lavorazione":
-                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEEBatchInCorso&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                            link = "model/JSON_Progress.json";
+//                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEEBatchInCorso&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                             this.AjaxCallerData(link, this.InProgress.bind(this));
                             break;
                         case "Disponibile.Fermo":
@@ -214,6 +190,37 @@ sap.ui.define([
                 }
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.RefreshFunction();
+        },
+        CheckStatusLocal: function (Jdata) {
+
+            this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
+            var model = this.ModelDetailPages.getData();
+            var data = model.SKUBatch;
+            model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
+            data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
+            data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
+            data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
+            data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
+            var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
+            model.Intestazione.descrizione = descr;
+            data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
+            data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
+            this.exp = 0;
+            data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
+            if (this.exp === 1) {
+                model.Intestazione.conforme = "***";
+            }
+            this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
+            if (data.Batch[0].IsAttrezzaggio === "0") {
+                this.CreateButtons();
+                this.SwitchColor("");
+                this.EnableButtons(["ButtonPresaInCarico"]);
+            } else {
+                this.CreateButtonsAttr();
+                this.SwitchColor("");
+                this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
+            }
         },
         InProgress: function (Jdata) {
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
