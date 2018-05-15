@@ -45,6 +45,10 @@ sap.ui.define([
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
 
+                data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
+                data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
+                data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
+                data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
                 var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
                 model.Intestazione.descrizione = descr;
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
@@ -54,7 +58,7 @@ sap.ui.define([
                 if (this.exp === 1) {
                     model.Intestazione.conforme = "***";
                 }
-
+                this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
                 if (data.Batch[0].IsAttrezzaggio === "0") {
                     if (typeof sap.ui.getCore().byId("ButtonBatchAttrezzaggio") !== "undefined") {
                         this.DestroyButtons();
@@ -62,12 +66,13 @@ sap.ui.define([
                     if (typeof sap.ui.getCore().byId("ButtonPresaInCarico") === "undefined") {
                         this.CreateButtons();
                     }
+
                     switch (data.StatoLinea) {
                         case "Disponibile.AttesaPresaInCarico":
                             if (this.State !== "Disponibile.AttesaPresaInCarico") {
+                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                                 this.getSplitAppObj().toDetail(this.createId("Home"));
                                 this.SwitchColor("");
-//                                this.SwitchColorAttrezzaggio("");
                                 this.EnableButtons(["ButtonPresaInCarico"]);
                             }
                             break;
@@ -75,7 +80,6 @@ sap.ui.define([
                             if (this.State !== "Disponibile.Attrezzaggio") {
                                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
                                 this.SwitchColor("yellow");
-//                                this.SwitchColorAttrezzaggio("");
                                 this.EnableButtons(["ButtonFinePredisposizione"]);
                                 this.PredisposizioneLinea();
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -86,24 +90,21 @@ sap.ui.define([
                             if (this.State !== "Disponibile.Lavorazione") {
                                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                                 this.SwitchColor("green");
-//                                this.SwitchColorAttrezzaggio("");
                                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
                             }
                             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                             break;
                         case "Disponibile.Fermo":
                             if (this.State !== "Disponibile.Fermo") {
-                                if (typeof this.ModelDetailPages.getData().CausaFermo === "undefined") {
-                                    if (data.CausaleEvento === "---") {
-                                        this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO AUTOMATICO");
-                                    } else {
-                                        this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + data.CausaleEvento);
-                                    }
+                                if (data.CausaleEvento === "---") {
+                                    this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO AUTOMATICO");
+                                } else {
+                                    this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + data.CausaleEvento);
                                 }
                                 this.SwitchColor("red");
-//                                this.SwitchColorAttrezzaggio("");
                                 this.getSplitAppObj().toDetail(this.createId("Fault"));
                                 this.EnableButtons(["ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
+                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                             }
                             break;
                         case "Disponibile.Svuotamento":
@@ -117,7 +118,6 @@ sap.ui.define([
                                 }
                                 this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/ParametriChiusura/");
                                 this.SwitchColor("brown");
-//                                this.SwitchColorAttrezzaggio("");
                                 this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                                 this.EnableButtons(["ButtonCausalizzazione"]);
@@ -136,7 +136,6 @@ sap.ui.define([
                         case "Disponibile.AttesaPresaInCarico":
                             if (this.State !== "Disponibile.AttesaPresaInCarico") {
                                 this.SwitchColor("");
-//                                this.SwitchColorAttrezzaggio("");
                                 this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
                             }
                             break;
@@ -144,7 +143,6 @@ sap.ui.define([
                             if (this.State !== "Disponibile.Attrezzaggio") {
                                 this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
                                 this.SwitchColor("yellow");
-//                                this.SwitchColorAttrezzaggio("yellow");
                                 this.PredisposizioneLineaAttrezzaggio();
                                 this.EnableButtonsAttr(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -154,7 +152,6 @@ sap.ui.define([
                             if (this.State !== "Disponibile.Svuotamento") {
                                 this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//                                this.SwitchColorAttrezzaggio("brown");
                                 this.SwitchColor("brown");
                                 this.EnableButtonsAttr([]);
                             }
@@ -164,6 +161,7 @@ sap.ui.define([
                     }
                 }
             } else {
+                this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
                 if (typeof sap.ui.getCore().byId("ButtonPresaInCarico") !== "undefined" || typeof sap.ui.getCore().byId("ButtonBatchAttrezzaggio") !== "undefined") {
                     this.DestroyButtons();
                 }
@@ -171,21 +169,15 @@ sap.ui.define([
                     case "Disponibile.Vuota":
                         this.getSplitAppObj().toDetail(this.createId("Home"));
                         this.SwitchColor("");
-//                        this.EnableButtons([]);
-//                        this.EnableButtonsAttr([]);
                         this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                         break;
                     case "NonDisponibile":
                         this.SwitchColor("red");
-//                        this.SwitchColorAttrezzaggio("red");
-//                        this.EnableButtons([]);
-//                        this.EnableButtonsAttr([]);
                         model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "NON DISPONIBILE", "conforme": ""};
                         this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                         break;
                 }
             }
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.State = data.StatoLinea;
         },
 //        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
@@ -254,12 +246,15 @@ sap.ui.define([
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
             std = this.RecursiveStandardAdapt(std, bck);
+            this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
+            this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             mod = this.RecursiveLinkRemoval(mod);
             mod = this.RecursiveModifyExpansion(mod);
             mod = this.RecursiveParentExpansion(mod);
             mod = this.RecursivePropertyAdder(mod, "valueModify");
             mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
             this.backupSetupModify = JSON.parse(JSON.stringify(mod));
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
@@ -278,8 +273,8 @@ sap.ui.define([
                 this.TabContainer.removeItem(tab);
             }
             this.Item = new sap.m.TabContainerItem({});
-            this.Item.setName("Conferma predisposizione");
-            var Panel = new sap.m.Panel();
+            this.Item.setName("CONFERMA PREDISPOSIZIONE");
+//            var Panel = new sap.m.Panel();
             var inputValueMod = new sap.m.Input({
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
@@ -290,14 +285,24 @@ sap.ui.define([
                 editable: "{= ${GeneralModel>code} === 1}",
                 value: "{GeneralModel>codeValue}"});
             inputCodeValue.addStyleClass("diffStandard");
+            var TT = "TreeTable_FinePredisposizione";
             var TreeTable = new CustomTreeTable({
-                id: "TreeTable_FinePredisposizione",
+                id: TT,
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
                 selectionMode: "None",
                 collapseRecursive: true,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
-                visibleRowCount: 8,
+                visibleRowCount: 7,
+                toolbar: [
+                    new sap.m.Toolbar({
+                        content: [
+                            new sap.m.Button({text: "Ripristina valori", press: [this.RestoreDefault, this]}),
+                            new sap.m.ToolbarSpacer({}),
+                            new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
+                            new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
+                            new sap.m.Button({text: "Modificabili", press: [TT, this.ShowRelevant, this]})
+                        ]})],
                 columns: [
                     new sap.ui.table.Column({
                         label: "Attributi",
@@ -320,36 +325,40 @@ sap.ui.define([
                 ]
             });
             var hbox = new sap.m.HBox({});
-            var vb1 = new sap.m.VBox({width: "20%"});
-            var vb2 = new sap.m.VBox({width: "7%"});
-            var vb3 = new sap.m.VBox({width: "35%"});
-            var vb4 = new sap.m.VBox({width: "3%"});
-            var vb5 = new sap.m.VBox({width: "35%"});
-            var bt1 = new sap.m.Button({
-                text: "Default",
-                width: "100%",
-                press: [this.RestoreDefault, this]});
+//            var vb1 = new sap.m.VBox({width: "20%"});
+//            var vb2 = new sap.m.VBox({width: "7%"});
+            var vb3 = new sap.m.VBox({width: "47%"});
+            var vb4 = new sap.m.VBox({width: "6%"});
+            var vb5 = new sap.m.VBox({width: "47%"});
+//            var bt1 = new sap.m.Button({
+//                text: "Default",
+//                width: "100%",
+//                press: [this.RestoreDefault, this]});
             var bt2 = new sap.m.Button({
-                text: "Annulla",
+                text: "ANNULLA",
                 width: "100%",
                 press: [this.AnnullaPredisposizione, this]});
+            bt2.addStyleClass("annullaButton");
             var bt3 = new sap.m.Button({
-                text: "Conferma",
+                text: "CONFERMA",
                 width: "100%",
                 press: [this.ConfermaPredisposizione, this]});
+            bt3.addStyleClass("confermaButton");
             vb5.addItem(bt3);
             vb3.addItem(bt2);
-            vb1.addItem(bt1);
-            vb2.addItem(new sap.m.Text({}));
+//            vb1.addItem(bt1);
+//            vb2.addItem(new sap.m.Text({}));
             vb4.addItem(new sap.m.Text({}));
-            hbox.addItem(vb1);
-            hbox.addItem(vb2);
+//            hbox.addItem(vb1);
+//            hbox.addItem(vb2);
             hbox.addItem(vb3);
             hbox.addItem(vb4);
             hbox.addItem(vb5);
-            Panel.addContent(TreeTable);
-            Panel.addContent(hbox);
-            this.Item.addContent(Panel);
+//            Panel.addContent(TreeTable);
+//            Panel.addContent(hbox);
+//            this.Item.addContent(Panel);
+            this.Item.addContent(TreeTable);
+            this.Item.addContent(hbox);
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
@@ -377,6 +386,9 @@ sap.ui.define([
             data = this.RecursiveJSONCodeCheck(data, "codeValue");
             if (this.codeCheck === 0) {
 
+                var tab = this.TabContainer.getItems()[2];
+                this.TabContainer.removeItem(tab);
+                this.Item.destroyContent();
                 var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
                 var XMLstring = this.XMLSetupUpdates(data);
@@ -507,27 +519,35 @@ sap.ui.define([
             hbox.addItem(VB1);
             this.outerVBox.addItem(hbox);
             var hbox1 = new sap.m.HBox({});
-            var vb0 = new sap.m.VBox({width: "47%"});
+            var vb0 = new sap.m.VBox({width: "10%"});
+            var vb01 = new sap.m.VBox({width: "37%"});
             var vb2 = new sap.m.VBox({width: "6%"});
-            var vb3 = new sap.m.VBox({width: "47%"});
+            var vb3 = new sap.m.VBox({width: "37%"});
+            var vb4 = new sap.m.VBox({width: "10%"});
             var bt1 = new sap.m.Button({
                 id: "AnnullaFermo",
-                text: "Annulla",
+                text: "ANNULLA",
                 width: "100%",
                 enabled: true,
                 press: [this.AnnullaFermo, this]});
+            bt1.addStyleClass("annullaButton");
             var bt2 = new sap.m.Button({
                 id: "ConfermaFermo",
-                text: "Conferma",
+                text: "CONFERMA FERMO",
                 width: "100%",
                 enabled: false,
                 press: [this.ConfermaFermo, this]});
+            bt2.addStyleClass("confermaButton");
             vb3.addItem(bt2);
-            vb0.addItem(bt1);
+            vb01.addItem(bt1);
+            vb0.addItem(new sap.m.Text({}));
             vb2.addItem(new sap.m.Text({}));
+            vb4.addItem(new sap.m.Text({}));
             hbox1.addItem(vb0);
+            hbox1.addItem(vb01);
             hbox1.addItem(vb2);
             hbox1.addItem(vb3);
+            hbox1.addItem(vb4);
             this.outerVBox.addItem(hbox1);
             this.EnableButtons([]);
         },
@@ -597,6 +617,8 @@ sap.ui.define([
                 this.AjaxCallerVoid(link);
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
+                var vbox = this.getView().byId("vbox_table");
+                vbox.destroyItems();
                 this.Causalizzazione();
             }
             this.outerVBox.destroyItems();
@@ -666,9 +688,17 @@ sap.ui.define([
                 var XMLstring = this.XMLSetupUpdates(data);
                 link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
+                if (this.ModelDetailPages.getData().CausaFermo === "FERMO AUTOMATICO") {
+                    link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                    this.AjaxCallerData(link, this.ModelDetailPages, "/FermiNonCausalizzati/");
+                    data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+                    data = this.AddTimeGaps(data);
+                    this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+                }
                 this.RefreshCall();
             } else {
                 MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
         },
 //------------------------------------------------------------------------------
@@ -681,6 +711,7 @@ sap.ui.define([
             var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
             data = this.AddTimeGaps(data);
             this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+            this.getView().byId("vbox_table").destroyItems();
             if (this.ModelDetailPages.getData().FermiNonCausalizzati.fermi.length === 0) {
 //                if (typeof this.getView().byId("TotaleTable") !== "undefined") {
 //                    this.getView().byId("TotaleTable").destroy();
@@ -734,9 +765,11 @@ sap.ui.define([
 
             this.CheckSingoloCausa = [];
             var i;
-            var temp = {};
-            for (i in this.ModelDetailPages.getData().FermiNonCausalizzati.fermi) {
-                temp.id = this.ModelDetailPages.getData().FermiNonCausalizzati.fermi[i].LogID;
+            var temp;
+            var fermi = this.ModelDetailPages.getData().FermiNonCausalizzati.fermi;
+            for (i = 0; i < fermi.length; i++) {
+                temp = {};
+                temp.id = fermi[i].LogID;
                 temp.checked = 0;
                 this.CheckSingoloCausa.push(temp);
             }
@@ -753,7 +786,7 @@ sap.ui.define([
             var root_name_totale = "CBTotaleCausa";
             var i, temp_id;
             if (id.indexOf(root_name_totale) > -1) {
-                for (i in this.CheckSingoloCausa) {
+                for (i = 0; i < this.CheckSingoloCausa.length; i++) {
 //                    temp_id = this.getView().byId("SingoliTable").getAggregation("items")[i].getAggregation("cells")[4].getId();
                     temp_id = this.getView().byId("SingoliTable").getAggregation("rows")[i].getAggregation("cells")[4].getId();
                     this.getView().byId(temp_id).setSelected(CB.getSelected());
@@ -772,7 +805,7 @@ sap.ui.define([
                 }
             } else {
                 var discr_id = event.getSource().getParent().getId();
-                for (i in this.CheckSingoloCausa) {
+                for (i = 0; i < this.CheckSingoloCausa.length; i++) {
 //                    temp_id = event.getSource().getParent().getParent().getAggregation("items")[i].getId();
                     temp_id = event.getSource().getParent().getParent().getAggregation("rows")[i].getId();
                     if (discr_id === temp_id) {
@@ -786,7 +819,7 @@ sap.ui.define([
                 }
             }
             temp_id = 0;
-            for (i in this.CheckSingoloCausa) {
+            for (i = 0; i < this.CheckSingoloCausa.length; i++) {
                 temp_id += this.CheckSingoloCausa[i].checked;
             }
             if (temp_id > 0) {
@@ -797,15 +830,17 @@ sap.ui.define([
         },
         UncheckCause: function () {
             var i, temp_id;
-            for (i in this.CheckSingoloCausa) {
+            for (i = 0; i < this.CheckSingoloCausa.length; i++) {
 //                    temp_id = this.getView().byId("SingoliTable").getAggregation("items")[i].getAggregation("cells")[4].getId();
                 temp_id = this.getView().byId("SingoliTable").getAggregation("rows")[i].getAggregation("cells")[4].getId();
                 this.getView().byId(temp_id).setSelected(false);
                 this.getView().byId(temp_id).setEnabled(true);
+                this.CheckSingoloCausa[i].checked = 0;
             }
-            if (typeof this.getView().byId("TotaleTable") !== "undefined") {
-                this.getView().byId("CBTotaleCausa").setSelected(false);
-                this.getView().byId("CBTotaleCausa").setEnabled(true);
+            if (typeof sap.ui.getCore().byId("TotaleTable") !== "undefined") {
+                sap.ui.getCore().byId("CBTotaleCausa").setSelected(false);
+                sap.ui.getCore().byId("CBTotaleCausa").setEnabled(true);
+                this.CheckTotaleCausa = 0;
             }
             this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
         },
@@ -814,9 +849,6 @@ sap.ui.define([
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
             this.AjaxCallerData(link, this.ModelDetailPages, "/CausaliFermi/");
             this.discr = "FermoAutomatico";
-
-            var vbox = this.getView().byId("vbox_table");
-            vbox.destroyItems();
 
             this.Fermo();
         },
@@ -828,9 +860,11 @@ sap.ui.define([
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
             } else if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disponibile.Svuotamento") {
                 this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+                this.AggiornaChiusura();
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.EnableButtons(["ButtonCausalizzazione"]);
             }
+
             var vbox = this.getView().byId("vbox_table");
             vbox.destroyItems();
         },
@@ -929,17 +963,17 @@ sap.ui.define([
                 visibleRowCount: 8,
                 columns: [
                     new sap.ui.table.Column({
-                        label: "Attributi",
+                        label: "ATTRIBUTI",
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}"})}),
                     new sap.ui.table.Column({
-                        label: "Valore",
+                        label: "VALORE",
                         width: "5rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
-                        label: "Modifica",
+                        label: "MODIFICA",
                         width: "5rem",
                         template: new StyleInputTreeTableValue({
                             value: "{= ${GeneralModel>modify} === 1 ? ${GeneralModel>value}: ''}",
@@ -948,7 +982,7 @@ sap.ui.define([
                             editable: "{= ${GeneralModel>modify} === 1}"})}),
 //                            editable: "{= ${GeneralModel>modify} === '1'}"})}),
                     new sap.ui.table.Column({
-                        label: "Sigle",
+                        label: "SIGLE",
                         width: "5rem",
                         template: new sap.m.Input({
                             placeholder: "{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}",
@@ -963,11 +997,11 @@ sap.ui.define([
             var vb2 = new sap.m.VBox({width: "6%"});
             var vb3 = new sap.m.VBox({width: "47%"});
             var bt1 = new sap.m.Button({
-                text: "Annulla",
+                text: "ANNULLA",
                 width: "100%",
                 press: [this.AnnullaAttrezzaggio, this]});
             var bt2 = new sap.m.Button({
-                text: "Conferma",
+                text: "CONFERMA",
                 width: "100%",
                 press: [this.ConfermaAttrezzaggio, this]});
             vb3.addItem(bt2);
@@ -1009,17 +1043,17 @@ sap.ui.define([
                 visibleRowCount: 8,
                 columns: [
                     new sap.ui.table.Column({
-                        label: "Attributi",
+                        label: "ATTRIBUTI",
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}"})}),
                     new sap.ui.table.Column({
-                        label: "Valore",
+                        label: "VALORE",
                         width: "5rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
-                        label: "Modifica",
+                        label: "MODIFICA",
                         width: "5rem",
                         template: new StyleInputTreeTableValue({
                             value: "{= ${GeneralModel>modify} === 1 ? '#ND': ''}",
@@ -1028,7 +1062,7 @@ sap.ui.define([
                             editable: "{= ${GeneralModel>modify} === 1}"})}),
 //                            editable: "{= ${GeneralModel>modify} === '1'}"})}),
                     new sap.ui.table.Column({
-                        label: "Sigle",
+                        label: "SIGLE",
                         width: "5rem",
                         template: new sap.m.Input({
                             placeholder: "",
@@ -1145,29 +1179,41 @@ sap.ui.define([
                 sap.ui.getCore().byId(vec[i]).setEnabled(true);
             }
         },
-        CollapseAll: function (event) {
-            var name = event.getSource().data("mydata");
-            var View = this.getView().byId(name);
+        CollapseAll: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = sap.ui.getCore().byId(TT);
+            }
             View.collapseAll();
         },
 //      Funzione che espande tutti i nodi della treetable
-        ExpandAll: function (event) {
-            var name = event.getSource().data("mydata");
-            var View = this.getView().byId(name);
+        ExpandAll: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = sap.ui.getCore().byId(TT);
+            }
             View.expandToLevel(20);
         },
 //      Funzione richiamata da "non conformi" che prima espande tutti i nodi della treetable e poi richiude i non rilevanti 
-        ShowRelevant: function (event) {
-            var name = event.getSource().data("mydata");
-            var View = this.getView().byId(name);
+        ShowRelevant: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = sap.ui.getCore().byId(TT);
+            }
             View.expandToLevel(20);
             this.GlobalBusyDialog.open();
-            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, name), 400);
+            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, View), 300);
         },
 //      Funzione che collassa i nodi della treetable non rilevanti
-        CollapseNotRelevant: function (TreeName) {
+        CollapseNotRelevant: function (View) {
 
-            var View = this.getView().byId(TreeName);
+//            var View = sap.ui.getCore().byId(TreeName);
             var total = View._iBindingLength;
             var temp;
             for (var i = total - 1; i >= 0; i--) {
@@ -1263,6 +1309,10 @@ sap.ui.define([
             var secs = this.StringTime(date.getSeconds());
             return (year + "-" + month + "-" + day + "T" + hours + ":" + mins + ":" + secs);
         },
+        FromISOToPOD: function (string) {
+            var index = string.indexOf("T");
+            return string.substring(0, index) + ", " + string.substring(index + 1, string.length);
+        },
 //      Funzione che rimuove i guasti non causalizzati
         RemoveCaused: function (data) {
             for (var i = data.fermi.length - 1; i >= 0; i--) {
@@ -1338,27 +1388,6 @@ sap.ui.define([
                     break;
             }
         },
-//        SwitchColorAttrezzaggio: function (color) {
-//            var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
-//            var panel = this.getView().byId("panel_attrezzaggio");
-//            for (var col in CSS_classes) {
-//                panel.removeStyleClass(CSS_classes[col]);
-//            }
-//            switch (color) {
-//                case "yellow":
-//                    panel.addStyleClass("stylePanelYellow");
-//                    break;
-//                case "green":
-//                    panel.addStyleClass("stylePanelGreen");
-//                    break;
-//                case "red":
-//                    panel.addStyleClass("stylePanelRed");
-//                    break;
-//                case "brown":
-//                    panel.addStyleClass("stylePanelBrown");
-//                    break;
-//            }
-//        },
         CreateButtons: function () {
             var vbox = this.getView().byId("panel_processi");
             var btn, btn_vbox;

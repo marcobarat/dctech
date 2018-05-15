@@ -84,7 +84,39 @@
     text-align: center;
     color : #003A6B;
 }
+.titleTT {
+    color : #A71930 !important;
+}
 
+
+/*STILE TAB CONTAINER*/
+.annullaButton * {
+    background-image: none !important;
+    background-color: #A71930 !important;
+    color: white;
+}
+.confermaButton * {
+    background-image: none !important;
+    background-color: #7CA295 !important;
+    color: white;
+}
+.attrezzaggioButton * {
+    background-image: none !important;
+    background-color: #FFD300 !important;
+    color: black;
+}
+.chiusuraButton * {
+    background-image: none !important;
+    background-color: #5E3032 !important;
+    color: white;
+}
+/*.sapMTabStrip {
+    background: #0085CA;
+}
+.sapMTabStrip .sapMTSTabsContainer .sapMTSTabs .sapMTabStripItem {
+    background: #0085CA;
+    color: white;
+}*/
 
 /*STILE PROGRESS BAR*/
 .progressBarButton * {
