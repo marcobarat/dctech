@@ -1137,42 +1137,49 @@
                             </VBox>
                         </VBox>
                         <VBox height="75%" width="100%">
-                            <Panel>
-                                <wt:CustomTreeTable
-                                    id="TreeTable_BatchAttrezzaggio"
-                                    rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
-                                    selectionMode="None"
-                                    collapseRecursive="true"
-                                    enableSelectAll="false"
-                                    ariaLabelledBy="title"
-                                    visibleRowCount="15">
-                                    <wt:toolbar>
-                                        <Toolbar>
-                                            <ToolbarSpacer/>
-                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
-                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
-                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_BatchAttrezzaggio"/>
-                                        </Toolbar>
-                                    </wt:toolbar>
-                                    <wt:columns>
-                                        <t:Column width="10rem">
-                                            <Label text="ATTRIBUTI"/>
-                                            <t:template>
-                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
-                                            </t:template>
-                                        </t:Column>
-                                        <t:Column width="10rem">
-                                            <Label text="VALORE"/>
-                                            <t:template>
-                                                <HBox>
-                                                    <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                </HBox>
-                                            </t:template>
-                                        </t:Column>
-                                    </wt:columns>
-                                </wt:CustomTreeTable>
-                            </Panel>
-                            <Button text="Conferma" width="100%" press="ConfermaBatchAttrezzaggio"/>
+                            <HBox height="100%" width="100%">
+                                <VBox width="5%"/>
+                                <VBox width="90%">
+                                    <!--<Panel>-->
+                                    <wt:CustomTreeTable
+                                        id="TreeTable_BatchAttrezzaggio"
+                                        rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
+                                        selectionMode="None"
+                                        collapseRecursive="true"
+                                        enableSelectAll="false"
+                                        ariaLabelledBy="title"
+                                        visibleRowCount="15">
+                                        <wt:toolbar>
+                                            <Toolbar>
+                                                <ToolbarSpacer/>
+                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                                <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                            </Toolbar>
+                                        </wt:toolbar>
+                                        <wt:columns>
+                                            <t:Column width="10rem">
+                                                <Label text="ATTRIBUTI"/>
+                                                <t:template>
+                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column width="10rem">
+                                                <Label text="VALORE"/>
+                                                <t:template>
+                                                    <HBox>
+                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                    </HBox>
+                                                </t:template>
+                                            </t:Column>
+                                        </wt:columns>
+                                    </wt:CustomTreeTable>
+                                    <!--</Panel>-->
+                                    <Button text="PASSA ALL'ATTREZZAGGIO" width="100%" press="ConfermaBatchAttrezzaggio" class="attrezzaggioButton"/>
+                                    <!--<Button text="Conferma" width="100%" press="ConfermaBatchAttrezzaggio"/>-->
+                                </VBox>
+                                <VBox width="5%"/>
+                            </HBox>
                         </VBox>
                     </VBox>
                 </content>
@@ -1197,133 +1204,142 @@
                             </VBox>
                         </VBox>
                         <VBox height="75%" width="100%">
-                            <TabContainer id="TabContainerAttrezzaggio"
-                                          class="sapUiResponsiveContentPadding"
-                                          itemClose="UpdateTabs">
-                                <items>
-                                    <TabContainerItem 
-                                        id="tab1A"
-                                        name="Attributi prodotto">
-                                        <content>
-                                            <Panel>
-                                                <wt:CustomTreeTable
-                                                    id="TreeTable_AttributiAttrezzaggio"
-                                                    rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
-                                                    selectionMode="None"
-                                                    collapseRecursive="true"
-                                                    enableSelectAll="false"
-                                                    ariaLabelledBy="title"
-                                                    visibleRowCount="15">
-                                                    <wt:toolbar>
-                                                        <Toolbar>
-                                                            <ToolbarSpacer/>
-                                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
-                                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
-                                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttributiAttrezzaggio"/>
-                                                        </Toolbar>
-                                                    </wt:toolbar>
-                                                    <wt:columns>
-                                                        <t:Column width="13rem">
-                                                            <Label text="ATTRIBUTI"/>
-                                                            <t:template>
-                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
-                                                            </t:template>
-                                                        </t:Column>
-                                                        <t:Column width="7rem">
-                                                            <Label text="VALORE"/>
-                                                            <t:template>
-                                                                <HBox>
-                                                                    <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                </HBox>
-                                                            </t:template>
-                                                        </t:Column>
-                                                    </wt:columns>
-                                                </wt:CustomTreeTable>
-                                            </Panel>                                                   
-                                        </content>
-                                    </TabContainerItem>
-                                    <TabContainerItem 
-                                        id="tab2A"
-                                        name="Attrezzaggio linea">
-                                        <content>
-                                            <FlexBox width="100%" alignItems="Start"
-                                                     justifyContent="Center">
-                                                <HBox height="100%" width="50%">
-                                                    <Panel>
-                                                        <wt:CustomTreeTable
-                                                            id="TreeTable_AttrezzaggioOld"
-                                                            rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
-                                                            selectionMode="None"
-                                                            collapseRecursive="true"
-                                                            enableSelectAll="false"
-                                                            ariaLabelledBy="title"
-                                                            visibleRowCount="14">
-                                                            <wt:toolbar>
-                                                                <Toolbar>
-                                                                    <ToolbarSpacer/>
-                                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioOld"/>
-                                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioOld"/>
-                                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioOld"/>
-                                                                </Toolbar>
-                                                            </wt:toolbar>
-                                                            <wt:columns>
-                                                                <t:Column width="13rem">
-                                                                    <Label text="ATTRIBUTI"/>
-                                                                    <t:template>
-                                                                        <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
-                                                                    </t:template>
-                                                                </t:Column>
-                                                                <t:Column width="7rem">
-                                                                    <Label text="VALORE"/>
-                                                                    <t:template>
+                            <HBox height="100%" width="100%">
+                                <VBox width="5%"/>
+                                <VBox width="90%">
+                                    <TabContainer id="TabContainerAttrezzaggio"
+                                                      class="sapUiResponsiveContentPadding"
+                                                      itemClose="UpdateTabs">
+                                        <items>
+                                            <TabContainerItem 
+                                                id="tab1A"
+                                                name="ATTRIBUTI PRODOTTO">
+                                                <content>
+                                                    <!--<Panel>-->
+                                                    <wt:CustomTreeTable
+                                                        id="TreeTable_AttributiAttrezzaggio"
+                                                        rows="{path:'GeneralModel>/SKUBatch/SKUattuale', parameters: {arrayNames:['attributi']}}"
+                                                        selectionMode="None"
+                                                        collapseRecursive="true"
+                                                        enableSelectAll="false"
+                                                        ariaLabelledBy="title"
+                                                        visibleRowCount="13">
+                                                        <wt:toolbar>
+                                                            <Toolbar>
+                                                                <ToolbarSpacer/>
+                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                                <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                            </Toolbar>
+                                                        </wt:toolbar>
+                                                        <wt:columns>
+                                                            <t:Column width="13rem">
+                                                                <Label text="ATTRIBUTI"/>
+                                                                <t:template>
+                                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                </t:template>
+                                                            </t:Column>
+                                                            <t:Column width="7rem">
+                                                                <Label text="VALORE"/>
+                                                                <t:template>
+                                                                    <HBox>
                                                                         <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                    </t:template>
-                                                                </t:Column>
-                                                            </wt:columns>
-                                                        </wt:CustomTreeTable>
-                                                    </Panel>
-                                                </HBox>
-                                                <HBox height="100%" width="50%">
-                                                    <Panel>
-                                                        <wt:CustomTreeTable
-                                                            id="TreeTable_AttrezzaggioNew"
-                                                            rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
-                                                            selectionMode="None"
-                                                            collapseRecursive="true"
-                                                            enableSelectAll="false"
-                                                            ariaLabelledBy="title"
-                                                            visibleRowCount="14"
-                                                            cellClick="LinkClick">
-                                                            <wt:toolbar>
-                                                                <Toolbar>
-                                                                    <ToolbarSpacer/>
-                                                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioNew"/>
-                                                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioNew"/> 
-                                                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioNew"/>
-                                                                </Toolbar>
-                                                            </wt:toolbar>
-                                                            <wt:columns>
-                                                                <t:Column width="13rem">
-                                                                    <Label text="ATTRIBUTI"/>
-                                                                    <t:template>
-                                                                        <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
-                                                                    </t:template>
-                                                                </t:Column>
-                                                                <t:Column width="7rem">
-                                                                    <Label text="VALORE"/>
-                                                                    <t:template>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                    </t:template>
-                                                                </t:Column>
-                                                            </wt:columns>
-                                                        </wt:CustomTreeTable>
-                                                    </Panel>
-                                                </HBox>
-                                            </FlexBox>
-                                        </content>
-                                    </TabContainerItem>
-                                </items>
-                            </TabContainer>
+                                                                    </HBox>
+                                                                </t:template>
+                                                            </t:Column>
+                                                        </wt:columns>
+                                                    </wt:CustomTreeTable>
+                                                    <!--</Panel>-->                                                   
+                                                </content>
+                                            </TabContainerItem>
+                                            <TabContainerItem 
+                                                id="tab2A"
+                                                name="ATTREZZAGGIO LINEA">
+                                                <content>
+                                                    <!--                                                        <FlexBox width="100%" alignItems="Start"
+                                                    justifyContent="Center">-->
+                                                    <HBox height="100%" width="100%">
+                                                        <VBox width="47%">
+                                                            <!--<Panel>-->
+                                                            <wt:CustomTreeTable
+                                                                id="TreeTable_AttrezzaggioOld"
+                                                                rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
+                                                                selectionMode="None"
+                                                                collapseRecursive="true"
+                                                                enableSelectAll="false"
+                                                                ariaLabelledBy="title"
+                                                                visibleRowCount="14">
+                                                                <wt:toolbar>
+                                                                    <Toolbar>
+                                                                        <ToolbarSpacer/>
+                                                                        <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                        <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                        <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                    </Toolbar>
+                                                                </wt:toolbar>
+                                                                <wt:columns>
+                                                                    <t:Column width="13rem">
+                                                                        <Label text="ATTRIBUTI"/>
+                                                                        <t:template>
+                                                                            <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                        </t:template>
+                                                                    </t:Column>
+                                                                    <t:Column width="7rem">
+                                                                        <Label text="VALORE"/>
+                                                                        <t:template>
+                                                                            <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                        </t:template>
+                                                                    </t:Column>
+                                                                </wt:columns>
+                                                            </wt:CustomTreeTable>
+                                                        </VBox>
+                                                        <VBox width="6%"/>
+                                                        <VBox width="47%">
+                                                            <!--</Panel>-->
+                                                            <!--<Panel>-->
+                                                            <wt:CustomTreeTable
+                                                                id="TreeTable_AttrezzaggioNew"
+                                                                rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
+                                                                selectionMode="None"
+                                                                collapseRecursive="true"
+                                                                enableSelectAll="false"
+                                                                ariaLabelledBy="title"
+                                                                visibleRowCount="14"
+                                                                cellClick="LinkClick">
+                                                                <wt:toolbar>
+                                                                    <Toolbar>
+                                                                        <ToolbarSpacer/>
+                                                                        <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioNew"/>
+                                                                        <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioNew"/> 
+                                                                        <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioNew"/>
+                                                                    </Toolbar>
+                                                                </wt:toolbar>
+                                                                <wt:columns>
+                                                                    <t:Column width="13rem">
+                                                                        <Label text="ATTRIBUTI"/>
+                                                                        <t:template>
+                                                                            <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                        </t:template>
+                                                                    </t:Column>
+                                                                    <t:Column width="7rem">
+                                                                        <Label text="VALORE"/>
+                                                                        <t:template>
+                                                                            <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                        </t:template>
+                                                                    </t:Column>
+                                                                </wt:columns>
+                                                            </wt:CustomTreeTable>
+                                                        </VBox>
+                                                        <!--</Panel>-->
+                                                    </HBox>
+                                                    <!--</FlexBox>-->
+                                                </content>
+                                            </TabContainerItem>
+                                        </items>
+                                    </TabContainer>
+                                </VBox>
+                                <VBox width="5%"/>
+                            </HBox>
                         </VBox>
                     </VBox>
                 </content>
@@ -1352,11 +1368,11 @@
                         </VBox>
                         <VBox height="60%" width="100%">
                             <FlexBox alignItems="Start" justifyContent="Center">
-                                <Text text="Svuotamento linea - {GeneralModel>/FineAttrezzaggio/stringa}" class="textTop"/>
+                                <Text text="SVUOTAMENTO LINEA - {GeneralModel>/FineAttrezzaggio/stringa}" class="textTop"/>
                             </FlexBox>
                         </VBox>
                         <VBox height="10%" width="100%">
-                            <Button text="Fine attrezzaggio" width="100%" press="FineAttrezzaggio"/>
+                            <Button text="FINE ATTREZZAGGIO" width="100%" press="FineAttrezzaggio" class="attrezzaggioButton"/>
                         </VBox>
                     </VBox>
                 </content>

@@ -11,6 +11,7 @@ sap.ui.define([
     var TmpController = Controller.extend("myapp.controller.Operatore", {
 
 //      VARIABILI GLOBALI
+        ISGLOBAL: 0,
         LineDetails: {"Linea": "Linea 1", "idLinea": "1"},
         ModelDetailPages: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
@@ -33,10 +34,47 @@ sap.ui.define([
 
         onInit: function () {
 
-            this.RefreshCall(this);
-            setInterval(this.RefreshCall.bind(this), 5000);
+//            this.ISGLOBAL = jQuery.sap.getUriParameters().get("GLOBAL");
+
+            if (this.ISGLOBAL === 1) {
+                this.RefreshCall(this);
+                setInterval(this.RefreshCall.bind(this), 5000);
+            } else {
+                this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
+
+                var link = "model/JSON_SKUBatch.json";
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
+
+                var model = this.ModelDetailPages.getData();
+                var data = model.SKUBatch;
+                model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
+                data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
+                data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
+                data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
+                data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
+                var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
+                model.Intestazione.descrizione = descr;
+                data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
+                data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
+                this.exp = 0;
+                data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
+                if (this.exp === 1) {
+                    model.Intestazione.conforme = "***";
+                }
+                this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
+                if (data.Batch[0].IsAttrezzaggio === "0") {
+                    this.CreateButtons();
+                    this.SwitchColor("");
+                    this.EnableButtons(["ButtonPresaInCarico"]);
+                } else {
+                    this.CreateButtonsAttr();
+                    this.SwitchColor("");
+                    this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
+                }
+            }
         },
         RefreshCall: function () {
+
             this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
             this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
@@ -135,6 +173,7 @@ sap.ui.define([
                     switch (data.StatoLinea) {
                         case "Disponibile.AttesaPresaInCarico":
                             if (this.State !== "Disponibile.AttesaPresaInCarico") {
+                                this.getSplitAppObj().toDetail(this.createId("Home"));
                                 this.SwitchColor("");
                                 this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
                             }
@@ -179,6 +218,7 @@ sap.ui.define([
                 }
             }
             this.State = data.StatoLinea;
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
 //        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
         AjaxCallerVoid: function (address) {
@@ -225,20 +265,37 @@ sap.ui.define([
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatch: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link);
-            this.RefreshCall();
+            if (this.ISGLOBAL === 1) {
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link);
+                this.RefreshCall();
+            } else {
+                this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
+                this.SwitchColor("yellow");
+                this.EnableButtons(["ButtonFinePredisposizione"]);
+                this.PredisposizioneLinea();
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            }
         },
         PredisposizioneLinea: function () {
+
             this.TabContainer = this.getView().byId("TabContainer");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
             this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
-            link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+            var link;
+            if (this.ISGLOBAL === 1) {
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+            } else {
+                link = "model/JSON_SetupOld.json";
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
+                link = "model/JSON_SetupNew.json";
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+            }
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.New)));
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
@@ -363,6 +420,7 @@ sap.ui.define([
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
             this.EnableButtons([]);
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
 //      RICHIAMATO DAL PULSANTE ANNULLA ALLA FINE DELLA PREDISPOSIZIONE
         AnnullaPredisposizione: function () {
@@ -389,12 +447,21 @@ sap.ui.define([
                 var tab = this.TabContainer.getItems()[2];
                 this.TabContainer.removeItem(tab);
                 this.Item.destroyContent();
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link);
-                var XMLstring = this.XMLSetupUpdates(data);
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link);
-                this.RefreshCall();
+                var link;
+                if (this.ISGLOBAL === 1) {
+                    link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                    this.AjaxCallerVoid(link);
+                    var XMLstring = this.XMLSetupUpdates(data);
+                    link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                    this.AjaxCallerVoid(link);
+                    this.RefreshCall();
+                } else {
+                    this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/DatiOEE/");
+                    this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                    this.SwitchColor("green");
+                    this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                }
             } else {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
             }
@@ -907,12 +974,19 @@ sap.ui.define([
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatchAttrezzaggio: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link);
             this.RefreshCall();
         },
         PredisposizioneLineaAttrezzaggio: function () {
+
             this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
+            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
+            link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.New)));
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
@@ -922,9 +996,11 @@ sap.ui.define([
             mod = this.RecursiveLinkRemoval(mod);
             mod = this.RecursiveModifyExpansion(mod);
             mod = this.RecursiveParentExpansion(mod);
-//            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
-//            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
-//            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
+            mod = this.RecursivePropertyAdder(mod, "valueModify");
+            mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
+            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
+            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
 //            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
 //            this.SwitchColorAttrezzaggio("yellow");
 //            this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
@@ -940,7 +1016,7 @@ sap.ui.define([
 //          pulsanti che possono chiudere le tabs.
         FinePredisposizioneAttrezzaggio: function () {
 
-            var data = {"stringa": "solo predisposizione"};
+            var data = {"stringa": "SOLO PREDISPOSIZIONE"};
             this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -951,8 +1027,8 @@ sap.ui.define([
                 this.TabContainer.removeItem(tab);
             }
             this.Item = new sap.m.TabContainerItem({});
-            this.Item.setName("Conferma predisposizione");
-            var Panel = new sap.m.Panel();
+            this.Item.setName("CONFERMA PREDISPOSIZIONE");
+//            var Panel = new sap.m.Panel();
             var TreeTable = new CustomTreeTable({
                 id: "TreeTable_FinePredisposizioneAttrezzaggio",
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
@@ -960,7 +1036,7 @@ sap.ui.define([
                 collapseRecursive: true,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
-                visibleRowCount: 8,
+                visibleRowCount: 7,
                 columns: [
                     new sap.ui.table.Column({
                         label: "ATTRIBUTI",
@@ -1000,19 +1076,22 @@ sap.ui.define([
                 text: "ANNULLA",
                 width: "100%",
                 press: [this.AnnullaAttrezzaggio, this]});
+            bt1.addStyleClass("annullaButton");
             var bt2 = new sap.m.Button({
                 text: "CONFERMA",
                 width: "100%",
-                press: [this.ConfermaAttrezzaggio, this]});
+                press: ['F', this.ConfermaAttrezzaggio, this]});
+            bt2.addStyleClass("confermaButton");
             vb3.addItem(bt2);
             vb1.addItem(bt1);
             vb2.addItem(new sap.m.Text({}));
             hbox.addItem(vb1);
             hbox.addItem(vb2);
             hbox.addItem(vb3);
-            Panel.addContent(TreeTable);
-            Panel.addContent(hbox);
-            this.Item.addContent(Panel);
+//            Panel.addContent(TreeTable);
+//            Panel.addContent(hbox);
+            this.Item.addContent(TreeTable);
+            this.Item.addContent(hbox);
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
@@ -1020,7 +1099,7 @@ sap.ui.define([
         },
         SospensioneAttrezzaggio: function () {
 
-            var data = {"stringa": "sospensione predisposizione"};
+            var data = {"stringa": "SOSPENSIONE PREDISPOSIZIONE"};
             this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -1031,8 +1110,8 @@ sap.ui.define([
                 this.TabContainer.removeItem(tab);
             }
             this.Item = new sap.m.TabContainerItem({});
-            this.Item.setName("Sospensione predisposizione");
-            var Panel = new sap.m.Panel();
+            this.Item.setName("SOSPENSIONE PREDISPOSIZIONE");
+//            var Panel = new sap.m.Panel();
             var TreeTable = new CustomTreeTable({
                 id: "TreeTable_FinePredisposizioneAttrezzaggio",
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
@@ -1040,7 +1119,7 @@ sap.ui.define([
                 collapseRecursive: true,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
-                visibleRowCount: 8,
+                visibleRowCount: 7,
                 columns: [
                     new sap.ui.table.Column({
                         label: "ATTRIBUTI",
@@ -1076,22 +1155,26 @@ sap.ui.define([
             var vb2 = new sap.m.VBox({width: "6%"});
             var vb3 = new sap.m.VBox({width: "47%"});
             var bt1 = new sap.m.Button({
-                text: "Annulla",
+                text: "ANNULLA",
                 width: "100%",
                 press: [this.AnnullaAttrezzaggio, this]});
+            bt1.addStyleClass("annullaButton");
             var bt2 = new sap.m.Button({
-                text: "Conferma",
+                text: "CONFERMA",
                 width: "100%",
-                press: [this.ConfermaAttrezzaggio, this]});
+                press: ['S', this.ConfermaAttrezzaggio, this]});
+            bt2.addStyleClass("confermaButton");
             vb3.addItem(bt2);
             vb1.addItem(bt1);
             vb2.addItem(new sap.m.Text({}));
             hbox.addItem(vb1);
             hbox.addItem(vb2);
             hbox.addItem(vb3);
-            Panel.addContent(TreeTable);
-            Panel.addContent(hbox);
-            this.Item.addContent(Panel);
+            this.Item.addContent(TreeTable);
+            this.Item.addContent(hbox);
+//            Panel.addContent(TreeTable);
+//            Panel.addContent(hbox);
+//            this.Item.addContent(Panel);
             this.TabContainer.addItem(this.Item);
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
@@ -1105,23 +1188,33 @@ sap.ui.define([
             this.TabContainer.setSelectedItem(this.TabContainer.getItems()[1]);
             this.Item.destroyContent();
         },
-        ConfermaAttrezzaggio: function () {
+        ConfermaAttrezzaggio: function (event, source) {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link);
-            this.RefreshCall();
-//            this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
-//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.SwitchColorAttrezzaggio("brown");
+            var data = this.ModelDetailPages.getData().SetupLinea.Modify;
+            data = this.RecursivePropertyCopy(data, "value", "valueModify");
+            this.codeCheck = 0;
+            data = this.RecursiveJSONCodeCheck(data, "codeValue");
+
+            if (this.codeCheck === 1 && source === 'F') {
+                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
+            } else {
+
+                var tab = this.TabContainer.getItems()[2];
+                this.TabContainer.removeItem(tab);
+                this.Item.destroyContent();
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link);
+                var XMLstring = this.XMLSetupUpdates(data);
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link);
+                this.RefreshCall();
+            }
         },
         FineAttrezzaggio: function () {
 
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link);
             this.RefreshCall();
-//            this.getSplitAppObj().toDetail(this.createId("Home"));
-//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.SwitchColorAttrezzaggio("");
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

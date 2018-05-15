@@ -29,6 +29,16 @@
     padding:1%;
     color: #003A6B;
 }
+/*.sapMBtn:active {
+    background-color: green;
+    text-decoration: none;
+    color: white;
+    font-size: 12pt;
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
+}*/
 .styleLongButton * {
     font-size: 12pt;
     text-decoration: none;
@@ -40,6 +50,18 @@
     padding:1%;
     color: #003A6B;
 }
+/*.styleLongButton:active * {
+    background-color: green;
+    color: white;
+    font-size: 12pt;
+    text-decoration: none;
+    line-height: 15pt;
+    white-space: normal;
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
+}*/
 
 /*STILE TESTI E INPUT TREETABLE*/
 .diffStandard input {
@@ -60,6 +82,9 @@
 }
 .sapUiTableColHdrCnt {
     color: #0085ca;
+}
+.sapMTB-Transparent-CTX.sapMTB {
+    padding-left: 0rem !important;
 }
 /*STILE TESTI VARI*/
 /*.sapMText {
