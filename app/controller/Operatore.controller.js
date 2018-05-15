@@ -35,49 +35,58 @@ sap.ui.define([
         onInit: function () {
 
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
-
+            this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
             if (this.ISLOCAL === 1) {
-                this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
 
                 var link = "model/JSON_SKUBatch.json";
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
-
-                var model = this.ModelDetailPages.getData();
-                var data = model.SKUBatch;
-                model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
-                data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
-                data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
-                data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
-                data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
-                var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
-                model.Intestazione.descrizione = descr;
-                data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
-                data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
-                this.exp = 0;
-                data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
-                if (this.exp === 1) {
-                    model.Intestazione.conforme = "***";
-                }
-                this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
-                if (data.Batch[0].IsAttrezzaggio === "0") {
-                    this.CreateButtons();
-                    this.SwitchColor("");
-                    this.EnableButtons(["ButtonPresaInCarico"]);
-                } else {
-                    this.CreateButtonsAttr();
-                    this.SwitchColor("");
-                    this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
-                }
+                this.AjaxCallerData(link, this.CheckStatusLocal.bind(this));
             } else {
                 this.RefreshCall(this);
                 setInterval(this.RefreshCall.bind(this), 5000);
             }
         },
         RefreshCall: function () {
-
-            this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
+            if (typeof this.ModelDetailPages.getData().SKUBatch === "undefined") {
+                this.State = "";
+            } else {
+                this.State = this.ModelDetailPages.getData().SKUBatch.StatoLinea;
+            }
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
-            this.AjaxCallerData(link, this.ModelDetailPages, "/SKUBatch/");
+            this.AjaxCallerData(link, this.CheckStatus.bind(this));
+        },
+        CheckStatusLocal: function (Jdata) {
+
+            this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
+            var model = this.ModelDetailPages.getData();
+            var data = model.SKUBatch;
+            model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
+            data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
+            data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
+            data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
+            data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
+            var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
+            model.Intestazione.descrizione = descr;
+            data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
+            data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
+            this.exp = 0;
+            data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
+            if (this.exp === 1) {
+                model.Intestazione.conforme = "***";
+            }
+            this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
+            if (data.Batch[0].IsAttrezzaggio === "0") {
+                this.CreateButtons();
+                this.SwitchColor("");
+                this.EnableButtons(["ButtonPresaInCarico"]);
+            } else {
+                this.CreateButtonsAttr();
+                this.SwitchColor("");
+                this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
+            }
+        },
+        CheckStatus: function (Jdata) {
+            this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
+            var link;
             var model = this.ModelDetailPages.getData();
             var data = model.SKUBatch;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
@@ -124,13 +133,7 @@ sap.ui.define([
                             }
                             break;
                         case "Disponibile.Lavorazione":
-                            this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/DatiOEE/");
-                            if (this.State !== "Disponibile.Lavorazione") {
-                                this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                                this.SwitchColor("green");
-                                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-                            }
-                            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                            this.AjaxCallerData("model/JSON_Progress.json", this.InProgress.bind(this));
                             break;
                         case "Disponibile.Fermo":
                             if (this.State !== "Disponibile.Fermo") {
@@ -149,17 +152,9 @@ sap.ui.define([
                             if (this.State !== "Disponibile.Svuotamento") {
                                 if (typeof this.ModelDetailPages.getData().FermiNonCausalizzati === "undefined") {
                                     link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                                    this.AjaxCallerData(link, this.ModelDetailPages, "/FermiNonCausalizzati/");
-                                    var dataC = this.ModelDetailPages.getData().FermiNonCausalizzati;
-                                    dataC = this.AddTimeGaps(dataC);
-                                    this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", dataC);
+                                    this.AjaxCallerData(link, this.GetFermiNC.bind(this));
                                 }
-                                this.AjaxCallerData("model/JSON_Chiusura.json", this.ModelDetailPages, "/ParametriChiusura/");
-                                this.SwitchColor("brown");
-                                this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
-                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                                this.EnableButtons(["ButtonCausalizzazione"]);
-                                this.AggiornaChiusura();
+                                this.AjaxCallerData("model/JSON_Chiusura.json", this.SetChiusura.bind(this));
                             }
                             break;
                     }
@@ -217,35 +212,58 @@ sap.ui.define([
                         break;
                 }
             }
-            this.State = data.StatoLinea;
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
+        InProgress: function (Jdata) {
+            this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
+            if (this.State !== "Disponibile.Lavorazione") {
+                this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                this.SwitchColor("green");
+                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            }
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+        },
+        GetFermiNC: function (Jdata) {
+            Jdata = this.AddTimeGaps(Jdata);
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", Jdata);
+        },
+        SetChiusura: function (Jdata) {
+            this.ModelDetailPages.setProperty("/ParametriChiusura/", Jdata);
+            this.SwitchColor("brown");
+            this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.EnableButtons(["ButtonCausalizzazione"]);
+            this.AggiornaChiusura();
+        },
 //        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
-        AjaxCallerVoid: function (address) {
+        AjaxCallerVoid: function (address, Func) {
             jQuery.ajax({
                 url: address,
-                async: false
+                async: true,
+                always: Func
             });
         },
 //        DI SEGUITO LE 2 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
-        AjaxCallerData: function (addressOfJSON, model, targetAddress) {
-            var req = jQuery.ajax({
+        AjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
+            jQuery.ajax({
                 url: addressOfJSON,
                 method: "GET",
                 dataType: "json",
-                async: false
+                async: true,
+                success: successFunc,
+                error: errorFunc
             });
-            var passer = {};
-            passer.model = model;
-            passer.target = targetAddress;
-            var tempfunc = jQuery.proxy(this.FillModel, this, passer);
-            req.done(tempfunc);
+//            var passer = {};
+//            passer.model = model;
+//            passer.target = targetAddress;
+//            var tempfunc = jQuery.proxy(this.FillModel, this, passer);
+//            req.done(tempfunc);
         },
-        FillModel: function (struct, data) {
-            var model = struct.model;
-            var target = struct.target;
-            model.setProperty(target, data);
-        },
+//        FillModel: function (struct, data) {
+//            var model = struct.model;
+//            var target = struct.target;
+//            model.setProperty(target, data);
+//        },
 //------------------------------------------------------------------------------
 
 
@@ -273,8 +291,7 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             } else {
                 var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link);
-                this.RefreshCall();
+                this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
         },
         PredisposizioneLinea: function () {
@@ -287,32 +304,44 @@ sap.ui.define([
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_SetupOld.json";
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
-                link = "model/JSON_SetupNew.json";
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+                this.AjaxCallerData(link, this.JSONOldSetupIsUp.bind(this));
             } else {
                 link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+                this.AjaxCallerData(link, this.JSONOldSetupIsUp.bind(this));
             }
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.New)));
+        },
+        JSONOldSetupIsUp: function (Jdata) {
+            this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata);
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_SetupNew.json";
+                this.AjaxCallerData(link, this.JSONNewSetupIsUp.bind(this));
+            } else {
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerData(link, this.JSONNewSetupIsUp.bind(this));
+            }
+        },
+        JSONNewSetupIsUp: function (Jdata) {
+            this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata);
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(Jdata)));
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
             std = this.RecursiveStandardAdapt(std, bck);
-            this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
-            this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             mod = this.RecursiveLinkRemoval(mod);
             mod = this.RecursiveModifyExpansion(mod);
             mod = this.RecursiveParentExpansion(mod);
             mod = this.RecursivePropertyAdder(mod, "valueModify");
-            mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
+            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+                mod = this.RecursivePropertyAdder(mod, "codeValueModify");
+                this.backupSetupModify = JSON.parse(JSON.stringify(mod));
+            }
+            this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
+            this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
-            this.backupSetupModify = JSON.parse(JSON.stringify(mod));
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -449,22 +478,27 @@ sap.ui.define([
                 this.Item.destroyContent();
                 var link;
                 if (this.ISLOCAL === 1) {
-                    this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/DatiOEE/");
-                    this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                    this.SwitchColor("green");
-                    this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                    this.AjaxCallerData("model/JSON_Progress.json", this.InProgressLocal.bind(this));
                 } else {
                     link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                    this.AjaxCallerVoid(link);
-                    var XMLstring = this.XMLSetupUpdates(data);
-                    link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                    this.AjaxCallerVoid(link);
-                    this.RefreshCall();
+                    this.AjaxCallerVoid(link, this.XMLLogger.bind(this));
                 }
             } else {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
             }
+        },
+        InProgressLocal: function (Jdata) {
+            this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
+            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.SwitchColor("green");
+            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+        },
+        XMLLogger: function () {
+            var data = this.ModelDetailPages.getData().SetupLinea.Modify;
+            var XMLstring = this.XMLSetupUpdates(data);
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
 //------------------------------------------------------------------------------
 
@@ -481,7 +515,10 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/SetupLinea/", {});
             }
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
+            this.AjaxCallerData(link, this.ModifyCallBack.bind(this));
+        },
+        ModifyCallBack: function (Jdata) {
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", Jdata);
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
             mod = this.RecursiveLinkRemoval(mod);
             mod = this.RecursiveModifyExpansion(mod);
@@ -520,13 +557,15 @@ sap.ui.define([
                 this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
                 var XMLstring = this.XMLSetupUpdates(data);
                 var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link);
-                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                this.AjaxCallerVoid(link, this.ModifyToProgress.bind(this));
             } else {
                 MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
             }
+        },
+        ModifyToProgress: function () {
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
         },
 //------------------------------------------------------------------------------
 
@@ -534,10 +573,10 @@ sap.ui.define([
         FermoCall: function () {
             this.discr = "FermoManuale";
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
-            this.AjaxCallerData(link, this.ModelDetailPages, "/CausaliFermi/");
-            this.Fermo();
+            this.AjaxCallerData(link, this.Fermo.bind(this));
         },
-        Fermo: function () {
+        Fermo: function (Jdata) {
+            this.ModelDetailPages.setProperty("/CausaliFermi/", Jdata);
             this.getSplitAppObj().toDetail(this.createId("Fermo"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var data = this.ModelDetailPages.getData().CausaliFermi.gerarchie;
@@ -675,20 +714,21 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + CB.getProperty("text"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleEventoID=" + id;
-                this.AjaxCallerVoid(link);
-                this.RefreshCall();
+                this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             } else if (this.discr === "FermoAutomatico") {
 
-                var string = this.GetStringIDFermiAuto(this.CheckSingoloCausa);
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogFermiAutoSenzaCausale&Content-Type=text/json&ListLogID=" + string + "&CausaleID=" + id;
-                this.AjaxCallerVoid(link);
-                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
                 var vbox = this.getView().byId("vbox_table");
                 vbox.destroyItems();
-                this.Causalizzazione();
+                var string = this.GetStringIDFermiAuto(this.CheckSingoloCausa);
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogFermiAutoSenzaCausale&Content-Type=text/json&ListLogID=" + string + "&CausaleID=" + id;
+                this.AjaxCallerVoid(link, this.FermoToCausa.bind(this));
             }
             this.outerVBox.destroyItems();
+        },
+        FermoToCausa: function () {
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.Causalizzazione();
         },
         GetStringIDFermiAuto: function (vec) {
             var IDs = [];
@@ -717,7 +757,10 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/SetupLinea/", {});
             }
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Modify/");
+            this.AjaxCallerData(link, this.RiavvioCallBack.bind(this));
+        },
+        RiavvioCallBack: function (Jdata) {
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", Jdata);
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
             mod = this.RecursiveLinkRemoval(mod);
             mod = this.RecursiveModifyExpansion(mod);
@@ -751,16 +794,13 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
                 this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
                 var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link);
+                this.AjaxCallerVoid(link, this.ConfermaRiavvioCallBack.bind(this));
                 var XMLstring = this.XMLSetupUpdates(data);
                 link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
                 if (this.ModelDetailPages.getData().CausaFermo === "FERMO AUTOMATICO") {
                     link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                    this.AjaxCallerData(link, this.ModelDetailPages, "/FermiNonCausalizzati/");
-                    data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-                    data = this.AddTimeGaps(data);
-                    this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+                    this.AjaxCallerData(link, this.GetFermiNC.bind(this));
                 }
                 this.RefreshCall();
             } else {
@@ -768,16 +808,30 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
         },
+        ConfermaRiavvioCallBack: function () {
+            var data = this.ModelDetailPages.getData().SetupLinea.Modify;
+            var XMLstring = this.XMLSetupUpdates(data);
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerVoid(link, this.FromFermoToProgress.bind(this));
+        },
+        FromFermoToProgress: function () {
+            if (this.ModelDetailPages.getData().CausaFermo === "FERMO AUTOMATICO") {
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerData(link, this.GetFermiNC.bind(this));
+            }
+            this.RefreshCall();
+        },
 //------------------------------------------------------------------------------
 //      
 //      RICHIAMATO DAL PULSANTE "CAUSALIZZAZIONE FERMI AUTOMATICI"
         Causalizzazione: function () {
 
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausa&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerData(link, this.ModelDetailPages, "/FermiNonCausalizzati/");
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            data = this.AddTimeGaps(data);
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+            this.AjaxCallerData(link, this.FermiNC.bind(this));
+        },
+        FermiNC: function (Jdata) {
+            Jdata = this.AddTimeGaps(Jdata);
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", Jdata);
             this.getView().byId("vbox_table").destroyItems();
             if (this.ModelDetailPages.getData().FermiNonCausalizzati.fermi.length === 0) {
 //                if (typeof this.getView().byId("TotaleTable") !== "undefined") {
@@ -845,6 +899,7 @@ sap.ui.define([
             this.UncheckCause();
             this.EnableButtons([]);
         },
+
 //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
         ChangeCheckedCausa: function (event) {
             var id = event.getSource().getId();
@@ -914,10 +969,8 @@ sap.ui.define([
 //      RICHIAMATO DAL PULSANTE DI CAUSALIZZA
         Causalizza: function () {
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
-            this.AjaxCallerData(link, this.ModelDetailPages, "/CausaliFermi/");
             this.discr = "FermoAutomatico";
-
-            this.Fermo();
+            this.AjaxCallerData(link, this.Fermo.bind(this));
         },
 //      RICHIAMATO DAL PULSANTE DI ESCI NELLA CAUSALIZZAZIONE
         EsciCausalizzazione: function () {
@@ -941,15 +994,13 @@ sap.ui.define([
         ChiusuraConfezionamento: function () {
 
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link);
-            this.RefreshCall();
+            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
         ConfermaChiusura: function () {
             var temp = {"linea": this.ModelDetailPages.getData().DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
             this.ModelDetailPages.setProperty("/Intestazione/", temp);
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link);
-            this.RefreshCall();
+            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -975,39 +1026,17 @@ sap.ui.define([
         ConfermaBatchAttrezzaggio: function () {
 
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link);
-            this.RefreshCall();
+            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
         PredisposizioneLineaAttrezzaggio: function () {
-
             this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
-            this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
-            link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.New)));
-            var std = this.ModelDetailPages.getData().SetupLinea.Old;
-            var bck = this.ModelDetailPages.getData().SetupLinea.New;
-            var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
-            bck = this.RecursiveJSONComparison(std, bck, "attributi");
-            bck = this.RecursiveParentExpansion(bck);
-            std = this.RecursiveStandardAdapt(std, bck);
-            mod = this.RecursiveLinkRemoval(mod);
-            mod = this.RecursiveModifyExpansion(mod);
-            mod = this.RecursiveParentExpansion(mod);
-            mod = this.RecursivePropertyAdder(mod, "valueModify");
-            mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
-            this.ModelDetailPages.setProperty("/SetupLinea/Old", std);
-            this.ModelDetailPages.setProperty("/SetupLinea/New", bck);
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify", mod);
-//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//            this.SwitchColorAttrezzaggio("yellow");
-//            this.EnableButtons(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
+            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerData(link, this.JSONOldSetupIsUp.bind(this));
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -1194,7 +1223,6 @@ sap.ui.define([
             data = this.RecursivePropertyCopy(data, "value", "valueModify");
             this.codeCheck = 0;
             data = this.RecursiveJSONCodeCheck(data, "codeValue");
-
             if (this.codeCheck === 1 && source === 'F') {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
             } else {
@@ -1202,19 +1230,22 @@ sap.ui.define([
                 var tab = this.TabContainer.getItems()[2];
                 this.TabContainer.removeItem(tab);
                 this.Item.destroyContent();
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link);
                 var XMLstring = this.XMLSetupUpdates(data);
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link, this.FromAttrToChiusura.bind(this));
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link);
                 this.RefreshCall();
             }
         },
+        FromAttrToChiusura: function () {
+            var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+        },
         FineAttrezzaggio: function () {
 
             var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link);
-            this.RefreshCall();
+            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
