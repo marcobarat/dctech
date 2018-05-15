@@ -11,7 +11,7 @@ sap.ui.define([
     var TmpController = Controller.extend("myapp.controller.Operatore", {
 
 //      VARIABILI GLOBALI
-        ISGLOBAL: 0,
+        ISLOCAL: 0,
         LineDetails: {"Linea": "Linea 1", "idLinea": "1"},
         ModelDetailPages: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
@@ -34,12 +34,9 @@ sap.ui.define([
 
         onInit: function () {
 
-//            this.ISGLOBAL = jQuery.sap.getUriParameters().get("GLOBAL");
+            this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
 
-            if (this.ISGLOBAL === 1) {
-                this.RefreshCall(this);
-                setInterval(this.RefreshCall.bind(this), 5000);
-            } else {
+            if (this.ISLOCAL === 1) {
                 this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
 
                 var link = "model/JSON_SKUBatch.json";
@@ -71,6 +68,9 @@ sap.ui.define([
                     this.SwitchColor("");
                     this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
                 }
+            } else {
+                this.RefreshCall(this);
+                setInterval(this.RefreshCall.bind(this), 5000);
             }
         },
         RefreshCall: function () {
@@ -265,16 +265,16 @@ sap.ui.define([
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatch: function () {
 
-            if (this.ISGLOBAL === 1) {
-                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link);
-                this.RefreshCall();
-            } else {
+            if (this.ISLOCAL === 1) {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
                 this.SwitchColor("yellow");
                 this.EnableButtons(["ButtonFinePredisposizione"]);
                 this.PredisposizioneLinea();
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            } else {
+                var link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link);
+                this.RefreshCall();
             }
         },
         PredisposizioneLinea: function () {
@@ -285,15 +285,15 @@ sap.ui.define([
             this.TabContainer.setSelectedItem(item);
             this.ModelDetailPages.setProperty("/SetupLinea/", {});
             var link;
-            if (this.ISGLOBAL === 1) {
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
-                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
-            } else {
+            if (this.ISLOCAL === 1) {
                 link = "model/JSON_SetupOld.json";
                 this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
                 link = "model/JSON_SetupNew.json";
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
+            } else {
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/Old/");
+                link = "XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerData(link, this.ModelDetailPages, "/SetupLinea/New/");
             }
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.New)));
@@ -448,19 +448,19 @@ sap.ui.define([
                 this.TabContainer.removeItem(tab);
                 this.Item.destroyContent();
                 var link;
-                if (this.ISGLOBAL === 1) {
+                if (this.ISLOCAL === 1) {
+                    this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/DatiOEE/");
+                    this.getSplitAppObj().toDetail(this.createId("InProgress"));
+                    this.SwitchColor("green");
+                    this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                } else {
                     link = "XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                     this.AjaxCallerVoid(link);
                     var XMLstring = this.XMLSetupUpdates(data);
                     link = "XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                     this.AjaxCallerVoid(link);
                     this.RefreshCall();
-                } else {
-                    this.AjaxCallerData("model/JSON_Progress.json", this.ModelDetailPages, "/DatiOEE/");
-                    this.getSplitAppObj().toDetail(this.createId("InProgress"));
-                    this.SwitchColor("green");
-                    this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
-                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 }
             } else {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
