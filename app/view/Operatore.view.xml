@@ -1389,7 +1389,7 @@
                     <!--<VBox height="100%" width="100%">-->
                     <!--<Panel id="panel_processi" class="MasterPanels" height="70%" width="100%">-->
                     <VBox class="colorPage" height="25%" width="100%" justifyContent="center" alignItems="start">
-                        <image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
+                        <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
                     </VBox>
                     <VBox id="panel_processi" class="MasterPanels" height="75%" width="100%" justifyContent="center" alignItems="start">
                     </VBox>
