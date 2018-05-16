@@ -1,7 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" xmlns:cust="myapp.control"
           controllerName="myapp.controller.Main">
-    <Page showHeader="false">
+    <Page showHeader="false" class="colorPage">
         <content>
             <!--<Button text="{locale>myapp.goto.tmp}" press="onToTmpPage" class="sapUiSmallMarginEnd"/>-->
             <FlexBox alignItems="Start" justifyContent="Center">

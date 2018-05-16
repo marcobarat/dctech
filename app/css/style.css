@@ -144,13 +144,25 @@
 }*/
 
 /*STILE PROGRESS BAR*/
-.progressBarButton * {
+.progressBarButtonGreen * {
     height: 120px;
     background-color: #7CA295 !important;
     background-image: none !important;
     /*border: solid;*/
 }
-.customTextBar * {
+.progressBarButtonYellow * {
+    height: 120px;
+    background-color: #FFD300 !important;
+    background-image: none !important;
+    /*border: solid;*/
+}
+.progressBarButtonOrange * {
+    height: 120px;
+    background-color: #d47600 !important;
+    background-image: none !important;
+    /*border: solid;*/
+}
+.customTextBar *{
     font-size: 25pt;
     font-weight: bold;
 }

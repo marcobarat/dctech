@@ -323,7 +323,7 @@
                                 </VBox>
                                 <VBox width="4%"/>
                                 <VBox width="16%">
-                                    <Button width="85%" class="progressBarButton" press="SPCGraph"/>
+                                    <Button id="progressBarButton" width="85%" class="progressBarButtonGreen" press="SPCGraph"/>
                                 </VBox>
                                 <VBox width="6%"/>
                             </HBox>
