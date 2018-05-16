@@ -590,7 +590,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox id="vboxFermo" height="80%" width="100%">
+                        <VBox id="vboxFermo" height="75%" width="100%">
                         </VBox>
                     </VBox>
                 </content>
@@ -667,7 +667,7 @@
                                             </t:Column>
                                             <t:Column hAlign="Center" width="10%">
                                                 <t:template>
-                                                    <CheckBox id="CBSingoloCausa" selected="{GeneralModel>select}" select="ChangeCheckedCausa"/>
+                                                    <CheckBox id="CBSingoloCausa" selected="{GeneralModel>select}" enabled="{GeneralModel>enable}" select="ChangeCheckedCausa"/>
                                                 </t:template>
                                             </t:Column>
                                         </t:columns>
