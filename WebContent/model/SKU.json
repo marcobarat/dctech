@@ -1,0 +1,469 @@
+{
+    "attributi": [
+        {
+            "name": "SKU",
+            "value": "0SXE093",
+            "expand": 0
+        },
+        {
+            "name": "descrizione",
+            "value": "Farfalle Estero CEE",
+            "expand": 0
+        },
+        {
+            "name": "Formato",
+            "value": "",
+            "expand": 0,
+            "attributi": [
+                {
+                    "name": "Formato",
+                    "value": "093 Semola",
+                    "expand": 0
+                },
+                {
+                    "name": "formatoProduttivo",
+                    "value": "Farfalle 093",
+                    "expand": 0
+                },
+                {
+                    "name": "tipologiaImpasto",
+                    "value": "Semola",
+                    "expand": 0
+                }
+            ]
+        },
+        {
+            "name": "Confezionamento",
+            "value": "",
+            "expand": 0,
+            "attributi": [
+                {
+                    "name": "Confezionamento",
+                    "value": "Film 500 gr.",
+                    "expand": 0
+                },
+                {
+                    "name": "tipo",
+                    "value": "Film",
+                    "expand": 0
+                },
+                {
+                    "name": "grammatura",
+                    "value": "500",
+                    "expand": 0
+                }
+            ]
+        },
+        {
+            "name": "SpecificheConfezionamento",
+            "value": "",
+            "expand": 1,
+            "attributi": [
+                {
+                    "name": "SpecificheConfezionamento",
+                    "value": "CEE",
+                    "expand": 0
+                },
+                {
+                    "name": "confezionePrimaria",
+                    "value": "",
+                    "expand": 0,
+                    "attributi": [
+                        {
+                            "name": "confezionePrimaria",
+                            "value": "CEE",
+                            "expand": 0
+                        },
+                        {
+                            "name": "controlloPeso",
+                            "value": "normCEE",
+                            "expand": 0
+                        },
+                        {
+                            "name": "stampa",
+                            "value": "CEE",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "value": "stampaFilm",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "id",
+                                    "value": "CEE",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "value": "1 retro",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "layout",
+                                    "value": "bello",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        },
+                        {
+                            "name": "etichettaturaP",
+                            "value": "44529",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "value": "confezione Primaria",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "value": "1 retro genericoa",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "layout",
+                                    "value": "44688",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "confezioneSecondaria",
+                    "value": "",
+                    "expand": 1,
+                    "attributi": [
+                        {
+                            "name": "confezioneSecondaria",
+                            "value": "CEE",
+                            "expand": 0
+                        },
+                        {
+                            "name": "tipologia",
+                            "value": "cartone",
+                            "expand": 0
+                        },
+                        {
+                            "name": "qtaConfezionePrimaria",
+                            "value": "24",
+                            "expand": 2
+                        },
+                        {
+                            "name": "schema",
+                            "value": "6x4",
+                            "expand": 2
+                        },
+                        {
+                            "name": "controlloPeso",
+                            "value": "std",
+                            "expand": 2
+                        },
+                        {
+                            "name": "etichettaturaS",
+                            "value": "CEE",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "value": "confezioneSecondaria",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "value": "1 lato maggiore",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "layout",
+                                    "value": "KZ00",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "pallettizzazione",
+                    "value": "",
+                    "expand": 0,
+                    "attributi": [
+                        {
+                            "name": "pallettizzazione",
+                            "value": "CEE",
+                            "expand": 0
+                        },
+                        {
+                            "name": "pallet",
+                            "value": "std",
+                            "expand": 0
+                        },
+                        {
+                            "name": "dimensioni",
+                            "value": "800x1200",
+                            "expand": 0
+                        },
+                        {
+                            "name": "protezione",
+                            "value": "film estensibile, senza cappuccio",
+                            "expand": 0
+                        },
+                        {
+                            "name": "qtaConfezioneSecondaria",
+                            "value": "60",
+                            "expand": 0
+                        },
+                        {
+                            "name": "nStrati",
+                            "value": "10",
+                            "expand": 0
+                        },
+                        {
+                            "name": "schemaStrati",
+                            "value": "BF4151",
+                            "expand": 0
+                        },
+                        {
+                            "name": "etichettaturaB",
+                            "value": "CEE",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "name": "tipoEtichetta",
+                                    "value": "palletizzazione",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "qta/posizione",
+                                    "value": "2 etichette lati adiacenti",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "layout",
+                                    "value": "EB00",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

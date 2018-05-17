@@ -1,0 +1,16 @@
+{
+    "titolo1": "Fermata programmata",
+    "titolo2": "Organizzazione reparto",
+    "titolo3": "Guasto",
+    "titolo4": "Mancanza personale",
+    "CBFermo1": "Sostituzioni deteriorabili",
+    "CBFermo2": "Attesa produzione precedente",
+    "CBFermo3": "Mancanza materiali",
+    "CBFermo4": "Svuotamento",
+    "CBFermo5": "Attesa intervento manutenzione",
+    "CBFermo6": "Manutenzione",
+    "CBFermo7": "Collaudo",
+    "CBFermo8": "Pausa pranzo",
+    "CBFermo9": "Motivi sindacali",
+    "CBFermo10": "Altro"
+}

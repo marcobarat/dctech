@@ -1,0 +1,43 @@
+{
+    "attributi": [
+        {
+            "name": "Tempo totale di lavorazione",
+            "value": "",
+            "expand": 0
+        },
+        {
+            "name": "Totale tempi di fermo",
+            "value": "",
+            "expand": 1,
+            "attributi": [
+                {
+                    "name": "Tempi di fermo non causalizzati",
+                    "value": "",
+                    "expand": 2
+                }
+            ]
+        },
+        {
+            "name": "Quantità prodotta",
+            "value": "",
+            "expand": 1,
+            "attributi": [
+                {
+                    "name": "Quantità prodotta buona",
+                    "value": "",
+                    "expand": 1
+                },
+                {
+                    "name": "Quantità prodotta scarto",
+                    "value": "",
+                    "expand": 1
+                }
+            ]
+        },
+        {
+            "name": "Efficienza di lavorazione",
+            "value": "",
+            "expand": 0
+        }
+    ]
+}

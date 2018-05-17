@@ -1,0 +1,558 @@
+{
+    "attributi": [
+        {
+            "id": 1,
+            "name": "SKU",
+            "value": "0SXE093",
+            "expand": 0
+        },
+        {
+            "id": 2,
+            "name": "descrizione",
+            "value": "Farfalle Estero CEE",
+            "expand": 0
+        },
+        {
+            "id": 3,
+            "name": "Formato",
+            "value": "",
+            "expand": 0,
+            "attributi": [
+                {
+                    "id": 4,
+                    "name": "Formato",
+                    "value": "093 Semola",
+                    "expand": 0
+                },
+                {
+                    "id": 5,
+                    "name": "formatoProduttivo",
+                    "value": "Farfalle 093",
+                    "expand": 0
+                },
+                {
+                    "id": 6,
+                    "name": "tipologiaImpasto",
+                    "value": "Semola",
+                    "expand": 0
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Confezionamento",
+            "value": "",
+            "expand": 0,
+            "attributi": [
+                {
+                    "id": 8,
+                    "name": "Confezionamento",
+                    "value": "Film 500 gr.",
+                    "expand": 0
+                },
+                {
+                    "id": 9,
+                    "name": "tipo",
+                    "value": "Film",
+                    "expand": 0
+                },
+                {
+                    "id": 10,
+                    "name": "grammatura",
+                    "value": "500",
+                    "expand": 0
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "name": "SpecificheConfezionamento",
+            "value": "",
+            "expand": 0,
+            "attributi": [
+                {
+                    "id": 12,
+                    "name": "SpecificheConfezionamento",
+                    "value": "CEE",
+                    "expand": 0
+                },
+                {
+                    "id": 13,
+                    "name": "confezionePrimaria",
+                    "value": "",
+                    "expand": 0,
+                    "attributi": [
+                        {
+                            "id": 14,
+                            "name": "confezionePrimaria",
+                            "value": "CEE",
+                            "expand": 0
+                        },
+                        {
+                            "id": 15,
+                            "name": "controlloPeso",
+                            "value": "normCEE",
+                            "expand": 0
+                        },
+                        {
+                            "id": 16,
+                            "name": "stampa",
+                            "value": "CEE",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "id": 17,
+                                    "name": "tipoEtichetta",
+                                    "value": "stampaFilm",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 18,
+                                    "name": "id",
+                                    "value": "CEE",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 19,
+                                    "name": "qta/posizione",
+                                    "value": "1 retro",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 20,
+                                    "name": "layout",
+                                    "value": "bello",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 21,
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 22,
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 23,
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 24,
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 25,
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 26,
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 27,
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 28,
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 29,
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 30,
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        },
+                        {
+                            "id": 31,
+                            "name": "etichettaturaP",
+                            "value": "44529",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "id": 32,
+                                    "name": "tipoEtichetta",
+                                    "value": "confezione Primaria",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 33,
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 34,
+                                    "name": "qta/posizione",
+                                    "value": "1 retro genericoa",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 35,
+                                    "name": "layout",
+                                    "value": "44688",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 36,
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 37,
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 38,
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 39,
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 40,
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 41,
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 42,
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 43,
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 44,
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 45,
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 46,
+                    "name": "confezioneSecondaria",
+                    "value": "",
+                    "expand": 0,
+                    "attributi": [
+                        {
+                            "id": 47,
+                            "name": "confezioneSecondaria",
+                            "value": "CEE",
+                            "expand": 0
+                        },
+                        {
+                            "id": 48,
+                            "name": "tipologia",
+                            "value": "cartone",
+                            "expand": 0
+                        },
+                        {
+                            "id": 49,
+                            "name": "qtaConfezionePrimaria",
+                            "value": "16",
+                            "expand": 0
+                        },
+                        {
+                            "id": 50,
+                            "name": "schema",
+                            "value": "8x4",
+                            "expand": 0
+                        },
+                        {
+                            "id": 51,
+                            "name": "controlloPeso",
+                            "value": "libbra",
+                            "expand": 0
+                        },
+                        {
+                            "id": 52,
+                            "name": "etichettaturaS",
+                            "value": "CEE",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "id": 53,
+                                    "name": "tipoEtichetta",
+                                    "value": "confezioneSecondaria",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 54,
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 55,
+                                    "name": "qta/posizione",
+                                    "value": "1 lato maggiore",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 56,
+                                    "name": "layout",
+                                    "value": "KZ00",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 57,
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 58,
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 59,
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 60,
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 61,
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 62,
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 63,
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 64,
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 65,
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 66,
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 67,
+                    "name": "pallettizzazione",
+                    "value": "",
+                    "expand": 0,
+                    "attributi": [
+                        {
+                            "id": 68,
+                            "name": "pallettizzazione",
+                            "value": "CEE",
+                            "expand": 0
+                        },
+                        {
+                            "id": 69,
+                            "name": "pallet",
+                            "value": "std",
+                            "expand": 0
+                        },
+                        {
+                            "id": 70,
+                            "name": "dimensioni",
+                            "value": "800x1200",
+                            "expand": 0
+                        },
+                        {
+                            "id": 71,
+                            "name": "protezione",
+                            "value": "film estensibile, senza cappuccio",
+                            "expand": 0
+                        },
+                        {
+                            "id": 72,
+                            "name": "qtaConfezioneSecondaria",
+                            "value": "60",
+                            "expand": 0
+                        },
+                        {
+                            "id": 73,
+                            "name": "nStrati",
+                            "value": "10",
+                            "expand": 0
+                        },
+                        {
+                            "id": 74,
+                            "name": "schemaStrati",
+                            "value": "BF4151",
+                            "expand": 0
+                        },
+                        {
+                            "id": 75,
+                            "name": "etichettaturaB",
+                            "value": "CEE",
+                            "expand": 0,
+                            "attributi": [
+                                {
+                                    "id": 76,
+                                    "name": "tipoEtichetta",
+                                    "value": "palletizzazione",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 77,
+                                    "name": "id",
+                                    "value": "123456",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 78,
+                                    "name": "qta/posizione",
+                                    "value": "2 etichette lati adiacenti",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 79,
+                                    "name": "layout",
+                                    "value": "EB00",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 80,
+                                    "name": "parametro1",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 81,
+                                    "name": "parametro2",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 82,
+                                    "name": "parametro3",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 83,
+                                    "name": "parametro4",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 84,
+                                    "name": "parametro5",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 85,
+                                    "name": "parametro6",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 86,
+                                    "name": "parametro7",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 87,
+                                    "name": "parametro8",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 88,
+                                    "name": "parametro9",
+                                    "value": "NA",
+                                    "expand": 0
+                                },
+                                {
+                                    "id": 89,
+                                    "name": "parametro10",
+                                    "value": "NA",
+                                    "expand": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

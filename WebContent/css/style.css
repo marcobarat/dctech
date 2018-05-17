@@ -1,0 +1,213 @@
+/*STILE PAGINE SETTATO A BIANCO*/
+.colorPage {
+    background-color: white;
+}
+
+/*STILE MASTER PAGE*/
+.MasterPanels {
+    justify-content: center;
+}
+.stylePanelYellow {
+    background-color: #FFD300; 
+}
+.stylePanelGreen {
+    background-color: #7CA295; 
+}
+.stylePanelRed {
+    background-color: #A71930; 
+}
+.stylePanelBrown {
+    background-color: #5E3032; 
+}
+/*STILE BOTTONI SULLA MASTER PAGE*/
+.styleButton * {
+    font-size: 12pt;
+    text-decoration: none;
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
+    color: #003A6B;
+}
+/*.sapMBtn:active {
+    background-color: green;
+    text-decoration: none;
+    color: white;
+    font-size: 12pt;
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
+}*/
+.styleLongButton * {
+    font-size: 12pt;
+    text-decoration: none;
+    line-height: 15pt;
+    white-space: normal;
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
+    color: #003A6B;
+}
+/*.styleLongButton:active * {
+    background-color: green;
+    color: white;
+    font-size: 12pt;
+    text-decoration: none;
+    line-height: 15pt;
+    white-space: normal;
+    margin-left: 5%;
+    width:90%;
+    height:130%;
+    padding:1%;
+}*/
+
+/*STILE TESTI E INPUT TREETABLE*/
+.diffStandard input {
+    color : #A71930;
+}
+.diffRed {
+    color : #A71930;
+    font-weight: bold;
+}
+.diffLink {
+    color : #003A6B;
+    text-decoration: underline;
+    font-weight: bold;
+}
+.sapMTB-Transparent-CTX .sapMBtnInner {
+    color: #003A6B;
+    background-color:#efeff5;
+}
+.sapUiTableColHdrCnt {
+    color: #0085ca;
+}
+.sapMTB-Transparent-CTX.sapMTB {
+    padding-left: 0rem !important;
+}
+/*STILE TESTI VARI*/
+/*.sapMText {
+    color : #003A6B;
+}*/
+.textTop {
+    font-size: 30pt;
+    color : #003A6B;
+}
+.textTopRed {
+    font-size: 40pt;
+    color: #A71930;
+}
+.customText {
+    font-size: 15pt;
+    font-weight: bold;
+    color : #003A6B;
+}
+.customTextFermo  {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    color : #003A6B;
+}
+.titleTT {
+    color : #A71930 !important;
+}
+
+
+/*STILE TAB CONTAINER*/
+.annullaButton * {
+    background-image: none !important;
+    background-color: #A71930 !important;
+    color: white;
+}
+.confermaButton * {
+    background-image: none !important;
+    background-color: #7CA295 !important;
+    color: white;
+}
+.attrezzaggioButton * {
+    background-image: none !important;
+    background-color: #FFD300 !important;
+    color: black;
+}
+.chiusuraButton * {
+    background-image: none !important;
+    background-color: #5E3032 !important;
+    color: white;
+}
+/*.sapMTabStrip {
+    background: #0085CA;
+}
+.sapMTabStrip .sapMTSTabsContainer .sapMTSTabs .sapMTabStripItem {
+    background: #0085CA;
+    color: white;
+}*/
+
+/*STILE PROGRESS BAR*/
+.progressBarButtonGreen * {
+    height: 120px;
+    background-color: #7CA295 !important;
+    background-image: none !important;
+    /*border: solid;*/
+}
+.progressBarButtonYellow * {
+    height: 120px;
+    background-color: #FFD300 !important;
+    background-image: none !important;
+    /*border: solid;*/
+}
+.progressBarButtonOrange * {
+    height: 120px;
+    background-color: #d47600 !important;
+    background-image: none !important;
+    /*border: solid;*/
+}
+.customTextBar *{
+    font-size: 25pt;
+    font-weight: bold;
+}
+.sapMPIBarPositive {
+    background: #7CA295;
+}
+
+/*STILE TABELLA TOTALE CAUSALIZZAZIONE EDO*/
+.sapMListTblCell {
+    border-left: 1px solid #ccc;
+}
+.mysapMListTblCell .sapMListTblCell {
+    padding-left:0.5rem;
+}
+.mysapMText .sapMText {
+    padding-top: 0.75rem;
+}
+.mysapMCb .sapMCb {
+    left: 0.375rem;
+}
+
+/*STILE TABELLA SINGOLI CAUSALIZZAZIONE*/
+.mysapMTable {
+    border-top : 1px solid #dddddd;
+    border-right : 1px solid #dddddd;
+}
+.alternate-color .sapUiTableRowOdd {
+    background-color: #efeff5;
+}
+
+.alternate-color .sapUiTableRowOdd input {
+    color: #fff;
+}
+
+.alternate-color .sapUiTableRowOdd:hover td {
+    background-color: #efeff5 !important;
+}
+
+.alternate-color .sapUiTableRowOdd:hover  input {
+    color: #fff;
+}
+
+/*LOGO*/
+.Logo {
+    width: 55%;
+    margin-left: 22%;
+    margin-top: 3%;
+}
