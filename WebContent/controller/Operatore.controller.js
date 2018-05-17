@@ -64,7 +64,6 @@ sap.ui.define([
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
             this.AjaxCallerData(link, this.CheckStatus.bind(this));
-//            this.AjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
             this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
@@ -1247,43 +1246,12 @@ sap.ui.define([
 //------------------------------------------------------------------------------
 
 
-//      !!!!!  FUNZIONI CONDIVISE DA PIU' FRAMES  !!!!!
 
-//      FUNZIONI CHE AGISCONO SUL FRONT-END
 
-//      RICHIAMATO QUANDO VIENE CLICCATO UN TESTO DI TIPO LINK
-//        Questa funzione controlla in quale riga/colonna si è cliccato e, se
-//        c'è un link, lancia l'evento di creare una nuova tab chiudible con al
-//        momento un'immagine.
-        LinkClick: function (event) {
-            var clicked_row = event.getParameters().rowBindingContext.getObject();
-            var clicked_column = event.getParameters().columnIndex;
-            if (clicked_row.expand === 3 && clicked_column === 1) {
-                var Item = new sap.m.TabContainerItem();
-                Item.setName(clicked_row.value);
-                var image = new sap.m.Image();
-                image.setSrc("img/dececco.jpg");
-                image.setWidth("60%");
-                Item.addContent(image);
-                this.TabContainer.addItem(Item);
-                this.TabContainer.setSelectedItem(Item);
-            }
-        },
-        AggiornaChiusura: function () {
-            var data = this.ModelDetailPages.getData();
-            var index = this.GetIndex(data.ParametriChiusura.attributi, "Totale tempi di fermo");
-            var index1 = this.GetIndex(data.ParametriChiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
-            data.ParametriChiusura.attributi[index].attributi[index1].value = data.FermiNonCausalizzati.Totale.tempoGuastoTotale;
-            this.ModelDetailPages.setProperty("/", data);
-        },
-        AggiungiSelezioneFermiNonCausalizzati: function () {
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            for (var i = 0; i < data.fermi.length; i++) {
-                data.fermi[i].select = false;
-                data.fermi[i].enable = true;
-            }
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
-        },
+
+//      -------------  FUNZIONI CONDIVISE DA PIU' FRAMES  --------------
+
+
         EnableButtons: function (vec) {
             var ButtonIDs = ["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"];
             var i;
@@ -1303,6 +1271,33 @@ sap.ui.define([
             for (i in vec) {
                 sap.ui.getCore().byId(vec[i]).setEnabled(true);
             }
+        },
+
+//      RICHIAMATO QUANDO VIENE CLICCATO UN TESTO DI TIPO LINK
+//        Questa funzione controlla in quale riga/colonna si è cliccato e, se
+//        c'è un link, lancia l'evento di creare una nuova tab chiudible con al
+//        momento un'immagine.
+        LinkClick: function (event) {
+            var clicked_row = event.getParameters().rowBindingContext.getObject();
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_row.expand === 3 && clicked_column === 1) {
+                var Item = new sap.m.TabContainerItem();
+                Item.setName(clicked_row.value);
+                var image = new sap.m.Image();
+                image.setSrc("img/dececco.jpg");
+                image.setWidth("60%");
+                Item.addContent(image);
+                this.TabContainer.addItem(Item);
+                this.TabContainer.setSelectedItem(Item);
+            }
+        },
+        AggiungiSelezioneFermiNonCausalizzati: function () {
+            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+            for (var i = 0; i < data.fermi.length; i++) {
+                data.fermi[i].select = false;
+                data.fermi[i].enable = true;
+            }
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
         },
         CollapseAll: function (event, TT) {
             var View;
@@ -1513,7 +1508,7 @@ sap.ui.define([
                 string = String(IDs[0]);
             } else {
                 for (i = 0; i < IDs.length; i++) {
-                    string += (String(IDs[i]) + "#");
+                    string += (String(IDs[i]) + "-");
                 }
                 string = string.substring(0, string.length - 1);
             }
@@ -1964,6 +1959,13 @@ sap.ui.define([
             faults.Totale.tempoGuastoTotale = this.MillisecsToStandard(this.StandardToMillisecs(faults.Totale.tempoGuastoTotale) + this.StandardToMillisecs(this.Item.intervallo));
             faults.fermi.push(this.Item);
             this.ModelDetailPages.setProperty("/FermiTotali/", faults);
+        },
+        LOCALAggiornaChiusura: function () {
+            var data = this.ModelDetailPages.getData();
+            var index = this.GetIndex(data.ParametriChiusura.attributi, "Totale tempi di fermo");
+            var index1 = this.GetIndex(data.ParametriChiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
+            data.ParametriChiusura.attributi[index].attributi[index1].value = data.FermiNonCausalizzati.Totale.tempoGuastoTotale;
+            this.ModelDetailPages.setProperty("/", data);
         }
 
 
