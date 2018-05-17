@@ -60,12 +60,10 @@ sap.ui.define([
         RefreshCall: function () {
             if (typeof this.ModelDetailPages.getData().SKUBatch === "undefined") {
                 this.State = "";
-            } else {
-                this.State = this.ModelDetailPages.getData().SKUBatch.StatoLinea;
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
-            this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
+            this.AjaxCallerData(link, this.CheckStatus.bind(this));
 //            this.AjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
@@ -120,7 +118,7 @@ sap.ui.define([
                         case "Disponibile.Lavorazione":
 //                            link = "model/JSON_Progress.json";
                             link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEEBatchInCorso&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                            this.AjaxCallerData(link, this.SUCCESSLavorazioneOEE.bind(this));
+                            this.SyncAjaxCallerData(link, this.SUCCESSLavorazioneOEE.bind(this));
                             break;
                         case "Disponibile.Fermo":
                             if (this.State !== "Disponibile.Fermo") {
@@ -138,7 +136,7 @@ sap.ui.define([
                         case "Disponibile.Svuotamento":
                             if (this.State !== "Disponibile.Svuotamento") {
                                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/RiassuntoOperatore&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                                this.AjaxCallerData(link, this.SUCCESSChiusura.bind(this));
+                                this.SyncAjaxCallerData(link, this.SUCCESSChiusura.bind(this));
                             }
                             break;
                     }
@@ -197,6 +195,7 @@ sap.ui.define([
                 }
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.State = this.ModelDetailPages.getData().SKUBatch.StatoLinea;
             this.RefreshFunction();
         },
         SUCCESSLavorazioneOEE: function (Jdata) {
@@ -207,8 +206,6 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
 
             if (this.State !== "Disponibile.Lavorazione") {
-                this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", this.AddTimeGaps(Jdata));
-                this.AggiungiSelezioneFermiNonCausalizzati();
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.SwitchColor("green");
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
@@ -244,6 +241,13 @@ sap.ui.define([
                 success: successFunc,
                 error: errorFunc
             });
+        },
+        SyncAjaxCallerVoid: function (address, Func) {
+            var req = jQuery.ajax({
+                url: address,
+                async: false
+            });
+            req.always(Func);
         },
         SyncAjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
             jQuery.ajax({
@@ -288,7 +292,7 @@ sap.ui.define([
                 this.LOCALState = "Disponibile.Attrezzaggio";
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+                this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
         },
 
@@ -476,9 +480,7 @@ sap.ui.define([
                 } else {
                     var XMLstring = this.XMLSetupUpdates(data);
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=0";
-                    this.AjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
-//                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInizioLavorazione&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-//                    this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+                    this.SyncAjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
                 }
             } else {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
@@ -824,7 +826,7 @@ sap.ui.define([
                 } else {
                     var XMLstring = this.XMLSetupUpdates(data);
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=2";
-                    this.AjaxCallerData(link, this.SUCCESSConfermaRipristino.bind(this));
+                    this.SyncAjaxCallerData(link, this.SUCCESSConfermaRipristino.bind(this));
 //                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchRiavvio&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
 //                    this.AjaxCallerVoid(link);
 
@@ -843,15 +845,12 @@ sap.ui.define([
                 alert(Jdata.errorMessage);
             }
         },
-        
-        
-        
-        
+
 //        ---------------  CAUSALIZZAZIONE ----------------
-        
-        
-        
-        
+
+
+
+
 
 //      
 //      RICHIAMATO DAL PULSANTE "CAUSALIZZAZIONE FERMI AUTOMATICI"
@@ -961,20 +960,14 @@ sap.ui.define([
             var vbox = this.getView().byId("vbox_table");
             vbox.destroyItems();
         },
-        
-        
-        
-        
-        
-        
-        
+
 // ----------------- CHIUSURA CONFEZIONAMENTO ---------------------        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
             if (this.ISLOCAL === 1) {
@@ -986,7 +979,7 @@ sap.ui.define([
                 this.AggiornaChiusura();
             } else {
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+                this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
         },
         ConfermaChiusura: function () {
@@ -1000,7 +993,7 @@ sap.ui.define([
                 this.LOCALState = "Disponibile.Vuota";
             } else {
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+                this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
         },
 //------------------------------------------------------------------------------
