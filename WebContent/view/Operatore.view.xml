@@ -338,7 +338,7 @@
                                         <Text text="Disponibilità: {GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
                                     </VBox>
                                     <VBox height="33%" width="100%">
-                                        <Text text="Fermi automatici non causalizzati: {GeneralModel>/FermiNonCausalizzati/Totale/tempoGuastoTotale}" class="customText"/>
+                                        <Text text="Fermi automatici non causalizzati: {GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="customText"/>
                                     </VBox>
                                 </VBox>
                             </HBox>
