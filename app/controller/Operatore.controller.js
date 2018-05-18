@@ -29,8 +29,6 @@ sap.ui.define([
         codeCheck: null,
         State: null,
         LOCALState: null,
-//      NELL'ONINIT CARICO I VARI MODELLI E FACCIO TUTTE LE CHIAMATE AJAX
-
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -45,10 +43,9 @@ sap.ui.define([
                 this.RefreshCall();
             }
         },
-
+//        -------------------------------------------------------------------------------------------
 //        ------------------------- FUNZIONE CICLICA CHE CONTROLLA LO STATO -------------------------
-
-
+//        -------------------------------------------------------------------------------------------
 
 
 
@@ -73,10 +70,6 @@ sap.ui.define([
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
 
-                data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
-                data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
-                data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
-                data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
                 var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
                 model.Intestazione.descrizione = descr;
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
@@ -99,7 +92,6 @@ sap.ui.define([
                         case "Disponibile.AttesaPresaInCarico":
                             if (this.State !== "Disponibile.AttesaPresaInCarico") {
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//                                this.GoTo("Home");
                                 this.getSplitAppObj().toDetail(this.createId("Home"));
                                 this.SwitchColor("");
                                 this.EnableButtons(["ButtonPresaInCarico"]);
@@ -115,7 +107,6 @@ sap.ui.define([
                             }
                             break;
                         case "Disponibile.Lavorazione":
-//                            link = "model/JSON_Progress.json";
                             link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEEBatchInCorso&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                             this.SyncAjaxCallerData(link, this.SUCCESSLavorazioneOEE.bind(this));
                             break;
@@ -149,6 +140,7 @@ sap.ui.define([
                     switch (data.StatoLinea) {
                         case "Disponibile.AttesaPresaInCarico":
                             if (this.State !== "Disponibile.AttesaPresaInCarico") {
+                                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                                 this.getSplitAppObj().toDetail(this.createId("Home"));
                                 this.SwitchColor("");
                                 this.EnableButtonsAttr(["ButtonBatchAttrezzaggio"]);
@@ -201,9 +193,7 @@ sap.ui.define([
             if (Jdata.avanzamento >= 100) {
                 Jdata.avanzamento = 100;
             }
-            Jdata.tempoFermiAutomatici = this.MillisecsToStandard(Jdata.tempoFermiAutomatici);
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
-
             if (this.State !== "Disponibile.Lavorazione") {
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.SwitchColor("green");
@@ -218,8 +208,9 @@ sap.ui.define([
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.EnableButtons(["ButtonCausalizzazione"]);
         },
-
+//        ---------------------------------------------------------------------
 //        -------------------------  FUNZIONI CALLER  -------------------------
+//        ---------------------------------------------------------------------
 
 
 //        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
@@ -258,9 +249,9 @@ sap.ui.define([
                 error: errorFunc
             });
         },
-
-//------------------------------------------------------------------------------
-
+//        ---------------------------------------------------------------------
+//        ---------------------------  DETAIL PAGES  --------------------------
+//        ---------------------------------------------------------------------
 
 
 //        -------------------------  PRESA IN CARICO  -------------------------       
@@ -294,10 +285,7 @@ sap.ui.define([
                 this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
         },
-
 //        -------------------------  ATTREZZAGGIO LINEA  -------------------------       
-
-
 
 
 
@@ -312,14 +300,14 @@ sap.ui.define([
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_SetupOld.json";
-                this.AjaxCallerData(link, this.SUCCESSOldSetup.bind(this));
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.SUCCESSOldSetup.bind(this));
             }
+            this.AjaxCallerData(link, this.SUCCESSOldSetup.bind(this));
         },
         SUCCESSOldSetup: function (Jdata) {
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata);
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_SetupNew.json";
@@ -350,9 +338,19 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
             this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
-            this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
+            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+                this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
+            } else {
+                this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
+            }
             this.SwitchColor("yellow");
             this.EnableButtons(["ButtonFinePredisposizione"]);
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_ConfermaSetupOld"), this.getView().byId("TreeTable_ConfermaSetupNew")]), 0);
+            } else {
+                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_AttrezzaggioOld"), this.getView().byId("TreeTable_AttrezzaggioNew")]), 0);
+            }
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -390,6 +388,7 @@ sap.ui.define([
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
                 visibleRowCount: 7,
+                cellClick: [TT, this.TreeTableRowClickExpander, this],
                 toolbar: [
                     new sap.m.Toolbar({
                         content: [
@@ -397,7 +396,7 @@ sap.ui.define([
                             new sap.m.ToolbarSpacer({}),
                             new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
                             new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
-                            new sap.m.Button({text: "Modificabili", press: [TT, this.ShowRelevant, this]})
+                            new sap.m.Button({text: "Da confermare", press: [TT, this.ShowRelevant, this]})
                         ]})],
                 columns: [
                     new sap.ui.table.Column({
@@ -493,12 +492,7 @@ sap.ui.define([
                 alert(Jdata.errorMessage);
             }
         },
-
         //        -------------------------  LAVORAZIONE  -------------------------       
-
-
-
-
 
 
 
@@ -552,7 +546,6 @@ sap.ui.define([
         ConfermaModifica: function () {
 
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
-
             this.codeCheck = 0;
             data = this.RecursiveJSONCodeCheck(data, "codeValueModify");
             if (this.codeCheck === 0) {
@@ -579,11 +572,7 @@ sap.ui.define([
                 alert(Jdata.errorMessage);
             }
         },
-
 //        ----------------------  FERMO  ----------------------
-
-
-
 
 
 //      RICHIAMATO DAL PULSANTE "FERMO"
@@ -755,12 +744,7 @@ sap.ui.define([
             }
             this.outerVBox.destroyItems();
         },
-
         //        ----------------------  RIAVVIO  ----------------------
-
-
-
-
 
 
 
@@ -844,11 +828,7 @@ sap.ui.define([
                 alert(Jdata.errorMessage);
             }
         },
-
 //        ---------------  CAUSALIZZAZIONE ----------------
-
-
-
 
 
 //      
@@ -907,7 +887,7 @@ sap.ui.define([
                 ColumnList.addCell(new sap.m.Text({text: "Totale Complessivo", textAlign: "Center"}));
                 ColumnList.addCell(new sap.m.Text({text: tot.tempoGuastoTotale}));
                 ColumnList.addCell(new sap.m.Text({text: tot.causaTotale}));
-                ColumnList.addCell(new sap.m.CheckBox({textAlign: "Center", id: "CBTotaleCausa", selected: tot.select, select: [this.ChangeCheckedCausa, this]}));
+                ColumnList.addCell(new sap.m.CheckBox({textAlign: "Center", id: "CBTotaleCausa", selected: tot.select, select: [this.ChangeSelezioneTotaleCausalizzazione, this]}));
                 ColumnList.addStyleClass("mysapMListTblCell");
                 ColumnList.addStyleClass("mysapMText");
                 ColumnList.addStyleClass("mysapMCb");
@@ -919,7 +899,6 @@ sap.ui.define([
             this.UncheckCause();
             this.EnableButtons([]);
         },
-
 //      RICHIAMATO DAL PULSANTE DI CAUSALIZZA
         Causalizza: function () {
             var link;
@@ -959,11 +938,7 @@ sap.ui.define([
             var vbox = this.getView().byId("vbox_table");
             vbox.destroyItems();
         },
-
 // ----------------- CHIUSURA CONFEZIONAMENTO ---------------------        
-
-
-
 
 
 
@@ -1001,34 +976,50 @@ sap.ui.define([
 //------------------------------------------------------------------------------
 
 
-//-------------------------------  ATTREZZAGGIO  -------------------------------
+//---------------------------------------------------------------------------------------
+//-------------------------------  ATTREZZAGGIO INDOMANI  -------------------------------
+//---------------------------------------------------------------------------------------
 
 
+//      -------------------------- PRESA IN CARICO --------------------------
         BatchAttrezzaggio: function () {
-            this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
             var std = this.ModelDetailPages.getData().SKUBatch.SKUstandard;
             var bck = this.ModelDetailPages.getData().SKUBatch.SKUattuale;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.EnableButtonsAttr([]);
+            this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
         //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatchAttrezzaggio: function () {
-
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/guasti.json";
+                this.AjaxCallerData(link, this.LOCALLoadGuasti.bind(this));
+                this.LOCALState = "Disponibile.Attrezzaggio";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
+            }
         },
+//      -------------------------- ATTREZZAGGIO --------------------------
+
+
         PredisposizioneLineaAttrezzaggio: function () {
-            this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
             this.ModelDetailPages.setProperty("/SetupLinea/", {});
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_SetupOld.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            }
             this.AjaxCallerData(link, this.SUCCESSOldSetup.bind(this));
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
@@ -1051,14 +1042,16 @@ sap.ui.define([
             this.Item = new sap.m.TabContainerItem({});
             this.Item.setName("CONFERMA PREDISPOSIZIONE");
 //            var Panel = new sap.m.Panel();
+            var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
             var TreeTable = new CustomTreeTable({
-                id: "TreeTable_FinePredisposizioneAttrezzaggio",
+                id: TT,
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
                 selectionMode: "None",
                 collapseRecursive: true,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
                 visibleRowCount: 7,
+                cellClick: [TT, this.TreeTableRowClickExpander, this],
                 columns: [
                     new sap.ui.table.Column({
                         label: "ATTRIBUTI",
@@ -1134,14 +1127,16 @@ sap.ui.define([
             this.Item = new sap.m.TabContainerItem({});
             this.Item.setName("SOSPENSIONE PREDISPOSIZIONE");
 //            var Panel = new sap.m.Panel();
+            var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
             var TreeTable = new CustomTreeTable({
-                id: "TreeTable_FinePredisposizioneAttrezzaggio",
+                id: TT,
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
                 selectionMode: "None",
                 collapseRecursive: true,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
                 visibleRowCount: 7,
+                cellClick: [TT, this.TreeTableRowClickExpander, this],
                 columns: [
                     new sap.ui.table.Column({
                         label: "ATTRIBUTI",
@@ -1231,6 +1226,9 @@ sap.ui.define([
 //                this.RefreshCall();
             }
         },
+        // ------------------------ CHIUSURA ------------------------
+
+
         FromAttrToChiusura: function () {
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
@@ -1248,8 +1246,10 @@ sap.ui.define([
 
 
 
+//      ----------------------------------------------------------------------
+//      -----------------------  FUNZIONI MASTER PAGE  -----------------------
+//      ----------------------------------------------------------------------
 
-//      -------------  FUNZIONI CONDIVISE DA PIU' FRAMES  --------------
 
 
         EnableButtons: function (vec) {
@@ -1260,6 +1260,13 @@ sap.ui.define([
             }
             for (i in vec) {
                 sap.ui.getCore().byId(vec[i]).setEnabled(true);
+            }
+            if (typeof this.ModelDetailPages.getData().FermoNonCausalizzati === "undefined") {
+                sap.ui.getCore().byId("ButtonCausalizzazione").setEnabled(false);
+            } else {
+                if (this.ModelDetailPages.getData().FermoNonCausalizzati.length === 0) {
+                    sap.ui.getCore().byId("ButtonCausalizzazione").setEnabled(false);
+                }
             }
         },
         EnableButtonsAttr: function (vec) {
@@ -1272,34 +1279,125 @@ sap.ui.define([
                 sap.ui.getCore().byId(vec[i]).setEnabled(true);
             }
         },
-
-//      RICHIAMATO QUANDO VIENE CLICCATO UN TESTO DI TIPO LINK
-//        Questa funzione controlla in quale riga/colonna si è cliccato e, se
-//        c'è un link, lancia l'evento di creare una nuova tab chiudible con al
-//        momento un'immagine.
-        LinkClick: function (event) {
-            var clicked_row = event.getParameters().rowBindingContext.getObject();
-            var clicked_column = event.getParameters().columnIndex;
-            if (clicked_row.expand === 3 && clicked_column === 1) {
-                var Item = new sap.m.TabContainerItem();
-                Item.setName(clicked_row.value);
-                var image = new sap.m.Image();
-                image.setSrc("img/dececco.jpg");
-                image.setWidth("60%");
-                Item.addContent(image);
-                this.TabContainer.addItem(Item);
-                this.TabContainer.setSelectedItem(Item);
+        SwitchColor: function (color) {
+            var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
+            var CSS_classes_logo = ["logoBoxYellow", "logoBoxGreen", "logoBoxRed", "logoBoxBrown"];
+            var panel = this.getView().byId("panel_processi");
+            var logo = this.getView().byId("logoVbox");
+            for (var col in CSS_classes) {
+                panel.removeStyleClass(CSS_classes[col]);
+                logo.removeStyleClass(CSS_classes_logo[col]);
+            }
+            switch (color) {
+                case "yellow":
+                    panel.addStyleClass("stylePanelYellow");
+                    logo.addStyleClass("logoBoxYellow");
+                    break;
+                case "green":
+                    panel.addStyleClass("stylePanelGreen");
+                    logo.addStyleClass("logoBoxGreen");
+                    break;
+                case "red":
+                    panel.addStyleClass("stylePanelRed");
+                    logo.addStyleClass("logoBoxRed");
+                    break;
+                case "brown":
+                    panel.addStyleClass("stylePanelBrown");
+                    logo.addStyleClass("logoBoxBrown");
+                    break;
             }
         },
-
-        // CAUSALIZZ
-        AggiungiSelezioneFermiNonCausalizzati: function () {
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            for (var i = 0; i < data.fermi.length; i++) {
-                data.fermi[i].select = false;
-                data.fermi[i].enable = true;
+        CreateButtons: function () {
+            var vbox = this.getView().byId("panel_processi");
+            var btn, btn_vbox;
+            var IDs = ["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"];
+            var texts = ["Presa in carico nuovo confezionamento", "Fine predisposizione inizio confezionamento", "Modifica condizioni operative", "Fermo", "Riavvio", "Causalizzazione fermi automatici", "Chiusura confezionamento svuotamento linea"];
+            var press = [[this.PresaInCarico, this], [this.FinePredisposizione, this], [this.ModificaCondizioni, this], [this.Fermo, this], [this.Riavvio, this], [this.Causalizzazione, this], [this.ChiusuraConfezionamento, this]];
+            var classes = ["styleLongButton", "styleLongButton", "styleButton", "styleButton", "styleButton", "styleButton", "styleLongButton"];
+            var a = 5;
+            var PBt = 10;
+            for (var i in IDs) {
+                if (i === "0") {
+                    btn_vbox = new sap.m.VBox({height: String(a) + "%", width: "100%"});
+                    btn_vbox.addItem(new sap.m.Text({}));
+                    vbox.addItem(btn_vbox);
+                }
+                btn = new sap.m.Button({
+                    id: IDs[i],
+                    text: texts[i],
+                    enabled: false,
+                    width: "100%",
+                    height: "100%",
+                    press: press[i]});
+                btn.addStyleClass(classes[i]);
+                btn_vbox = new sap.m.VBox({height: String(PBt) + "%", width: "100%"});
+                btn_vbox.addItem(btn);
+                vbox.addItem(btn_vbox);
+                if (i === "1" || i === "5") {
+                    btn_vbox = new sap.m.VBox({height: String(2 * a) + "%", width: "100%"});
+                    btn_vbox.addItem(new sap.m.Text({}));
+                    vbox.addItem(btn_vbox);
+                }
+                if (i === "6") {
+                    btn_vbox = new sap.m.VBox({height: String(a) + "%", width: "100%"});
+                    btn_vbox.addItem(new sap.m.Text({}));
+                    vbox.addItem(btn_vbox);
+                }
             }
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+        },
+        CreateButtonsAttr: function () {
+            var vbox = this.getView().byId("panel_processi");
+            var btn, btn_vbox;
+            var IDs = ["ButtonBatchAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"];
+            var texts = ["Predisposizione nuovo confezionamento", "Fine predisposizione", "Sospensione predisposizione"];
+            var press = [[this.BatchAttrezzaggio, this], [this.FinePredisposizioneAttrezzaggio, this], [this.SospensioneAttrezzaggio, this]];
+            var classes = ["styleLongButton", "styleButton", "styleButton"];
+            var a = 5;
+            var PBt = 10;
+            for (var i in IDs) {
+                if (i === "0") {
+                    btn_vbox = new sap.m.VBox({height: String(a) + "%", width: "100%"});
+                    btn_vbox.addItem(new sap.m.Text({}));
+                    vbox.addItem(btn_vbox);
+                }
+                btn = new sap.m.Button({
+                    id: IDs[i],
+                    text: texts[i],
+                    enabled: false,
+                    width: "100%",
+                    height: "100%",
+                    press: press[i]});
+                btn.addStyleClass(classes[i]);
+                btn_vbox = new sap.m.VBox({height: String(PBt) + "%", width: "100%"});
+                btn_vbox.addItem(btn);
+                vbox.addItem(btn_vbox);
+                if (i === "1") {
+                    btn_vbox = new sap.m.VBox({height: String(2 * a) + "%", width: "100%"});
+                    btn_vbox.addItem(new sap.m.Text({}));
+                    vbox.addItem(btn_vbox);
+                }
+            }
+            btn_vbox = new sap.m.VBox({height: String(11 * a) + "%", width: "100%"});
+            btn_vbox.addItem(new sap.m.Text({}));
+            vbox.addItem(btn_vbox);
+        },
+        DestroyButtons: function () {
+            var vbox = this.getView().byId("panel_processi");
+            vbox.destroyItems();
+        },
+//      -----------------------------------------------------------------------
+//      -----------------------  FUNZIONI DETAIL PAGES  -----------------------
+//      -----------------------------------------------------------------------
+
+
+//      ----------------    FUNZIONI CONDIVISE DA PIU' PAGES    ----------------
+//      Funzione che permette di cambiare pagina nello SplitApp
+        getSplitAppObj: function () {
+            var result = this.byId("SplitAppDemo");
+            if (!result) {
+                jQuery.sap.log.info("SplitApp object can't be found");
+            }
+            return result;
         },
         CollapseAll: function (event, TT) {
             var View;
@@ -1330,18 +1428,18 @@ sap.ui.define([
             }
             View.expandToLevel(20);
             this.GlobalBusyDialog.open();
-            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, View), 300);
+            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [View]), 0);
         },
 //      Funzione che collassa i nodi della treetable non rilevanti
-        CollapseNotRelevant: function (View) {
-
-//            var View = sap.ui.getCore().byId(TreeName);
-            var total = View._iBindingLength;
-            var temp;
-            for (var i = total - 1; i >= 0; i--) {
-                temp = View.getContextByIndex(i).getObject();
-                if (temp.expand === 0) {
-                    View.collapse(i);
+        CollapseNotRelevant: function (Views) {
+            var total, temp;
+            for (var i = 0; i < Views.length; i++) {
+                total = Views[i]._iBindingLength;
+                for (var j = total - 1; j >= 0; j--) {
+                    temp = Views[i].getContextByIndex(j).getObject();
+                    if (temp.expand === 0) {
+                        Views[i].collapse(j);
+                    }
                 }
             }
             this.GlobalBusyDialog.close();
@@ -1351,9 +1449,206 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
-//      FUNZIONI TEMPI
+        XMLSetupUpdates: function (setup) {
+            var heading = "<Parameters>" +
+                    "<LineaID>1</LineaID>" +
+                    "<SKUID>1</SKUID>" +
+                    "<ParameterList>";
+            var bottom = "</ParameterList>" +
+                    "</Parameters>";
+            this.dataXML = [];
+            setup = this.RecursiveJSONChangesFinder(setup);
+            var body = "";
+            for (var i in this.dataXML) {
+                body += "<Parameter>";
+                for (var key in this.dataXML[i]) {
+                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
+                }
+                body += "</Parameter>";
+            }
+            return (heading + body + bottom);
+        },
+        TreeTableRowClickExpander: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = sap.ui.getCore().byId(TT);
+            }
+            var clicked_row = event.getParameters().rowIndex;
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_column === "0") {
+                if (!View.isExpanded(clicked_row)) {
+                    View.expand(clicked_row);
+                } else {
+                    View.collapse(clicked_row);
+                }
+            }
+        },
+//      ----------------    FUNZIONI ATTREZZAGGIO    ----------------
 
-//      Funzione che calcola il time gap di tutti i guasti e li ritorna come array
+        LinkClick: function (event) {
+            var ViewsIDs = this.GetViewsIds(event.getSource().data("mydata"));
+            var Views = [this.getView().byId(ViewsIDs[0]), this.getView().byId(ViewsIDs[1])];
+            var clicked_row = event.getParameters().rowIndex;
+            var binding = event.getParameters().rowBindingContext.getObject();
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_column === "0") {
+                for (var i = 0; i < Views.length; i++) {
+                    if (!Views[i].isExpanded(clicked_row)) {
+                        Views[i].expand(clicked_row);
+                    } else {
+                        Views[i].collapse(clicked_row);
+                    }
+                }
+            } else {
+                if (binding.expand === 3) {
+                    var Item = new sap.m.TabContainerItem();
+                    Item.setName(binding.value);
+                    var image = new sap.m.Image();
+                    image.setSrc("img/dececco.jpg");
+                    image.setWidth("60%");
+                    Item.addContent(image);
+                    this.TabContainer.addItem(Item);
+                    this.TabContainer.setSelectedItem(Item);
+                }
+            }
+        },
+        COUPLEDCollapseAll: function (event) {
+            var ViewsIDs = this.GetViewsIds(event.getSource().data("mydata"));
+            var Views = [this.getView().byId(ViewsIDs[0]), this.getView().byId(ViewsIDs[1])];
+            Views[0].collapseAll();
+            Views[1].collapseAll();
+        },
+        COUPLEDExpandAll: function (event) {
+            var ViewsIDs = this.GetViewsIds(event.getSource().data("mydata"));
+            var Views = [this.getView().byId(ViewsIDs[0]), this.getView().byId(ViewsIDs[1])];
+            Views[0].expandToLevel(20);
+            Views[1].expandToLevel(20);
+        },
+        COUPLEDShowRelevant: function (event) {
+            var ViewsIDs = this.GetViewsIds(event.getSource().data("mydata"));
+            var Views = [this.getView().byId(ViewsIDs[0]), this.getView().byId(ViewsIDs[1])];
+            Views[0].expandToLevel(20);
+            Views[1].expandToLevel(20);
+            this.GlobalBusyDialog.open();
+            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, Views), 0);
+        },
+        GetViewsIds: function (string) {
+            var IDs = [];
+            var comma = string.indexOf(",");
+            IDs.push(string.substring(0, comma));
+            IDs.push(string.substring(comma + 1, string.length));
+            return IDs;
+        },
+        RemoveClosingButtons: function (n_tabs) {
+            var oTabStrip = this.TabContainer.getAggregation("_tabStrip");
+            var oItems = oTabStrip.getItems();
+            for (var i = 0; i < n_tabs; i++) {
+                var oCloseButton = oItems[i].getAggregation("_closeButton");
+                oCloseButton.setVisible(false);
+            }
+            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
+        },
+//      ----------------    FUNZIONI LAVORAZIONE    ----------------
+//      
+//        BarColor: function (data) {
+//            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
+//            var CSS_classesBar = ["progressBarGreen", "progressBarYellow", "progressBarOrange"];
+//            var button = this.getView().byId("progressBarButton");
+//            var bar = this.getView().byId("progressBar");
+//            for (var i = 0; i < CSS_classesButton.length; i++) {
+//                button.removeStyleClass(CSS_classesButton[i]);
+//                bar.removeStyleClass(CSS_classesBar[i]);
+//            }
+//            switch (data.barColor) {
+//                case "yellow":
+//                    button.addStyleClass("progressBarButtonYellow");
+//                    bar.addStyleClass("progressBarYellow");
+//                    break;
+//                case "green":
+//                    button.addStyleClass("progressBarButtonGreen");
+//                    bar.addStyleClass("progressBarGreen");
+//                    break;
+//                case "orange":
+//                    button.addStyleClass("progressBarButtonOrange");
+//                    bar.addStyleClass("progressBarOrange");
+//                    break;
+//            }
+//        },
+
+
+
+//      ----------------    FUNZIONI FERMO    ----------------
+
+        GetStringIDFermiAuto: function () {
+            var vec = this.ModelDetailPages.getData().FermiNonCausalizzati.fermi;
+            var IDs = [];
+            var i;
+            for (i = 0; i < vec.length; i++) {
+                if (vec[i].select > 0) {
+                    IDs.push(vec[i].LogID);
+                }
+            }
+            var string = "";
+            if (IDs.length === 1) {
+                string = String(IDs[0]);
+            } else {
+                for (i = 0; i < IDs.length; i++) {
+                    string += (String(IDs[i]) + "-");
+                }
+                string = string.substring(0, string.length - 1);
+            }
+            return string;
+        },
+        ChangeCheckedFermo: function (event) {
+            var id = event.getSource().getId();
+            var root_name = "CBFermo";
+            this.id_split = this.SplitId(id, root_name);
+            var old_id = this.GetActiveCB();
+            if (typeof old_id === "string") {
+                var old_CB = sap.ui.getCore().byId(old_id);
+                old_CB.setSelected(false);
+                this.CheckFermo[old_id] = 0;
+            }
+            if (old_id !== this.id_split[1]) {
+                this.CheckFermo[this.id_split[1]] = 1;
+            }
+            var selected_index = this.GetActiveCB();
+            var button = sap.ui.getCore().byId("ConfermaFermo");
+            if (typeof selected_index === "string") {
+                button.setEnabled(true);
+            } else {
+                button.setEnabled(false);
+            }
+        },
+        SplitId: function (id, string) {
+            var splitter = id.indexOf(string);
+            var root = id.substring(0, splitter);
+            var real_id = id.substring(splitter, id.length);
+            var index = id.substring(splitter + string.length, id.length);
+            return [root, real_id, index];
+        },
+        GetActiveCB: function () {
+            var res = 0;
+            for (var key in this.CheckFermo) {
+                if (this.CheckFermo[key] === 1) {
+                    res = key;
+                    break;
+                }
+            }
+            return res;
+        },
+//      ----------------    FUNZIONI CAUSALIZZAZIONE    ----------------
+
+        AggiungiSelezioneFermiNonCausalizzati: function () {
+            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+            for (var i = 0; i < data.fermi.length; i++) {
+                data.fermi[i].select = false;
+                data.fermi[i].enable = true;
+            }
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+        },
         AddTimeGaps: function (data) {
             var millisec_diff = [];
             var start, end, i;
@@ -1381,6 +1676,57 @@ sap.ui.define([
             data.Totale.select = false;
             return data;
         },
+        ChangeSelezioneTotaleCausalizzazione: function (event) {
+            var id = event.getSource().getId();
+            var CB = sap.ui.getCore().byId(id);
+            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+            var i, cont;
+            if (id === "CBTotaleCausa") {
+                for (i = 0; i < data.fermi.length; i++) {
+                    data.fermi[i].select = CB.getSelected();
+                    data.fermi[i].enable = !CB.getSelected();
+                }
+                if (CB.getSelected()) {
+                    this.CheckTotaleCausa = 1;
+                } else {
+                    this.CheckTotaleCausa = 0;
+                }
+            }
+            cont = 0;
+            for (i = 0; i < data.fermi.length; i++) {
+                if (data.fermi[i].select) {
+                    cont += 1;
+                }
+            }
+            if (cont > 0) {
+                this.getView().byId("ConfermaCausalizzazione").setEnabled(true);
+            } else {
+                this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
+            }
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+        },
+        UncheckCause: function () {
+            var i;
+            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+            for (i = 0; i < data.fermi.length; i++) {
+                data.fermi[i].select = false;
+                data.fermi[i].enable = true;
+            }
+            if (typeof sap.ui.getCore().byId("TotaleTable") !== "undefined") {
+                sap.ui.getCore().byId("CBTotaleCausa").setSelected(false);
+                sap.ui.getCore().byId("CBTotaleCausa").setEnabled(true);
+                this.CheckTotaleCausa = 0;
+            }
+            this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+        },
+//      -----------------------------------------------------------------------
+//      -----------------------  FUNZIONI DI SUPPORTO  ------------------------
+//      -----------------------------------------------------------------------
+
+
+//      ----------------    FUNZIONI PER LA GESTIONE DEI TEMPI    ----------------
+//      
 //      Funzione che estrae il formato standard dal formato ISO
         DateToStandard: function (date) {
             var hours = this.StringTime(date.getHours());
@@ -1435,237 +1781,8 @@ sap.ui.define([
             var index = string.indexOf("T");
             return string.substring(0, index) + ", " + string.substring(index + 1, string.length);
         },
+//      ----------------    FUNZIONI RICORSIVE    ----------------
 
-//      Funzione che permette di cambiare pagina nello SplitApp
-        getSplitAppObj: function () {
-            var result = this.byId("SplitAppDemo");
-            if (!result) {
-                jQuery.sap.log.info("SplitApp object can't be found");
-            }
-            return result;
-        },
-        //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
-        GetStringIDFermiAuto: function () {
-            var vec = this.ModelDetailPages.getData().FermiNonCausalizzati.fermi;
-            var IDs = [];
-            var i;
-            for (i = 0; i < vec.length; i++) {
-                if (vec[i].select > 0) {
-                    IDs.push(vec[i].LogID);
-                }
-            }
-            var string = "";
-            if (IDs.length === 1) {
-                string = String(IDs[0]);
-            } else {
-                for (i = 0; i < IDs.length; i++) {
-                    string += (String(IDs[i]) + "-");
-                }
-                string = string.substring(0, string.length - 1);
-            }
-            return string;
-        },
-
-        //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
-        ChangeCheckedCausa: function (event) {
-            var id = event.getSource().getId();
-            var CB = sap.ui.getCore().byId(id);
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            var i, cont;
-            if (id === "CBTotaleCausa") {
-                for (i = 0; i < data.fermi.length; i++) {
-                    data.fermi[i].select = CB.getSelected();
-                    data.fermi[i].enable = !CB.getSelected();
-                }
-                if (CB.getSelected()) {
-                    this.CheckTotaleCausa = 1;
-                } else {
-                    this.CheckTotaleCausa = 0;
-                }
-            }
-            cont = 0;
-            for (i = 0; i < data.fermi.length; i++) {
-                if (data.fermi[i].select) {
-                    cont += 1;
-                }
-            }
-            if (cont > 0) {
-                this.getView().byId("ConfermaCausalizzazione").setEnabled(true);
-            } else {
-                this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
-            }
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
-        },
-        UncheckCause: function () {
-            var i;
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            for (i = 0; i < data.fermi.length; i++) {
-                data.fermi[i].select = false;
-                data.fermi[i].enable = true;
-            }
-            if (typeof sap.ui.getCore().byId("TotaleTable") !== "undefined") {
-                sap.ui.getCore().byId("CBTotaleCausa").setSelected(false);
-                sap.ui.getCore().byId("CBTotaleCausa").setEnabled(true);
-                this.CheckTotaleCausa = 0;
-            }
-            this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
-        },
-
-//      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
-        ChangeCheckedFermo: function (event) {
-            var id = event.getSource().getId();
-            var root_name = "CBFermo";
-            this.id_split = this.SplitId(id, root_name);
-            var old_id = this.GetActiveCB();
-            if (typeof old_id === "string") {
-                var old_CB = sap.ui.getCore().byId(old_id);
-                old_CB.setSelected(false);
-                this.CheckFermo[old_id] = 0;
-            }
-            if (old_id !== this.id_split[1]) {
-                this.CheckFermo[this.id_split[1]] = 1;
-            }
-            var selected_index = this.GetActiveCB();
-            var button = sap.ui.getCore().byId("ConfermaFermo");
-            if (typeof selected_index === "string") {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
-            }
-        },
-        //      Funzione per splittare l'id da XML
-        SplitId: function (id, string) {
-            var splitter = id.indexOf(string);
-            var root = id.substring(0, splitter);
-            var real_id = id.substring(splitter, id.length);
-            var index = id.substring(splitter + string.length, id.length);
-            return [root, real_id, index];
-        },
-        GetActiveCB: function () {
-            var res = 0;
-            for (var key in this.CheckFermo) {
-                if (this.CheckFermo[key] === 1) {
-                    res = key;
-                    break;
-                }
-            }
-            return res;
-        },
-
-        RemoveClosingButtons: function (n_tabs) {
-            var oTabStrip = this.TabContainer.getAggregation("_tabStrip");
-            var oItems = oTabStrip.getItems();
-            for (var i = 0; i < n_tabs; i++) {
-                var oCloseButton = oItems[i].getAggregation("_closeButton");
-                oCloseButton.setVisible(false);
-            }
-            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
-        },
-        SwitchColor: function (color) {
-            var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
-            var panel = this.getView().byId("panel_processi");
-            for (var col in CSS_classes) {
-                panel.removeStyleClass(CSS_classes[col]);
-            }
-            switch (color) {
-                case "yellow":
-                    panel.addStyleClass("stylePanelYellow");
-                    break;
-                case "green":
-                    panel.addStyleClass("stylePanelGreen");
-                    break;
-                case "red":
-                    panel.addStyleClass("stylePanelRed");
-                    break;
-                case "brown":
-                    panel.addStyleClass("stylePanelBrown");
-                    break;
-            }
-        },
-//        BarColor: function (data) {
-//            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
-//            var CSS_classesBar = ["progressBarGreen", "progressBarYellow", "progressBarOrange"];
-//            var button = this.getView().byId("progressBarButton");
-//            var bar = this.getView().byId("progressBar");
-//            for (var i = 0; i < CSS_classesButton.length; i++) {
-//                button.removeStyleClass(CSS_classesButton[i]);
-//                bar.removeStyleClass(CSS_classesBar[i]);
-//            }
-//            switch (data.barColor) {
-//                case "yellow":
-//                    button.addStyleClass("progressBarButtonYellow");
-//                    bar.addStyleClass("progressBarYellow");
-//                    break;
-//                case "green":
-//                    button.addStyleClass("progressBarButtonGreen");
-//                    bar.addStyleClass("progressBarGreen");
-//                    break;
-//                case "orange":
-//                    button.addStyleClass("progressBarButtonOrange");
-//                    bar.addStyleClass("progressBarOrange");
-//                    break;
-//            }
-//        },
-        CreateButtons: function () {
-            var vbox = this.getView().byId("panel_processi");
-            var btn, btn_vbox;
-            var IDs = ["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"];
-            var texts = ["Presa in carico nuovo confezionamento", "Fine predisposizione inizio confezionamento", "Modifica condizioni operative", "Fermo", "Riavvio", "Causalizzazione fermi automatici", "Chiusura confezionamento svuotamento linea"];
-            var press = [[this.PresaInCarico, this], [this.FinePredisposizione, this], [this.ModificaCondizioni, this], [this.Fermo, this], [this.Riavvio, this], [this.Causalizzazione, this], [this.ChiusuraConfezionamento, this]];
-            var classes = ["styleLongButton", "styleLongButton", "styleButton", "styleButton", "styleButton", "styleButton", "styleLongButton"];
-            for (var i in IDs) {
-                btn = new sap.m.Button({
-                    id: IDs[i],
-                    text: texts[i],
-                    enabled: false,
-                    width: "100%",
-                    press: press[i]});
-                btn.addStyleClass(classes[i]);
-                btn_vbox = new sap.m.VBox({height: "13%", width: "100%"});
-                btn_vbox.addItem(btn);
-                vbox.addItem(btn_vbox);
-                if (i === "1" || i === "5") {
-                    btn_vbox = new sap.m.VBox({height: "4.5%", width: "100%"});
-                    btn_vbox.addItem(new sap.m.Text({}));
-                    vbox.addItem(btn_vbox);
-                }
-            }
-        },
-        CreateButtonsAttr: function () {
-            var vbox = this.getView().byId("panel_processi");
-            var btn, btn_vbox;
-            var container_vbox = new sap.m.VBox({height: "43.5%", width: "100%"});
-            var IDs = ["ButtonBatchAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"];
-            var texts = ["Predisposizione nuovo confezionamento", "Fine predisposizione", "Sospensione predisposizione"];
-            var press = [[this.BatchAttrezzaggio, this], [this.FinePredisposizioneAttrezzaggio, this], [this.SospensioneAttrezzaggio, this]];
-            var classes = ["styleLongButton", "styleButton", "styleButton"];
-            for (var i in IDs) {
-                btn = new sap.m.Button({
-                    id: IDs[i],
-                    text: texts[i],
-                    enabled: false,
-                    width: "100%",
-                    press: press[i]});
-                btn.addStyleClass(classes[i]);
-                btn_vbox = new sap.m.VBox({height: "29.9%", width: "100%"});
-                btn_vbox.addItem(btn);
-                container_vbox.addItem(btn_vbox);
-                if (i === "1") {
-                    btn_vbox = new sap.m.VBox({height: "10.3%", width: "100%"});
-                    btn_vbox.addItem(new sap.m.Text({}));
-                    container_vbox.addItem(btn_vbox);
-                }
-            }
-            vbox.addItem(container_vbox);
-            btn_vbox = new sap.m.VBox({height: "56.5%", width: "100%"});
-            btn_vbox.addItem(new sap.m.Text({}));
-            vbox.addItem(btn_vbox);
-        },
-        DestroyButtons: function () {
-            var vbox = this.getView().byId("panel_processi");
-            vbox.destroyItems();
-        },
         RecursiveJSONComparison: function (std, bck, arrayName) {
             for (var key in std) {
                 if (typeof std[key] === "object") {
@@ -1686,7 +1803,6 @@ sap.ui.define([
                     this.exp = 0;
                     json[key] = this.RecursiveJSONExpansionFinder(json[key]);
                     if (typeof json[key].expand !== "undefined" && json[key].expand === 0) {
-//                        json[key].expand = String(this.exp);
                         json[key].expand = this.exp;
                     }
                     json[key] = this.RecursiveParentExpansion(json[key]);
@@ -1701,7 +1817,6 @@ sap.ui.define([
                 } else {
                     if (key === "expand") {
                         if (json[key] > 0) {
-//                        if (json[key] !== "0") {
                             this.exp = 1;
                         }
                     }
@@ -1714,7 +1829,6 @@ sap.ui.define([
                 if (typeof std[key] === "object") {
                     if (key === "expand") {
                         if (bck[key] > 0) {
-//                        if (bck[key] !== "0") {
                             std[key] = 1;
                         }
                     }
@@ -1722,7 +1836,6 @@ sap.ui.define([
                 } else {
                     if (key === "expand") {
                         if (bck[key] > 0) {
-//                        if (bck[key] !== "0") {
                             std[key] = 1;
                         }
                     }
@@ -1778,25 +1891,6 @@ sap.ui.define([
             }
             return data;
         },
-        XMLSetupUpdates: function (setup) {
-            var heading = "<Parameters>" +
-                    "<LineaID>1</LineaID>" +
-                    "<SKUID>1</SKUID>" +
-                    "<ParameterList>";
-            var bottom = "</ParameterList>" +
-                    "</Parameters>";
-            this.dataXML = [];
-            setup = this.RecursiveJSONChangesFinder(setup);
-            var body = "";
-            for (var i in this.dataXML) {
-                body += "<Parameter>";
-                for (var key in this.dataXML[i]) {
-                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
-                }
-                body += "</Parameter>";
-            }
-            return (heading + body + bottom);
-        },
         RecursiveJSONChangesFinder: function (setup) {
             var temp = {};
             for (var key in setup) {
@@ -1843,8 +1937,10 @@ sap.ui.define([
             }
             return json;
         },
+//      -----------------------------------------------------------------------
+//      --------------------------  FUNZIONI LOCALI  --------------------------
+//      -----------------------------------------------------------------------
 
-//        FUNZIONI LOCALI
         LOCALCheckStatus: function (Jdata) {
 
             this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);

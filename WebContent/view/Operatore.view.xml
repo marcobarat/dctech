@@ -62,7 +62,9 @@
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="15"
-                                        rowSelectionChange="ciao">
+                                        rowSelectionChange="ciao"
+                                        cellClick="TreeTableRowClickExpander"
+                                        app:mydata="TreeTable_PresaInCarico">
                                         <wt:toolbar>
                                             <Toolbar>
                                                 <ToolbarSpacer/>
@@ -95,7 +97,7 @@
                                         </wt:columns>
                                     </wt:CustomTreeTable>
                                     <!--</Panel>-->
-                                    <Button text="PASSA ALL'ATTREZZAGGIO" width="100%" press="ConfermaBatch" class="attrezzaggioButton"/>
+                                    <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" press="ConfermaBatch" class="attrezzaggioButton"/>
                                     <!--<Button text="Continua" width="100%" press="RefreshCall"/>-->
                                 </VBox>
                                 <VBox width="5%"/>
@@ -147,7 +149,9 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="13">
+                                                        visibleRowCount="13"
+                                                        cellClick="TreeTableRowClickExpander"
+                                                        app:mydata="TreeTable_AttributiPredisposizione">
                                                         <wt:toolbar>
                                                             <Toolbar>
                                                                 <ToolbarSpacer/>
@@ -200,14 +204,16 @@
                                                                     collapseRecursive="true"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="14">
+                                                                    visibleRowCount="14"
+                                                                    app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
+                                                                    cellClick="LinkClick">
                                                                     <wt:toolbar>
                                                                         <Toolbar>
                                                                             <Title text="PRECEDENTE" class="titleTT"/>
                                                                             <ToolbarSpacer/>
-                                                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaSetupOld"/>
-                                                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaSetupOld"/>
-                                                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupOld"/>
+                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
+                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
+                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
@@ -242,14 +248,15 @@
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="14"
+                                                                    app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
                                                                     cellClick="LinkClick">
                                                                     <wt:toolbar>
                                                                         <Toolbar>
                                                                             <Title text="ATTUALE" class="titleTT"/>
                                                                             <ToolbarSpacer/>
-                                                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaSetupNew"/>
-                                                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaSetupNew"/> 
-                                                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupNew"/>
+                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
+                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/> 
+                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
@@ -356,13 +363,13 @@
                                             <Text text="Valori consuntivi" class="customText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="-> {GeneralModel>/DatiOEE/massaConsuntiva}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/massaConsuntiva}" class="customText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="-> {GeneralModel>/DatiOEE/tempoConsuntivo}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/tempoConsuntivo}" class="customText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="-> {GeneralModel>/DatiOEE/cartoniConsuntivi}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/cartoniConsuntivi}" class="customText"/>
                                         </VBox>
                                     </VBox>
                                     <VBox height="100%" width="30%">
@@ -370,13 +377,13 @@
                                             <Text text="Valori residui" class="customText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="-> {GeneralModel>/DatiOEE/massaResidua}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/massaResidua}" class="customText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="-> {GeneralModel>/DatiOEE/tempoResiduo}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/tempoResiduo}" class="customText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="-> {GeneralModel>/DatiOEE/cartoniResidui}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/cartoniResidui}" class="customText"/>
                                         </VBox>
                                     </VBox>
                                     <VBox height="100%" width="12%"/>
@@ -429,7 +436,9 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="13">
+                                                        visibleRowCount="13"
+                                                        cellClick="TreeTableRowClickExpander"
+                                                        app:mydata="TreeTable_AttributiModifica">
                                                         <wt:toolbar>
                                                             <Toolbar>
                                                                 <ToolbarSpacer/>
@@ -477,7 +486,9 @@
                                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="6">
+                                                        visibleRowCount="6"
+                                                        cellClick="TreeTableRowClickExpander"
+                                                        app:mydata="TreeTable_ModificaCondizioni">
                                                         <wt:toolbar>
                                                             <Toolbar>
                                                                 <Button text="Ripristina valori" press="RestoreDefault"/>
@@ -749,7 +760,9 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="7">
+                                        visibleRowCount="7"
+                                        cellClick="TreeTableRowClickExpander"
+                                        app:mydata="TreeTable_RipristinoCondizioni">
                                         <wt:toolbar>
                                             <Toolbar>
                                                 <Button text="Ripristina valori" press="RestoreDefault"/>
@@ -848,7 +861,9 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="15">
+                                        visibleRowCount="15"
+                                        cellClick="TreeTableRowClickExpander"
+                                        app:mydata="TreeTable_Chiusura">
                                         <wt:toolbar>
                                             <Toolbar>
                                                 <ToolbarSpacer/>
@@ -886,238 +901,6 @@
                     
                     
                     
-            <!--                    <Page id="ConfermaBatch" class="sapUiStdPage">
-                <content>
-                    <FlexBox width="100%" alignItems="Start"
-                             justifyContent="Center">
-                        <HBox height="100%" width="50%">
-                            <Panel>
-                                <t:TreeTable
-                                    id="TreeTable_ConfermaBatchOld"
-                                    rows="{path:'TreeTable_ConfermaBatchOld>/', parameters: {arrayNames:['attributi']}}"
-                                    selectionMode="None"
-                                    collapseRecursive="true"
-                                    enableSelectAll="false"
-                                    ariaLabelledBy="title"
-                                    visibleRowCount="15">
-                                    <t:toolbar>
-                                        <Toolbar>
-                                            <Title text="SKU"/>
-                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaBatchOld"/>
-                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaBatchOld"/>
-                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaBatchOld"/>
-                                        </Toolbar>
-                                    </t:toolbar>
-                                    <t:columns>
-                                        <t:Column width="10rem">
-                                            <Label text="Attibuti"/>
-                                            <t:template>
-                                                <Text text="{name}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
-                                                <wt:StyleTextTreeTableAttr text="{TreeTable_ConfermaBatchOld>name}" diff="{TreeTable_ConfermaBatchOld>expand}" discr="{TreeTable_ConfermaBatchOld>value}" />
-                                            </t:template>
-                                        </t:Column>
-                                        <t:Column width="10rem">
-                                            <Label text="Valore"/>
-                                            <t:template>
-                                                <Text text="{value}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                                <wt:StyleTextTreeTableValue text="{TreeTable_ConfermaBatchOld>value}" diff="{TreeTable_ConfermaBatchOld>expand}" />
-                                            </t:template>
-                                        </t:Column>
-                                    </t:columns>
-                                </t:TreeTable>
-                            </Panel>
-                        </HBox>
-                        <HBox height="100%" width="50%">
-                            <Panel>
-                                <t:TreeTable
-                                    id="TreeTable_ConfermaBatchNew"
-                                    rows="{path:'TreeTable_ConfermaBatchNew>/', parameters: {arrayNames:['attributi']}}"
-                                    selectionMode="None"
-                                    collapseRecursive="true"
-                                    enableSelectAll="false"
-                                    ariaLabelledBy="title"
-                                    visibleRowCount="15">
-                                    <t:toolbar>
-                                        <Toolbar>
-                                            <Title text="SKU"/>
-                                            <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaBatchNew"/>
-                                            <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaBatchNew"/> 
-                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaBatchNew"/>
-                                        </Toolbar>
-                                    </t:toolbar>
-                                    <t:columns>
-                                        <t:Column width="10rem">
-                                            <Label text="Attibuti"/>
-                                            <t:template>
-                                                <Text text="{name}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
-                                                <wt:StyleTextTreeTableAttr text="{TreeTable_ConfermaBatchNew>name}" diff="{TreeTable_ConfermaBatchNew>expand}" discr="{TreeTable_ConfermaBatchNew>value}" />
-                                            </t:template>
-                                        </t:Column>
-                                        <t:Column width="10rem">
-                                            <Label text="Valore"/>
-                                            <t:template>
-                                                <Text text="{value}" wrapping="false" />
-                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                                <wt:StyleTextTreeTableValue text="{TreeTable_ConfermaBatchNew>value}" diff="{TreeTable_ConfermaBatchNew>expand}" />
-                                            </t:template>
-                                        </t:Column>
-                                    </t:columns>
-                                </t:TreeTable>
-                            </Panel>
-                        </HBox>
-                    </FlexBox>
-                </content>
-            </Page>-->
-                    
-            <!--                    <Page id="FinePredisposizione" class="sapUiStdPage">
-                <content>
-                    <Panel>
-                        <t:TreeTable
-                            id="TreeTable_FinePredisposizione"
-                            rows="{path:'TreeTable_FinePredisposizione>/', parameters: {arrayNames:['attributi']}}"
-                            selectionMode="None"
-                            collapseRecursive="true"
-                            enableSelectAll="false"
-                            ariaLabelledBy="title"
-                            visibleRowCount="10">
-                            <t:toolbar>
-                                <Toolbar>
-                                    <Title text="SKU"/>
-                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_FinePredisposizione"/>
-                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_FinePredisposizione"/>
-                                    <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione"/>
-                                </Toolbar>
-                            </t:toolbar>
-                            <t:columns>
-                                <t:Column width="15rem">
-                                    <Label text="Attibuti"/>
-                                    <t:template>
-                                        <Text text="{name}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
-                                        <Text text="{TreeTable_FinePredisposizione>name}" />
-                                    </t:template>
-                                </t:Column>
-                                <t:Column width="5rem">
-                                    <Label text="Valore"/>
-                                    <t:template>
-                                        <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                        <Text text="{TreeTable_FinePredisposizione>value}" />
-                                    </t:template>
-                                </t:Column>
-                                <t:Column width="5rem">
-                                    <Label text="Modifica"/>
-                                    <t:template>
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>
-                                        <Button text="{value}" visible="{= ${expand} === 0}"/>
-                                        <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                        <wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" visible="{= ${modify} == 0}" />
-                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_FinePredisposizione>modify} === 1 ? ${TreeTable_FinePredisposizione>value}: ''}" diff="{TreeTable_FinePredisposizione>modify}" editable="{= ${TreeTable_FinePredisposizione>modify} === 1}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>modify} === 0}" />
-                                        <wt:StyleInputTreeTableModify diff="{TreeTable_FinePredisposizione>modify}"/>
-                                    </t:template>
-                                </t:Column>
-                                <t:Column width="5rem">
-                                    <Label text="Sigle"/>
-                                    <t:template>
-                                        <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                        <Input placeholder="{= ${TreeTable_FinePredisposizione>code} === 1 ? ${TreeTable_FinePredisposizione>codePlaceholder}: ''}" editable="{= ${TreeTable_FinePredisposizione>code} === 1}" value="{TreeTable_FinePredisposizione>codeValue}"/>
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_FinePredisposizione>code} === 0}" />
-                                        <wt:StyleTextTreeTableValue text="{TreeTable_FinePredisposizione>value}" diff="{TreeTable_FinePredisposizione>expand}" />
-                                    </t:template>
-                                </t:Column>
-                            </t:columns>
-                        </t:TreeTable>
-                        <Button text="Conferma" width="100%" press="ConfermaPredisposizione"/>
-                    </Panel>
-                </content>
-            </Page>-->
-                    
-                    
-                    
-            <!--                    <Page id="ModificaCondizioni" class="sapUiStdPage">
-                <content>
-                    <Panel>
-                        <wt:CustomTreeTable
-                            id="TreeTable_ModificaCondizioni"
-                            rows="{path:'TreeTable_ModificaCondizioni>/', parameters: {arrayNames:['attributi']}}"
-                            selectionMode="None"
-                            collapseRecursive="true"
-                            enableSelectAll="false"
-                            ariaLabelledBy="title"
-                            visibleRowCount="10">
-                            <wt:toolbar>
-                                <Toolbar>
-                                    <Title text="SKU"/>
-                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ModificaCondizioni"/>
-                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ModificaCondizioni"/>
-                                    <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni"/>
-                                </Toolbar>
-                            </wt:toolbar>
-                            <wt:columns>
-                                <t:Column width="15rem">
-                                    <Label text="Attibuti"/>
-                                    <t:template>
-                                        <Text text="{name}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>
-                                        <Text text="{TreeTable_ModificaCondizioni>name}" />
-                                    </t:template>
-                                </t:Column>
-                                <t:Column width="5rem">
-                                    <Label text="Valore"/>
-                                    <t:template>
-                                        <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                        <Text text="{TreeTable_ModificaCondizioni>value}" />
-                                    </t:template>
-                                </t:Column>
-                                <t:Column width="5rem">
-                                    <Label text="Sigle"/>
-                                    <t:template>
-                                        <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                        <Text text="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codeValue}: ''}" />
-                                        <Input placeholder="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === 1}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />
-                                        <wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />
-                                    </t:template>
-                                </t:Column>
-                                <t:Column width="5rem">
-                                    <Label text="Modifica Valore"/>
-                                    <t:template>
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>
-                                        <Button text="{value}" visible="{= ${expand} === 0}"/>
-                                        <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                        <wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == 0}" />
-                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_ModificaCondizioni>modify} === 1 ? ${TreeTable_ModificaCondizioni>value}: ''}" diff="{TreeTable_ModificaCondizioni>modify}" editable="{= ${TreeTable_ModificaCondizioni>modify} === 1}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>modify} === 0}" />
-                                        <wt:StyleInputTreeTableModify diff="{TreeTable_ModificaCondizioni>modify}"/>
-                                    </t:template>
-                                </t:Column>
-                                <t:Column width="5rem">
-                                    <Label text="Modifica Sigle"/>
-                                    <t:template>
-                                        <Text text="{value}" wrapping="false" />
-                                        <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>
-                                        <wt:StyleInputTreeTableValue value="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codeValue}: ''}" diff="{TreeTable_ModificaCondizioni>code}" placeholder="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === 1}" />
-                                        <Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />
-                                        <wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />
-                                    </t:template>
-                                </t:Column>
-                            </wt:columns>
-                        </wt:CustomTreeTable>
-                        <Button text="Conferma" width="100%" press="ConfermaModifica"/>
-                    </Panel>
-                </content>
-            </Page>-->
-            
-            
             
             <Page id="BatchAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
@@ -1148,7 +931,9 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="15">
+                                        visibleRowCount="15"
+                                        cellClick="TreeTableRowClickExpander"
+                                        app:mydata="TreeTable_BatchAttrezzaggio">
                                         <wt:toolbar>
                                             <Toolbar>
                                                 <ToolbarSpacer/>
@@ -1175,7 +960,7 @@
                                         </wt:columns>
                                     </wt:CustomTreeTable>
                                     <!--</Panel>-->
-                                    <Button text="PASSA ALL'ATTREZZAGGIO" width="100%" press="ConfermaBatchAttrezzaggio" class="attrezzaggioButton"/>
+                                    <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" press="ConfermaBatchAttrezzaggio" class="attrezzaggioButton"/>
                                     <!--<Button text="Conferma" width="100%" press="ConfermaBatchAttrezzaggio"/>-->
                                 </VBox>
                                 <VBox width="5%"/>
@@ -1208,8 +993,8 @@
                                 <VBox width="5%"/>
                                 <VBox width="90%">
                                     <TabContainer id="TabContainerAttrezzaggio"
-                                                      class="sapUiResponsiveContentPadding"
-                                                      itemClose="UpdateTabs">
+                                                  class="sapUiResponsiveContentPadding"
+                                                  itemClose="UpdateTabs">
                                         <items>
                                             <TabContainerItem 
                                                 id="tab1A"
@@ -1223,7 +1008,9 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="13">
+                                                        visibleRowCount="13"
+                                                        cellClick="TreeTableRowClickExpander"
+                                                        app:mydata="TreeTable_AttributiAttrezzaggio">
                                                         <wt:toolbar>
                                                             <Toolbar>
                                                                 <ToolbarSpacer/>
@@ -1268,13 +1055,15 @@
                                                                 collapseRecursive="true"
                                                                 enableSelectAll="false"
                                                                 ariaLabelledBy="title"
-                                                                visibleRowCount="14">
+                                                                visibleRowCount="14"
+                                                                cellClick="LinkClick"
+                                                                app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew">
                                                                 <wt:toolbar>
                                                                     <Toolbar>
                                                                         <ToolbarSpacer/>
-                                                                        <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioOld"/>
-                                                                        <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioOld"/>
-                                                                        <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                        <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
+                                                                        <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
+                                                                        <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
                                                                     </Toolbar>
                                                                 </wt:toolbar>
                                                                 <wt:columns>
@@ -1305,13 +1094,14 @@
                                                                 enableSelectAll="false"
                                                                 ariaLabelledBy="title"
                                                                 visibleRowCount="14"
+                                                                app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"
                                                                 cellClick="LinkClick">
                                                                 <wt:toolbar>
                                                                     <Toolbar>
                                                                         <ToolbarSpacer/>
-                                                                        <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioNew"/>
-                                                                        <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioNew"/> 
-                                                                        <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioNew"/>
+                                                                        <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
+                                                                        <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/> 
+                                                                        <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
                                                                     </Toolbar>
                                                                 </wt:toolbar>
                                                                 <wt:columns>
@@ -1386,53 +1176,11 @@
         <masterPages>
             <Page id="processi" showHeader="false" class="colorPage">
                 <content>
-                    <!--<VBox height="100%" width="100%">-->
-                    <!--<Panel id="panel_processi" class="MasterPanels" height="70%" width="100%">-->
-                    <VBox class="colorPage" height="25%" width="100%" justifyContent="center" alignItems="start">
+                    <VBox id="logoVbox" height="25%" width="100%" justifyContent="center" alignItems="start">
                         <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
                     </VBox>
                     <VBox id="panel_processi" class="MasterPanels" height="75%" width="100%" justifyContent="center" alignItems="start">
                     </VBox>
-                    <!--                    <VBox id="panel_processi" class="MasterPanels" height="50%" width="100%" justifyContent="center" alignItems="start">
-                        <Button id="ButtonPresaInCarico" text="Presa in carico nuovo confezionamento" enabled="false" press="PresaInCarico" width="100%" class="styleLongButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonFinePredisposizione" text="Fine predisposizione inizio confezionamento" enabled="false" press="FinePredisposizione" width="100%" class="styleLongButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonModificaCondizioni" text="Modifica condizioni operative" enabled="false" press="ModificaCondizioni" width="100%" class="styleButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonFermo" text="Fermo" enabled="false" press="FermoCall" width="100%" class="styleButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonRiavvio" text="Riavvio" enabled="false" press="Riavvio" width="100%" class="styleButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonCausalizzazione" text="Causalizzazione fermi automatici" enabled="false" press="Causalizzazione" width="100%" class="styleLongButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonChiusuraConfezionamento" text="Chiusura confezionamento svuotamento linea" enabled="false" press="ChiusuraConfezionamento" width="100%" class="styleLongButton">
-                        </Button>
-                    </VBox>
-                    </Panel>
-                    <Panel id="panel_attrezzaggio" class="MasterPanels" height="30%" width="100%">
-                    <VBox id="panel_attrezzaggio" class="MasterPanels" height="25%" width="100%" justifyContent="center" alignItems="start">
-                                                            <VBox height="10%" width="100%">
-                            <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />
-                        </VBox>
-                        <VBox height="30%" width="100%">
-                        <Button id="ButtonBatchAttrezzaggio" text="Predisposizione nuovo confezionamento" enabled="false" press="BatchAttrezzaggio" width="100%" class="styleLongButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonFinePredisposizioneAttrezzaggio" text="Fine predisposizione" enabled="false" press="FinePredisposizioneAttrezzaggio" width="100%" class="styleButton">
-                        </Button>
-                        <Text/>
-                        <Button id="ButtonSospensioneAttrezzaggio" text="Sospensione predisposizione" enabled="false" press="SospensioneAttrezzaggio" width="100%" class="styleButton">
-                        </Button>
-                        </VBox>
-                        </Panel>
-                    </VBox>-->
                 </content>
             </Page>
         </masterPages>

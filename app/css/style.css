@@ -127,8 +127,8 @@
 }
 .attrezzaggioButton * {
     background-image: none !important;
-    background-color: #FFD300 !important;
-    color: black;
+    background-color: #0085ca !important;
+    color: white;
 }
 .chiusuraButton * {
     background-image: none !important;
@@ -210,4 +210,20 @@
     width: 55%;
     margin-left: 22%;
     margin-top: 3%;
+}
+.logoBoxYellow {
+    border: solid;
+    border-color: #FFD300;
+}
+.logoBoxGreen {
+    border: solid;
+    border-color: #7CA295;
+}
+.logoBoxRed {
+    border: solid;
+    border-color: #A71930; 
+}
+.logoBoxBrown {
+    border: solid;
+    border-color: #5E3032;
 }

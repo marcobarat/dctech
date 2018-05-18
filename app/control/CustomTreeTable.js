@@ -33,6 +33,6 @@ sap.ui.define([
                     if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
                         sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
                     }
-                },
+                }
             });
         });
