@@ -1291,6 +1291,8 @@ sap.ui.define([
                 this.TabContainer.setSelectedItem(Item);
             }
         },
+
+        // CAUSALIZZ
         AggiungiSelezioneFermiNonCausalizzati: function () {
             var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
             for (var i = 0; i < data.fermi.length; i++) {
@@ -1349,7 +1351,7 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
         },
-//      FUNZIONI CHE AGISCONO INTERNAMENTE
+//      FUNZIONI TEMPI
 
 //      Funzione che calcola il time gap di tutti i guasti e li ritorna come array
         AddTimeGaps: function (data) {
@@ -1433,39 +1435,7 @@ sap.ui.define([
             var index = string.indexOf("T");
             return string.substring(0, index) + ", " + string.substring(index + 1, string.length);
         },
-//      Funzione che rimuove i guasti non causalizzati
-        RemoveCaused: function (data) {
-            for (var i = data.fermi.length - 1; i >= 0; i--) {
-                data.fermi[i].select = false;
-                if (data.fermi[i].causa !== "") {
-                    data.fermi.splice(i, 1);
-                }
-            }
-            return data;
-        },
-//      Funzione per splittare l'id da XML
-        SplitId: function (id, string) {
-            var splitter = id.indexOf(string);
-            var root = id.substring(0, splitter);
-            var real_id = id.substring(splitter, id.length);
-            var index = id.substring(splitter + string.length, id.length);
-            return [root, real_id, index];
-        },
-//        GoTo: function (name) {
-//            var states = ["NonDisponibile", "Disponibile.Vuota", "Disponibile.AttesaPresaInCarico", "Disponibile.Attrezzaggio", "Disponibile.Lavorazione", "Disponibile.Fermo", "Disponibile.Svuotamento"];
-//            switch (name) {
-//                case "Home":
-//                    this.State = "Disponibile.Vuota";
-//                    break;
-//                case "Fault":
-//                    this.State = "Disponibile.Fermo";
-//                    break;
-//                case "InProgress":
-//                    this.State = "Disponibile.Lavorazione";
-//                    break;
-//            }
-//            this.getSplitAppObj().toDetail(this.createId("Home"));
-//        },
+
 //      Funzione che permette di cambiare pagina nello SplitApp
         getSplitAppObj: function () {
             var result = this.byId("SplitAppDemo");
@@ -1473,25 +1443,6 @@ sap.ui.define([
                 jQuery.sap.log.info("SplitApp object can't be found");
             }
             return result;
-        },
-//      Funzione pèr tornare alla scheda precedente
-        onNavBack: function () {
-            var oHistory = History.getInstance();
-            var sPreviousHash = oHistory.getPreviousHash();
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("overview", true);
-            }
-        },
-        GetIndex: function (array, name) {
-            for (var key in array) {
-                if (array[key].name === name) {
-                    break;
-                }
-            }
-            return key;
         },
         //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
         GetStringIDFermiAuto: function () {
@@ -1582,6 +1533,14 @@ sap.ui.define([
             } else {
                 button.setEnabled(false);
             }
+        },
+        //      Funzione per splittare l'id da XML
+        SplitId: function (id, string) {
+            var splitter = id.indexOf(string);
+            var root = id.substring(0, splitter);
+            var real_id = id.substring(splitter, id.length);
+            var index = id.substring(splitter + string.length, id.length);
+            return [root, real_id, index];
         },
         GetActiveCB: function () {
             var res = 0;
@@ -1921,7 +1880,7 @@ sap.ui.define([
         LOCALLoadGuasti: function (Jdata) {
             var dataReduced = JSON.parse(JSON.stringify(Jdata));
             this.ModelDetailPages.setProperty("/FermiTotali/", this.AddTimeGaps(Jdata));
-            dataReduced = this.RemoveCaused(dataReduced);
+            dataReduced = this.LOCALRemoveCaused(dataReduced);
             dataReduced = this.AddTimeGaps(dataReduced);
             this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", dataReduced);
             this.AggiungiSelezioneFermiNonCausalizzati();
@@ -1962,13 +1921,29 @@ sap.ui.define([
         },
         LOCALAggiornaChiusura: function () {
             var data = this.ModelDetailPages.getData();
-            var index = this.GetIndex(data.ParametriChiusura.attributi, "Totale tempi di fermo");
-            var index1 = this.GetIndex(data.ParametriChiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
+            var index = this.LOCALGetIndex(data.ParametriChiusura.attributi, "Totale tempi di fermo");
+            var index1 = this.LOCALGetIndex(data.ParametriChiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
             data.ParametriChiusura.attributi[index].attributi[index1].value = data.FermiNonCausalizzati.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/", data);
+        },
+        //      Funzione che rimuove i guasti non causalizzati
+        LOCALRemoveCaused: function (data) {
+            for (var i = data.fermi.length - 1; i >= 0; i--) {
+                data.fermi[i].select = false;
+                if (data.fermi[i].causa !== "") {
+                    data.fermi.splice(i, 1);
+                }
+            }
+            return data;
+        },
+        LOCALGetIndex: function (array, name) {
+            for (var key in array) {
+                if (array[key].name === name) {
+                    break;
+                }
+            }
+            return key;
         }
-
-
 
     });
     return TmpController;

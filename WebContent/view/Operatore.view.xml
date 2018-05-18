@@ -68,7 +68,7 @@
                                                 <ToolbarSpacer/>
                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_PresaInCarico"/>
                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_PresaInCarico"/>
-                                                <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_PresaInCarico"/>
+                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_PresaInCarico"/>
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
@@ -153,7 +153,7 @@
                                                                 <ToolbarSpacer/>
                                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiPredisposizione"/>
                                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiPredisposizione"/>
-                                                                <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttributiPredisposizione"/>
+                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiPredisposizione"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -207,7 +207,7 @@
                                                                             <ToolbarSpacer/>
                                                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaSetupOld"/>
                                                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaSetupOld"/>
-                                                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupOld"/>
+                                                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupOld"/>
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
@@ -249,7 +249,7 @@
                                                                             <ToolbarSpacer/>
                                                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaSetupNew"/>
                                                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaSetupNew"/> 
-                                                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupNew"/>
+                                                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaSetupNew"/>
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
@@ -435,7 +435,7 @@
                                                                 <ToolbarSpacer/>
                                                                 <Button text="Collassa" press="CollapseAll" class="TTButtons textBlue" app:mydata="TreeTable_AttributiModifica"/>
                                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiModifica"/>
-                                                                <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttributiModifica"/>
+                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiModifica"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -484,7 +484,7 @@
                                                                 <ToolbarSpacer/>
                                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ModificaCondizioni"/>
                                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ModificaCondizioni"/>
-                                                                <Button text="Modificabili" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni"/>
+                                                                <Button text="Da confermare" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -756,7 +756,7 @@
                                                 <ToolbarSpacer/>
                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_RipristinoCondizioni"/>
                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_RipristinoCondizioni"/>
-                                                <Button text="Modificabili" press="ShowRelevant" app:mydata="TreeTable_RipristinoCondizioni"/>
+                                                <Button text="Da confermare" press="ShowRelevant" app:mydata="TreeTable_RipristinoCondizioni"/>
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
@@ -905,7 +905,7 @@
                                             <Title text="SKU"/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaBatchOld"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaBatchOld"/>
-                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaBatchOld"/>
+                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaBatchOld"/>
                                         </Toolbar>
                                     </t:toolbar>
                                     <t:columns>
@@ -944,7 +944,7 @@
                                             <Title text="SKU"/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ConfermaBatchNew"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ConfermaBatchNew"/> 
-                                            <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ConfermaBatchNew"/>
+                                            <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ConfermaBatchNew"/>
                                         </Toolbar>
                                     </t:toolbar>
                                     <t:columns>
@@ -988,7 +988,7 @@
                                     <Title text="SKU"/>
                                     <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_FinePredisposizione"/>
                                     <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_FinePredisposizione"/>
-                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione"/>
+                                    <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_FinePredisposizione"/>
                                 </Toolbar>
                             </t:toolbar>
                             <t:columns>
@@ -1056,7 +1056,7 @@
                                     <Title text="SKU"/>
                                     <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ModificaCondizioni"/>
                                     <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ModificaCondizioni"/>
-                                    <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni"/>
+                                    <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni"/>
                                 </Toolbar>
                             </wt:toolbar>
                             <wt:columns>
@@ -1154,7 +1154,7 @@
                                                 <ToolbarSpacer/>
                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
-                                                <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_BatchAttrezzaggio"/>
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
@@ -1229,7 +1229,7 @@
                                                                 <ToolbarSpacer/>
                                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
                                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
-                                                                <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiAttrezzaggio"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -1274,7 +1274,7 @@
                                                                         <ToolbarSpacer/>
                                                                         <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioOld"/>
                                                                         <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioOld"/>
-                                                                        <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioOld"/>
+                                                                        <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioOld"/>
                                                                     </Toolbar>
                                                                 </wt:toolbar>
                                                                 <wt:columns>
@@ -1311,7 +1311,7 @@
                                                                         <ToolbarSpacer/>
                                                                         <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttrezzaggioNew"/>
                                                                         <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttrezzaggioNew"/> 
-                                                                        <Button text="Non conformi" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioNew"/>
+                                                                        <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttrezzaggioNew"/>
                                                                     </Toolbar>
                                                                 </wt:toolbar>
                                                                 <wt:columns>

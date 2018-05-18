@@ -907,7 +907,7 @@ sap.ui.define([
                 ColumnList.addCell(new sap.m.Text({text: "Totale Complessivo", textAlign: "Center"}));
                 ColumnList.addCell(new sap.m.Text({text: tot.tempoGuastoTotale}));
                 ColumnList.addCell(new sap.m.Text({text: tot.causaTotale}));
-                ColumnList.addCell(new sap.m.CheckBox({textAlign: "Center", id: "CBTotaleCausa", selected: tot.select, select: [this.ChangeCheckedCausa, this]}));
+                ColumnList.addCell(new sap.m.CheckBox({textAlign: "Center", id: "CBTotaleCausa", selected: tot.select, select: [this.ChangeSelezioneTotaleCausalizzazione, this]}));
                 ColumnList.addStyleClass("mysapMListTblCell");
                 ColumnList.addStyleClass("mysapMText");
                 ColumnList.addStyleClass("mysapMCb");
@@ -1000,8 +1000,9 @@ sap.ui.define([
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
-
+//------------------------------------------------------------------------------
 //-------------------------------  ATTREZZAGGIO  -------------------------------
+//------------------------------------------------------------------------------
 
 
         BatchAttrezzaggio: function () {
@@ -1248,8 +1249,10 @@ sap.ui.define([
 
 
 
+//      ---------------------------------------------------
+//      -------------  FUNZIONI MASTER PAGE  --------------
+//      ---------------------------------------------------
 
-//      -------------  FUNZIONI CONDIVISE DA PIU' FRAMES  --------------
 
 
         EnableButtons: function (vec) {
@@ -1272,382 +1275,6 @@ sap.ui.define([
                 sap.ui.getCore().byId(vec[i]).setEnabled(true);
             }
         },
-
-//      RICHIAMATO QUANDO VIENE CLICCATO UN TESTO DI TIPO LINK
-//        Questa funzione controlla in quale riga/colonna si è cliccato e, se
-//        c'è un link, lancia l'evento di creare una nuova tab chiudible con al
-//        momento un'immagine.
-        LinkClick: function (event) {
-            var clicked_row = event.getParameters().rowBindingContext.getObject();
-            var clicked_column = event.getParameters().columnIndex;
-            if (clicked_row.expand === 3 && clicked_column === 1) {
-                var Item = new sap.m.TabContainerItem();
-                Item.setName(clicked_row.value);
-                var image = new sap.m.Image();
-                image.setSrc("img/dececco.jpg");
-                image.setWidth("60%");
-                Item.addContent(image);
-                this.TabContainer.addItem(Item);
-                this.TabContainer.setSelectedItem(Item);
-            }
-        },
-        AggiungiSelezioneFermiNonCausalizzati: function () {
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            for (var i = 0; i < data.fermi.length; i++) {
-                data.fermi[i].select = false;
-                data.fermi[i].enable = true;
-            }
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
-        },
-        CollapseAll: function (event, TT) {
-            var View;
-            if (typeof TT === "undefined") {
-                View = this.getView().byId(event.getSource().data("mydata"));
-            } else {
-                View = sap.ui.getCore().byId(TT);
-            }
-            View.collapseAll();
-        },
-//      Funzione che espande tutti i nodi della treetable
-        ExpandAll: function (event, TT) {
-            var View;
-            if (typeof TT === "undefined") {
-                View = this.getView().byId(event.getSource().data("mydata"));
-            } else {
-                View = sap.ui.getCore().byId(TT);
-            }
-            View.expandToLevel(20);
-        },
-//      Funzione richiamata da "non conformi" che prima espande tutti i nodi della treetable e poi richiude i non rilevanti 
-        ShowRelevant: function (event, TT) {
-            var View;
-            if (typeof TT === "undefined") {
-                View = this.getView().byId(event.getSource().data("mydata"));
-            } else {
-                View = sap.ui.getCore().byId(TT);
-            }
-            View.expandToLevel(20);
-            this.GlobalBusyDialog.open();
-            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, View), 300);
-        },
-//      Funzione che collassa i nodi della treetable non rilevanti
-        CollapseNotRelevant: function (View) {
-
-//            var View = sap.ui.getCore().byId(TreeName);
-            var total = View._iBindingLength;
-            var temp;
-            for (var i = total - 1; i >= 0; i--) {
-                temp = View.getContextByIndex(i).getObject();
-                if (temp.expand === 0) {
-                    View.collapse(i);
-                }
-            }
-            this.GlobalBusyDialog.close();
-        },
-        RestoreDefault: function () {
-            var data = JSON.parse(JSON.stringify(this.backupSetupModify));
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-        },
-//      FUNZIONI CHE AGISCONO INTERNAMENTE
-
-//      Funzione che calcola il time gap di tutti i guasti e li ritorna come array
-        AddTimeGaps: function (data) {
-            var millisec_diff = [];
-            var start, end, i;
-            for (i = 0; i < data.fermi.length; i++) {
-                start = new Date(data.fermi[i].inizio);
-                end = new Date(data.fermi[i].fine);
-                millisec_diff.push(end - start);
-                data.fermi[i].inizio = this.DateToStandard(start);
-                data.fermi[i].fine = this.DateToStandard(end);
-            }
-            var temp;
-            var sum = 0;
-            var arrayGaps = [];
-            for (i = 0; i < millisec_diff.length; i++) {
-                temp = millisec_diff[i];
-                sum += temp;
-                arrayGaps.push(this.MillisecsToStandard(temp));
-            }
-            for (i = 0; i < arrayGaps.length; i++) {
-                data.fermi[i].intervallo = arrayGaps[i];
-            }
-            data.Totale = {};
-            data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);
-            data.Totale.causaleTotale = "";
-            data.Totale.select = false;
-            return data;
-        },
-//      Funzione che estrae il formato standard dal formato ISO
-        DateToStandard: function (date) {
-            var hours = this.StringTime(date.getHours());
-            var mins = this.StringTime(date.getMinutes());
-            var secs = this.StringTime(date.getSeconds());
-            return (hours + ":" + mins + ":" + secs);
-        },
-//      Funzione che converte orario HH:MM:SS in millisecondi 
-        StandardToMillisecs: function (val) {
-            var hours = Number(val.substring(0, 2));
-            var mins = Number(val.substring(3, 5));
-            var secs = Number(val.substring(6, 8));
-            return ((secs * 1000) + (mins * 60 * 1000) + (hours * 60 * 60 * 1000));
-        },
-//      Funzione che converte millisecondi in orario HH:MM:SS
-        MillisecsToStandard: function (val) {
-            var hours = Math.floor(val / 1000 / 60 / 60);
-            val -= hours * 1000 * 60 * 60;
-            var mins = Math.floor(val / 1000 / 60);
-            val -= mins * 1000 * 60;
-            var secs = Math.floor(val / 1000);
-            val -= secs * 1000;
-            var string_hours, string_mins, string_secs;
-            if (val !== 0) {
-                console.log("C'è un problema");
-            } else {
-                string_hours = this.StringTime(hours);
-                string_mins = this.StringTime(mins);
-                string_secs = this.StringTime(secs);
-            }
-            return (string_hours + ":" + string_mins + ":" + string_secs);
-        },
-//      Funzione che aggiunge uno zero se ore, minuti o secondi sono < 10
-        StringTime: function (val) {
-            if (val < 10) {
-                return  ('0' + String(val));
-            } else {
-                return  String(val);
-            }
-        },
-//      Funzione che converte orario nel formato ISO
-        FormatDateISO: function (date) {
-            var year = this.StringTime(date.getFullYear());
-            var month = this.StringTime(date.getMonth() + 1);
-            var day = this.StringTime(date.getDate());
-            var hours = this.StringTime(date.getHours());
-            var mins = this.StringTime(date.getMinutes());
-            var secs = this.StringTime(date.getSeconds());
-            return (year + "-" + month + "-" + day + "T" + hours + ":" + mins + ":" + secs);
-        },
-        FromISOToPOD: function (string) {
-            var index = string.indexOf("T");
-            return string.substring(0, index) + ", " + string.substring(index + 1, string.length);
-        },
-//      Funzione che rimuove i guasti non causalizzati
-        RemoveCaused: function (data) {
-            for (var i = data.fermi.length - 1; i >= 0; i--) {
-                data.fermi[i].select = false;
-                if (data.fermi[i].causa !== "") {
-                    data.fermi.splice(i, 1);
-                }
-            }
-            return data;
-        },
-//      Funzione per splittare l'id da XML
-        SplitId: function (id, string) {
-            var splitter = id.indexOf(string);
-            var root = id.substring(0, splitter);
-            var real_id = id.substring(splitter, id.length);
-            var index = id.substring(splitter + string.length, id.length);
-            return [root, real_id, index];
-        },
-//        GoTo: function (name) {
-//            var states = ["NonDisponibile", "Disponibile.Vuota", "Disponibile.AttesaPresaInCarico", "Disponibile.Attrezzaggio", "Disponibile.Lavorazione", "Disponibile.Fermo", "Disponibile.Svuotamento"];
-//            switch (name) {
-//                case "Home":
-//                    this.State = "Disponibile.Vuota";
-//                    break;
-//                case "Fault":
-//                    this.State = "Disponibile.Fermo";
-//                    break;
-//                case "InProgress":
-//                    this.State = "Disponibile.Lavorazione";
-//                    break;
-//            }
-//            this.getSplitAppObj().toDetail(this.createId("Home"));
-//        },
-//      Funzione che permette di cambiare pagina nello SplitApp
-        getSplitAppObj: function () {
-            var result = this.byId("SplitAppDemo");
-            if (!result) {
-                jQuery.sap.log.info("SplitApp object can't be found");
-            }
-            return result;
-        },
-//      Funzione pèr tornare alla scheda precedente
-        onNavBack: function () {
-            var oHistory = History.getInstance();
-            var sPreviousHash = oHistory.getPreviousHash();
-            if (sPreviousHash !== undefined) {
-                window.history.go(-1);
-            } else {
-                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("overview", true);
-            }
-        },
-        GetIndex: function (array, name) {
-            for (var key in array) {
-                if (array[key].name === name) {
-                    break;
-                }
-            }
-            return key;
-        },
-        //      FUNZIONE CHE AGGIORNA I MODELLI DEI GUASTI
-        GetStringIDFermiAuto: function () {
-            var vec = this.ModelDetailPages.getData().FermiNonCausalizzati.fermi;
-            var IDs = [];
-            var i;
-            for (i = 0; i < vec.length; i++) {
-                if (vec[i].select > 0) {
-                    IDs.push(vec[i].LogID);
-                }
-            }
-            var string = "";
-            if (IDs.length === 1) {
-                string = String(IDs[0]);
-            } else {
-                for (i = 0; i < IDs.length; i++) {
-                    string += (String(IDs[i]) + "-");
-                }
-                string = string.substring(0, string.length - 1);
-            }
-            return string;
-        },
-
-        //      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
-        ChangeCheckedCausa: function (event) {
-            var id = event.getSource().getId();
-            var CB = sap.ui.getCore().byId(id);
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            var i, cont;
-            if (id === "CBTotaleCausa") {
-                for (i = 0; i < data.fermi.length; i++) {
-                    data.fermi[i].select = CB.getSelected();
-                    data.fermi[i].enable = !CB.getSelected();
-                }
-                if (CB.getSelected()) {
-                    this.CheckTotaleCausa = 1;
-                } else {
-                    this.CheckTotaleCausa = 0;
-                }
-            }
-            cont = 0;
-            for (i = 0; i < data.fermi.length; i++) {
-                if (data.fermi[i].select) {
-                    cont += 1;
-                }
-            }
-            if (cont > 0) {
-                this.getView().byId("ConfermaCausalizzazione").setEnabled(true);
-            } else {
-                this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
-            }
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
-        },
-        UncheckCause: function () {
-            var i;
-            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-            for (i = 0; i < data.fermi.length; i++) {
-                data.fermi[i].select = false;
-                data.fermi[i].enable = true;
-            }
-            if (typeof sap.ui.getCore().byId("TotaleTable") !== "undefined") {
-                sap.ui.getCore().byId("CBTotaleCausa").setSelected(false);
-                sap.ui.getCore().byId("CBTotaleCausa").setEnabled(true);
-                this.CheckTotaleCausa = 0;
-            }
-            this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
-            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
-        },
-
-//      FUNZIONE CHE GESTISCE LA SELEZIONE DEI CHECKBOX
-        ChangeCheckedFermo: function (event) {
-            var id = event.getSource().getId();
-            var root_name = "CBFermo";
-            this.id_split = this.SplitId(id, root_name);
-            var old_id = this.GetActiveCB();
-            if (typeof old_id === "string") {
-                var old_CB = sap.ui.getCore().byId(old_id);
-                old_CB.setSelected(false);
-                this.CheckFermo[old_id] = 0;
-            }
-            if (old_id !== this.id_split[1]) {
-                this.CheckFermo[this.id_split[1]] = 1;
-            }
-            var selected_index = this.GetActiveCB();
-            var button = sap.ui.getCore().byId("ConfermaFermo");
-            if (typeof selected_index === "string") {
-                button.setEnabled(true);
-            } else {
-                button.setEnabled(false);
-            }
-        },
-        GetActiveCB: function () {
-            var res = 0;
-            for (var key in this.CheckFermo) {
-                if (this.CheckFermo[key] === 1) {
-                    res = key;
-                    break;
-                }
-            }
-            return res;
-        },
-
-        RemoveClosingButtons: function (n_tabs) {
-            var oTabStrip = this.TabContainer.getAggregation("_tabStrip");
-            var oItems = oTabStrip.getItems();
-            for (var i = 0; i < n_tabs; i++) {
-                var oCloseButton = oItems[i].getAggregation("_closeButton");
-                oCloseButton.setVisible(false);
-            }
-            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
-        },
-        SwitchColor: function (color) {
-            var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
-            var panel = this.getView().byId("panel_processi");
-            for (var col in CSS_classes) {
-                panel.removeStyleClass(CSS_classes[col]);
-            }
-            switch (color) {
-                case "yellow":
-                    panel.addStyleClass("stylePanelYellow");
-                    break;
-                case "green":
-                    panel.addStyleClass("stylePanelGreen");
-                    break;
-                case "red":
-                    panel.addStyleClass("stylePanelRed");
-                    break;
-                case "brown":
-                    panel.addStyleClass("stylePanelBrown");
-                    break;
-            }
-        },
-//        BarColor: function (data) {
-//            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
-//            var CSS_classesBar = ["progressBarGreen", "progressBarYellow", "progressBarOrange"];
-//            var button = this.getView().byId("progressBarButton");
-//            var bar = this.getView().byId("progressBar");
-//            for (var i = 0; i < CSS_classesButton.length; i++) {
-//                button.removeStyleClass(CSS_classesButton[i]);
-//                bar.removeStyleClass(CSS_classesBar[i]);
-//            }
-//            switch (data.barColor) {
-//                case "yellow":
-//                    button.addStyleClass("progressBarButtonYellow");
-//                    bar.addStyleClass("progressBarYellow");
-//                    break;
-//                case "green":
-//                    button.addStyleClass("progressBarButtonGreen");
-//                    bar.addStyleClass("progressBarGreen");
-//                    break;
-//                case "orange":
-//                    button.addStyleClass("progressBarButtonOrange");
-//                    bar.addStyleClass("progressBarOrange");
-//                    break;
-//            }
-//        },
         CreateButtons: function () {
             var vbox = this.getView().byId("panel_processi");
             var btn, btn_vbox;
@@ -1707,6 +1334,377 @@ sap.ui.define([
             var vbox = this.getView().byId("panel_processi");
             vbox.destroyItems();
         },
+        SwitchColor: function (color) {
+            var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
+            var panel = this.getView().byId("panel_processi");
+            for (var col in CSS_classes) {
+                panel.removeStyleClass(CSS_classes[col]);
+            }
+            switch (color) {
+                case "yellow":
+                    panel.addStyleClass("stylePanelYellow");
+                    break;
+                case "green":
+                    panel.addStyleClass("stylePanelGreen");
+                    break;
+                case "red":
+                    panel.addStyleClass("stylePanelRed");
+                    break;
+                case "brown":
+                    panel.addStyleClass("stylePanelBrown");
+                    break;
+            }
+        },
+
+//      ----------------------------------------------------
+//      -------------  FUNZIONI DETAIL PAGES  --------------
+//      ----------------------------------------------------
+
+
+//      ----- FUNZIONI CONDIVISE DA PIU' PAGES -----
+
+//      Funzione che permette di cambiare pagina nello SplitApp
+        getSplitAppObj: function () {
+            var result = this.byId("SplitAppDemo");
+            if (!result) {
+                jQuery.sap.log.info("SplitApp object can't be found");
+            }
+            return result;
+        },
+        XMLSetupUpdates: function (setup) {
+            var heading = "<Parameters>" +
+                    "<LineaID>1</LineaID>" +
+                    "<SKUID>1</SKUID>" +
+                    "<ParameterList>";
+            var bottom = "</ParameterList>" +
+                    "</Parameters>";
+            this.dataXML = [];
+            setup = this.RecursiveJSONChangesFinder(setup);
+            var body = "";
+            for (var i in this.dataXML) {
+                body += "<Parameter>";
+                for (var key in this.dataXML[i]) {
+                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
+                }
+                body += "</Parameter>";
+            }
+            return (heading + body + bottom);
+        },
+        CollapseAll: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = sap.ui.getCore().byId(TT);
+            }
+            View.collapseAll();
+        },
+//      Funzione che espande tutti i nodi della treetable
+        ExpandAll: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = sap.ui.getCore().byId(TT);
+            }
+            View.expandToLevel(20);
+        },
+//      Funzione richiamata da "non conformi" che prima espande tutti i nodi della treetable e poi richiude i non rilevanti 
+        ShowRelevant: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = sap.ui.getCore().byId(TT);
+            }
+            View.expandToLevel(20);
+            this.GlobalBusyDialog.open();
+            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, View), 300);
+        },
+//      Funzione che collassa i nodi della treetable non rilevanti
+        CollapseNotRelevant: function (View) {
+
+//            var View = sap.ui.getCore().byId(TreeName);
+            var total = View._iBindingLength;
+            var temp;
+            for (var i = total - 1; i >= 0; i--) {
+                temp = View.getContextByIndex(i).getObject();
+                if (temp.expand === 0) {
+                    View.collapse(i);
+                }
+            }
+            this.GlobalBusyDialog.close();
+        },
+        RestoreDefault: function () {
+            var data = JSON.parse(JSON.stringify(this.backupSetupModify));
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+        },
+        
+        
+
+//      ----- FUNZIONI PER SINGOLA PAGE -----
+
+
+        // ATTREZZAGGIO
+        LinkClick: function (event) {
+            var clicked_row = event.getParameters().rowBindingContext.getObject();
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_row.expand === 3 && clicked_column === 1) {
+                var Item = new sap.m.TabContainerItem();
+                Item.setName(clicked_row.value);
+                var image = new sap.m.Image();
+                image.setSrc("img/dececco.jpg");
+                image.setWidth("60%");
+                Item.addContent(image);
+                this.TabContainer.addItem(Item);
+                this.TabContainer.setSelectedItem(Item);
+            }
+        },
+        RemoveClosingButtons: function (n_tabs) {
+            var oTabStrip = this.TabContainer.getAggregation("_tabStrip");
+            var oItems = oTabStrip.getItems();
+            for (var i = 0; i < n_tabs; i++) {
+                var oCloseButton = oItems[i].getAggregation("_closeButton");
+                oCloseButton.setVisible(false);
+            }
+            this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
+        },
+
+        // LAVORAZIONE
+
+        //        BarColor: function (data) {
+//            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
+//            var CSS_classesBar = ["progressBarGreen", "progressBarYellow", "progressBarOrange"];
+//            var button = this.getView().byId("progressBarButton");
+//            var bar = this.getView().byId("progressBar");
+//            for (var i = 0; i < CSS_classesButton.length; i++) {
+//                button.removeStyleClass(CSS_classesButton[i]);
+//                bar.removeStyleClass(CSS_classesBar[i]);
+//            }
+//            switch (data.barColor) {
+//                case "yellow":
+//                    button.addStyleClass("progressBarButtonYellow");
+//                    bar.addStyleClass("progressBarYellow");
+//                    break;
+//                case "green":
+//                    button.addStyleClass("progressBarButtonGreen");
+//                    bar.addStyleClass("progressBarGreen");
+//                    break;
+//                case "orange":
+//                    button.addStyleClass("progressBarButtonOrange");
+//                    bar.addStyleClass("progressBarOrange");
+//                    break;
+//            }
+//        },
+
+
+        //      FERMO
+        GetStringIDFermiAuto: function () {
+            var vec = this.ModelDetailPages.getData().FermiNonCausalizzati.fermi;
+            var IDs = [];
+            var i;
+            for (i = 0; i < vec.length; i++) {
+                if (vec[i].select > 0) {
+                    IDs.push(vec[i].LogID);
+                }
+            }
+            var string = "";
+            if (IDs.length === 1) {
+                string = String(IDs[0]);
+            } else {
+                for (i = 0; i < IDs.length; i++) {
+                    string += (String(IDs[i]) + "-");
+                }
+                string = string.substring(0, string.length - 1);
+            }
+            return string;
+        },
+        ChangeCheckedFermo: function (event) {
+            var id = event.getSource().getId();
+            var root_name = "CBFermo";
+            this.id_split = this.SplitId(id, root_name);
+            var old_id = this.GetActiveCB();
+            if (typeof old_id === "string") {
+                var old_CB = sap.ui.getCore().byId(old_id);
+                old_CB.setSelected(false);
+                this.CheckFermo[old_id] = 0;
+            }
+            if (old_id !== this.id_split[1]) {
+                this.CheckFermo[this.id_split[1]] = 1;
+            }
+            var selected_index = this.GetActiveCB();
+            var button = sap.ui.getCore().byId("ConfermaFermo");
+            if (typeof selected_index === "string") {
+                button.setEnabled(true);
+            } else {
+                button.setEnabled(false);
+            }
+        },
+        SplitId: function (id, string) {
+            var splitter = id.indexOf(string);
+            var root = id.substring(0, splitter);
+            var real_id = id.substring(splitter, id.length);
+            var index = id.substring(splitter + string.length, id.length);
+            return [root, real_id, index];
+        },
+        GetActiveCB: function () {
+            var res = 0;
+            for (var key in this.CheckFermo) {
+                if (this.CheckFermo[key] === 1) {
+                    res = key;
+                    break;
+                }
+            }
+            return res;
+        },
+
+        //      CAUSALIZZAZIONE
+        ChangeSelezioneTotaleCausalizzazione: function (event) {
+            var id = event.getSource().getId();
+            var CB = sap.ui.getCore().byId(id);
+            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+            var i, cont;
+            if (id === "CBTotaleCausa") {
+                for (i = 0; i < data.fermi.length; i++) {
+                    data.fermi[i].select = CB.getSelected();
+                    data.fermi[i].enable = !CB.getSelected();
+                }
+                if (CB.getSelected()) {
+                    this.CheckTotaleCausa = 1;
+                } else {
+                    this.CheckTotaleCausa = 0;
+                }
+            }
+            cont = 0;
+            for (i = 0; i < data.fermi.length; i++) {
+                if (data.fermi[i].select) {
+                    cont += 1;
+                }
+            }
+            if (cont > 0) {
+                this.getView().byId("ConfermaCausalizzazione").setEnabled(true);
+            } else {
+                this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
+            }
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+        },
+        UncheckCause: function () {
+            var i;
+            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+            for (i = 0; i < data.fermi.length; i++) {
+                data.fermi[i].select = false;
+                data.fermi[i].enable = true;
+            }
+            if (typeof sap.ui.getCore().byId("TotaleTable") !== "undefined") {
+                sap.ui.getCore().byId("CBTotaleCausa").setSelected(false);
+                sap.ui.getCore().byId("CBTotaleCausa").setEnabled(true);
+                this.CheckTotaleCausa = 0;
+            }
+            this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+        },
+        AggiungiSelezioneFermiNonCausalizzati: function () {
+            var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
+            for (var i = 0; i < data.fermi.length; i++) {
+                data.fermi[i].select = false;
+                data.fermi[i].enable = true;
+            }
+            this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
+        },
+        AddTimeGaps: function (data) {
+            var millisec_diff = [];
+            var start, end, i;
+            for (i = 0; i < data.fermi.length; i++) {
+                start = new Date(data.fermi[i].inizio);
+                end = new Date(data.fermi[i].fine);
+                millisec_diff.push(end - start);
+                data.fermi[i].inizio = this.DateToStandard(start);
+                data.fermi[i].fine = this.DateToStandard(end);
+            }
+            var temp;
+            var sum = 0;
+            var arrayGaps = [];
+            for (i = 0; i < millisec_diff.length; i++) {
+                temp = millisec_diff[i];
+                sum += temp;
+                arrayGaps.push(this.MillisecsToStandard(temp));
+            }
+            for (i = 0; i < arrayGaps.length; i++) {
+                data.fermi[i].intervallo = arrayGaps[i];
+            }
+            data.Totale = {};
+            data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);
+            data.Totale.causaleTotale = "";
+            data.Totale.select = false;
+            return data;
+        },
+
+//      ----------------------------------------------------
+//      -------------   FUNZIONI DI SUPPORTO  --------------
+//      ----------------------------------------------------
+
+
+//      FUNZIONI TEMPI
+//      Funzione che estrae il formato standard dal formato ISO
+        DateToStandard: function (date) {
+            var hours = this.StringTime(date.getHours());
+            var mins = this.StringTime(date.getMinutes());
+            var secs = this.StringTime(date.getSeconds());
+            return (hours + ":" + mins + ":" + secs);
+        },
+//      Funzione che converte orario HH:MM:SS in millisecondi 
+        StandardToMillisecs: function (val) {
+            var hours = Number(val.substring(0, 2));
+            var mins = Number(val.substring(3, 5));
+            var secs = Number(val.substring(6, 8));
+            return ((secs * 1000) + (mins * 60 * 1000) + (hours * 60 * 60 * 1000));
+        },
+//      Funzione che converte millisecondi in orario HH:MM:SS
+        MillisecsToStandard: function (val) {
+            var hours = Math.floor(val / 1000 / 60 / 60);
+            val -= hours * 1000 * 60 * 60;
+            var mins = Math.floor(val / 1000 / 60);
+            val -= mins * 1000 * 60;
+            var secs = Math.floor(val / 1000);
+            val -= secs * 1000;
+            var string_hours, string_mins, string_secs;
+            if (val !== 0) {
+                console.log("C'è un problema");
+            } else {
+                string_hours = this.StringTime(hours);
+                string_mins = this.StringTime(mins);
+                string_secs = this.StringTime(secs);
+            }
+            return (string_hours + ":" + string_mins + ":" + string_secs);
+        },
+//      Funzione che aggiunge uno zero se ore, minuti o secondi sono < 10
+        StringTime: function (val) {
+            if (val < 10) {
+                return  ('0' + String(val));
+            } else {
+                return  String(val);
+            }
+        },
+//      Funzione che converte orario nel formato ISO
+        FormatDateISO: function (date) {
+            var year = this.StringTime(date.getFullYear());
+            var month = this.StringTime(date.getMonth() + 1);
+            var day = this.StringTime(date.getDate());
+            var hours = this.StringTime(date.getHours());
+            var mins = this.StringTime(date.getMinutes());
+            var secs = this.StringTime(date.getSeconds());
+            return (year + "-" + month + "-" + day + "T" + hours + ":" + mins + ":" + secs);
+        },
+        FromISOToPOD: function (string) {
+            var index = string.indexOf("T");
+            return string.substring(0, index) + ", " + string.substring(index + 1, string.length);
+        },
+        
+        
+        
+
+        // FUNZIONI RICORSIVE
         RecursiveJSONComparison: function (std, bck, arrayName) {
             for (var key in std) {
                 if (typeof std[key] === "object") {
@@ -1819,25 +1817,6 @@ sap.ui.define([
             }
             return data;
         },
-        XMLSetupUpdates: function (setup) {
-            var heading = "<Parameters>" +
-                    "<LineaID>1</LineaID>" +
-                    "<SKUID>1</SKUID>" +
-                    "<ParameterList>";
-            var bottom = "</ParameterList>" +
-                    "</Parameters>";
-            this.dataXML = [];
-            setup = this.RecursiveJSONChangesFinder(setup);
-            var body = "";
-            for (var i in this.dataXML) {
-                body += "<Parameter>";
-                for (var key in this.dataXML[i]) {
-                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
-                }
-                body += "</Parameter>";
-            }
-            return (heading + body + bottom);
-        },
         RecursiveJSONChangesFinder: function (setup) {
             var temp = {};
             for (var key in setup) {
@@ -1885,7 +1864,11 @@ sap.ui.define([
             return json;
         },
 
-//        FUNZIONI LOCALI
+//      ----------------------------------------------------
+//      ----------------  FUNZIONI LOCALI  -----------------
+//      ----------------------------------------------------
+
+
         LOCALCheckStatus: function (Jdata) {
 
             this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
@@ -1921,7 +1904,7 @@ sap.ui.define([
         LOCALLoadGuasti: function (Jdata) {
             var dataReduced = JSON.parse(JSON.stringify(Jdata));
             this.ModelDetailPages.setProperty("/FermiTotali/", this.AddTimeGaps(Jdata));
-            dataReduced = this.RemoveCaused(dataReduced);
+            dataReduced = this.LOCALRemoveCaused(dataReduced);
             dataReduced = this.AddTimeGaps(dataReduced);
             this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", dataReduced);
             this.AggiungiSelezioneFermiNonCausalizzati();
@@ -1962,13 +1945,29 @@ sap.ui.define([
         },
         LOCALAggiornaChiusura: function () {
             var data = this.ModelDetailPages.getData();
-            var index = this.GetIndex(data.ParametriChiusura.attributi, "Totale tempi di fermo");
-            var index1 = this.GetIndex(data.ParametriChiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
+            var index = this.LOCALGetIndex(data.ParametriChiusura.attributi, "Totale tempi di fermo");
+            var index1 = this.LOCALGetIndex(data.ParametriChiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
             data.ParametriChiusura.attributi[index].attributi[index1].value = data.FermiNonCausalizzati.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/", data);
+        },
+        //      Funzione che rimuove i guasti non causalizzati
+        LOCALRemoveCaused: function (data) {
+            for (var i = data.fermi.length - 1; i >= 0; i--) {
+                data.fermi[i].select = false;
+                if (data.fermi[i].causa !== "") {
+                    data.fermi.splice(i, 1);
+                }
+            }
+            return data;
+        },
+        LOCALGetIndex: function (array, name) {
+            for (var key in array) {
+                if (array[key].name === name) {
+                    break;
+                }
+            }
+            return key;
         }
-
-
 
     });
     return TmpController;
