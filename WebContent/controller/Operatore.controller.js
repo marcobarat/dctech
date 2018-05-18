@@ -60,7 +60,7 @@ sap.ui.define([
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
-            this.AjaxCallerData(link, this.CheckStatus.bind(this));
+            this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
             this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
@@ -199,7 +199,7 @@ sap.ui.define([
                 this.SwitchColor("green");
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
             }
-//            this.BarColor(Jdata);
+            this.BarColor(Jdata);
         },
         SUCCESSChiusura: function (Jdata) {
             this.ModelDetailPages.setProperty("/ParametriChiusura/", Jdata);
@@ -300,6 +300,8 @@ sap.ui.define([
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_SetupOld.json";
+                this.SwitchColor("yellow");
+                this.EnableButtons(["ButtonFinePredisposizione"]);
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             }
@@ -1565,30 +1567,28 @@ sap.ui.define([
         },
 //      ----------------    FUNZIONI LAVORAZIONE    ----------------
 //      
-//        BarColor: function (data) {
-//            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
-//            var CSS_classesBar = ["progressBarGreen", "progressBarYellow", "progressBarOrange"];
-//            var button = this.getView().byId("progressBarButton");
-//            var bar = this.getView().byId("progressBar");
-//            for (var i = 0; i < CSS_classesButton.length; i++) {
-//                button.removeStyleClass(CSS_classesButton[i]);
-//                bar.removeStyleClass(CSS_classesBar[i]);
-//            }
-//            switch (data.barColor) {
-//                case "yellow":
-//                    button.addStyleClass("progressBarButtonYellow");
-//                    bar.addStyleClass("progressBarYellow");
-//                    break;
-//                case "green":
-//                    button.addStyleClass("progressBarButtonGreen");
-//                    bar.addStyleClass("progressBarGreen");
-//                    break;
-//                case "orange":
-//                    button.addStyleClass("progressBarButtonOrange");
-//                    bar.addStyleClass("progressBarOrange");
-//                    break;
-//            }
-//        },
+        BarColor: function (data) {
+            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
+            var button = this.getView().byId("progressBarButton");
+            var bar = this.getView().byId("progressBar");
+            for (var i = 0; i < CSS_classesButton.length; i++) {
+                button.removeStyleClass(CSS_classesButton[i]);
+            }
+            switch (data.barColor) {
+                case "yellow":
+                    button.addStyleClass("progressBarButtonYellow");
+                    bar.setState("Warning");
+                    break;
+                case "green":
+                    button.addStyleClass("progressBarButtonGreen");
+                    bar.addStyleClass("Success");
+                    break;
+                case "orange":
+                    button.addStyleClass("progressBarButtonOrange");
+                    bar.addStyleClass("Error");
+                    break;
+            }
+        },
 
 
 

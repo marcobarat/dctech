@@ -321,7 +321,7 @@
                                 <VBox width="64%">
                                     <ProgressIndicator
                                         id="progressBar"
-                                        class="customTextBar"
+                                        class="customTextBar "
                                         percentValue="{GeneralModel>/DatiOEE/avanzamento}"
                                         displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
                                         showValue="true"
