@@ -678,7 +678,7 @@
                                             </t:Column>
                                             <t:Column hAlign="Center" width="10%">
                                                 <t:template>
-                                                    <CheckBox id="CBSingoloCausa" selected="{GeneralModel>select}" enabled="{GeneralModel>enable}" select="ChangeCheckedCausa"/>
+                                                    <CheckBox id="CBSingoloCausa" selected="{GeneralModel>select}" enabled="{GeneralModel>enable}" select="ChangeSelezioneTotaleCausalizzazione"/>
                                                 </t:template>
                                             </t:Column>
                                         </t:columns>
