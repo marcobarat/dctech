@@ -2,12 +2,12 @@
     "attributi": [
         {
             "name": "Tempo totale di lavorazione",
-            "value": "",
+            "value": "08:12:26",
             "expand": 0
         },
         {
             "name": "Totale tempi di fermo",
-            "value": "",
+            "value": "03:25:48",
             "expand": 1,
             "attributi": [
                 {
@@ -19,24 +19,24 @@
         },
         {
             "name": "Quantità prodotta",
-            "value": "",
+            "value": "900 qli",
             "expand": 1,
             "attributi": [
                 {
                     "name": "Quantità prodotta buona",
-                    "value": "",
+                    "value": "98.6%",
                     "expand": 1
                 },
                 {
                     "name": "Quantità prodotta scarto",
-                    "value": "",
+                    "value": "1.4%",
                     "expand": 1
                 }
             ]
         },
         {
             "name": "Efficienza di lavorazione",
-            "value": "",
+            "value": "82%",
             "expand": 0
         }
     ]

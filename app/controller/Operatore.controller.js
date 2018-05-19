@@ -12,6 +12,7 @@ sap.ui.define([
 
 //      VARIABILI GLOBALI
         ISLOCAL: 0,
+        ISATTR: 0,
         TIMER: null,
         LineDetails: {"Linea": "Linea 1", "idLinea": "1"},
         ModelDetailPages: new JSONModel({}),
@@ -34,10 +35,15 @@ sap.ui.define([
         onInit: function () {
 
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
+            this.ISATTR = Number(jQuery.sap.getUriParameters().get("ISATTR"));
             this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
+            var link;
             if (this.ISLOCAL === 1) {
-
-                var link = "model/JSON_SKUBatch.json";
+                if (this.ISATTR === 1) {
+                    link = "model/JSON_SKUBatch_ATTR.json";
+                } else {
+                    link = "model/JSON_SKUBatch.json";
+                }
                 this.AjaxCallerData(link, this.LOCALCheckStatus.bind(this));
             } else {
                 this.RefreshCall();
@@ -312,11 +318,10 @@ sap.ui.define([
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_SetupNew.json";
-                this.AjaxCallerData(link, this.SUCCESSNewSetup.bind(this));
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.AjaxCallerData(link, this.SUCCESSNewSetup.bind(this));
             }
+            this.AjaxCallerData(link, this.SUCCESSNewSetup.bind(this));
         },
         SUCCESSNewSetup: function (Jdata) {
             this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata);
@@ -734,6 +739,9 @@ sap.ui.define([
                     this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
                     this.ModelDetailPages.setProperty("/FermiTotali/", data_All);
                     this.LOCALUpdateFaultsModels();
+                    var dataProgress = this.ModelDetailPages.getData().DatiOEE;
+                    dataProgress.tempoFermiAutomatici = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale.tempoGuastoTotale;
+                    this.ModelDetailPages.setProperty("/DatiOEE/", dataProgress);
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.Causalizzazione();
                 } else {
@@ -915,7 +923,7 @@ sap.ui.define([
                     this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
                 } else if (this.LOCALState === "Disponibile.Svuotamento") {
                     this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
-                    this.AggiornaChiusura();
+                    this.LOCALAggiornaChiusura();
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.EnableButtons(["ButtonCausalizzazione"]);
                 }
@@ -945,7 +953,7 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.EnableButtons(["ButtonCausalizzazione"]);
                 this.LOCALState = "Disponibile.Svuotamento";
-                this.AggiornaChiusura();
+                this.LOCALAggiornaChiusura();
             } else {
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
@@ -991,9 +999,10 @@ sap.ui.define([
 //          chiudere le tabs e imposta il colore giallo al pannello laterale.
         ConfermaBatchAttrezzaggio: function () {
             var link;
-            if (this.ISLOCAL === 1) {
-                link = "model/guasti.json";
-                this.AjaxCallerData(link, this.LOCALLoadGuasti.bind(this));
+            if (this.ISLOCAL === 1 && this.ISATTR === 1) {
+                this.SwitchColor("yellow");
+                this.EnableButtonsAttr(["ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"]);
+                this.PredisposizioneLineaAttrezzaggio();
                 this.LOCALState = "Disponibile.Attrezzaggio";
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
@@ -1221,25 +1230,38 @@ sap.ui.define([
             if (this.codeCheck === 1 && source === 'F') {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
             } else {
-
                 var tab = this.TabContainer.getItems()[2];
                 this.TabContainer.removeItem(tab);
                 this.Item.destroyContent();
-                var XMLstring = this.XMLSetupUpdates(data);
-                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=3";
-                this.AjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
+                if (this.ISLOCAL === 1) {
+                    this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
+                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                    this.SwitchColor("brown");
+                    this.EnableButtonsAttr([]);
+                } else {
+                    var XMLstring = this.XMLSetupUpdates(data);
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=3";
+                    this.AjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
+                }
             }
         },
         // ------------------------ CHIUSURA ------------------------
 
 
-        FromAttrToChiusura: function () {
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneInChiusura&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
-        },
         FineAttrezzaggio: function () {
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+            if (this.ISLOCAL === 1) {
+                this.getSplitAppObj().toDetail(this.createId("Home"));
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                this.SwitchColor("");
+                this.EnableButtonsAttr([]);
+                this.DestroyButtons();
+                var model = this.ModelDetailPages.getData();
+                model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
+                this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
+            } else {
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+            }
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1589,8 +1611,6 @@ sap.ui.define([
                     break;
             }
         },
-
-
 
 //      ----------------    FUNZIONI FERMO    ----------------
 
@@ -2002,6 +2022,7 @@ sap.ui.define([
             this.PredisposizioneLinea();
         },
         LOCALInProgress: function (Jdata) {
+            Jdata.tempoFermiAutomatici = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.SwitchColor("green");
