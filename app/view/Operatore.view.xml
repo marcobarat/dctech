@@ -68,9 +68,9 @@
                                         <wt:toolbar>
                                             <Toolbar>
                                                 <ToolbarSpacer/>
-                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_PresaInCarico"/>
-                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_PresaInCarico"/>
-                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_PresaInCarico"/>
+                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_PresaInCarico" class="TTButton"/>
+                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_PresaInCarico" class="TTButton"/>
+                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_PresaInCarico" class="TTButton"/>
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
@@ -155,9 +155,9 @@
                                                         <wt:toolbar>
                                                             <Toolbar>
                                                                 <ToolbarSpacer/>
-                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiPredisposizione"/>
-                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiPredisposizione"/>
-                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiPredisposizione"/>
+                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiPredisposizione" class="TTButton"/>
+                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiPredisposizione" class="TTButton"/>
+                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiPredisposizione" class="TTButton"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -335,20 +335,30 @@
                                 <VBox width="6%"/>
                             </HBox>
                             <VBox height="10%" width="100%"/>
-                            <HBox height="15%" width="100%">
-                                <VBox height="100%" width="10%"/>
-                                <VBox height="100%" width="90%">
-                                    <VBox height="33%" width="100%">
-                                        <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                            <VBox height="15%" width="100%">
+                                <HBox>
+                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="85%">
+                                        <VBox height="1%" width="100%"/>
+                                        <VBox height="33%" width="100%">
+                                            <HBox>
+                                                <VBox width="100%">
+                                                    <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                                                </VBox>
+                                                <VBox width="100%">
+                                                    <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                                                </VBox>
+                                            </HBox>
+                                        </VBox>
+                                        <VBox height="33%" width="100%">
+                                            <Text text="Disponibilità: {GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
+                                        </VBox>
+                                        <VBox height="33%" width="100%">
+                                            <Text text="Fermi automatici non causalizzati: {GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="customText"/>
+                                        </VBox>
                                     </VBox>
-                                    <VBox height="33%" width="100%">
-                                        <Text text="Disponibilità: {GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
-                                    </VBox>
-                                    <VBox height="33%" width="100%">
-                                        <Text text="Fermi automatici non causalizzati: {GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="customText"/>
-                                    </VBox>
-                                </VBox>
-                            </HBox>
+                                </HBox>
+                            </VBox>
                             <VBox height="10%" width="100%"/>
                             <VBox height="10%" width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
@@ -442,9 +452,9 @@
                                                         <wt:toolbar>
                                                             <Toolbar>
                                                                 <ToolbarSpacer/>
-                                                                <Button text="Collassa" press="CollapseAll" class="TTButtons textBlue" app:mydata="TreeTable_AttributiModifica"/>
-                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiModifica"/>
-                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiModifica"/>
+                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiModifica" class="TTButton"/>
+                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiModifica" class="TTButton"/>
+                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiModifica" class="TTButton"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -493,9 +503,9 @@
                                                             <Toolbar>
                                                                 <Button text="Ripristina valori" press="RestoreDefault"/>
                                                                 <ToolbarSpacer/>
-                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ModificaCondizioni"/>
-                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ModificaCondizioni"/>
-                                                                <Button text="Da confermare" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni"/>
+                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ModificaCondizioni" class="TTButton"/>
+                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ModificaCondizioni" class="TTButton"/>
+                                                                <Button text="Da confermare" press="ShowRelevant" app:mydata="TreeTable_ModificaCondizioni" class="TTButton"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -624,71 +634,73 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <HBox height="75%">
-                            <VBox height="100%" width="10%">
-                                <Text/>
-                            </VBox>
-                            <VBox height="100%" width="80%">
-                                <VBox height="15%">
-                                    <HBox>
-                                        <VBox width="10%"/>
-                                        <VBox width="25%">
-                                            <Button text="Esci" width="100%" press="EsciCausalizzazione"/>
-                                        </VBox>
-                                        <VBox width="30%"/>
-                                        <VBox width="25%">
-                                            <Button id="ConfermaCausalizzazione" text="Causalizza" width="100%" enabled="false" press="Causalizza"/>
-                                        </VBox>
-                                        <VBox width="10%"/>
-                                    </HBox>
+                        <VBox height="75%">
+                            <HBox height="100%" width="100%">
+                                <VBox height="100%" width="10%">
+                                    <Text/>
                                 </VBox>
-                                <VBox id="vbox_table" height="25%" width="100%">
+                                <VBox height="100%" width="80%">
+                                    <VBox height="15%">
+                                        <HBox>
+                                            <VBox width="10%"/>
+                                            <VBox width="25%">
+                                                <Button text="Esci" width="100%" press="EsciCausalizzazione"/>
+                                            </VBox>
+                                            <VBox width="30%"/>
+                                            <VBox width="25%">
+                                                <Button id="ConfermaCausalizzazione" text="Causalizza" width="100%" enabled="false" press="Causalizza"/>
+                                            </VBox>
+                                            <VBox width="10%"/>
+                                        </HBox>
+                                    </VBox>
+                                    <VBox id="vbox_table" height="25%" width="100%">
+                                    </VBox>
+                                    <VBox height="60%" width="100%">
+                                        <t:Table
+                                            id="SingoliTable"
+                                            visibleRowCount="5"
+                                            class="alternate-color"
+                                            selectionMode="None"
+                                            rows="{GeneralModel>/FermiNonCausalizzati/fermi}">
+                                            <t:columns>
+                                                <t:Column hAlign="Center" width="15%">
+                                                    <Label text="INIZIO"/>
+                                                    <t:template>
+                                                        <Text text="{GeneralModel>inizio}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="15%">
+                                                    <Label text="FINE"/>
+                                                    <t:template>
+                                                        <Text text="{GeneralModel>fine}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="15%">
+                                                    <Label text="TEMPO"/>
+                                                    <t:template>
+                                                        <Text text="{GeneralModel>intervallo}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="45%">
+                                                    <Label text="CAUSALE"/>
+                                                    <t:template>
+                                                        <Text text="{GeneralModel>causa}"/>
+                                                    </t:template>
+                                                </t:Column>
+                                                <t:Column hAlign="Center" width="10%">
+                                                    <t:template>
+                                                        <CheckBox id="CBSingoloCausa" selected="{GeneralModel>select}" enabled="{GeneralModel>enable}" select="ChangeSelezioneTotaleCausalizzazione"/>
+                                                    </t:template>
+                                                </t:Column>
+                                            </t:columns>
+                                        </t:Table>
+                                    </VBox>
                                 </VBox>
-                                <VBox height="60%" width="100%">
-                                    <t:Table
-                                        id="SingoliTable"
-                                        visibleRowCount="5"
-                                        class="alternate-color"
-                                        selectionMode="None"
-                                        rows="{GeneralModel>/FermiNonCausalizzati/fermi}">
-                                        <t:columns>
-                                            <t:Column hAlign="Center" width="15%">
-                                                <Label text="INIZIO"/>
-                                                <t:template>
-                                                    <Text text="{GeneralModel>inizio}"/>
-                                                </t:template>
-                                            </t:Column>
-                                            <t:Column hAlign="Center" width="15%">
-                                                <Label text="FINE"/>
-                                                <t:template>
-                                                    <Text text="{GeneralModel>fine}"/>
-                                                </t:template>
-                                            </t:Column>
-                                            <t:Column hAlign="Center" width="15%">
-                                                <Label text="TEMPO"/>
-                                                <t:template>
-                                                    <Text text="{GeneralModel>intervallo}"/>
-                                                </t:template>
-                                            </t:Column>
-                                            <t:Column hAlign="Center" width="45%">
-                                                <Label text="CAUSALE"/>
-                                                <t:template>
-                                                    <Text text="{GeneralModel>causa}"/>
-                                                </t:template>
-                                            </t:Column>
-                                            <t:Column hAlign="Center" width="10%">
-                                                <t:template>
-                                                    <CheckBox id="CBSingoloCausa" selected="{GeneralModel>select}" enabled="{GeneralModel>enable}" select="ChangeSelezioneTotaleCausalizzazione"/>
-                                                </t:template>
-                                            </t:Column>
-                                        </t:columns>
-                                    </t:Table>
+                                <VBox height="100%" width="10%">
+                                    <Text/>
                                 </VBox>
-                            </VBox>
-                            <VBox height="100%" width="10%">
-                                <Text/>
-                            </VBox>
-                        </HBox>
+                            </HBox>
+                        </VBox>
                     </VBox>
                 </content>
             </Page>
@@ -767,9 +779,9 @@
                                             <Toolbar>
                                                 <Button text="Ripristina valori" press="RestoreDefault"/>
                                                 <ToolbarSpacer/>
-                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_RipristinoCondizioni"/>
-                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_RipristinoCondizioni"/>
-                                                <Button text="Da confermare" press="ShowRelevant" app:mydata="TreeTable_RipristinoCondizioni"/>
+                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_RipristinoCondizioni" class="TTButton"/>
+                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_RipristinoCondizioni" class="TTButton"/>
+                                                <Button text="Da confermare" press="ShowRelevant" app:mydata="TreeTable_RipristinoCondizioni" class="TTButton"/>
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
@@ -867,8 +879,8 @@
                                         <wt:toolbar>
                                             <Toolbar>
                                                 <ToolbarSpacer/>
-                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_Chiusura"/>
-                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_Chiusura"/>
+                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_Chiusura" class="TTButton"/>
+                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_Chiusura" class="TTButton"/>
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
@@ -937,9 +949,9 @@
                                         <wt:toolbar>
                                             <Toolbar>
                                                 <ToolbarSpacer/>
-                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
-                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_BatchAttrezzaggio"/>
-                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_BatchAttrezzaggio"/>
+                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_BatchAttrezzaggio" class="TTButton"/>
+                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_BatchAttrezzaggio" class="TTButton"/>
+                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_BatchAttrezzaggio" class="TTButton"/>
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
@@ -1014,9 +1026,9 @@
                                                         <wt:toolbar>
                                                             <Toolbar>
                                                                 <ToolbarSpacer/>
-                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
-                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiAttrezzaggio"/>
-                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiAttrezzaggio"/>
+                                                                <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_AttributiAttrezzaggio" class="TTButton"/>
+                                                                <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_AttributiAttrezzaggio" class="TTButton"/>
+                                                                <Button text="Speciali" press="ShowRelevant" app:mydata="TreeTable_AttributiAttrezzaggio" class="TTButton"/>
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
@@ -1177,9 +1189,33 @@
             <Page id="processi" showHeader="false" class="colorPage">
                 <content>
                     <VBox id="logoVbox" height="25%" width="100%" justifyContent="center" alignItems="start">
-                        <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
+                        <VBox height="5%" width="100%"/>
+                        <VBox height="85%" width="100%">
+                            <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
+                        </VBox>
+                        <VBox height="10%" width="100%"/>
                     </VBox>
-                    <VBox id="panel_processi" class="MasterPanels" height="75%" width="100%" justifyContent="center" alignItems="start">
+                    <VBox id="panel_processi" class="MasterPanels" height="65%" width="100%" justifyContent="center" alignItems="start">
+                    </VBox>
+                    <VBox id="clock" class="MasterPanels" height="10%" width="100%">
+                        <VBox height="20%" width="100%"/>
+                        <VBox height="20%" width="100%">
+                            <HBox>
+                                <VBox height="100%" width="23%"/>
+                                <VBox height="100%" width="77%" justifyContent="center" alignItems="start">
+                                    <Label id="clockL1" class="textNormal"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                        <VBox height="10%" width="100%"/>
+                        <VBox height="50%" width="100%">
+                            <HBox>
+                                <VBox height="100%" width="38%"/>
+                                <VBox height="100%" width="62%" justifyContent="center" alignItems="start">
+                                    <Label id="clockL2" class="textNormal"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
                     </VBox>
                 </content>
             </Page>

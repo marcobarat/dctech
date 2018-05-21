@@ -276,16 +276,6 @@
                                     }]
                             }]
                     }]
-            }, {
-                "name": "DataCreazione",
-                "value": "2018-05-02T12:52:30",
-                "expand": 0,
-                "attributi": []
-            }, {
-                "name": "DataModifica",
-                "value": "2018-05-02T12:52:30",
-                "expand": 0,
-                "attributi": []
             }]
     },
     "SKUstandard": {
@@ -554,16 +544,6 @@
                                     }]
                             }]
                     }]
-            }, {
-                "name": "DataCreazione",
-                "value": "2018-05-02T12:52:30",
-                "expand": 0,
-                "attributi": []
-            }, {
-                "name": "DataModifica",
-                "value": "2018-05-02T12:52:30",
-                "expand": 0,
-                "attributi": []
             }]
     }
 }

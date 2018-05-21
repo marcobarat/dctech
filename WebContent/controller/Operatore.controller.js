@@ -1,12 +1,10 @@
 sap.ui.define([
     'jquery.sap.global',
-    'sap/ui/core/routing/History',
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
-    'myapp/control/StyleInputTreeTableValue',
     'myapp/control/CustomTreeTable',
     'sap/m/MessageToast'
-], function (jQuery, History, Controller, JSONModel, StyleInputTreeTableValue, CustomTreeTable, MessageToast) {
+], function (jQuery, Controller, JSONModel, CustomTreeTable, MessageToast) {
     "use strict";
     var TmpController = Controller.extend("myapp.controller.Operatore", {
 
@@ -48,6 +46,23 @@ sap.ui.define([
             } else {
                 this.RefreshCall();
             }
+
+
+            var clockL1 = this.getView().byId("clockL1");
+            var clockL2 = this.getView().byId("clockL2");
+            var date = this.GetData();
+            var time = this.GetOra();
+            clockL1.setText(date);
+            clockL2.setText(time);
+            var that = this;
+            setInterval(function () {
+                var date = that.GetData();
+                var time = that.GetOra();
+                clockL1.setText(date);
+                clockL2.setText(time);
+            }, 1000);
+
+
         },
 //        -------------------------------------------------------------------------------------------
 //        ------------------------- FUNZIONE CICLICA CHE CONTROLLA LO STATO -------------------------
@@ -204,6 +219,7 @@ sap.ui.define([
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.SwitchColor("green");
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                this.FermiAutomaticiCheck("Disponibile.Lavorazione");
             }
             this.BarColor(Jdata);
         },
@@ -213,6 +229,7 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.EnableButtons(["ButtonCausalizzazione"]);
+            this.FermiAutomaticiCheck("Disponibile.Svuotamento");
         },
 //        ---------------------------------------------------------------------
 //        -------------------------  FUNZIONI CALLER  -------------------------
@@ -384,6 +401,7 @@ sap.ui.define([
                 value: "{GeneralModel>codeValue}"});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizione";
+            var btn1, btn2, btn3, btn4;
             var TreeTable = new CustomTreeTable({
                 id: TT,
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
@@ -396,11 +414,11 @@ sap.ui.define([
                 toolbar: [
                     new sap.m.Toolbar({
                         content: [
-                            new sap.m.Button({text: "Ripristina valori", press: [this.RestoreDefault, this]}),
+                            btn1 = new sap.m.Button({text: "Ripristina valori", press: [this.RestoreDefault, this]}),
                             new sap.m.ToolbarSpacer({}),
-                            new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
-                            new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
-                            new sap.m.Button({text: "Da confermare", press: [TT, this.ShowRelevant, this]})
+                            btn2 = new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
+                            btn3 = new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
+                            btn4 = new sap.m.Button({text: "Da confermare", press: [TT, this.ShowRelevant, this]})
                         ]})],
                 columns: [
                     new sap.ui.table.Column({
@@ -423,6 +441,10 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            btn1.addStyleClass("TTButton");
+            btn2.addStyleClass("TTButton");
+            btn3.addStyleClass("TTButton");
+            btn4.addStyleClass("TTButton");
             var hbox = new sap.m.HBox({});
             var vb3 = new sap.m.VBox({width: "47%"});
             var vb4 = new sap.m.VBox({width: "6%"});
@@ -545,6 +567,7 @@ sap.ui.define([
             var data = JSON.parse(JSON.stringify(this.backupSetupModify));
             this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            this.FermiAutomaticiCheck("Disponibile.Lavorazione");
         },
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NELLE MODIFICHE
         ConfermaModifica: function () {
@@ -561,6 +584,7 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                this.FermiAutomaticiCheck("Disponibile.Lavorazione");
                 if (this.ISLOCAL !== 1) {
                     var XMLstring = this.XMLSetupUpdates(data);
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=1";
@@ -685,6 +709,7 @@ sap.ui.define([
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                this.FermiAutomaticiCheck("Disponibile.Lavorazione");
             } else if (this.discr === "FermoAutomatico") {
                 this.getSplitAppObj().toDetail(this.createId("Causalizzazione"));
                 this.UncheckCause();
@@ -811,6 +836,7 @@ sap.ui.define([
                     this.Item.fine = this.DateToStandard(now);
                     this.LOCALAggiornaFermi();
                     this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                    this.FermiAutomaticiCheck();
                     this.SwitchColor("green");
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.LOCALState = "Disponibile.Lavorazione";
@@ -921,17 +947,20 @@ sap.ui.define([
                     this.getSplitAppObj().toDetail(this.createId("InProgress"));
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                    this.FermiAutomaticiCheck();
                 } else if (this.LOCALState === "Disponibile.Svuotamento") {
                     this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
                     this.LOCALAggiornaChiusura();
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.EnableButtons(["ButtonCausalizzazione"]);
+                    this.FermiAutomaticiCheck();
                 }
             } else {
                 if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disponibile.Lavorazione") {
                     this.getSplitAppObj().toDetail(this.createId("InProgress"));
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+                    this.FermiAutomaticiCheck("Disponibile.Lavorazione");
                 } else if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disponibile.Svuotamento") {
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/RiassuntoOperatore&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                     this.SyncAjaxCallerData(link, this.SUCCESSChiusura.bind(this));
@@ -952,6 +981,7 @@ sap.ui.define([
                 this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.EnableButtons(["ButtonCausalizzazione"]);
+                this.FermiAutomaticiCheck("Disponibile.Svuotamento");
                 this.LOCALState = "Disponibile.Svuotamento";
                 this.LOCALAggiornaChiusura();
             } else {
@@ -1056,6 +1086,7 @@ sap.ui.define([
                 value: "{GeneralModel>codeValue}"});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
+            var btn1, btn2, btn3, btn4;
             var TreeTable = new CustomTreeTable({
                 id: TT,
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
@@ -1068,11 +1099,11 @@ sap.ui.define([
                 toolbar: [
                     new sap.m.Toolbar({
                         content: [
-                            new sap.m.Button({text: "Ripristina valori", press: [this.RestoreDefault, this]}),
+                            btn1 = new sap.m.Button({text: "Ripristina valori", press: [this.RestoreDefault, this]}),
                             new sap.m.ToolbarSpacer({}),
-                            new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
-                            new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
-                            new sap.m.Button({text: "Da confermare", press: [TT, this.ShowRelevant, this]})
+                            btn2 = new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
+                            btn3 = new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
+                            btn4 = new sap.m.Button({text: "Da confermare", press: [TT, this.ShowRelevant, this]})
                         ]})],
                 columns: [
                     new sap.ui.table.Column({
@@ -1095,6 +1126,10 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            btn1.addStyleClass("TTButton");
+            btn2.addStyleClass("TTButton");
+            btn3.addStyleClass("TTButton");
+            btn4.addStyleClass("TTButton");
             var hbox = new sap.m.HBox({});
             var vb1 = new sap.m.VBox({width: "47%"});
             var vb2 = new sap.m.VBox({width: "6%"});
@@ -1147,6 +1182,7 @@ sap.ui.define([
                 value: ""});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
+            var btn1, btn2, btn3, btn4;
             var TreeTable = new CustomTreeTable({
                 id: TT,
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
@@ -1159,11 +1195,11 @@ sap.ui.define([
                 toolbar: [
                     new sap.m.Toolbar({
                         content: [
-                            new sap.m.Button({text: "Ripristina valori", press: [this.RestoreDefault, this]}),
+                            btn1 = new sap.m.Button({text: "Ripristina valori", press: [this.RestoreDefault, this]}),
                             new sap.m.ToolbarSpacer({}),
-                            new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
-                            new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
-                            new sap.m.Button({text: "Da confermare", press: [TT, this.ShowRelevant, this]})
+                            btn2 = new sap.m.Button({text: "Collassa", press: [TT, this.CollapseAll, this]}),
+                            btn3 = new sap.m.Button({text: "Espandi", press: [TT, this.ExpandAll, this]}),
+                            btn4 = new sap.m.Button({text: "Da confermare", press: [TT, this.ShowRelevant, this]})
                         ]})],
                 columns: [
                     new sap.ui.table.Column({
@@ -1186,6 +1222,10 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            btn1.addStyleClass("TTButton");
+            btn2.addStyleClass("TTButton");
+            btn3.addStyleClass("TTButton");
+            btn4.addStyleClass("TTButton");
             var hbox = new sap.m.HBox({});
             var vb1 = new sap.m.VBox({width: "47%"});
             var vb2 = new sap.m.VBox({width: "6%"});
@@ -1306,6 +1346,32 @@ sap.ui.define([
 //                }
 //            }
         },
+        FermiAutomaticiCheck: function (stato) {
+            var id = "ButtonCausalizzazione";
+            var fermiString;
+            if (this.ISLOCAL === 1) {
+                fermiString = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale.tempoGuastoTotale;
+                if (fermiString === "00:00:00") {
+                    sap.ui.getCore().byId(id).setEnabled(false);
+                }
+            } else {
+                if (stato === "Disponibile.Lavorazione") {
+                    fermiString = this.ModelDetailPages.getData().DatiOEE;
+                    if (typeof fermiString !== "undefined") {
+                        if (fermiString.tempoFermiAutomatici === "0 ore, 0 min, 0 sec") {
+                            sap.ui.getCore().byId(id).setEnabled(false);
+                        }
+                    }
+                } else if (stato === "Disponibile.Svuotamento") {
+                    fermiString = this.ModelDetailPages.getData().ParametriChiusura;
+                    if (typeof fermiString !== "undefined") {
+                        if (fermiString.attributi[1].attributi[0].value === "0 ore, 0 min, 0 sec") {
+                            sap.ui.getCore().byId(id).setEnabled(false);
+                        }
+                    }
+                }
+            }
+        },
         EnableButtonsAttr: function (vec) {
             var ButtonIDs = ["ButtonBatchAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"];
             var i;
@@ -1321,26 +1387,32 @@ sap.ui.define([
             var CSS_classes_logo = ["logoBoxYellow", "logoBoxGreen", "logoBoxRed", "logoBoxBrown"];
             var panel = this.getView().byId("panel_processi");
             var logo = this.getView().byId("logoVbox");
+            var clock = this.getView().byId("clock");
             for (var col in CSS_classes) {
                 panel.removeStyleClass(CSS_classes[col]);
                 logo.removeStyleClass(CSS_classes_logo[col]);
+                clock.removeStyleClass(CSS_classes_logo[col]);
             }
             switch (color) {
                 case "yellow":
                     panel.addStyleClass("stylePanelYellow");
                     logo.addStyleClass("logoBoxYellow");
+                    clock.addStyleClass("logoBoxYellow");
                     break;
                 case "green":
                     panel.addStyleClass("stylePanelGreen");
                     logo.addStyleClass("logoBoxGreen");
+                    clock.addStyleClass("logoBoxGreen");
                     break;
                 case "red":
                     panel.addStyleClass("stylePanelRed");
                     logo.addStyleClass("logoBoxRed");
+                    clock.addStyleClass("logoBoxRed");
                     break;
                 case "brown":
                     panel.addStyleClass("stylePanelBrown");
                     logo.addStyleClass("logoBoxBrown");
+                    clock.addStyleClass("logoBoxBrown");
                     break;
             }
         },
@@ -1814,6 +1886,30 @@ sap.ui.define([
             var index = string.indexOf("T");
             return string.substring(0, index) + ", " + string.substring(index + 1, string.length);
         },
+        GetData: function () {
+            var day = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
+            var month = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+            var today = new Date();
+            var nday = today.getDay(),
+                    nmonth = today.getMonth(),
+                    ndate = today.getDate(),
+                    nyear = today.getYear();
+            if (nyear < 1000)
+                nyear += 1900;
+            return "" + day[nday] + " " + ndate + " " + month[nmonth] + " " + nyear;
+        },
+        GetOra: function () {
+            var today = new Date();
+            var nhour = today.getHours(),
+                    nmin = today.getMinutes(),
+                    nsec = today.getSeconds();
+            if (nmin <= 9)
+                nmin = "0" + nmin;
+            if (nsec <= 9)
+                nsec = "0" + nsec;
+            return "" + nhour + ":" + nmin + ":" + nsec + "";
+        },
+
 //      ----------------    FUNZIONI RICORSIVE    ----------------
 
         RecursiveJSONComparison: function (std, bck, arrayName) {
@@ -1980,10 +2076,6 @@ sap.ui.define([
             var model = this.ModelDetailPages.getData();
             var data = model.SKUBatch;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
-            data.SKUstandard.attributi[5].value = this.FromISOToPOD(data.SKUstandard.attributi[5].value);
-            data.SKUstandard.attributi[6].value = this.FromISOToPOD(data.SKUstandard.attributi[6].value);
-            data.SKUattuale.attributi[5].value = this.FromISOToPOD(data.SKUattuale.attributi[5].value);
-            data.SKUattuale.attributi[6].value = this.FromISOToPOD(data.SKUattuale.attributi[6].value);
             var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
             model.Intestazione.descrizione = descr;
             data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
@@ -2027,6 +2119,7 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.SwitchColor("green");
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
+            this.FermiAutomaticiCheck();
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.LOCALState = "Disponibile.Lavorazione";
         },
