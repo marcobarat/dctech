@@ -805,7 +805,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="7"
+                                        visibleRowCount="11"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_RipristinoCondizioni">
                                         <wt:toolbar>
