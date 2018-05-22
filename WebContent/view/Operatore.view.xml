@@ -61,7 +61,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="15"
+                                        visibleRowCount="23"
                                         rowSelectionChange="ciao"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_PresaInCarico">
@@ -149,7 +149,7 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="13"
+                                                        visibleRowCount="23"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiPredisposizione">
                                                         <wt:toolbar>
@@ -204,7 +204,7 @@
                                                                     collapseRecursive="true"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="14"
+                                                                    visibleRowCount="23"
                                                                     app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
                                                                     cellClick="LinkClick">
                                                                     <wt:toolbar>
@@ -247,7 +247,7 @@
                                                                     collapseRecursive="true"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="14"
+                                                                    visibleRowCount="23"
                                                                     app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
                                                                     cellClick="LinkClick">
                                                                     <wt:toolbar>
@@ -478,7 +478,7 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="13"
+                                                        visibleRowCount="23"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiModifica">
                                                         <wt:toolbar>
@@ -528,7 +528,7 @@
                                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="6"
+                                                        visibleRowCount="11"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_ModificaCondizioni">
                                                         <wt:toolbar>
@@ -653,7 +653,7 @@
             <Page id="Causalizzazione" showHeader="false" class="colorPage" enableScrolling="false">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%">
+                        <VBox height="20%">
                             <VBox width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
                                     <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
@@ -666,7 +666,7 @@
                                 </FlexBox>
                             </VBox>
                         </VBox>
-                        <VBox height="75%">
+                        <VBox height="80%">
                             <HBox height="100%" width="100%">
                                 <VBox height="100%" width="10%">
                                     <Text/>
@@ -685,12 +685,12 @@
                                             <VBox width="10%"/>
                                         </HBox>
                                     </VBox>
-                                    <VBox id="vbox_table" height="25%" width="100%">
+                                    <VBox id="vbox_table" height="15%" width="100%">
                                     </VBox>
-                                    <VBox height="60%" width="100%">
+                                    <VBox height="70%" width="100%">
                                         <t:Table
                                             id="SingoliTable"
-                                            visibleRowCount="5"
+                                            visibleRowCount="10"
                                             class="alternate-color"
                                             selectionMode="None"
                                             rows="{GeneralModel>/FermiNonCausalizzati/fermi}">
@@ -905,7 +905,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="15"
+                                        visibleRowCount="23"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_Chiusura">
                                         <wt:toolbar>
@@ -975,7 +975,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="15"
+                                        visibleRowCount="23"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_BatchAttrezzaggio">
                                         <wt:toolbar>
@@ -1052,7 +1052,7 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="13"
+                                                        visibleRowCount="23"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiAttrezzaggio">
                                                         <wt:toolbar>
@@ -1099,7 +1099,7 @@
                                                                 collapseRecursive="true"
                                                                 enableSelectAll="false"
                                                                 ariaLabelledBy="title"
-                                                                visibleRowCount="14"
+                                                                visibleRowCount="23"
                                                                 cellClick="LinkClick"
                                                                 app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew">
                                                                 <wt:toolbar>
@@ -1137,7 +1137,7 @@
                                                                 collapseRecursive="true"
                                                                 enableSelectAll="false"
                                                                 ariaLabelledBy="title"
-                                                                visibleRowCount="14"
+                                                                visibleRowCount="23"
                                                                 app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"
                                                                 cellClick="LinkClick">
                                                                 <wt:toolbar>
@@ -1221,11 +1221,11 @@
             <Page id="processi" showHeader="false" class="colorPage">
                 <content>
                     <VBox id="logoVbox" height="25%" width="100%" justifyContent="center" alignItems="start">
-                        <VBox height="7%" width="100%"/>
-                        <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%"/>
+                        <VBox height="65%" width="100%">
                             <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
                         </VBox>
-                        <VBox height="33%" width="100%"/>
+                        <VBox height="25%" width="100%"/>
                     </VBox>
                     <VBox id="panel_processi" class="MasterPanels" height="65%" width="100%" justifyContent="center" alignItems="start">
                     </VBox>
