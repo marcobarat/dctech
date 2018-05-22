@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+    controllerName="myapp.controller.ManagePianoGrey"
+    id="AskClosing"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table">
+    <Dialog contentWidth="1000px" contentHeight="300px" id="AskClosing" showHeader="false">
+        
+        <VBox height="100%" width="100%">
+            <VBox height="20%"/>
+            <VBox height="40%">
+                <FlexBox alignItems="Start" justifyContent="Center">
+                    <Text text="Conferma chiusura batch?" class="textTopRed"/>
+                </FlexBox>
+            </VBox>
+             <VBox height="20%"/>
+            <VBox height="20%">
+                <HBox>
+                    <VBox width="7%"/>
+                    <VBox width="40%">
+                        <Button text="ANNULLA" width="100%" press="AnnullaChiusuraConfezionamento" class="annullaButton"/>
+                    </VBox>
+                    <VBox  width="6%">
+                        <Text/>
+                    </VBox>
+                    <VBox width="40%">
+                        <Button text="CONFERMA" width="100%" press="ConfermaChiusuraConfezionamento" class="confermaButton"/>
+                    </VBox>
+                    <VBox width="7%"/>
+                </HBox>
+            </VBox>
+        </VBox>
+       
+    </Dialog>
+</core:FragmentDefinition>

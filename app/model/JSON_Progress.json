@@ -9,5 +9,6 @@
     "tempoConsuntivo": "10h 14m",
     "tempoResiduo": "4h 36m",
     "cartoniConsuntivi": "834 cartoni",
-    "cartoniResidui": "124 cartoni"
+    "cartoniResidui": "124 cartoni",
+    "barColor": "yellow"
 }

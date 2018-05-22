@@ -74,7 +74,7 @@
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
-                                            <t:Column width="10rem">
+                                            <t:Column width="10rem" resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
                                                     <!--<Text text="{name}" wrapping="false" />-->
@@ -82,7 +82,7 @@
                                                     <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="10rem">
+                                            <t:Column width="10rem" resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <!--<Text text="{value}" wrapping="false" />-->
@@ -97,7 +97,7 @@
                                         </wt:columns>
                                     </wt:CustomTreeTable>
                                     <!--</Panel>-->
-                                    <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" press="ConfermaBatch" class="attrezzaggioButton"/>
+                                    <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" height="150%" press="ConfermaBatch" class="attrezzaggioButton"/>
                                     <!--<Button text="Continua" width="100%" press="RefreshCall"/>-->
                                 </VBox>
                                 <VBox width="5%"/>
@@ -161,7 +161,7 @@
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
-                                                            <t:Column width="13rem">
+                                                            <t:Column width="13rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
                                                                     <!--<Text text="{name}" wrapping="false" />-->
@@ -169,7 +169,7 @@
                                                                     <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                 </t:template>
                                                             </t:Column>
-                                                            <t:Column width="7rem">
+                                                            <t:Column width="7rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
@@ -217,7 +217,7 @@
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
-                                                                        <t:Column width="13rem">
+                                                                        <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
                                                                                 <!--                                                                                <Text text="{name}" wrapping="false" />
@@ -225,7 +225,7 @@
                                                                                 <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                             </t:template>
                                                                         </t:Column>
-                                                                        <t:Column width="7rem">
+                                                                        <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
                                                                                 <!--                                                                                <Text text="{value}" wrapping="false" />
@@ -260,7 +260,7 @@
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
-                                                                        <t:Column width="13rem">
+                                                                        <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
                                                                                 <!--                                                                                <Text text="{name}" wrapping="false" />
@@ -268,7 +268,7 @@
                                                                                 <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                             </t:template>
                                                                         </t:Column>
-                                                                        <t:Column width="7rem">
+                                                                        <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
                                                                                 <!--                                                                                <Text text="{value}" wrapping="false" />
@@ -342,19 +342,48 @@
                                         <VBox height="1%" width="100%"/>
                                         <VBox height="33%" width="100%">
                                             <HBox>
-                                                <VBox width="100%">
-                                                    <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                                                <VBox width="40%">
+                                                    <Text text="Efficienza:" class="customText"/>
+                                                    <Text/>
                                                 </VBox>
-                                                <VBox width="100%">
-                                                    <Text text="Efficienza: {GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                                                <VBox width="22%">
+                                                    <FlexBox alignItems="End" justifyContent="End">
+                                                        <Text text="{GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                                                        <Text/>
+                                                    </FlexBox>
                                                 </VBox>
+                                                <VBox width="38%"/>
                                             </HBox>
                                         </VBox>
                                         <VBox height="33%" width="100%">
-                                            <Text text="Disponibilità: {GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
+                                            <HBox>
+                                                <VBox width="40%">
+                                                    <Text text="Disponibilità:" class="customText"/>
+                                                    <Text/>
+                                                </VBox>
+                                                <VBox width="22%">
+                                                    <FlexBox alignItems="End" justifyContent="End">
+                                                        <Text text="{GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
+                                                        <Text/>
+                                                    </FlexBox>
+                                                </VBox>
+                                                <VBox width="38%"/>
+                                            </HBox>
                                         </VBox>
                                         <VBox height="33%" width="100%">
-                                            <Text text="Fermi automatici non causalizzati: {GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="customText"/>
+                                            <HBox>
+                                                <VBox width="42%">
+                                                    <Text text="Fermi automatici non causalizzati:" class="customText"/>
+                                                    <Text/>
+                                                </VBox>
+                                                <VBox width="20%">
+                                                    <FlexBox alignItems="End" justifyContent="End">
+                                                        <Text text="{GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="customText"/>
+                                                        <Text/>
+                                                    </FlexBox>
+                                                </VBox>
+                                                <VBox width="38%"/>
+                                            </HBox>
                                         </VBox>
                                     </VBox>
                                 </HBox>
@@ -362,15 +391,17 @@
                             <VBox height="10%" width="100%"/>
                             <VBox height="10%" width="100%">
                                 <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text  text="Avanzamento confezionamento" class="customText"/>
+                                    <Text  text="Avanzamento confezionamento" class="textTop"/>
                                 </FlexBox>
                             </VBox>
-                            <VBox height="35%" width="100%">
+                             <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="28%"/>
                                     <VBox height="100%" width="30%">
                                         <VBox height="25%" width="100%">
                                             <Text text="Valori consuntivi" class="customText"/>
+                                            <Text/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
                                             <Text text="{GeneralModel>/DatiOEE/massaConsuntiva}" class="customText"/>
@@ -385,6 +416,7 @@
                                     <VBox height="100%" width="30%">
                                         <VBox height="25%" width="100%">
                                             <Text text="Valori residui" class="customText"/>
+                                            <Text/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
                                             <Text text="{GeneralModel>/DatiOEE/massaResidua}" class="customText"/>
@@ -458,7 +490,7 @@
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
-                                                            <t:Column width="13rem">
+                                                            <t:Column width="13rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
                                                                     <!--<Text text="{name}" wrapping="false" />-->
@@ -466,7 +498,7 @@
                                                                     <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                 </t:template>
                                                             </t:Column>
-                                                            <t:Column width="7rem">
+                                                            <t:Column width="7rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
@@ -509,7 +541,7 @@
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
-                                                            <t:Column width="15rem">
+                                                            <t:Column width="15rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
                                                                     <!--<Text text="{name}" wrapping="false" />-->
@@ -517,7 +549,7 @@
                                                                     <Text text="{GeneralModel>name}" />
                                                                 </t:template>
                                                             </t:Column>
-                                                            <t:Column width="5rem">
+                                                            <t:Column width="5rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
@@ -525,7 +557,7 @@
                                                                     <Text text="{GeneralModel>value}" />
                                                                 </t:template>
                                                             </t:Column>
-                                                            <t:Column width="5rem">
+                                                            <t:Column width="5rem" resizable="false">
                                                                 <Label text="SIGLE"/>
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
@@ -536,7 +568,7 @@
                                                                     <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
                                                                 </t:template>
                                                             </t:Column>
-                                                            <t:Column width="5rem">
+                                                            <t:Column width="5rem" resizable="false">
                                                                 <Label text="MODIFICA VALORE"/>
                                                                 <t:template>
                                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
@@ -550,7 +582,7 @@
                                                                     <!--<wt:StyleInputTreeTableModify diff="{TreeTable_ModificaCondizioni>modify}"/>-->
                                                                 </t:template>
                                                             </t:Column>
-                                                            <t:Column width="5rem">
+                                                            <t:Column width="5rem" resizable="false">
                                                                 <Label text="MODIFICA SIGLE"/>
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
@@ -663,31 +695,31 @@
                                             selectionMode="None"
                                             rows="{GeneralModel>/FermiNonCausalizzati/fermi}">
                                             <t:columns>
-                                                <t:Column hAlign="Center" width="15%">
+                                                <t:Column hAlign="Center" width="15%" resizable="false">
                                                     <Label text="INIZIO"/>
                                                     <t:template>
                                                         <Text text="{GeneralModel>inizio}"/>
                                                     </t:template>
                                                 </t:Column>
-                                                <t:Column hAlign="Center" width="15%">
+                                                <t:Column hAlign="Center" width="15%" resizable="false">
                                                     <Label text="FINE"/>
                                                     <t:template>
                                                         <Text text="{GeneralModel>fine}"/>
                                                     </t:template>
                                                 </t:Column>
-                                                <t:Column hAlign="Center" width="15%">
+                                                <t:Column hAlign="Center" width="15%" resizable="false">
                                                     <Label text="TEMPO"/>
                                                     <t:template>
                                                         <Text text="{GeneralModel>intervallo}"/>
                                                     </t:template>
                                                 </t:Column>
-                                                <t:Column hAlign="Center" width="45%">
+                                                <t:Column hAlign="Center" width="45%" resizable="false">
                                                     <Label text="CAUSALE"/>
                                                     <t:template>
                                                         <Text text="{GeneralModel>causa}"/>
                                                     </t:template>
                                                 </t:Column>
-                                                <t:Column hAlign="Center" width="10%">
+                                                <t:Column hAlign="Center" width="10%" resizable="false">
                                                     <t:template>
                                                         <CheckBox id="CBSingoloCausa" selected="{GeneralModel>select}" enabled="{GeneralModel>enable}" select="ChangeSelezioneTotaleCausalizzazione"/>
                                                     </t:template>
@@ -785,31 +817,31 @@
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
-                                            <t:Column width="15rem">
+                                            <t:Column width="15rem" resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
                                                     <Text text="{GeneralModel>name}" />
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="5rem">
+                                            <t:Column width="5rem" resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <Text text="{GeneralModel>value}" />
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="5rem">
+                                            <t:Column width="5rem" resizable="false">
                                                 <Label text="SIGLE"/>
                                                 <t:template>
                                                     <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" />
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="5rem">
+                                            <t:Column width="5rem" resizable="false">
                                                 <Label text="MODIFICA VALORE"/>
                                                 <t:template>
                                                     <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="5rem">
+                                            <t:Column width="5rem" resizable="false">
                                                 <Label text="MODIFICA SIGLE"/>
                                                 <t:template>
                                                     <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
@@ -884,13 +916,13 @@
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
-                                            <t:Column width="10rem" >
+                                            <t:Column width="10rem"  resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
                                                     <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="10rem" >
+                                            <t:Column width="10rem"  resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
@@ -901,7 +933,7 @@
                                         </wt:columns>
                                     </wt:CustomTreeTable>
                                     <!--</Panel>-->
-                                    <Button text="CHIUSURA BATCH" width="100%" press="ConfermaChiusura" class="attrezzaggioButton"/>
+                                    <Button text="CHIUSURA BATCH" width="100%" press="SvuotaLinea" class="attrezzaggioButton"/>
                                 </VBox>
                                 <VBox width="5%"/>
                             </HBox>
@@ -955,13 +987,13 @@
                                             </Toolbar>
                                         </wt:toolbar>
                                         <wt:columns>
-                                            <t:Column width="10rem">
+                                            <t:Column width="10rem" resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
                                                     <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="10rem">
+                                            <t:Column width="10rem" resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
@@ -1032,13 +1064,13 @@
                                                             </Toolbar>
                                                         </wt:toolbar>
                                                         <wt:columns>
-                                                            <t:Column width="13rem">
+                                                            <t:Column width="13rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
                                                                     <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                 </t:template>
                                                             </t:Column>
-                                                            <t:Column width="7rem">
+                                                            <t:Column width="7rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <HBox>
@@ -1079,13 +1111,13 @@
                                                                     </Toolbar>
                                                                 </wt:toolbar>
                                                                 <wt:columns>
-                                                                    <t:Column width="13rem">
+                                                                    <t:Column width="13rem" resizable="false">
                                                                         <Label text="ATTRIBUTI"/>
                                                                         <t:template>
                                                                             <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                         </t:template>
                                                                     </t:Column>
-                                                                    <t:Column width="7rem">
+                                                                    <t:Column width="7rem" resizable="false">
                                                                         <Label text="VALORE"/>
                                                                         <t:template>
                                                                             <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
@@ -1117,13 +1149,13 @@
                                                                     </Toolbar>
                                                                 </wt:toolbar>
                                                                 <wt:columns>
-                                                                    <t:Column width="13rem">
+                                                                    <t:Column width="13rem" resizable="false">
                                                                         <Label text="ATTRIBUTI"/>
                                                                         <t:template>
                                                                             <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
                                                                         </t:template>
                                                                     </t:Column>
-                                                                    <t:Column width="7rem">
+                                                                    <t:Column width="7rem" resizable="false">
                                                                         <Label text="VALORE"/>
                                                                         <t:template>
                                                                             <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
@@ -1189,11 +1221,11 @@
             <Page id="processi" showHeader="false" class="colorPage">
                 <content>
                     <VBox id="logoVbox" height="25%" width="100%" justifyContent="center" alignItems="start">
-                        <VBox height="5%" width="100%"/>
-                        <VBox height="85%" width="100%">
+                        <VBox height="7%" width="100%"/>
+                        <VBox height="60%" width="100%">
                             <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
                         </VBox>
-                        <VBox height="10%" width="100%"/>
+                        <VBox height="33%" width="100%"/>
                     </VBox>
                     <VBox id="panel_processi" class="MasterPanels" height="65%" width="100%" justifyContent="center" alignItems="start">
                     </VBox>
@@ -1210,8 +1242,8 @@
                         <VBox height="10%" width="100%"/>
                         <VBox height="50%" width="100%">
                             <HBox>
-                                <VBox height="100%" width="38%"/>
-                                <VBox height="100%" width="62%" justifyContent="center" alignItems="start">
+                                <VBox height="100%" width="41%"/>
+                                <VBox height="100%" width="59%" justifyContent="center" alignItems="start">
                                     <Label id="clockL2" class="textNormal"/>
                                 </VBox>
                             </HBox>

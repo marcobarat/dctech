@@ -28,6 +28,7 @@ sap.ui.define([
         codeCheck: null,
         State: null,
         LOCALState: null,
+        Dialog: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -61,8 +62,6 @@ sap.ui.define([
                 clockL1.setText(date);
                 clockL2.setText(time);
             }, 1000);
-
-
         },
 //        -------------------------------------------------------------------------------------------
 //        ------------------------- FUNZIONE CICLICA CHE CONTROLLA LO STATO -------------------------
@@ -423,20 +422,24 @@ sap.ui.define([
                 columns: [
                     new sap.ui.table.Column({
                         label: "Attributi",
+                        resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}"})}),
                     new sap.ui.table.Column({
                         label: "Valore",
+                        resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
                         label: "Modifica",
+                        resizable: false,
                         width: "5rem",
                         template: inputValueMod}),
                     new sap.ui.table.Column({
                         label: "Sigle",
+                        resizable: false,
                         width: "5rem",
                         template: inputCodeValue})
                 ]
@@ -683,7 +686,7 @@ sap.ui.define([
             bt1.addStyleClass("annullaButton");
             var bt2 = new sap.m.Button({
                 id: "ConfermaFermo",
-                text: "CONFERMA FERMO",
+                text: "CONFERMA",
                 width: "100%",
                 enabled: false,
                 press: [this.ConfermaFermo, this]});
@@ -900,15 +903,19 @@ sap.ui.define([
                     columns: [
                         new sap.m.Column({
                             hAlign: "Center",
+                            resizable: false,
                             width: "30%"}),
                         new sap.m.Column({
                             hAlign: "Center",
+                            resizable: false,
                             width: "15%"}),
                         new sap.m.Column({
                             hAlign: "Center",
+                            resizable: false,
                             width: "45%"}),
                         new sap.m.Column({
                             hAlign: "Center",
+                            resizable: false,
                             width: "10%"})
                     ]
                 });
@@ -976,6 +983,16 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
+            this.Dialog = this.getView().byId("AskClosing");
+            if (!this.Dialog) {
+                this.Dialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AskClosing", this);
+                this.getView().addDependent(this.Dialog);
+            }
+            this.Dialog.open();
+        },
+//      RICHIAMATO DAL PULSANTE "CONFERMA CHIUSURA CONFEZIONAMENTO"
+        ConfermaChiusuraConfezionamento: function () {
+            this.Dialog.close();
             if (this.ISLOCAL === 1) {
                 this.SwitchColor("brown");
                 this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
@@ -989,7 +1006,11 @@ sap.ui.define([
                 this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
         },
-        ConfermaChiusura: function () {
+//      RICHIAMATO DAL PULSANTE "ANNULLA CHIUSURA CONFEZIONAMENTO"
+        AnnullaChiusuraConfezionamento: function () {
+            this.Dialog.close();
+        },
+        SvuotaLinea: function () {
             var temp = {"linea": this.ModelDetailPages.getData().DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
             this.ModelDetailPages.setProperty("/Intestazione/", temp);
             if (this.ISLOCAL === 1) {
@@ -1108,20 +1129,24 @@ sap.ui.define([
                 columns: [
                     new sap.ui.table.Column({
                         label: "ATTRIBUTI",
+                        resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}"})}),
                     new sap.ui.table.Column({
                         label: "VALORE",
+                        resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
                         label: "MODIFICA",
+                        resizable: false,
                         width: "5rem",
                         template: inputValueMod}),
                     new sap.ui.table.Column({
                         label: "SIGLE",
+                        resizable: false,
                         width: "5rem",
                         template: inputCodeValue})
                 ]
@@ -1204,20 +1229,24 @@ sap.ui.define([
                 columns: [
                     new sap.ui.table.Column({
                         label: "ATTRIBUTI",
+                        resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}"})}),
                     new sap.ui.table.Column({
                         label: "VALORE",
+                        resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
                         label: "MODIFICA",
+                        resizable: false,
                         width: "5rem",
                         template: inputValueMod}),
                     new sap.ui.table.Column({
                         label: "SIGLE",
+                        resizable: false,
                         width: "5rem",
                         template: inputCodeValue})
                 ]
@@ -1675,15 +1704,14 @@ sap.ui.define([
                     break;
                 case "green":
                     button.addStyleClass("progressBarButtonGreen");
-                    bar.addStyleClass("Success");
+                    bar.setState("Success");
                     break;
                 case "orange":
                     button.addStyleClass("progressBarButtonOrange");
-                    bar.addStyleClass("Error");
+                    bar.setState("Error");
                     break;
             }
         },
-
 //      ----------------    FUNZIONI FERMO    ----------------
 
         GetStringIDFermiAuto: function () {
@@ -1901,15 +1929,15 @@ sap.ui.define([
         GetOra: function () {
             var today = new Date();
             var nhour = today.getHours(),
-                    nmin = today.getMinutes(),
-                    nsec = today.getSeconds();
+                    nmin = today.getMinutes();
+//                    nsec = today.getSeconds();
             if (nmin <= 9)
                 nmin = "0" + nmin;
-            if (nsec <= 9)
-                nsec = "0" + nsec;
-            return "" + nhour + ":" + nmin + ":" + nsec + "";
+//            if (nsec <= 9)
+//                nsec = "0" + nsec;
+//            return "" + nhour + ":" + nmin + ":" + nsec + "";
+            return "" + nhour + ":" + nmin;
         },
-
 //      ----------------    FUNZIONI RICORSIVE    ----------------
 
         RecursiveJSONComparison: function (std, bck, arrayName) {
@@ -2118,6 +2146,7 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
             this.SwitchColor("green");
+            this.BarColor(Jdata);
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
             this.FermiAutomaticiCheck();
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -2167,7 +2196,6 @@ sap.ui.define([
             }
             return key;
         }
-
     });
     return TmpController;
 });
