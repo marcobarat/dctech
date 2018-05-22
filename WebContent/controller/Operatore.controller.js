@@ -1946,7 +1946,7 @@ sap.ui.define([
                     bck[key] = this.RecursiveJSONComparison(std[key], bck[key], arrayName);
                 } else {
                     if (key === "value") {
-                        if (bck[key] !== std[key]) {
+                        if (bck[key] !== std[key] && bck.expand !== 3) {
                             bck.expand = 2;
                         }
                     }
