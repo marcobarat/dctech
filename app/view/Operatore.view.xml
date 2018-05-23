@@ -1253,8 +1253,8 @@
                         <VBox height="10%" width="100%"/>
                         <VBox height="50%" width="100%">
                             <HBox>
-                                <VBox height="100%" width="41%"/>
-                                <VBox height="100%" width="59%" justifyContent="center" alignItems="start">
+                                <VBox height="100%" width="35%"/>
+                                <VBox height="100%" width="65%" justifyContent="center" alignItems="start">
                                     <Label id="clockL2" class="textTop"/>
                                 </VBox>
                             </HBox>
