@@ -14,6 +14,7 @@ sap.ui.define([
         TIMER: null,
         LineDetails: {"Linea": "Linea 1", "idLinea": "1"},
         ModelDetailPages: new JSONModel({}),
+//        ModelTreeTablesSetup: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
         CheckFermo: null,
@@ -123,6 +124,7 @@ sap.ui.define([
                                 this.SwitchColor("yellow");
                                 this.EnableButtons(["ButtonFinePredisposizione"]);
                                 this.PredisposizioneLinea();
+//                                this.getView().setModel(this.ModelTreeTablesSetup, "TreeTablesSetup");
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                             }
                             break;
@@ -205,7 +207,9 @@ sap.ui.define([
                         break;
                 }
             }
+//            if (this.State === "Disponibile.Lavorazione" || this.State === "") {
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            }
             this.State = this.ModelDetailPages.getData().SKUBatch.StatoLinea;
             this.RefreshFunction();
         },
@@ -318,7 +322,7 @@ sap.ui.define([
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
-            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+//            this.ModelDetailPages.setProperty("/SetupLinea/", {});
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_SetupOld.json";
@@ -330,6 +334,7 @@ sap.ui.define([
             this.AjaxCallerData(link, this.SUCCESSOldSetup.bind(this));
         },
         SUCCESSOldSetup: function (Jdata) {
+//            this.ModelTreeTablesSetup.setProperty("/Old/", Jdata);
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata);
             var link;
             if (this.ISLOCAL === 1) {
@@ -340,8 +345,14 @@ sap.ui.define([
             this.AjaxCallerData(link, this.SUCCESSNewSetup.bind(this));
         },
         SUCCESSNewSetup: function (Jdata) {
+//            this.ModelTreeTablesSetup.setProperty("/New/", Jdata);
+//            this.ModelTreeTablesSetup.setProperty("/Modify/", JSON.parse(JSON.stringify(Jdata)));
             this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(Jdata)));
+
+//            var std = this.ModelTreeTablesSetup.getData().Old;
+//            var bck = this.ModelTreeTablesSetup.getData().New;
+//            var mod = this.ModelTreeTablesSetup.getData().Modify;
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
@@ -364,20 +375,26 @@ sap.ui.define([
                 mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             }
             this.backupSetupModify = JSON.parse(JSON.stringify(mod));
+
+//            this.ModelTreeTablesSetup.setProperty("/Old/", std);
+//            this.ModelTreeTablesSetup.setProperty("/New/", bck);
+//            this.ModelTreeTablesSetup.setProperty("/Modify/", mod);
+
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
             this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
+
             if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
             } else {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
             }
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
-                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_ConfermaSetupOld"), this.getView().byId("TreeTable_ConfermaSetupNew")]), 0);
-            } else {
-                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_AttrezzaggioOld"), this.getView().byId("TreeTable_AttrezzaggioNew")]), 0);
-            }
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+//                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_ConfermaSetupOld"), this.getView().byId("TreeTable_ConfermaSetupNew")]), 0);
+//            } else {
+//                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_AttrezzaggioOld"), this.getView().byId("TreeTable_AttrezzaggioNew")]), 0);
+//            }
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab

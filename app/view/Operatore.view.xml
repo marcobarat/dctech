@@ -197,6 +197,7 @@
                                                         <HBox height="100%" width="100%">
                                                             <VBox width="47%">
                                                                 <!--<Panel>-->
+                                                                <!--rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"-->
                                                                 <wt:CustomTreeTable
                                                                     id="TreeTable_ConfermaSetupOld"
                                                                     rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
@@ -241,6 +242,7 @@
                                                             <VBox width="6%"/>
                                                             <VBox height="100%" width="47%">
                                                                 <!--<Panel>-->
+                                                                <!--rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"-->
                                                                 <wt:CustomTreeTable
                                                                     id="TreeTable_ConfermaSetupNew"
                                                                     rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
