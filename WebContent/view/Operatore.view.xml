@@ -320,7 +320,7 @@
                                 <VBox width="64%">
                                     <ProgressIndicator
                                         id="progressBar"
-                                        class="customTextBar "
+                                        class="customTextBar"
                                         percentValue="{GeneralModel>/DatiOEE/avanzamento}"
                                         displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
                                         showValue="true"
@@ -1249,7 +1249,7 @@
                             <HBox>
                                 <VBox height="100%" width="41%"/>
                                 <VBox height="100%" width="59%" justifyContent="center" alignItems="start">
-                                    <Label id="clockL2" class="textNormal"/>
+                                    <Label id="clockL2" class="textTop"/>
                                 </VBox>
                             </HBox>
                         </VBox>

@@ -49,12 +49,12 @@
 }
 .diffRed {
     color : #A71930;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 .diffLink {
     color : #003A6B;
     text-decoration: underline;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 .sapMTB-Transparent-CTX .sapMBtnInner {
     color: #003A6B;
@@ -90,13 +90,13 @@
 }
 .customText {
     font-size: 15pt;
-    font-weight: bold;
+    /*font-weight: bold;*/
     color : #003A6B;
     font-family: Arial;
 }
 .customTextFermo  {
     font-size: 15pt;
-    font-weight: bold;
+    /*font-weight: bold;*/
     text-align: center;
     color : #003A6B;
     font-family: Arial;
@@ -169,8 +169,9 @@
     /*border: solid;*/
 }
 .customTextBar *{
-    font-size: 25pt;
-    font-weight: bold;
+    font-size: 30pt;
+    color : #003A6B;
+    font-family: Arial;
 }
 .sapMPIBarPositive {
     background: #7CA295;

@@ -10,7 +10,7 @@
             <VBox height="20%"/>
             <VBox height="40%">
                 <FlexBox alignItems="Start" justifyContent="Center">
-                    <Text text="Conferma chiusura batch?" class="textTopRed"/>
+                    <Text text="Conferma chiusura batch" class="textTop"/>
                 </FlexBox>
             </VBox>
              <VBox height="20%"/>

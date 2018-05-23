@@ -346,6 +346,13 @@ sap.ui.define([
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
+
+            
+            
+            bck = this.RecursiveLinkValue(bck);
+
+
+
             bck = this.RecursiveParentExpansion(bck);
             std = this.RecursiveStandardAdapt(std, bck);
             mod = this.RecursiveLinkRemoval(mod);
@@ -1645,7 +1652,7 @@ sap.ui.define([
                     Item.setName(binding.value);
                     var image = new sap.m.Image();
                     image.setSrc("img/dececco.jpg");
-                    image.setWidth("60%");
+                    image.setWidth("40%");
                     Item.addContent(image);
                     this.TabContainer.addItem(Item);
                     this.TabContainer.setSelectedItem(Item);
@@ -1691,27 +1698,37 @@ sap.ui.define([
 //      ----------------    FUNZIONI LAVORAZIONE    ----------------
 //      
         BarColor: function (data) {
-            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
-            var button = this.getView().byId("progressBarButton");
             var bar = this.getView().byId("progressBar");
-            for (var i = 0; i < CSS_classesButton.length; i++) {
-                button.removeStyleClass(CSS_classesButton[i]);
-            }
             switch (data.barColor) {
                 case "yellow":
-                    button.addStyleClass("progressBarButtonYellow");
                     bar.setState("Warning");
                     break;
                 case "green":
-                    button.addStyleClass("progressBarButtonGreen");
                     bar.setState("Success");
                     break;
                 case "orange":
-                    button.addStyleClass("progressBarButtonOrange");
                     bar.setState("Error");
                     break;
             }
         },
+//        SPCButtonColor: function (data) {
+//            var CSS_classesButton = ["progressBarButtonGreen", "progressBarButtonYellow", "progressBarButtonOrange"];
+//            var button = this.getView().byId("progressBarButton");
+//            for (var i = 0; i < CSS_classesButton.length; i++) {
+//                button.removeStyleClass(CSS_classesButton[i]);
+//            }
+//            switch (data.barColor) {
+//                case "yellow":
+//                    button.addStyleClass("progressBarButtonYellow");
+//                    break;
+//                case "green":
+//                    button.addStyleClass("progressBarButtonGreen");
+//                    break;
+//                case "orange":
+//                    button.addStyleClass("progressBarButtonOrange");
+//                    break;
+//            }
+//        },
 //      ----------------    FUNZIONI FERMO    ----------------
 
         GetStringIDFermiAuto: function () {
@@ -1963,6 +1980,20 @@ sap.ui.define([
                         json[key].expand = this.exp;
                     }
                     json[key] = this.RecursiveParentExpansion(json[key]);
+                }
+            }
+            return json;
+        },
+        RecursiveLinkValue: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveLinkValue(json[key]);
+                } else {
+                    if (key === "expand") {
+                        if (json[key] === 3) {
+                            json.value = "dececco.jpg";
+                        }
+                    }
                 }
             }
             return json;

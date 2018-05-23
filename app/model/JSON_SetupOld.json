@@ -22,7 +22,7 @@
                             "expand": 0,
                             "code": 1,
                             "modify": 1,
-                            "codeValue": "SW07",
+                            "codeValue": "",
                             "codePlaceholder": "Matricola",
                             "attributi": []
                         }, {
@@ -54,8 +54,18 @@
                     "codeValue": "",
                     "codePlaceholder": "",
                     "attributi": [{
+                            "IDParametro": "",
+                            "name": "Logo De Cecco Coppia04",
+                            "value": "",
+                            "expand": 3,
+                            "code": 0,
+                            "modify": 0,
+                            "codeValue": "",
+                            "codePlaceholder": "",
+                            "attributi": []
+                        }, {
                             "IDParametro": "53",
-                            "name": "Stato accensione CtrPz04",
+                            "name": "Peso riferimento CtrBx04",
                             "value": "12.100",
                             "expand": 0,
                             "code": 0,
