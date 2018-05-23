@@ -1142,7 +1142,7 @@
                                                                 enableSelectAll="false"
                                                                 ariaLabelledBy="title"
                                                                 visibleRowCount="23"
-                                                                app:mydata="TreeTable_ConfermaSetupNew,TreeTable_ConfermaSetupOld"
+                                                                app:mydata="TreeTable_AttrezzaggioNew,TreeTable_AttrezzaggioOld"
                                                                 toggleOpenState="COUPLEDTreeTableIconPress"
                                                                 cellClick="LinkClick">
                                                                 <wt:toolbar>

@@ -6,7 +6,7 @@
     "BatchTrasferito": "True",
     "Batch": [{
             "BatchID": "6",
-            "IsAttrezzaggio": "0",
+            "IsAttrezzaggio": "1",
             "SKUID": "15",
             "Errore": "0"
         }],
