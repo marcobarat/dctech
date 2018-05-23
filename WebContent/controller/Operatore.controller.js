@@ -347,8 +347,8 @@ sap.ui.define([
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
 
-            
-            
+
+
             bck = this.RecursiveLinkValue(bck);
 
 
@@ -1636,7 +1636,6 @@ sap.ui.define([
             var ViewsIDs = this.GetViewsIds(event.getSource().data("mydata"));
             var Views = [this.getView().byId(ViewsIDs[0]), this.getView().byId(ViewsIDs[1])];
             var clicked_row = event.getParameters().rowIndex;
-            var binding = event.getParameters().rowBindingContext.getObject();
             var clicked_column = event.getParameters().columnIndex;
             if (clicked_column === "0") {
                 for (var i = 0; i < Views.length; i++) {
@@ -1647,6 +1646,7 @@ sap.ui.define([
                     }
                 }
             } else {
+                var binding = event.getParameters().rowBindingContext.getObject();
                 if (binding.expand === 3) {
                     var Item = new sap.m.TabContainerItem();
                     Item.setName(binding.value);
@@ -1657,6 +1657,16 @@ sap.ui.define([
                     this.TabContainer.addItem(Item);
                     this.TabContainer.setSelectedItem(Item);
                 }
+            }
+        },
+        COUPLEDTreeTableIconPress: function (event) {
+            var ViewsIDs = this.GetViewsIds(event.getSource().data("mydata"));
+            var View = this.getView().byId(ViewsIDs[1]);
+            var clicked_row = event.getParameters().rowIndex;
+            if (!View.isExpanded(clicked_row)) {
+                View.expand(clicked_row);
+            } else {
+                View.collapse(clicked_row);
             }
         },
         COUPLEDCollapseAll: function (event) {

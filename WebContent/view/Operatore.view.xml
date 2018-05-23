@@ -205,7 +205,9 @@
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="23"
-                                                                    app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew">
+                                                                    app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
+                                                                    cellClick="LinkClick"
+                                                                    toggleOpenState="COUPLEDTreeTableIconPress">
                                                                     <wt:toolbar>
                                                                         <Toolbar>
                                                                             <Title text="PRECEDENTE" class="titleTT"/>
@@ -247,8 +249,9 @@
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="23"
-                                                                    app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
-                                                                    cellClick="LinkClick">
+                                                                    app:mydata="TreeTable_ConfermaSetupNew,TreeTable_ConfermaSetupOld"
+                                                                    cellClick="LinkClick"
+                                                                    toggleOpenState="COUPLEDTreeTableIconPress">
                                                                     <wt:toolbar>
                                                                         <Toolbar>
                                                                             <Title text="ATTUALE" class="titleTT"/>
@@ -1100,7 +1103,9 @@
                                                                 enableSelectAll="false"
                                                                 ariaLabelledBy="title"
                                                                 visibleRowCount="23"
-                                                                app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew">
+                                                                app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"
+                                                                toggleOpenState="COUPLEDTreeTableIconPress"
+                                                                cellClick="LinkClick">
                                                                 <wt:toolbar>
                                                                     <Toolbar>
                                                                         <ToolbarSpacer/>
@@ -1137,7 +1142,8 @@
                                                                 enableSelectAll="false"
                                                                 ariaLabelledBy="title"
                                                                 visibleRowCount="23"
-                                                                app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"
+                                                                app:mydata="TreeTable_ConfermaSetupNew,TreeTable_ConfermaSetupOld"
+                                                                toggleOpenState="COUPLEDTreeTableIconPress"
                                                                 cellClick="LinkClick">
                                                                 <wt:toolbar>
                                                                     <Toolbar>
