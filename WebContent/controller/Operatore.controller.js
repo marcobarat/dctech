@@ -11,6 +11,7 @@ sap.ui.define([
 //      VARIABILI GLOBALI
         ISLOCAL: 0,
         ISATTR: 0,
+        IDsTT: new JSONModel({}),
         TIMER: null,
         LineDetails: {"Linea": "Linea 1", "idLinea": "1"},
         ModelDetailPages: new JSONModel({}),
@@ -33,6 +34,9 @@ sap.ui.define([
 //------------------------------------------------------------------------------
 
         onInit: function () {
+
+            this.IDsTT.setProperty("/IDs/", []);
+            sap.ui.getCore().setModel(this.IDsTT);
 
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             this.ISATTR = Number(jQuery.sap.getUriParameters().get("ISATTR"));
@@ -199,6 +203,7 @@ sap.ui.define([
                         this.getSplitAppObj().toDetail(this.createId("Home"));
                         this.SwitchColor("");
                         this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+                        this.IDsTT.setProperty("/IDs/", []);
                         break;
                     case "NonDisponibile":
                         this.SwitchColor("red");
@@ -322,37 +327,30 @@ sap.ui.define([
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
-//            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+
+
+            this.ModelDetailPages.setProperty("/SetupLinea/", {});
+
+
+
             var link;
             if (this.ISLOCAL === 1) {
-                link = "model/JSON_SetupOld.json";
+//                link = "model/JSON_SetupOld.json";
+                link = "model/JSON_Setup.json";
                 this.SwitchColor("yellow");
                 this.EnableButtons(["ButtonFinePredisposizione"]);
             } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreOld&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreCombo&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             }
-            this.AjaxCallerData(link, this.SUCCESSOldSetup.bind(this));
+//            this.AjaxCallerData(link, this.SUCCESSOldSetup.bind(this));
+            this.AjaxCallerData(link, this.SUCCESSSetup.bind(this));
         },
-        SUCCESSOldSetup: function (Jdata) {
-//            this.ModelTreeTablesSetup.setProperty("/Old/", Jdata);
-            this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata);
-            var link;
-            if (this.ISLOCAL === 1) {
-                link = "model/JSON_SetupNew.json";
-            } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            }
-            this.AjaxCallerData(link, this.SUCCESSNewSetup.bind(this));
-        },
-        SUCCESSNewSetup: function (Jdata) {
-//            this.ModelTreeTablesSetup.setProperty("/New/", Jdata);
-//            this.ModelTreeTablesSetup.setProperty("/Modify/", JSON.parse(JSON.stringify(Jdata)));
-            this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata);
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(Jdata)));
+        SUCCESSSetup: function (Jdata) {
+            this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata.Old);
+            this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata.New);
+            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(Jdata.New)));
 
-//            var std = this.ModelTreeTablesSetup.getData().Old;
-//            var bck = this.ModelTreeTablesSetup.getData().New;
-//            var mod = this.ModelTreeTablesSetup.getData().Modify;
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
@@ -375,11 +373,6 @@ sap.ui.define([
                 mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             }
             this.backupSetupModify = JSON.parse(JSON.stringify(mod));
-
-//            this.ModelTreeTablesSetup.setProperty("/Old/", std);
-//            this.ModelTreeTablesSetup.setProperty("/New/", bck);
-//            this.ModelTreeTablesSetup.setProperty("/Modify/", mod);
-
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
             this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
@@ -389,13 +382,76 @@ sap.ui.define([
             } else {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
             }
-//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
 //            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
 //                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_ConfermaSetupOld"), this.getView().byId("TreeTable_ConfermaSetupNew")]), 0);
 //            } else {
 //                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_AttrezzaggioOld"), this.getView().byId("TreeTable_AttrezzaggioNew")]), 0);
 //            }
         },
+//        SUCCESSOldSetup: function (Jdata) {
+////            this.ModelTreeTablesSetup.setProperty("/Old/", Jdata);
+//            this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata);
+//            var link;
+//            if (this.ISLOCAL === 1) {
+//                link = "model/JSON_SetupNew.json";
+//            } else {
+//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreNew&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+//            }
+//            this.AjaxCallerData(link, this.SUCCESSNewSetup.bind(this));
+//        },
+//        SUCCESSNewSetup: function (Jdata) {
+////            this.ModelTreeTablesSetup.setProperty("/New/", Jdata);
+////            this.ModelTreeTablesSetup.setProperty("/Modify/", JSON.parse(JSON.stringify(Jdata)));
+//            this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata);
+//            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(Jdata)));
+//
+////            var std = this.ModelTreeTablesSetup.getData().Old;
+////            var bck = this.ModelTreeTablesSetup.getData().New;
+////            var mod = this.ModelTreeTablesSetup.getData().Modify;
+//            var std = this.ModelDetailPages.getData().SetupLinea.Old;
+//            var bck = this.ModelDetailPages.getData().SetupLinea.New;
+//            var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
+//            bck = this.RecursiveJSONComparison(std, bck, "attributi");
+//
+//
+//
+//            bck = this.RecursiveLinkValue(bck);
+//
+//
+//
+//            bck = this.RecursiveParentExpansion(bck);
+//            std = this.RecursiveStandardAdapt(std, bck);
+//            mod = this.RecursiveLinkRemoval(mod);
+//            mod = this.RecursiveModifyExpansion(mod);
+//            mod = this.RecursiveParentExpansion(mod);
+//            mod = this.RecursivePropertyAdder(mod, "valueModify");
+//            mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
+//            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+//                mod = this.RecursivePropertyAdder(mod, "codeValueModify");
+//            }
+//            this.backupSetupModify = JSON.parse(JSON.stringify(mod));
+//
+////            this.ModelTreeTablesSetup.setProperty("/Old/", std);
+////            this.ModelTreeTablesSetup.setProperty("/New/", bck);
+////            this.ModelTreeTablesSetup.setProperty("/Modify/", mod);
+//
+//            this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
+//            this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
+//            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
+//
+//            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+//                this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
+//            } else {
+//                this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
+//            }
+//            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+//                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_ConfermaSetupOld"), this.getView().byId("TreeTable_ConfermaSetupNew")]), 0);
+//            } else {
+//                setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [this.getView().byId("TreeTable_AttrezzaggioOld"), this.getView().byId("TreeTable_AttrezzaggioNew")]), 0);
+//            }
+//        },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
 //          nella quale viene messa la TreeTabledi fine predisposizione ed il bottone
@@ -2235,6 +2291,7 @@ sap.ui.define([
             var index1 = this.LOCALGetIndex(data.ParametriChiusura.attributi[index].attributi, "Tempi di fermo non causalizzati");
             data.ParametriChiusura.attributi[index].attributi[index1].value = data.FermiNonCausalizzati.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/", data);
+            this.IDsTT.setProperty("/IDs/", []);
         },
         //      Funzione che rimuove i guasti non causalizzati
         LOCALRemoveCaused: function (data) {

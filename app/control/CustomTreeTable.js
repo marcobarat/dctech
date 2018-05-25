@@ -13,15 +13,14 @@ sap.ui.define([
 
             return TreeTable.extend("myapp.control.CustomTreeTable", {
 
-                IDs: [],
-
                 renderer: {},
 
                 onAfterRendering: function () {
-                    if (this.IDs.indexOf(this.getId()) === -1) {
+                    var model = sap.ui.getCore().getModel().getData().IDs;
+                    if (model.indexOf(this.getId()) === -1) {
                         this.expandToLevel(20);
                         var that = this;
-                        this.IDs.push(this.getId());
+                        model.push(this.getId());
                         setTimeout(function () {
                             var num = that.getBinding("rows").getLength();
                             var temp;
