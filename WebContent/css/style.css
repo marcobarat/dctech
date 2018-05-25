@@ -98,7 +98,7 @@
     font-size: 15pt;
     /*font-weight: bold;*/
     text-align: center;
-    color : #003A6B;
+    color : #A71930;
     font-family: Arial;
 }
 .titleTT {
@@ -173,6 +173,10 @@
     color : #003A6B;
     font-family: Arial;
 }
+.customTextBarFermo *{
+    font-size: 30pt;
+    font-family: Arial;
+}
 .sapMPIBarPositive {
     background: #7CA295;
 }
@@ -181,6 +185,9 @@
 }
 .sapMPIBarCritical {
     background: #FFD300;
+}
+.sapMPIBarNeutral {
+    background: #A71930;
 }
 
 /*STILE TABELLA TOTALE CAUSALIZZAZIONE EDO*/
@@ -238,4 +245,13 @@
 .logoBoxBrown {
     border: solid;
     border-color: #5E3032;
+}
+
+/*DIALOG*/
+.dialogStyle {
+      margin-left: 8%;
+}
+.LogoFragment {
+    width: 55%;
+    margin-left: 17.5%;
 }

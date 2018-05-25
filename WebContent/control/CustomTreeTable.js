@@ -17,10 +17,10 @@ sap.ui.define([
 
                 onAfterRendering: function () {
                     var model = sap.ui.getCore().getModel().getData().IDs;
-                    if (model.indexOf(this.getId()) === -1) {
+                    if (typeof model[this.getId()] === "undefined" || model[this.getId()] === 0) {
                         this.expandToLevel(20);
                         var that = this;
-                        model.push(this.getId());
+                        model[this.getId()] = 1;
                         setTimeout(function () {
                             var num = that.getBinding("rows").getLength();
                             var temp;
