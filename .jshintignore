@@ -4,3 +4,4 @@ setTimeout
 setInterval
 app/component/**
 document
+location

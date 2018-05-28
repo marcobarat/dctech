@@ -20,27 +20,54 @@
     background-color: #5E3032; 
 }
 /*STILE BOTTONI SULLA MASTER PAGE*/
-.styleButton * {
-    font-size: 12pt;
-    font-family: Arial;
-    text-decoration: none;
+.styleButton .sapMBtnInner {
     margin-left: 5%;
     width:90%;
-    height:130%;
-    padding:1%;
+    height:160%;
+    color: #003A6B;
+    padding:4%;
+    border-radius: 10px;
+}
+.styleButton .sapMBtnContent {
+    font-size: 15pt;
+    font-family: Arial;
+    margin-left: 5%;
     color: #003A6B;
 }
-.styleLongButton * {
-    font-size: 12pt;
-    font-family: Arial;
-    text-decoration: none;
-    line-height: 15pt;
-    white-space: normal;
+.styleLongButton .sapMBtnInner {
     margin-left: 5%;
     width:90%;
-    height:130%;
-    padding:1%;
+    height:160%;
+    padding:3%;
     color: #003A6B;
+    border-radius: 10px;
+}
+.styleLongButton .sapMBtnContent {
+    font-size: 15pt;
+    font-family: Arial;
+    line-height: 17pt;
+    white-space: normal;
+    margin-left: 5%;
+    color: #003A6B;
+}
+.styleVeryLongButton .sapMBtnInner {
+    margin-left: 5%;
+    width:90%;
+    height:160%;
+    padding:3.3%;
+    color: #003A6B;
+    border-radius: 10px;
+}
+.styleVeryLongButton .sapMBtnContent {
+    font-size: 15pt;
+    font-family: Arial;
+    line-height: 17pt;
+    white-space: normal;
+    margin-left: 5%;
+    color: #003A6B;
+}
+.styleDisabledButton .sapMBtnContent {
+    font-style: italic;
 }
 
 /*STILE TESTI E INPUT TREETABLE*/
@@ -66,20 +93,33 @@
 .sapMTB-Transparent-CTX.sapMTB {
     padding-left: 0rem !important;
 }
-.TTButton {
-    font-size: 12pt;
+.TTButton .sapMBtnInner {
+    font-size: 15pt;
     font-family: Arial;
-    text-decoration: none;
     color: #003A6B;
-    width: 8rem !important;
+    background: #FFD300;
+    width: 10em;
+    border-radius: 10px;
+}
+.COUPLEDTTButton .sapMBtnInner {
+    font-size: 15pt;
+    font-family: Arial;
+    color: #003A6B;
+    background: #FFD300;
+    width: 6em;
+    border-radius: 10px;
 }
 /*STILE TESTI VARI*/
 .sapMText {
-    font-size: 12pt;
+    font-size: 15pt;
+    font-family: Arial;
+}
+.sapMLabel {
+    font-size: 15pt;
     font-family: Arial;
 }
 .textTop {
-    font-size: 30pt;
+    font-size: 40pt;
     color : #003A6B;
     font-family: Arial;
 }
@@ -89,7 +129,13 @@
     font-family: Arial;
 }
 .customText {
-    font-size: 15pt;
+    font-size: 30pt;
+    /*font-weight: bold;*/
+    color : #003A6B;
+    font-family: Arial;
+}
+.OEEText {
+    font-size: 20pt;
     /*font-weight: bold;*/
     color : #003A6B;
     font-family: Arial;
@@ -106,40 +152,63 @@
     font-family: Arial;
 }
 .textNormal {
-    font-size: 12pt;
+    font-size: 15pt;
     color : #003A6B;
     font-family: Arial;
 }
 
 
 /*STILE TAB CONTAINER*/
-.annullaButton * {
+.annullaButton .sapMBtnInner {
     font-family: Arial;
-    font-size: 12pt;
-    background-image: none !important;
-    background-color: #A71930 !important;
+    font-size: 20pt;
+    background: #A71930;
+    color: white;
+    border-radius: 10px;
+    padding: 1.5%;
+    height: 150%;
+}
+.confermaButton .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #7CA295;
+    color: white;
+    border-radius: 10px;
+    padding: 1.5%;
+    height: 150%;
+}
+.attrezzaggioButton .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #0085ca;
+    color: white;
+    padding: 0.65%;
+    height: 150%;
+    border-radius: 10px;
+}
+.chiusuraButton .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #5E3032;
     color: white;
 }
-.confermaButton * {
+.annullaButtonDialog .sapMBtnInner {
     font-family: Arial;
-    font-size: 12pt;
-    background-image: none !important;
-    background-color: #7CA295 !important;
+    font-size: 30pt;
     color: white;
+    background: #A71930;
+    border-radius: 10px;
+    height: 200%;
+    padding: 6.5%;
 }
-.attrezzaggioButton * {
+.confermaButtonDialog .sapMBtnInner {
     font-family: Arial;
-    font-size: 12pt;
-    background-image: none !important;
-    background-color: #0085ca !important;
+    font-size: 30pt;
     color: white;
-}
-.chiusuraButton * {
-    font-family: Arial;
-    font-size: 12pt;
-    background-image: none !important;
-    background-color: #5E3032 !important;
-    color: white;
+    background: #7CA295;
+    border-radius: 10px;
+    height: 200%;
+    padding: 6.5%;
 }
 /*.sapMTabStrip {
     background: #0085CA;
@@ -169,12 +238,12 @@
     /*border: solid;*/
 }
 .customTextBar *{
-    font-size: 30pt;
+    font-size: 40pt;
     color : #003A6B;
     font-family: Arial;
 }
 .customTextBarFermo *{
-    font-size: 30pt;
+    font-size: 40pt;
     font-family: Arial;
 }
 .sapMPIBarPositive {
@@ -249,9 +318,12 @@
 
 /*DIALOG*/
 .dialogStyle {
-      margin-left: 8%;
+    margin-left: 8%;
 }
 .LogoFragment {
     width: 55%;
     margin-left: 17.5%;
+}
+.topBorder {
+    border-top: 2px solid #003A6B;
 }

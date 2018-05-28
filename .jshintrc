@@ -13,6 +13,7 @@
 		"alert": false,
 		"setTimeout": false,
 		"document": false,
-		"setInterval": false
+		"setInterval": false,
+		"location": false
     }
 }

@@ -11,21 +11,35 @@
             <Page id="Home" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
-                        <VBox height="75%" width="100%">
+                        <VBox class="topBorder" height="65%" width="100%">
+                        </VBox>
+                        <VBox class="topBorder" height="10%" width="100%">
                         </VBox>
                     </VBox>
                 </content>
@@ -35,21 +49,33 @@
             <Page id="PresaInCarico" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
-                        <VBox height="75%" width="100%">
+                        <VBox class="topBorder" height="65%" width="100%">
                             <HBox height="100%" width="100%">
                                 <VBox width="5%"/>
                                 <VBox width="90%">
@@ -61,7 +87,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="23"
+                                        visibleRowCount="21"
                                         rowSelectionChange="ciao"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_PresaInCarico">
@@ -103,6 +129,8 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
+                        <VBox class="topBorder" height="10%" width="100%">
+                        </VBox>
                     </VBox>
                 </content>
             </Page>
@@ -112,21 +140,33 @@
             <Page id="PredisposizioneLinea" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
-                        <VBox height="75%" width="100%">
+                        <VBox class="topBorder" height="65%" width="100%">
                             <HBox height="100%" width="100%">
                                 <VBox width="5%"/>
                                 <VBox width="90%">
@@ -213,9 +253,9 @@
                                                                         <Toolbar>
                                                                             <Title text="PRECEDENTE" class="titleTT"/>
                                                                             <ToolbarSpacer/>
-                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
-                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
-                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
+                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew" class="COUPLEDTTButton"/>
+                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew" class="COUPLEDTTButton"/>
+                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew" class="COUPLEDTTButton"/>
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
@@ -258,9 +298,9 @@
                                                                         <Toolbar>
                                                                             <Title text="ATTUALE" class="titleTT"/>
                                                                             <ToolbarSpacer/>
-                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
-                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/> 
-                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"/>
+                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew" class="COUPLEDTTButton"/>
+                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew" class="COUPLEDTTButton"/> 
+                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew" class="COUPLEDTTButton"/>
                                                                         </Toolbar>
                                                                     </wt:toolbar>
                                                                     <wt:columns>
@@ -294,6 +334,8 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
+                        <VBox class="topBorder" height="10%" width="100%">
+                        </VBox>
                     </VBox>
                 </content>
             </Page>
@@ -304,20 +346,45 @@
                     
             <Page id="InProgress" showHeader="false" class="colorPage">
                 <content>
+                    <!--                            <VBox height="22%" width="100%">
+                        <VBox width="100%">
+                            <FlexBox alignItems="Start" justifyContent="Center">
+                                <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                            </FlexBox>
+                        </VBox>
+                        <VBox width="100%">
+                            <FlexBox alignItems="Start" justifyContent="Center">
+                                <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                            </FlexBox>
+                        </VBox>
+                    </VBox>-->
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
                             <HBox height="20%" width="100%">
@@ -346,12 +413,12 @@
                                         <VBox height="20%" width="100%">
                                             <HBox>
                                                 <VBox width="40%">
-                                                    <Text text="OEE:" class="customText"/>
+                                                    <Text text="OEE:" class="OEEText"/>
                                                     <Text/>
                                                 </VBox>
                                                 <VBox width="26%">
                                                     <FlexBox alignItems="End" justifyContent="End">
-                                                        <Text text="{GeneralModel>/DatiOEE/OEE}" class="customText"/>
+                                                        <Text text="{GeneralModel>/DatiOEE/OEE}" class="OEEText"/>
                                                         <Text/>
                                                     </FlexBox>
                                                 </VBox>
@@ -362,12 +429,12 @@
                                             <HBox>
                                                 <VBox width="5%"/>
                                                 <VBox width="35%">
-                                                    <Text text="- Disponibilità:" class="customText"/>
+                                                    <Text text="- Disponibilità:" class="OEEText"/>
                                                     <Text/>
                                                 </VBox>
                                                 <VBox width="26%">
                                                     <FlexBox alignItems="End" justifyContent="End">
-                                                        <Text text="{GeneralModel>/DatiOEE/disponibilita}" class="customText"/>
+                                                        <Text text="{GeneralModel>/DatiOEE/disponibilita}" class="OEEText"/>
                                                         <Text/>
                                                     </FlexBox>
                                                 </VBox>
@@ -378,12 +445,12 @@
                                             <HBox>
                                                 <VBox width="5%"/>
                                                 <VBox width="35%">
-                                                    <Text text="- Efficienza:" class="customText"/>
+                                                    <Text text="- Produttività:" class="OEEText"/>
                                                     <Text/>
                                                 </VBox>
                                                 <VBox width="26%">
                                                     <FlexBox alignItems="End" justifyContent="End">
-                                                        <Text text="{GeneralModel>/DatiOEE/efficienza}" class="customText"/>
+                                                        <Text text="{GeneralModel>/DatiOEE/efficienza}" class="OEEText"/>
                                                         <Text/>
                                                     </FlexBox>
                                                 </VBox>
@@ -394,12 +461,12 @@
                                             <HBox>
                                                 <VBox width="5%"/>
                                                 <VBox width="35%">
-                                                    <Text text="- Qualità:" class="customText"/>
+                                                    <Text text="- Qualità:" class="OEEText"/>
                                                     <Text/>
                                                 </VBox>
                                                 <VBox width="26%">
                                                     <FlexBox alignItems="End" justifyContent="End">
-                                                        <Text text="{GeneralModel>/DatiOEE/qualita}" class="customText"/>
+                                                        <Text text="{GeneralModel>/DatiOEE/qualita}" class="OEEText"/>
                                                         <Text/>
                                                     </FlexBox>
                                                 </VBox>
@@ -409,13 +476,13 @@
                                         <VBox height="20%" width="100%">
                                             <HBox>
                                                 <VBox width="42%">
-                                                    <Text text="Fermi automatici non causalizzati:" class="customText"/>
+                                                    <Text text="Fermi automatici non causalizzati:" class="OEEText"/>
                                                     <Text/>
                                                 </VBox>
                                                 <VBox width="24%">
                                                     <FlexBox alignItems="End" justifyContent="End">
-                                                        <!--<Text text="59 ore, 59 min, 59 sec" class="customText"/>-->
-                                                        <Text text="{GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="customText"/>
+                                                        <!--<Text text="59 ore, 59 min, 59 sec" class="OEEText"/>-->
+                                                        <Text text="{GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="OEEText"/>
                                                         <Text/>
                                                     </FlexBox>
                                                 </VBox>
@@ -437,32 +504,32 @@
                                     <VBox height="100%" width="30%"/>
                                     <VBox height="100%" width="30%">
                                         <VBox height="25%" width="100%">
-                                            <Text text="Valori consuntivi" class="customText"/>
+                                            <Text text="Valori consuntivi" class="OEEText"/>
                                             <Text/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="{GeneralModel>/DatiOEE/massaConsuntiva}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/massaConsuntiva}" class="OEEText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="{GeneralModel>/DatiOEE/tempoConsuntivo}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/tempoConsuntivo}" class="OEEText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="{GeneralModel>/DatiOEE/cartoniConsuntivi}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/cartoniConsuntivi}" class="OEEText"/>
                                         </VBox>
                                     </VBox>
                                     <VBox height="100%" width="30%">
                                         <VBox height="25%" width="100%">
-                                            <Text text="Valori residui" class="customText"/>
+                                            <Text text="Valori residui" class="OEEText"/>
                                             <Text/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="{GeneralModel>/DatiOEE/massaResidua}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/massaResidua}" class="OEEText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="{GeneralModel>/DatiOEE/tempoResiduo}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/tempoResiduo}" class="OEEText"/>
                                         </VBox>
                                         <VBox height="25%" width="100%">
-                                            <Text text="{GeneralModel>/DatiOEE/cartoniResidui}" class="customText"/>
+                                            <Text text="{GeneralModel>/DatiOEE/cartoniResidui}" class="OEEText"/>
                                         </VBox>
                                     </VBox>
                                     <VBox height="100%" width="10%"/>
@@ -477,19 +544,31 @@
             <Page id="ModificaCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
                             <HBox height="100%" width="100%">
@@ -570,7 +649,7 @@
                                                         app:mydata="TreeTable_ModificaCondizioni">
                                                         <wt:toolbar>
                                                             <Toolbar>
-                                                                <Button text="Ripristina valori" press="RestoreDefault"/>
+                                                                <Button text="Ripristina valori" press="RestoreDefault" class="TTButton"/>
                                                                 <ToolbarSpacer/>
                                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_ModificaCondizioni" class="TTButton"/>
                                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_ModificaCondizioni" class="TTButton"/>
@@ -666,19 +745,31 @@
             <Page id="Fermo" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox id="vboxFermo" height="75%" width="100%">
                         </VBox>
@@ -690,19 +781,31 @@
             <Page id="Causalizzazione" showHeader="false" class="colorPage" enableScrolling="false">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%">
                             <HBox height="100%" width="100%">
@@ -779,19 +882,31 @@
             <Page id="Fault" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
                             
@@ -867,7 +982,7 @@
                                             <HBox>
                                                 <VBox width="5%"/>
                                                 <VBox width="35%">
-                                                    <Text text="- Efficienza:" class="customTextFermo"/>
+                                                    <Text text="- \:" class="customTextFermo"/>
                                                     <Text/>
                                                 </VBox>
                                                 <VBox width="26%">
@@ -986,19 +1101,31 @@
             <Page id="RipristinoCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
                             <HBox height="100%" width="100%">
@@ -1087,19 +1214,31 @@
             <Page id="ChiusuraConfezionamento" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
                             <!--<Panel>-->
@@ -1157,19 +1296,31 @@
             <Page id="BatchAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
                             <HBox height="100%" width="100%">
@@ -1226,19 +1377,31 @@
             <Page id="PredisposizioneLineaAttrezzaggio" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop" />
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
                             <HBox height="100%" width="100%">
@@ -1393,19 +1556,31 @@
             <Page id="ConfermaAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="3%" width="100%"/>
-                        <VBox height="22%" width="100%">
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
-                                </FlexBox>
+                        <VBox height="25%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
-                            <VBox width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                    <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop" />
-                                </FlexBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
                             </VBox>
+                            <VBox height="30%" width="100%">
+                                <VBox width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Center">
+                                        <Text text="SUPERMERCATO FAMILA" class="textTop"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="10%" width="100%">
                             <Text/>
@@ -1447,19 +1622,19 @@
                     </VBox>
                     <VBox id="clock" class="MasterPanels" height="10%" width="100%">
                         <VBox height="20%" width="100%"/>
-                        <VBox height="20%" width="100%">
+                        <VBox height="10%" width="100%">
                             <HBox>
-                                <VBox height="100%" width="23%"/>
-                                <VBox height="100%" width="77%" justifyContent="center" alignItems="start">
+                                <VBox height="100%" width="16%"/>
+                                <VBox height="100%" width="84%" justifyContent="center" alignItems="start">
                                     <Label id="clockL1" class="textNormal"/>
                                 </VBox>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%"/>
-                        <VBox height="50%" width="100%">
+                        <VBox height="5%" width="100%"/>
+                        <VBox height="65%" width="100%">
                             <HBox>
-                                <VBox height="100%" width="35%"/>
-                                <VBox height="100%" width="65%" justifyContent="center" alignItems="start">
+                                <VBox height="100%" width="28%"/>
+                                <VBox height="100%" width="62%" justifyContent="center" alignItems="start">
                                     <Label id="clockL2" class="textTop"/>
                                 </VBox>
                             </HBox>

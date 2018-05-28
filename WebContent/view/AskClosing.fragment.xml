@@ -4,46 +4,46 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1000px" contentHeight="400px" id="AskClosing" showHeader="false">
-        <HBox height="100%" width="100%">
-            <VBox height="100%" width="20%">
-                <VBox height="34%" width="100%">
-                    <VBox height="10%" width="100%"/>
-                    <VBox height="65%" width="100%">
-                        <Image src="img/dececco_marchio_standard_rgb.png" class="LogoFragment"/>
-                    </VBox>
-                    <VBox height="25%" width="100%"/>
+    <Dialog contentWidth="750px" contentHeight="300px" id="AskClosing" showHeader="false">
+        <!--<HBox height="100%" width="100%">-->
+        <!--            <VBox height="100%" width="20%">
+            <VBox height="34%" width="100%">
+                <VBox height="10%" width="100%"/>
+                <VBox height="65%" width="100%">
+                    <Image src="img/dececco_marchio_standard_rgb.png" class="LogoFragment"/>
                 </VBox>
-                <VBox height="66%" width="100%"/>
+                <VBox height="25%" width="100%"/>
             </VBox>
-            <VBox height="100%" width="74%">
-                <VBox height="100%" width="100%">
-                    <VBox height="22%"/>
-                    <VBox height="20%">
-                        <FlexBox alignItems="Start" justifyContent="Center">
-                            <Text text="Conferma chiusura batch" class="textTop"/>
-                        </FlexBox>
-                    </VBox>
-                    <VBox height="20%"/>
-                    <VBox height="30%">
-                        <HBox>
-                            <VBox width="7%"/>
-                            <VBox width="40%">
-                                <Button text="ANNULLA" width="100%" press="AnnullaChiusuraConfezionamento" class="annullaButton"/>
-                            </VBox>
-                            <VBox  width="6%">
-                                <Text/>
-                            </VBox>
-                            <VBox width="40%">
-                                <Button text="CONFERMA" width="100%" press="ConfermaChiusuraConfezionamento" class="confermaButton"/>
-                            </VBox>
-                            <VBox width="7%"/>
-                        </HBox>
-                    </VBox>
-                    <VBox height="8%"/>
+            <VBox height="66%" width="100%"/>
+        </VBox>-->
+        <VBox height="100%" width="100%">
+            <VBox height="100%" width="100%">
+                <VBox height="16%"/>
+                <VBox height="20%">
+                    <FlexBox alignItems="Start" justifyContent="Center">
+                        <Text text="Chiusura confezionamento" class="textTop"/>
+                    </FlexBox>
                 </VBox>
+                <VBox height="20%"/>
+                <VBox height="30%">
+                    <HBox>
+                        <VBox width="7%"/>
+                        <VBox width="40%">
+                            <Button text="Annulla" width="100%" press="AnnullaChiusuraConfezionamento" class="annullaButtonDialog"/>
+                        </VBox>
+                        <VBox  width="6%">
+                            <Text/>
+                        </VBox>
+                        <VBox width="40%">
+                            <Button text="Conferma" width="100%" press="ConfermaChiusuraConfezionamento" class="confermaButtonDialog"/>
+                        </VBox>
+                        <VBox width="7%"/>
+                    </HBox>
+                </VBox>
+                <VBox height="14%"/>
             </VBox>
-            <VBox height="100%" width="6%"/>
-        </HBox>
+        </VBox>
+        <!--<VBox height="100%" width="6%"/>-->
+        <!--</HBox>-->
     </Dialog>
 </core:FragmentDefinition>

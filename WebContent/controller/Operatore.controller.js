@@ -427,6 +427,7 @@ sap.ui.define([
                 value: "{GeneralModel>codeValue}"});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizione";
+            this.IDsTreeTables.getData().IDs.TreeTable_FinePredisposizione = 0;
             var btn1, btn2, btn3, btn4;
             var TreeTable = new CustomTreeTable({
                 id: TT,
@@ -480,12 +481,12 @@ sap.ui.define([
             var vb4 = new sap.m.VBox({width: "6%"});
             var vb5 = new sap.m.VBox({width: "47%"});
             var bt2 = new sap.m.Button({
-                text: "ANNULLA",
+                text: "Annulla",
                 width: "100%",
                 press: [this.AnnullaPredisposizione, this]});
             bt2.addStyleClass("annullaButton");
             var bt3 = new sap.m.Button({
-                text: "CONFERMA",
+                text: "Conferma",
                 width: "100%",
                 press: [this.ConfermaPredisposizione, this]});
             bt3.addStyleClass("confermaButton");
@@ -1082,6 +1083,8 @@ sap.ui.define([
         SvuotaLinea: function () {
             var temp = {"linea": this.ModelDetailPages.getData().DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
             this.ModelDetailPages.setProperty("/Intestazione/", temp);
+            this.IDsTreeTables.setProperty("/IDs/", {});
+            sap.ui.getCore().setModel(this.IDsTreeTables);
             if (this.ISLOCAL === 1) {
                 this.getSplitAppObj().toDetail(this.createId("Home"));
                 this.SwitchColor("");
@@ -1092,6 +1095,7 @@ sap.ui.define([
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
+            location.reload();
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1400,6 +1404,7 @@ sap.ui.define([
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
+            location.reload();
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1420,29 +1425,16 @@ sap.ui.define([
             var i;
             for (i in ButtonIDs) {
                 sap.ui.getCore().byId(ButtonIDs[i]).setEnabled(false);
+                sap.ui.getCore().byId(ButtonIDs[i]).removeStyleClass("styleDisabledButton");
             }
             for (i in vec) {
                 sap.ui.getCore().byId(vec[i]).setEnabled(true);
             }
-//            for (i in vec) {
-//                if (vec[i] !== "ButtonCausalizzazione") {
-//                    sap.ui.getCore().byId(vec[i]).setEnabled(true);
-//                } else {
-//                    if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disoponibile.Lavorazione") {
-//                        if (this.ModelDetailPages.getData().DatiOEE.tempoFermiAutomatici !== "0 ore, 0 min, 0 sec") {
-//                            sap.ui.getCore().byId(vec[i]).setEnabled(true);
-//                        } else {
-//                            sap.ui.getCore().byId(vec[i]).setEnabled(false);
-//                        }
-//                    } else {
-//                        if (this.ModelDetailPages.getData().ParametriChiusura.attributi[1].attributi[0].value !== "0 ore, 0 min, 0 sec") {
-//                            sap.ui.getCore().byId(vec[i]).setEnabled(true);
-//                        } else {
-//                            sap.ui.getCore().byId(vec[i]).setEnabled(false);
-//                        }
-//                    }
-//                }
-//            }
+            for (i in ButtonIDs) {
+                if (sap.ui.getCore().byId(ButtonIDs[i]).getEnabled() === false) {
+                    sap.ui.getCore().byId(ButtonIDs[i]).addStyleClass("styleDisabledButton");
+                }
+            }
         },
         FermiAutomaticiCheck: function (stato) {
             var id = "ButtonCausalizzazione";
@@ -1475,9 +1467,11 @@ sap.ui.define([
             var i;
             for (i in ButtonIDs) {
                 sap.ui.getCore().byId(ButtonIDs[i]).setEnabled(false);
+                sap.ui.getCore().byId(ButtonIDs[i]).addStyleClass("styleDisabledButton");
             }
             for (i in vec) {
                 sap.ui.getCore().byId(vec[i]).setEnabled(true);
+                sap.ui.getCore().byId(ButtonIDs[i]).removeStyleClass("styleDisabledButton");
             }
         },
         SwitchColor: function (color) {
@@ -1518,9 +1512,9 @@ sap.ui.define([
             var vbox = this.getView().byId("panel_processi");
             var btn, btn_vbox;
             var IDs = ["ButtonPresaInCarico", "ButtonFinePredisposizione", "ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"];
-            var texts = ["Presa in carico nuovo confezionamento", "Fine predisposizione inizio confezionamento", "Visualizza/Modifica condizioni operative", "Fermo", "Riavvio", "Causalizzazione fermi automatici", "Chiusura confezionamento svuotamento linea"];
+            var texts = ["Presa in carico nuovo confezionamento", "Fine predisposizione inizio confezionamento", "Visualizza / Modifica condizioni operative", "Fermo", "Riavvio", "Causalizzazione fermi automatici", "Chiusura confezionamento svuotamento linea"];
             var press = [[this.PresaInCarico, this], [this.FinePredisposizione, this], [this.ModificaCondizioni, this], [this.Fermo, this], [this.Riavvio, this], [this.Causalizzazione, this], [this.ChiusuraConfezionamento, this]];
-            var classes = ["styleLongButton", "styleLongButton", "styleLongButton", "styleButton", "styleButton", "styleButton", "styleLongButton"];
+            var classes = ["styleLongButton", "styleLongButton", "styleLongButton", "styleButton", "styleButton", "styleLongButton", "styleVeryLongButton"];
             var a = 5;
             var PBt = 10;
             for (var i in IDs) {
