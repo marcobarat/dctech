@@ -1,0 +1,11 @@
+<core:FragmentDefinition
+    controllerName="myapp.controller.ManagePianoGrey"
+    id="SPCWindow"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:t="sap.ui.table">
+    <Dialog contentWidth="750px" contentHeight="300px" id="SPCWindow" showHeader="false">
+        <html:div id="plotBox"/>
+    </Dialog>
+</core:FragmentDefinition>

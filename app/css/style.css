@@ -220,23 +220,30 @@
 }*/
 
 /*STILE PROGRESS BAR*/
-.progressBarButtonGreen * {
-    height: 120px;
-    background-color: #7CA295 !important;
-    background-image: none !important;
-    /*border: solid;*/
+.SPCButtonGreen {
+    background: #7CA295;
+    height: 118.5px !important;
+    width: 85% !important;
+    top: 4px;
 }
-.progressBarButtonYellow * {
-    height: 120px;
-    background-color: #FFD300 !important;
-    background-image: none !important;
-    /*border: solid;*/
+.SPCButtonYellow {
+    background: #FFD300;
+    height: 118.5px !important;
+    width: 85% !important;
+    top: 4px;
 }
-.progressBarButtonOrange * {
-    height: 120px;
-    background-color: #d47600 !important;
-    background-image: none !important;
-    /*border: solid;*/
+.SPCButtonPhase1 {
+    background: #FFD300;
+    height: 118.5px !important;
+    width: 85% !important;
+    top: 4px;
+}
+.SPCButtonPhase1 .sapMBtnIcon {
+    height: 60%;
+    width: 80%;
+}
+.SPCImage {
+    width: 30%;
 }
 .customTextBar *{
     font-size: 40pt;

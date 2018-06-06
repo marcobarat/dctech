@@ -10,18 +10,21 @@
                 data-sap-ui-bindingSyntax="complex" data-sap-ui-compatVersion="edge"
                 data-sap-ui-resourceroots='{"myapp": "./"}'>
         </script>
+        <script src="lib/plotly-latest.min.js"></script>
 
         <!-- ext lib 
         <script src="ext_lib/sprintf.min.js"></script>
         -->
 
         <script>
-            sap.ui.getCore().attachInit(function () {
-                app: new sap.ui.core.ComponentContainer({
-                    height: "100%",
-                    name: "myapp"
-                }).placeAt("content");
-            });
+
+                    jQuery.sap.require("sap/ui/thirdparty/d3");
+                    sap.ui.getCore().attachInit(function () {
+                        app: new sap.ui.core.ComponentContainer({
+                            height: "100%",
+                            name: "myapp"
+                        }).placeAt("content");
+                    });
         </script>
 
     </head>

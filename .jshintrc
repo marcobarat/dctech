@@ -14,6 +14,8 @@
 		"setTimeout": false,
 		"document": false,
 		"setInterval": false,
-		"location": false
+		"location": false,
+		"Plotly": false,
+		"require": false
     }
 }

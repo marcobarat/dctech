@@ -5,3 +5,4 @@ setInterval
 app/component/**
 document
 location
+Plotly

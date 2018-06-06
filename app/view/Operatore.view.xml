@@ -387,24 +387,39 @@
                             <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="75%" width="100%">
-                            <HBox height="20%" width="100%">
-                                <VBox width="10%"/>
-                                <VBox width="64%">
-                                    <ProgressIndicator
-                                        id="progressBar"
-                                        class="customTextBar"
-                                        percentValue="{GeneralModel>/DatiOEE/avanzamento}"
-                                        displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
-                                        showValue="true"
-                                        state="Success"
-                                        height="120px"/>
-                                </VBox>
-                                <VBox width="4%"/>
-                                <VBox width="16%">
-                                    <Button id="progressBarButton" width="85%" class="progressBarButtonGreen" press="SPCGraph"/>
-                                </VBox>
-                                <VBox width="6%"/>
-                            </HBox>
+                            <VBox height="20%" width="100%">
+                                <HBox height="100%" width="100%">
+                                    <VBox width="10%" height="100%"/>
+                                    <VBox width="64%" height="100%">
+                                        <ProgressIndicator
+                                            id="progressBar"
+                                            class="customTextBar"
+                                            percentValue="{GeneralModel>/DatiOEE/avanzamento}"
+                                            displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
+                                            showValue="true"
+                                            state="Success"
+                                            height="120px"/>
+                                    </VBox>
+                                    <VBox width="4%" height="100%"/>
+                                    <VBox width="16%">
+                                        <VBox id="SPCButton" width="100%" height="100%">
+                                        </VBox>
+                                        
+                                        
+<!--                                        <VBox id="SPCImage" width="100%" height="100%">
+                                            <Image src="img/triangolo.png" class="SPCImage"/>   
+                                        </VBox>-->
+                                            <!--<GenericTile class="SPCTile" header="Cumulative Totals" subheader="Expenses" press="press"/>-->
+                                        <!--                                        <VBox id="SPCButton" width="100%" height="100%">
+                                        </VBox>
+                                        <VBox id="SPCImage" width="100%" height="100%">
+                                            <Image src="img/triangolo.png" class="SPCImage"/>
+                                        </VBox>-->
+                                        <Button width="85%" class="SPCButtonGreen" press="SPCGraph"/>
+                                    </VBox>
+                                    <VBox id="cici" width="6%" height="100%"/>
+                                </HBox>
+                            </VBox>
                             <VBox height="10%" width="100%"/>
                             <VBox height="15%" width="100%">
                                 <HBox>
