@@ -401,9 +401,9 @@
                                             height="120px"/>
                                     </VBox>
                                     <VBox width="4%" height="100%"/>
-                                    <VBox width="16%">
-                                        <VBox id="SPCButton" width="100%" height="100%">
-                                        </VBox>
+                                    <VBox id="SPCButton" width="16%" height="100%">
+<!--                                        <VBox id="SPCButton" width="100%" height="100%">
+                                        </VBox>-->
                                         
                                         
 <!--                                        <VBox id="SPCImage" width="100%" height="100%">
@@ -415,9 +415,9 @@
                                         <VBox id="SPCImage" width="100%" height="100%">
                                             <Image src="img/triangolo.png" class="SPCImage"/>
                                         </VBox>-->
-                                        <Button width="85%" class="SPCButtonGreen" press="SPCGraph"/>
+                                        <!--<Button width="85%" class="SPCButtonGreen" press="SPCGraph"/>-->
                                     </VBox>
-                                    <VBox id="cici" width="6%" height="100%"/>
+                                    <VBox width="6%" height="100%"/>
                                 </HBox>
                             </VBox>
                             <VBox height="10%" width="100%"/>

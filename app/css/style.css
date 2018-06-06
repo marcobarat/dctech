@@ -220,30 +220,32 @@
 }*/
 
 /*STILE PROGRESS BAR*/
-.SPCButtonGreen {
-    background: #7CA295;
-    height: 118.5px !important;
-    width: 85% !important;
-    top: 4px;
+.SPCButtonDimensionsEdo .sapMBtnInner {
+    padding-left:25% !important;
+    padding-right:25% !important;
+    position: relative;
+    text-shadow: none;
+    /*height: 3.5rem;*/ 
 }
-.SPCButtonYellow {
-    background: #FFD300;
-    height: 118.5px !important;
-    width: 85% !important;
-    top: 4px;
+.SPCButtonColorGreen .sapMBtnInner {
+    background: #7CA295; 
 }
-.SPCButtonPhase1 {
+.SPCButtonColorYellow .sapMBtnInner {
     background: #FFD300;
-    height: 118.5px !important;
-    width: 85% !important;
-    top: 4px;
+}
+.SPCButtonHeight .sapMBtnInner {
+    height: 121px !important;
+    position: relative;
+}
+.monobuttonSPC .sapMBtnContent {
+    position: absolute;
+    left: 35%;
+    top: 2.5%;
+    background-color: transparent !important;
 }
 .SPCButtonPhase1 .sapMBtnIcon {
-    height: 60%;
-    width: 80%;
-}
-.SPCImage {
-    width: 30%;
+    position: absolute;
+    left: 25%;
 }
 .customTextBar *{
     font-size: 40pt;
@@ -334,4 +336,54 @@
 }
 .topBorder {
     border-top: 2px solid #003A6B;
+}
+
+
+
+
+
+
+
+
+monobuttonSPC .sapMBtnInner {
+    padding-left:25% !important;
+    padding-right:25% !important;
+    position: relative;
+    text-shadow: none;
+    /*height: 3.5rem;*/ 
+}
+
+.monobuttonSPC .sapMBtnIcon {
+    position: absolute;
+    left: 25%;
+/*    max-height: 3.5rem;
+    height: 3.5rem;
+    width: 2.6875rem; */
+    
+    /* new_width = (new_height*43)/56 */
+}
+
+.monobuttonSPC .sapMBtnContent {
+    position: absolute;
+    left: 35%;
+    top: 2.5%;
+    background-color: transparent !important;
+}
+
+.bibuttonSPC .sapMBtnInner {
+    padding-left:2% !important;
+    padding-right:2% !important;    
+    position: relative;
+    text-shadow: none;
+}
+
+.bibuttonSPC .sapMBtnIcon {
+    position: absolute;
+}
+
+.bibuttonSPC .sapMBtnContent {
+    position: absolute;
+    left: 22%;
+    top: 2.5%;
+    background-color: transparent !important;
 }

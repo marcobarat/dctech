@@ -3,8 +3,9 @@ sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'myapp/control/CustomTreeTable',
-    'sap/m/MessageToast'
-], function (jQuery, Controller, JSONModel, CustomTreeTable, MessageToast) {
+    'sap/m/MessageToast',
+    'myapp/control/CustomSPCButton'
+], function (jQuery, Controller, JSONModel, CustomTreeTable, MessageToast, CustomSPCButton) {
     "use strict";
     var TmpController = Controller.extend("myapp.controller.Operatore", {
 
@@ -566,10 +567,15 @@ sap.ui.define([
             if (typeof id !== "undefined") {
                 id = 0;
             }
-            if (typeof this.ModelDetailPages.getData().DatiSPC[id].parametroId !== "undefined") {
-                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&ParametroID=" + this.ModelDetailPages.getData().DatiSPC[id].parametroId + "&Fase=" + this.ModelDetailPages.getData().DatiSPC[id].fase;
-                this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_SPCData.json";
+            } else {
+                if (typeof this.ModelDetailPages.getData().DatiSPC[id].parametroId !== "undefined") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&ParametroID=" + this.ModelDetailPages.getData().DatiSPC[id].parametroId + "&Fase=" + this.ModelDetailPages.getData().DatiSPC[id].fase;
+                }
             }
+            this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
         },
         SUCCESSSPCDataLoad: function (Jdata) {
             Jdata = this.ParseSPCData(Jdata, "#");
@@ -581,13 +587,14 @@ sap.ui.define([
             }
             this.Dialog.addStyleClass("dialogStyle");
             this.Dialog.open();
-            var dataPlot = [
-                {
-                    x: this.ModelDetailPages.getData().DatiSPC.Data.time,
-                    y: this.ModelDetailPages.getData().DatiSPC.Data.valori,
-                    type: 'scatter'
-                }
-            ];
+            
+//            var dataPlot = [
+//                {
+//                    x: this.ModelDetailPages.getData().DatiSPC.Data.time,
+//                    y: this.ModelDetailPages.getData().DatiSPC.Data.valori,
+//                    type: 'scatter'
+//                }
+//            ];
             var plotBox = this.getView().byId("plotBox");
             Plotly.plot(plotBox, [{
                     x: [1, 2, 3, 4, 5],
@@ -1818,10 +1825,11 @@ sap.ui.define([
             vbox.destroyItems();
             var bt1, bt2, hbox, vb1, vb2;
             if (data.length === 1) {
-                bt1 = new sap.m.GenericTile({
+                bt1 = new CustomSPCButton({
                     id: "SPCButton1",
+                    width: "85%",
                     press: [0, this.SPCGraph, this]});
-                bt1.addStyleClass("SPCButtonGreen");
+                bt1.addStyleClass("SPCButtonColorYellow");
                 vbox.addItem(bt1);
             } else if (data.length === 2) {
                 hbox = new sap.m.HBox({
@@ -1836,14 +1844,14 @@ sap.ui.define([
                     width: "50%",
                     height: "100%"
                 });
-                bt1 = new sap.m.GenericTile({
+                bt1 = new CustomSPCButton({
                     id: "SPCButton1",
                     press: [0, this.SPCGraph, this]});
-                bt1.addStyleClass("SPCButtonGreen");
-                bt2 = new sap.m.GenericTile({
+                bt1.addStyleClass("SPCButtonColorYellow");
+                bt2 = new CustomSPCButton({
                     id: "SPCButton2",
                     press: [1, this.SPCGraph, this]});
-                bt2.addStyleClass("SPCButtonGreen");
+                bt2.addStyleClass("SPCButtonColorYellow");
                 vb1.addItem(bt1);
                 vb2.addItem(bt2);
                 hbox.addItem(vb1);
@@ -1852,7 +1860,7 @@ sap.ui.define([
             }
         },
         SPCColor: function (data) {
-            var CSS_classesButton = ["SPCButtonGreen", "SPCButtonYellow", "SPCButtonPhase1"];
+            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1"];
             var btn;
             for (var b = 0; b < data.length; b++) {
                 btn = sap.ui.getCore().byId("SPCButton" + String(b + 1));
@@ -1861,17 +1869,17 @@ sap.ui.define([
                 }
                 switch (data[b].fase) {
                     case "1":
-//                        btn.setBackgroundImage("img/triangolo.png");
-                        btn.setHeader(data[b].numeroCampionamenti);
+                        btn.setIcon("img/triangolo.png");
+//                        btn.setHeader(data[b].numeroCampionamenti);
                         btn.addStyleClass("SPCButtonPhase1");
                         break;
                     case "2":
-                        btn.setBackgroundImage("");
-                        btn.setHeader("");
+                        btn.setIcon("");
+//                        btn.setHeader("");
                         if (data[b].allarme === "0") {
-                            btn.addStyleClass("SPCButtonGreen");
+                            btn.addStyleClass("SPCButtonColorGreen");
                         } else if (data[b].allarme === "1") {
-                            btn.addStyleClass("SPCButtonYellow");
+                            btn.addStyleClass("SPCButtonColorYellow");
                         }
                         break;
                 }
@@ -2343,6 +2351,14 @@ sap.ui.define([
             this.FermiAutomaticiCheck();
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.LOCALState = "Disponibile.Lavorazione";
+
+            var vbox = this.getView().byId("SPCButton");
+            var bt1 = new CustomSPCButton({
+                id: "SPCButton1",
+                width: "85%",
+                press: [0, this.SPCGraph, this]});
+            bt1.addStyleClass("SPCButtonColorGreen");
+            vbox.addItem(bt1);
         },
         LOCALUpdateFaultsModels: function () {
             var data_NOcause = this.ModelDetailPages.getData().FermiNonCausalizzati;
