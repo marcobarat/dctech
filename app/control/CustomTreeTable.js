@@ -16,7 +16,7 @@ sap.ui.define([
                 renderer: {},
 
                 onAfterRendering: function () {
-                    var model = sap.ui.getCore().getModel().getData().IDs;
+                    var model = sap.ui.getCore().getModel("IDsTreeTables").getData().IDs;
                     if (typeof model[this.getId()] === "undefined" || model[this.getId()] === 0) {
                         this.expandToLevel(20);
                         var that = this;

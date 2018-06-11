@@ -123,7 +123,7 @@
                                         </wt:columns>
                                     </wt:CustomTreeTable>
                                     <!--</Panel>-->
-                                    <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" height="150%" press="ConfermaBatch" class="attrezzaggioButton"/>
+                                    <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" press="ConfermaBatch" class="attrezzaggioButton"/>
                                     <!--<Button text="Continua" width="100%" press="RefreshCall"/>-->
                                 </VBox>
                                 <VBox width="5%"/>
@@ -1102,7 +1102,7 @@
                                 <HBox height="100%" width="100%">
                                     <VBox width="20%"/>
                                     <VBox width="60%">
-                                        <Button text="Modifica causale di fermo" width="100%" height="100%" press="CambioCausaleFermo" class="attrezzaggioButton"/>
+                                        <Button text="Modifica causale di fermo" width="100%" press="CambioCausaleFermo" class="attrezzaggioButton"/>
                                     </VBox>
                                     <VBox width="20%"/>
                                 </HBox>

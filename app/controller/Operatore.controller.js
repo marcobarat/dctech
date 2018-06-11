@@ -4,10 +4,10 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'myapp/control/CustomTreeTable',
     'sap/m/MessageToast',
-    'myapp/control/CustomSPCButton'
+    'myapp/control/CustomSPCButton',
 ], function (jQuery, Controller, JSONModel, CustomTreeTable, MessageToast, CustomSPCButton) {
     "use strict";
-    var TmpController = Controller.extend("myapp.controller.Operatore", {
+    var OperatoreController = Controller.extend("myapp.controller.Operatore", {
 
 //      VARIABILI GLOBALI
         ISLOCAL: 0,
@@ -31,18 +31,24 @@ sap.ui.define([
         codeCheck: null,
         State: null,
         LOCALState: null,
-        Dialog: null,
+        ClosingDialog: null,
+        SPCDialog: null,
+        Fase: null,
+        SPCText: null,
+        index: null,
+        GenSPCProgress: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
 
             this.IDsTreeTables.setProperty("/IDs/", {});
-            sap.ui.getCore().setModel(this.IDsTreeTables);
+            sap.ui.getCore().setModel(this.IDsTreeTables, "IDsTreeTables");
             for (var key in this.IDsTreeTables.getData().IDs) {
                 this.IDsTreeTables.getData().IDs[key] = 0;
             }
 
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
+            sap.ui.getCore().setModel({ISLOCAL: this.ISLOCAL}, "ISLOCAL");
             this.ISATTR = Number(jQuery.sap.getUriParameters().get("ISATTR"));
             this.ModelDetailPages.setProperty("/DettaglioLinea/", this.LineDetails);
             var link;
@@ -239,6 +245,11 @@ sap.ui.define([
             if (Jdata.avanzamento >= 100) {
                 Jdata.avanzamento = 100;
             }
+            if (typeof this.SPCDialog !== "undefined") {
+                if (this.SPCDialog.isOpen()) {
+                    this.SPCDialog.close();
+                }
+            }
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             if (this.State !== "Disponibile.Fermo") {
                 var data = this.ModelDetailPages.getData().SKUBatch;
@@ -354,10 +365,7 @@ sap.ui.define([
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
-
-
             this.ModelDetailPages.setProperty("/SetupLinea/", {});
-
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_Setup.json";
@@ -372,18 +380,11 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata.Old);
             this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata.New);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(Jdata.New)));
-
             var std = this.ModelDetailPages.getData().SetupLinea.Old;
             var bck = this.ModelDetailPages.getData().SetupLinea.New;
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
-
-
-
             bck = this.RecursiveLinkValue(bck);
-
-
-
             bck = this.RecursiveParentExpansion(bck);
             std = this.RecursiveStandardAdapt(std, bck);
             mod = this.RecursiveLinkRemoval(mod);
@@ -398,7 +399,6 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
             this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
-
             if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
             } else {
@@ -563,44 +563,69 @@ sap.ui.define([
 
 
 //      RICHIAMATO DAL PULSANTONE VERDE A FIANCO DELLA PROGRESS BAR
-        SPCGraph: function (id) {
-            if (typeof id !== "undefined") {
-                id = 0;
+        SPCGraph: function (event, indice) {
+            if (typeof indice === "undefined") {
+                indice = 0;
             }
+            if (!this.SPCDialog) {
+                this.CreateSPCDialog();
+            }
+            this.SPCDialog.open();
+            this.SPCDataCaller(indice);
+        },
+        SPCDataCaller: function (indice) {
+            if (typeof indice === "undefined") {
+                indice = 0;
+            }
+            var data = this.ModelDetailPages.getData();
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_SPCData.json";
             } else {
-                if (typeof this.ModelDetailPages.getData().DatiSPC[id].parametroId !== "undefined") {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&ParametroID=" + this.ModelDetailPages.getData().DatiSPC[id].parametroId + "&Fase=" + this.ModelDetailPages.getData().DatiSPC[id].fase;
+                this.Fase = data.DatiSPC[indice].fase;
+                if (typeof data.DatiSPC[indice].parametroId !== "undefined") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[indice].parametroId;
                 }
             }
+            this.index = indice;
             this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
         },
         SUCCESSSPCDataLoad: function (Jdata) {
-            Jdata = this.ParseSPCData(Jdata, "#");
-            this.ModelDetailPages.setProperty("/DatiSPC/Data/", Jdata);
-            this.Dialog = this.getView().byId("SPCWindow");
-            if (!this.Dialog) {
-                this.Dialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
-                this.getView().addDependent(this.Dialog);
+            var isEmpty;
+            if (Jdata.valori === "") {
+                isEmpty = 1;
+            } else {
+                isEmpty = 0;
+                if (typeof sap.ui.getCore().byId("PBSPC") !== "undefined") {
+                    sap.ui.getCore().byId("destroyBox").destroy();
+                }
+                Jdata = this.ParseSPCData(Jdata, "#");
+                if (this.Fase === "1") {
+                    Jdata = this.Phase1(Jdata);
+                }
+                this.ModelDetailPages.setProperty("/DatiSPC/Data/", Jdata);
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
-            this.Dialog.addStyleClass("dialogStyle");
-            this.Dialog.open();
-            
-//            var dataPlot = [
-//                {
-//                    x: this.ModelDetailPages.getData().DatiSPC.Data.time,
-//                    y: this.ModelDetailPages.getData().DatiSPC.Data.valori,
-//                    type: 'scatter'
-//                }
-//            ];
-            var plotBox = this.getView().byId("plotBox");
-            Plotly.plot(plotBox, [{
-                    x: [1, 2, 3, 4, 5],
-                    y: [1, 2, 4, 8, 16]}], {
-                margin: {t: 0}});
-//            Plotly.plot(plotBox, dataPlot);
+            if (this.SPCDialog.isOpen()) {
+                this.SPCDialogFiller(isEmpty);
+                setTimeout(this.SPCDataCaller.bind(this), 5000);
+            }
+        },
+        SPCDialogFiller: function (discr) {
+            if (discr === 1) {
+                var perc = 2 * Number(this.ModelDetailPages.getData().DatiSPC[this.index].avanzamento);
+                var PBSPC = sap.ui.getCore().byId("PBSPC");
+                if (typeof PBSPC !== "undefined") {
+                    PBSPC.setPercentValue(perc);
+                    PBSPC.setDisplayValue(String(perc) + "%");
+                }
+            } else {
+                var plotBox = sap.ui.getCore().byId("plotBox");
+                var data = this.ModelDetailPages.getData().DatiSPC.Data;
+                var result = this.PrepareDataToPlot(data, this.Fase);
+                var ID = jQuery.sap.byId(plotBox.getId()).get(0);
+                Plotly.newPlot(ID, result.dataPlot, result.layout);
+            }
         },
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
@@ -672,9 +697,14 @@ sap.ui.define([
                     this.EnableButtons(["ButtonModificaCondizioni", "ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
                 }
                 if (this.ISLOCAL !== 1) {
+                    if (typeof this.SPCDialog !== "undefined") {
+                        this.SPCDialog.destroyContent();
+                        this.SPCDialog = null;
+                    }
                     var XMLstring = this.XMLSetupUpdates(data);
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=1";
                     this.AjaxCallerData(link, this.SUCCESSConfermaModifica.bind(this));
+                    this.RefreshCall();
                 }
             } else {
                 MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
@@ -955,10 +985,15 @@ sap.ui.define([
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.LOCALState = "Disponibile.Lavorazione";
                 } else {
+                    if (typeof this.SPCDialog !== "undefined") {
+                        this.SPCDialog.destroyContent();
+                        this.SPCDialog = null;
+                    }
                     this.GlobalBusyDialog.open();
                     var XMLstring = this.XMLSetupUpdates(data);
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=2";
                     this.SyncAjaxCallerData(link, this.SUCCESSConfermaRipristino.bind(this));
+                    this.RefreshCall();
                 }
             } else {
                 MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
@@ -1095,17 +1130,17 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTE "CHIUSURA CONFEZIONAMENTO"
         ChiusuraConfezionamento: function () {
-            this.Dialog = this.getView().byId("AskClosing");
-            if (!this.Dialog) {
-                this.Dialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AskClosing", this);
-                this.getView().addDependent(this.Dialog);
+            this.ClosingDialog = this.getView().byId("AskClosing");
+            if (!this.ClosingDialog) {
+                this.ClosingDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AskClosing", this);
+                this.getView().addDependent(this.ClosingDialog);
             }
-            this.Dialog.addStyleClass("dialogStyle");
-            this.Dialog.open();
+            this.ClosingDialog.addStyleClass("dialogStyle");
+            this.ClosingDialog.open();
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA CHIUSURA CONFEZIONAMENTO"
         ConfermaChiusuraConfezionamento: function () {
-            this.Dialog.close();
+            this.ClosingDialog.close();
             if (this.ISLOCAL === 1) {
                 this.SwitchColor("brown");
                 this.getSplitAppObj().toDetail(this.createId("ChiusuraConfezionamento"));
@@ -1121,7 +1156,7 @@ sap.ui.define([
         },
 //      RICHIAMATO DAL PULSANTE "ANNULLA CHIUSURA CONFEZIONAMENTO"
         AnnullaChiusuraConfezionamento: function () {
-            this.Dialog.close();
+            this.ClosingDialog.close();
         },
         SvuotaLinea: function () {
             var temp = {"linea": this.ModelDetailPages.getData().DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
@@ -1571,7 +1606,6 @@ sap.ui.define([
                     text: texts[i],
                     enabled: false,
                     width: "100%",
-                    height: "100%",
                     press: press[i]});
                 btn.addStyleClass(classes[i]);
                 btn_vbox = new sap.m.VBox({height: String(PBt) + "%", width: "100%"});
@@ -1609,7 +1643,6 @@ sap.ui.define([
                     text: texts[i],
                     enabled: false,
                     width: "100%",
-                    height: "100%",
                     press: press[i]});
                 btn.addStyleClass(classes[i]);
                 btn_vbox = new sap.m.VBox({height: String(PBt) + "%", width: "100%"});
@@ -1860,7 +1893,7 @@ sap.ui.define([
             }
         },
         SPCColor: function (data) {
-            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1"];
+            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent"];
             var btn;
             for (var b = 0; b < data.length; b++) {
                 btn = sap.ui.getCore().byId("SPCButton" + String(b + 1));
@@ -1869,18 +1902,27 @@ sap.ui.define([
                 }
                 switch (data[b].fase) {
                     case "1":
-                        btn.setIcon("img/triangolo.png");
-//                        btn.setHeader(data[b].numeroCampionamenti);
+                        btn.setIcon("img/triangolo_buco.png");
+                        btn.setText(data[b].numeroCampionamenti);
                         btn.addStyleClass("SPCButtonPhase1");
+                        btn.addStyleClass("SPCButtonContent");
+                        btn.addStyleClass("SPCButtonColorYellow");
                         break;
                     case "2":
                         btn.setIcon("");
-//                        btn.setHeader("");
+                        btn.setText("");
                         if (data[b].allarme === "0") {
                             btn.addStyleClass("SPCButtonColorGreen");
                         } else if (data[b].allarme === "1") {
                             btn.addStyleClass("SPCButtonColorYellow");
                         }
+                        break;
+                    default:
+                        btn.setIcon("img/triangolo_buco.png");
+                        btn.setText(0);
+                        btn.addStyleClass("SPCButtonPhase1");
+                        btn.addStyleClass("SPCButtonContent");
+                        btn.addStyleClass("SPCButtonColorYellow");
                         break;
                 }
             }
@@ -1899,6 +1941,144 @@ sap.ui.define([
                 }
             }
             return data;
+        },
+        Phase1: function (data) {
+            data.MR = [];
+            var avg = 0;
+            var i, temp;
+            for (i = 0; i < data.valori.length - 1; i++) {
+                temp = Math.abs(data.valori[i + 1] - data.valori[i]);
+                data.MR.push(temp);
+                avg += temp;
+            }
+            avg /= (data.MR.length);
+            data.MRBound = [];
+            for (i = 0; i < data.MR.length; i++) {
+                data.MRBound.push(3.267 * avg);
+            }
+            data.MRTime = JSON.parse(JSON.stringify(data.time));
+            data.MRTime.splice(0, 1);
+            return data;
+        },
+        CloseSPCDialog: function () {
+            this.SPCDialog.close();
+        },
+        CreateSPCDialog: function () {
+            var vbox = new sap.m.VBox({width: "100%", height: "100%"});
+            var vbPlot = new sap.m.VBox({id: "plotBox", width: "100%", height: "80%"});
+            var vb1 = new sap.m.VBox({id: "destroyBox", width: "100%", height: "100%"});
+            var hbox = new sap.m.HBox({height: "100%", width: "100%"});
+            hbox.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
+            var vboxPlot = new sap.m.VBox({height: "100%", width: "80%"});
+            vboxPlot.addItem(new sap.m.VBox({height: "30%", width: "100%"}));
+            var vboxText = new sap.m.VBox({height: "18%", width: "100%"});
+            var hb1 = new sap.m.HBox({height: "100%", width: "100%"});
+            hb1.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
+            var vbText = new sap.m.VBox({height: "100%", width: "80%"});
+            var text = new sap.m.Text({text: "Primo campionamento in corso"});
+            text.addStyleClass("textHugeRed");
+            vbText.addItem(text);
+            hb1.addItem(vbText);
+            hb1.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
+            vboxText.addItem(hb1);
+            vboxPlot.addItem(vboxText);
+            vboxPlot.addItem(new sap.m.VBox({height: "4%", width: "100%"}));
+            var vboxBar = new sap.m.VBox({height: "18%", width: "100%"});
+            var PB = new sap.m.ProgressIndicator({
+                id: "PBSPC",
+                percentValue: 0,
+                displayValue: "0%",
+                showValue: true,
+                state: "Warning",
+                height: "120px"});
+            PB.addStyleClass("customTextBar");
+            vboxBar.addItem(PB);
+            vboxPlot.addItem(vboxBar);
+            vboxPlot.addItem(new sap.m.VBox({height: "30%", width: "100%"}));
+            hbox.addItem(vboxPlot);
+            hbox.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
+            vb1.addItem(hbox);
+            vbPlot.addItem(vb1);
+            vbox.addItem(vbPlot);
+            var vb2 = new sap.m.VBox({width: "100%", height: "10%"});
+            var vb3 = new sap.m.VBox({width: "100%", height: "5%"});
+            vbox.addItem(vb3);
+            var hb = new sap.m.HBox({width: "100%", height: "100%"});
+            var vb4 = new sap.m.VBox({width: "20%", height: "100%"});
+            hb.addItem(vb4);
+            var vb5 = new sap.m.VBox({width: "60%", height: "100%"});
+            var btn = new sap.m.Button({text: "Chiudi", width: "85%", press: [this.CloseSPCDialog, this]});
+            btn.addStyleClass("annullaButton");
+            vb5.addItem(btn);
+            hb.addItem(vb5);
+            hb.addItem(vb4);
+            vb2.addItem(hb);
+            vbox.addItem(vb2);
+            vbox.addItem(vb3);
+            
+            
+            this.SPCDialog = new sap.m.Dialog({
+                title: 'Grafico SPC',
+                contentWidth: "1600px",
+                contentHeight: "1200px",
+                content: vbox});
+            this.getView().addDependent(this.SPCDialog);
+        },
+        PrepareDataToPlot: function (Jdata, fase) {
+            var dataPlot, layout;
+            var valori = {
+                x: Jdata.time,
+                y: Jdata.valori,
+                type: 'scatter',
+                line: {color: 'rgb(0,58,107)', width: 1}
+            };
+            var limSup = {
+                x: Jdata.time,
+                y: Jdata.limSup,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            var limInf = {
+                x: Jdata.time,
+                y: Jdata.limInf,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            dataPlot = [valori, limSup, limInf];
+            layout = {
+                showlegend: false,
+                xaxis: {
+                    showgrid: true,
+                    zeroline: false
+                },
+                yaxis: {
+                    showline: false
+                }
+            };
+            if (fase === "1") {
+                var MR = {
+                    x: Jdata.MRTime,
+                    y: Jdata.MR,
+                    xaxis: 'x2',
+                    yaxis: 'y2',
+                    type: 'scatter'
+                };
+                var MRBound = {
+                    x: Jdata.MRTime,
+                    y: Jdata.MRBound,
+                    xaxis: 'x2',
+                    yaxis: 'y2',
+                    type: 'scatter'
+                };
+                dataPlot.push(MR);
+                dataPlot.push(MRBound);
+                layout.yaxis.domain = [0.6, 1];
+                layout.xaxis2 = {};
+                layout.yaxis2 = {};
+                layout.xaxis2.anchor = "y2";
+                layout.yaxis2.domain = [0, 0.4];
+            }
+            return {dataPlot: dataPlot, layout: layout};
         },
 //      ----------------    FUNZIONI FERMO    ----------------
 
@@ -2351,7 +2531,6 @@ sap.ui.define([
             this.FermiAutomaticiCheck();
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.LOCALState = "Disponibile.Lavorazione";
-
             var vbox = this.getView().byId("SPCButton");
             var bt1 = new CustomSPCButton({
                 id: "SPCButton1",
@@ -2359,6 +2538,7 @@ sap.ui.define([
                 press: [0, this.SPCGraph, this]});
             bt1.addStyleClass("SPCButtonColorGreen");
             vbox.addItem(bt1);
+            this.ModelDetailPages.setProperty("/DatiSPC/", {});
         },
         LOCALUpdateFaultsModels: function () {
             var data_NOcause = this.ModelDetailPages.getData().FermiNonCausalizzati;
@@ -2409,5 +2589,5 @@ sap.ui.define([
             return key;
         }
     });
-    return TmpController;
+    return OperatoreController;
 });
