@@ -6,6 +6,7 @@ sap.ui.define([
     "use strict";
     var MainController = Controller.extend("myapp.controller.Main", {
         Global: new JSONModel(),
+        JSONLinee: new JSONModel(),
 
         onInit: function () {
 
@@ -29,12 +30,19 @@ sap.ui.define([
         },
         GoToOperatore: function (event) {
             var line_num = event.getSource().getProperty("title");
-            var chooser = event.getSource().getProperty("info");
-            this.Global.setProperty("/", {"Linea": line_num, "idLinea": "1", "Choice": chooser});
+            var chooser;
+            for (var i = 0; i < this.JSONLinee.getData().linee.length; i++) {
+                if (this.JSONLinee.getData().linee[i].linea === line_num) {
+                    chooser = this.JSONLinee.getData().linee[i].idlinea;
+                }
+            }
+            this.Global.setProperty("/", {"Linea": line_num, "idLinea": chooser});
+            sap.ui.getCore().setModel(this.Global, "Global");
             this.getOwnerComponent().getRouter().navTo("Operatore");
         },
         FillModel: function (model, data) {
             model.setProperty("/", data);
+            this.JSONLinee.setData(data);
         }
 
 

@@ -16,6 +16,9 @@ sap.ui.define([
                 renderer: {},
 
                 onAfterRendering: function () {
+                    if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
+                        sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
+                    }
                     var model = sap.ui.getCore().getModel("IDsTreeTables").getData().IDs;
                     if (typeof model[this.getId()] === "undefined" || model[this.getId()] === 0) {
                         this.expandToLevel(20);
@@ -33,9 +36,6 @@ sap.ui.define([
                                 }
                             }
                         }, 0);
-                    }
-                    if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
-                        sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
                     }
                 }
             });

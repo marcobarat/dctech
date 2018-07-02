@@ -4,7 +4,7 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="750px" contentHeight="300px" id="AskClosing" showHeader="false">
+    <Dialog contentWidth="1000px" contentHeight="300px" id="AskClosing" showHeader="false">
         <!--<HBox height="100%" width="100%">-->
         <!--            <VBox height="100%" width="20%">
             <VBox height="34%" width="100%">

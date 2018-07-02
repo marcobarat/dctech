@@ -11,7 +11,7 @@
             <Page id="Home" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -23,8 +23,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="HomeDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -39,9 +39,9 @@
                         </VBox>
                         <VBox height="65%" width="100%">
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -52,7 +52,7 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
+                            <!--<VBox height="10%" width="100%"/>-->
                         </VBox>
                     </VBox>
                 </content>
@@ -62,7 +62,7 @@
             <Page id="PresaInCarico" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -74,8 +74,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="PresaInCaricoDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -100,7 +100,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="21"
+                                        visibleRowCount="20"
                                         rowSelectionChange="ciao"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_PresaInCarico">
@@ -142,9 +142,9 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -155,7 +155,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -166,7 +165,7 @@
             <Page id="PredisposizioneLinea" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -178,8 +177,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="PredisposizioneLineaDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -215,7 +213,7 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="23"
+                                                        visibleRowCount="20"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiPredisposizione">
                                                         <wt:toolbar>
@@ -271,7 +269,7 @@
                                                                     collapseRecursive="true"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="23"
+                                                                    visibleRowCount="20"
                                                                     app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
                                                                     cellClick="LinkClick"
                                                                     toggleOpenState="COUPLEDTreeTableIconPress">
@@ -316,7 +314,7 @@
                                                                     collapseRecursive="true"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="23"
+                                                                    visibleRowCount="20"
                                                                     app:mydata="TreeTable_ConfermaSetupNew,TreeTable_ConfermaSetupOld"
                                                                     cellClick="LinkClick"
                                                                     toggleOpenState="COUPLEDTreeTableIconPress">
@@ -360,9 +358,9 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -373,7 +371,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -393,13 +390,13 @@
                         </VBox>
                         <VBox width="100%">
                             <FlexBox alignItems="Start" justifyContent="Center">
-                                <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                <Text id="Descrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                
                             </FlexBox>
                         </VBox>
                     </VBox>-->
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -411,8 +408,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="InProgressDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -426,13 +422,14 @@
                             <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="65%" width="100%">
-                            <VBox height="20%" width="100%">
+                            <VBox height="5%" width="100%"/>
+                            <VBox height="15%" width="100%">
                                 <HBox height="100%" width="100%">
                                     <VBox width="10%" height="100%"/>
                                     <VBox width="64%" height="100%">
                                         <ProgressIndicator
                                             id="progressBar"
-                                            class="customTextBar"
+                                            class="customTextBar ProgressBar"
                                             percentValue="{GeneralModel>/DatiOEE/avanzamento}"
                                             displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
                                             showValue="true"
@@ -708,7 +705,7 @@
                                                     </VBox>
                                                     <VBox height="100%" width="50%">
                                                         <VBox height="30%" width="100%">
-                                                            <FlexBox alignItems="End" justifyContent="Start">
+                                                            <FlexBox alignItems="End" justifyContent="End">
                                                                 <Text text="{GeneralModel>/DatiOEE/tempoFermi}" class="OEEText"/>
                                                             </FlexBox>
                                                         </VBox>
@@ -716,7 +713,7 @@
                                                             <Text/>
                                                         </VBox>
                                                         <VBox height="30%" width="100%">
-                                                            <FlexBox alignItems="End" justifyContent="Start">
+                                                            <FlexBox alignItems="End" justifyContent="End">
                                                                 <Text text="{GeneralModel>/DatiOEE/tempoTotaleFermiAutomatici}" class="OEEText"/>
                                                             </FlexBox>
                                                         </VBox>
@@ -725,7 +722,7 @@
                                                         </VBox>
                                                         <VBox height="30%" width="100%">
                                                             <FlexBox alignItems="End" justifyContent="End">
-                                                                <Text text="{GeneralModel>/DatiOEE/tempoFermiAutomaticia}" class="OEEText"/>
+                                                                <Text text="{GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="OEEText"/>
                                                             </FlexBox>
                                                         </VBox>
                                                     </VBox>
@@ -775,9 +772,9 @@
                                 </HBox>
                             </VBox>-->
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -788,7 +785,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -798,7 +794,7 @@
             <Page id="ModificaCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -810,8 +806,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="ModificaCondizioniDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -848,7 +844,7 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="23"
+                                                        visibleRowCount="20"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiModifica">
                                                         <wt:toolbar>
@@ -898,7 +894,7 @@
                                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="11"
+                                                        visibleRowCount="10"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_ModificaCondizioni">
                                                         <wt:toolbar>
@@ -991,9 +987,9 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -1004,7 +1000,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -1014,7 +1009,7 @@
             <Page id="Fermo" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -1026,8 +1021,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="FermoDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1040,11 +1035,10 @@
                             </VBox>
                             <VBox height="5%" width="100%"/>
                         </VBox>
-                        <VBox id="vboxFermo" height="65%" width="100%">
-                        </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox id="vboxFermo" height="65%" width="100%"/>
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -1055,7 +1049,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -1065,7 +1058,7 @@
             <Page id="Causalizzazione" showHeader="false" class="colorPage" enableScrolling="false">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -1077,8 +1070,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="CausalizzazioneDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1158,9 +1151,9 @@
                                 </VBox>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -1171,7 +1164,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -1181,7 +1173,7 @@
             <Page id="Fault" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -1193,8 +1185,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="FaultDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1207,17 +1199,17 @@
                             </VBox>
                             <VBox height="5%" width="100%"/>
                         </VBox>
-                        <VBox height="65%" width="100%">
+                        <VBox height="5%" width="100%"/>
+                        <VBox height="60%" width="100%">
                             <VBox height="20%" width="100%">
                                 <HBox height="100%" width="100%">
                                     <VBox width="10%" height="100%"/>
                                     <VBox width="64%" height="100%">
                                         <ProgressIndicator
-                                            class="customTextBar"
+                                            class="customTextBar ProgressBar"
                                             percentValue="{GeneralModel>/DatiOEE/avanzamento}"
                                             displayValue="{GeneralModel>/DatiOEE/perc_avanzamento}"
                                             showValue="true"
-                                            state="Neutral"
                                             height="120px"/>
                                     </VBox>
                                     <VBox width="4%" height="100%"/>
@@ -1462,7 +1454,7 @@
                                     <VBox height="100%" width="60%">
                                         <HBox>
                                             <VBox height="100%" width="20%"/>
-                                            <VBox height="100%" width="60%">
+                                            <VBox height="100%" width="50%">
                                                 <HBox>
                                                     <VBox height="100%" width="50%">
                                                         <VBox height="30%" width="100%">
@@ -1489,7 +1481,7 @@
                                                     </VBox>
                                                     <VBox height="100%" width="50%">
                                                         <VBox height="30%" width="100%">
-                                                            <FlexBox alignItems="End" justifyContent="Start">
+                                                            <FlexBox alignItems="End" justifyContent="End">
                                                                 <Text text="{GeneralModel>/DatiOEE/tempoFermi}" class="OEEText"/>
                                                             </FlexBox>
                                                         </VBox>
@@ -1497,7 +1489,7 @@
                                                             <Text/>
                                                         </VBox>
                                                         <VBox height="30%" width="100%">
-                                                            <FlexBox alignItems="End" justifyContent="Start">
+                                                            <FlexBox alignItems="End" justifyContent="End">
                                                                 <Text text="{GeneralModel>/DatiOEE/tempoTotaleFermiAutomatici}" class="OEEText"/>
                                                             </FlexBox>
                                                         </VBox>
@@ -1506,13 +1498,13 @@
                                                         </VBox>
                                                         <VBox height="30%" width="100%">
                                                             <FlexBox alignItems="End" justifyContent="End">
-                                                                <Text text="{GeneralModel>/DatiOEE/tempoFermiAutomaticia}" class="OEEText"/>
+                                                                <Text text="{GeneralModel>/DatiOEE/tempoFermiAutomatici}" class="OEEText"/>
                                                             </FlexBox>
                                                         </VBox>
                                                     </VBox>
                                                 </HBox>
                                             </VBox>
-                                            <VBox height="100%" width="20%"/>
+                                            <VBox height="100%" width="30%"/>
                                         </HBox>
                                     </VBox>
                                     <VBox height="100%" width="20%"/>
@@ -1741,9 +1733,9 @@
                                 </HBox>
                             </VBox>
                         </VBox>-->
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -1754,7 +1746,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -1764,7 +1755,7 @@
             <Page id="RipristinoCondizioni" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -1776,8 +1767,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="RipristinoCondizioniDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1807,7 +1798,7 @@
                                         app:mydata="TreeTable_RipristinoCondizioni">
                                         <wt:toolbar>
                                             <Toolbar>
-                                                <Button text="Ripristina valori" press="RestoreDefault"/>
+                                                <Button text="Ripristina valori" press="RestoreDefault" class="TTButton"/>
                                                 <ToolbarSpacer/>
                                                 <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_RipristinoCondizioni" class="TTButton"/>
                                                 <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_RipristinoCondizioni" class="TTButton"/>
@@ -1869,9 +1860,9 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -1882,7 +1873,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -1892,7 +1882,7 @@
             <Page id="ChiusuraConfezionamento" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -1904,8 +1894,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="ChiusuraConfezionamentoDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1930,7 +1920,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="23"
+                                        visibleRowCount="18"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_Chiusura">
                                         <wt:toolbar>
@@ -1963,9 +1953,9 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -1976,7 +1966,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -1989,7 +1978,7 @@
             <Page id="BatchAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -2001,8 +1990,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="BatchAttrezzaggioDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -2062,9 +2051,9 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -2075,7 +2064,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -2085,7 +2073,7 @@
             <Page id="PredisposizioneLineaAttrezzaggio" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -2097,8 +2085,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="PredisposizioneLineaAttrezzaggioDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -2256,9 +2244,9 @@
                                 <VBox width="5%"/>
                             </HBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                        <VBox height="10%" width="100%" class="blueBorderTop">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -2269,7 +2257,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
                         </VBox>
                     </VBox>
                 </content>
@@ -2279,7 +2266,7 @@
             <Page id="ConfermaAttrezzaggio" showHeader="false" class="colorPage"> 
                 <content>
                     <VBox height="100%" width="100%">
-                        <VBox height="25%" width="100%">
+                        <VBox height="25%" width="100%" class="blueBorderBottom">
                             <VBox height="5%" width="100%"/>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
@@ -2291,8 +2278,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        <Text text="{GeneralModel>/Intestazione/conforme}" class="textTop"/>
+                                        <Text id="ConfermaAttrezzaggioDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -2314,8 +2301,8 @@
                             </FlexBox>
                         </VBox>
                         <VBox height="10%" width="100%">
-                            <VBox height="30%" width="100%"/>
-                            <VBox height="60%" width="100%">
+                            <VBox height="15%" width="100%"/>
+                            <VBox height="85%" width="100%">
                                 <HBox>
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
@@ -2326,7 +2313,7 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <VBox height="10%" width="100%"/>
+                            <!--<VBox height="10%" width="100%"/>-->
                         </VBox>
                     </VBox>
                 </content>
@@ -2340,7 +2327,7 @@
         <masterPages>
             <Page id="processi" showHeader="false" class="colorPage">
                 <content>
-                    <VBox id="logoVbox" height="25%" width="100%" justifyContent="center" alignItems="start">
+                    <VBox id="logoVbox" height="25%" width="100%" justifyContent="center" alignItems="start" class="blueBorderBottom">
                         <VBox height="10%" width="100%"/>
                         <VBox height="65%" width="100%">
                             <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
@@ -2349,21 +2336,20 @@
                     </VBox>
                     <VBox id="panel_processi" class="MasterPanels" height="65%" width="100%" justifyContent="center" alignItems="start">
                     </VBox>
-                    <VBox id="clock" class="MasterPanels" height="10%" width="100%">
-                        <VBox height="20%" width="100%"/>
-                        <VBox height="10%" width="100%">
+                    <VBox id="clock" class="MasterPanels blueBorderTop" height="10%" width="100%">
+                        <VBox height="15%" width="100%"/>
+                        <!--                        <VBox height="10%" width="100%">
                             <HBox>
                                 <VBox height="100%" width="16%"/>
                                 <VBox height="100%" width="84%" justifyContent="center" alignItems="start">
                                     <Label id="clockL1" class="textNormal"/>
                                 </VBox>
                             </HBox>
-                        </VBox>
-                        <VBox height="5%" width="100%"/>
-                        <VBox height="65%" width="100%">
+                        </VBox>-->
+                        <VBox height="85%" width="100%">
                             <HBox>
-                                <VBox height="100%" width="28%"/>
-                                <VBox height="100%" width="62%" justifyContent="center" alignItems="start">
+                                <VBox height="100%" width="20%"/>
+                                <VBox height="100%" width="80%" justifyContent="center" alignItems="start">
                                     <Label id="clockL2" class="textTop"/>
                                 </VBox>
                             </HBox>

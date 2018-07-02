@@ -2,6 +2,9 @@
 .colorPage {
     background-color: white;
 }
+.sfondobianco {
+    background-color: white !important;
+}
 
 /*STILE MASTER PAGE*/
 .MasterPanels {
@@ -18,6 +21,27 @@
 }
 .stylePanelBrown {
     background-color: #5E3032; 
+}
+.blueBorderRight {
+    border-right: solid 1px #003A6B;
+}
+.blueBorderBottom {
+    border-bottom: solid 1px #003A6B;
+}
+.blueBorderTop {
+    border-top: solid 1px #003A6B;
+}
+.blueBorderLeft {
+    border-left: solid 1px #003A6B;
+}
+.sapMSplitContainerMaster {
+    border-right: solid 1px #003A6B;
+}
+.yellowBorder {
+    border: solid 5px #FFD300;
+}
+.greenBorder {
+    border: solid 5px #7CA295;
 }
 /*STILE BOTTONI SULLA MASTER PAGE*/
 .styleButton .sapMBtnInner {
@@ -120,7 +144,7 @@
     font-family: Arial;
 }
 .textTop {
-    font-size: 40pt;
+    font-size: 56pt;
     color : #003A6B;
     font-family: Arial;
 }
@@ -130,7 +154,7 @@
     font-family: Arial;
 }
 .textHugeRed {
-    font-size: 55pt;
+    font-size: 56pt;
     color: #A71930;
     font-family: Arial;
 }
@@ -243,6 +267,10 @@
 }*/
 
 /*STILE PROGRESS BAR*/
+.ProgressBar {
+    padding: 0px;
+    border: solid 1px #003A6B;
+}
 .SPCButtonDimensionsEdo .sapMBtnInner {
     padding-left:25% !important;
     padding-right:25% !important;
@@ -260,7 +288,7 @@
     background: #FFD300;
 }
 .SPCButtonHeight .sapMBtnInner {
-    height: 121px !important;
+    height: 120.3px !important;
     position: relative;
 }
 .SPCButtonContent .sapMBtnContent {
@@ -294,9 +322,10 @@
     top: 0.3rem;
 }
 .customTextBar *{
-    font-size: 40pt;
+    font-size: 56pt;
     color : #003A6B;
     font-family: Arial;
+    font-weight: normal;
 }
 .customTextBarFermo *{
     font-size: 40pt;
@@ -402,11 +431,6 @@ monobuttonSPC .sapMBtnInner {
 .monobuttonSPC .sapMBtnIcon {
     position: absolute;
     left: 25%;
-/*    max-height: 3.5rem;
-    height: 3.5rem;
-    width: 2.6875rem; */
-    
-    /* new_width = (new_height*43)/56 */
 }
 
 .monobuttonSPC .sapMBtnContent {

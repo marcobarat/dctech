@@ -14,7 +14,7 @@ sap.ui.define([
         ISATTR: 0,
         IDsTreeTables: new JSONModel({}),
         TIMER: null,
-        LineDetails: {"Linea": "Linea 1", "idLinea": "1"},
+        LineDetails: {Linea: "1", idLinea: "1"},
         ModelDetailPages: new JSONModel({}),
 //        ModelTreeTablesSetup: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
@@ -34,6 +34,7 @@ sap.ui.define([
         ClosingDialog: null,
         SPCDialog: [null, null],
         Fase: null,
+        Allarme: null,
         SPCText: null,
         index: null,
         GenSPCProgress: null,
@@ -41,6 +42,7 @@ sap.ui.define([
 
         onInit: function () {
 
+            this.LineDetails = sap.ui.getCore().getModel("Global").getData();
             this.IDsTreeTables.setProperty("/IDs/", {});
             sap.ui.getCore().setModel(this.IDsTreeTables, "IDsTreeTables");
             for (var key in this.IDsTreeTables.getData().IDs) {
@@ -64,17 +66,17 @@ sap.ui.define([
             }
 
 
-            var clockL1 = this.getView().byId("clockL1");
+//            var clockL1 = this.getView().byId("clockL1");
             var clockL2 = this.getView().byId("clockL2");
-            var date = this.GetData();
+//            var date = this.GetData();
             var time = this.GetOra();
-            clockL1.setText(date);
+//            clockL1.setText(date);
             clockL2.setText(time);
             var that = this;
             setInterval(function () {
-                var date = that.GetData();
+//                var date = that.GetData();
                 var time = that.GetOra();
-                clockL1.setText(date);
+//                clockL1.setText(date);
                 clockL2.setText(time);
             }, 1000);
         },
@@ -102,29 +104,32 @@ sap.ui.define([
             var link, key;
             var model = this.ModelDetailPages.getData();
             var data = model.SKUBatch;
-            model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
+            model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
             model.Intestazione.StatoLinea = this.SetStatoLinea(data.StatoLinea);
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
 
-                var formato_array = data.SKUattuale.attributi[3].attributi[4].value.split(" ");
-                var formato = formato_array[formato_array.length - 1];
-                for (var s = 0; s < formato_array.length - 1; s++) {
-                    formato += " " + formato_array[s];
-                }
-                var descr = formato + " " + data.SKUattuale.attributi[4].attributi[1].value + " " + data.SKUattuale.attributi[4].attributi[2].value;
-//                var descr = "ciao";
-                var dest = data.SKUattuale.attributi[6].attributi[1].value;
-                model.Intestazione.descrizione = descr;
-                model.Intestazione.destinazione = dest;
+//                var formato_array = data.SKUattuale.attributi[1].attributi[3].value.split(" ");
+//                var formato = formato_array[formato_array.length - 1];
+//                for (var s = 0; s < formato_array.length - 1; s++) {
+//                    formato += " " + formato_array[s];
+//                }
+//                var formato = data.SKUattuale.attributi[1].attributi[3].value;
+//                var descr = formato + " " + data.SKUattuale.attributi[2].attributi[0].value + " - " + data.SKUattuale.attributi[2].attributi[1].value;
+////                var descr = "ciao";
+//                var dest = data.SKUattuale.attributi[4].attributi[0].value;
+//                model.Intestazione.descrizione = descr;
+//                model.Intestazione.destinazione = dest;
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
                 data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
                 this.exp = 0;
                 data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
                 if (this.exp === 1) {
-                    model.Intestazione.conforme = "***";
+                    this.AddColorDescrizione("red");
+                } else {
+                    this.AddColorDescrizione("");
                 }
                 this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
-                if (data.Batch[0].IsAttrezzaggio === "0") {
+                if (data.Batch.IsAttrezzaggio === "0") {
                     if (typeof sap.ui.getCore().byId("ButtonBatchAttrezzaggio") !== "undefined") {
                         this.DestroyButtons();
                     }
@@ -458,7 +463,7 @@ sap.ui.define([
                 collapseRecursive: true,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
-                visibleRowCount: 11,
+                visibleRowCount: 10,
                 cellClick: [TT, this.TreeTableRowClickExpander, this],
                 toolbar: [
                     new sap.m.Toolbar({
@@ -558,7 +563,7 @@ sap.ui.define([
                     this.AjaxCallerData("model/JSON_Progress.json", this.LOCALInProgress.bind(this));
                 } else {
                     var XMLstring = this.XMLSetupUpdates(data);
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=0";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=0&OutputParameter=JSON";
                     this.SyncAjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
                 }
             } else {
@@ -583,6 +588,7 @@ sap.ui.define([
                 indice = 0;
             }
             this.index = indice;
+            this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.index].allarme;
             this.SPCDialog[indice] = this.getView().byId("SPCWindow");
             if (!this.SPCDialog[indice]) {
                 this.SPCDialog[indice] = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
@@ -592,26 +598,23 @@ sap.ui.define([
             this.SPCDataCaller();
         },
         SPCDataCaller: function () {
-            if (this.SPCDialog[0].isOpen() || this.SPCDialog[1].isOpen()) {
+            if (this.SPCDialog[0] || this.SPCDialog[1]) {
+                if (this.SPCDialog[this.index].isOpen()) {
 //                if (typeof this.index === "undefined") {
 //                    indice = 0;
 //                }
-                var data = this.ModelDetailPages.getData();
-                if (data.DatiSPC[this.index].allarme === "0") {
-                    this.getView().byId("alarmButton").setEnabled(false);
-                } else {
-                    this.getView().byId("alarmButton").setEnabled(true);
-                }
-                var link;
-                if (this.ISLOCAL === 1) {
-                    link = "model/JSON_SPCData.json";
-                } else {
-                    this.Fase = data.DatiSPC[this.index].fase;
-                    if (typeof data.DatiSPC[this.index].parametroId !== "undefined") {
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[this.index].parametroId;
+                    var data = this.ModelDetailPages.getData();
+                    var link;
+                    if (this.ISLOCAL === 1) {
+                        link = "model/JSON_SPCData.json";
+                    } else {
+                        this.Fase = data.DatiSPC[this.index].fase;
+                        if (typeof data.DatiSPC[this.index].parametroId !== "undefined") {
+                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[this.index].parametroId;
+                        }
                     }
+                    this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
                 }
-                this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
             }
         },
         SUCCESSSPCDataLoad: function (Jdata) {
@@ -632,14 +635,26 @@ sap.ui.define([
         },
         SPCDialogFiller: function (discr) {
             var textHeader = this.getView().byId("headerSPCWindow");
+            textHeader.setText(String(this.ModelDetailPages.getData().DatiSPC[this.index].descrizioneParametro));
+            var samplingHeader = this.getView().byId("samplingSPC");
             if (Number(this.Fase) === 1) {
-                textHeader.setText(String(this.ModelDetailPages.getData().DatiSPC[this.index].descrizioneParametro) + " - Campionamento in corso: " + String(this.ModelDetailPages.getData().DatiSPC[this.index].avanzamento) + "/50");
+                samplingHeader.setText("Campionamento in corso: " + String(this.ModelDetailPages.getData().DatiSPC[this.index].avanzamento) + "/50");
             } else {
-                textHeader.setText(String(this.ModelDetailPages.getData().DatiSPC[this.index].descrizioneParametro));
+                samplingHeader.setText("");
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             if (discr !== 1) {
                 var plotBox = this.getView().byId("plotBox");
+                var alarmButton = this.getView().byId("alarmButton");
+                if (Number(this.Fase) === 2 && Number(this.Allarme) === 1) {
+                    alarmButton.setEnabled(true);
+                    alarmButton.removeStyleClass("chiudiButton");
+                    alarmButton.addStyleClass("allarmeButton");
+                } else {
+                    alarmButton.setEnabled(false);
+                    alarmButton.removeStyleClass("allarmeButton");
+                    alarmButton.addStyleClass("chiudiButton");
+                }
                 var data = this.ModelDetailPages.getData().DatiSPC.Data;
                 var result = this.PrepareDataToPlot(data, this.Fase);
                 var ID = jQuery.sap.byId(plotBox.getId()).get(0);
@@ -724,7 +739,7 @@ sap.ui.define([
 //                        }
 //                    }
                     var XMLstring = this.XMLSetupUpdates(data);
-                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=1";
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=1&OutputParameter=JSON";
                     this.AjaxCallerData(link, this.SUCCESSConfermaModifica.bind(this));
                     this.RefreshCall();
                 }
@@ -1021,7 +1036,7 @@ sap.ui.define([
 //                    }
                     this.GlobalBusyDialog.open();
                     var XMLstring = this.XMLSetupUpdates(data);
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=2";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=2&OutputParameter=JSON";
                     this.SyncAjaxCallerData(link, this.SUCCESSConfermaRipristino.bind(this));
                     this.RefreshCall();
                 }
@@ -1203,7 +1218,8 @@ sap.ui.define([
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.SyncAjaxCallerVoid(link, this.RefreshCall.bind(this));
             }
-            location.reload();
+            this.getOwnerComponent().getRouter().navTo("Main");
+//            location.reload();
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1490,7 +1506,7 @@ sap.ui.define([
                     this.EnableButtonsAttr([]);
                 } else {
                     var XMLstring = this.XMLSetupUpdates(data);
-                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=3";
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=3&OutputParameter=JSON";
                     this.AjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
                 }
             }
@@ -1606,37 +1622,48 @@ sap.ui.define([
                     return "SVUOTAMENTO";
             }
         },
+        AddColorDescrizione: function (color) {
+            var IDs = ["HomeDescrizione", "PresaInCaricoDescrizione", "PredisposizioneLineaDescrizione", "InProgressDescrizione", "ModificaCondizioniDescrizione", "FermoDescrizione", "CausalizzazioneDescrizione", "FaultDescrizione", "RipristinoCondizioniDescrizione", "ChiusuraConfezionamentoDescrizione", "BatchAttrezzaggioDescrizione", "PredisposizioneLineaAttrezzaggioDescrizione", "ConfermaAttrezzaggioDescrizione"];
+            var obj;
+            for (var i = 0; i < IDs.length; i++) {
+                obj = this.getView().byId(IDs[i]);
+                obj.removeStyleClass("diffRed");
+                if (color === "red") {
+                    obj.addStyleClass("diffRed");
+                }
+            }
+        },
         SwitchColor: function (color) {
             var CSS_classes = ["stylePanelYellow", "stylePanelGreen", "stylePanelRed", "stylePanelBrown"];
-            var CSS_classes_logo = ["logoBoxYellow", "logoBoxGreen", "logoBoxRed", "logoBoxBrown"];
+//            var CSS_classes_logo = ["logoBoxYellow", "logoBoxGreen", "logoBoxRed", "logoBoxBrown"];
             var panel = this.getView().byId("panel_processi");
-            var logo = this.getView().byId("logoVbox");
-            var clock = this.getView().byId("clock");
+//            var logo = this.getView().byId("logoVbox");
+//            var clock = this.getView().byId("clock");
             for (var col in CSS_classes) {
                 panel.removeStyleClass(CSS_classes[col]);
-                logo.removeStyleClass(CSS_classes_logo[col]);
-                clock.removeStyleClass(CSS_classes_logo[col]);
+//                logo.removeStyleClass(CSS_classes_logo[col]);
+//                clock.removeStyleClass(CSS_classes_logo[col]);
             }
             switch (color) {
                 case "yellow":
                     panel.addStyleClass("stylePanelYellow");
-                    logo.addStyleClass("logoBoxYellow");
-                    clock.addStyleClass("logoBoxYellow");
+//                    logo.addStyleClass("logoBoxYellow");
+//                    clock.addStyleClass("logoBoxYellow");
                     break;
                 case "green":
                     panel.addStyleClass("stylePanelGreen");
-                    logo.addStyleClass("logoBoxGreen");
-                    clock.addStyleClass("logoBoxGreen");
+//                    logo.addStyleClass("logoBoxGreen");
+//                    clock.addStyleClass("logoBoxGreen");
                     break;
                 case "red":
                     panel.addStyleClass("stylePanelRed");
-                    logo.addStyleClass("logoBoxRed");
-                    clock.addStyleClass("logoBoxRed");
+//                    logo.addStyleClass("logoBoxRed");
+//                    clock.addStyleClass("logoBoxRed");
                     break;
                 case "brown":
                     panel.addStyleClass("stylePanelBrown");
-                    logo.addStyleClass("logoBoxBrown");
-                    clock.addStyleClass("logoBoxBrown");
+//                    logo.addStyleClass("logoBoxBrown");
+//                    clock.addStyleClass("logoBoxBrown");
                     break;
             }
         },
@@ -1683,7 +1710,7 @@ sap.ui.define([
             var IDs = ["ButtonBatchAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio", "ButtonSospensioneAttrezzaggio"];
             var texts = ["Predisposizione nuovo confezionamento", "Fine predisposizione", "Sospensione predisposizione"];
             var press = [[this.BatchAttrezzaggio, this], [this.FinePredisposizioneAttrezzaggio, this], [this.SospensioneAttrezzaggio, this]];
-            var classes = ["styleLongButton", "styleButton", "styleButton"];
+            var classes = ["styleLongButton", "styleButton", "styleLongButton"];
             var a = 5;
             var PBt = 10;
             for (var i in IDs) {
@@ -2013,6 +2040,7 @@ sap.ui.define([
             data.MR = [];
             var avg = 0;
             var i, temp;
+            data.MR.push(0);
             for (i = 0; i < data.valori.length - 1; i++) {
                 temp = Math.abs(data.valori[i + 1] - data.valori[i]);
                 data.MR.push(temp);
@@ -2024,10 +2052,14 @@ sap.ui.define([
                 data.MRBound.push(3.267 * avg);
             }
             data.MRTime = JSON.parse(JSON.stringify(data.time));
-            data.MRTime.splice(0, 1);
+//            data.MRTime.splice(0, 1);
             return data;
         },
         RemoveAlarm: function () {
+            var alarmButton = this.getView().byId("alarmButton");
+            alarmButton.setEnabled(false);
+            alarmButton.removeStyleClass("allarmeButton");
+            alarmButton.addStyleClass("chiudiButton");
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.ModelDetailPages.getData().SKUBatch.Batch[0].BatchID + "&ParametroID=" + this.ModelDetailPages.getData().DatiSPC[this.index].parametroId;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             this.CloseSPCDialog();
@@ -2119,12 +2151,15 @@ sap.ui.define([
             dataPlot = [valori, limSup, limInf];
             layout = {
                 showlegend: false,
+                autosize: true,
                 xaxis: {
                     showgrid: true,
                     zeroline: false
                 },
                 yaxis: {
-                    showline: false
+                    showgrid: true,
+                    zeroline: false
+//                    showline: false
                 }
             };
             if (fase === "1") {
@@ -2133,14 +2168,16 @@ sap.ui.define([
                     y: Jdata.MR,
                     xaxis: 'x2',
                     yaxis: 'y2',
-                    type: 'scatter'
+                    type: 'scatter',
+                    line: {color: 'rgb(0,58,107)', width: 1}
                 };
                 var MRBound = {
                     x: Jdata.MRTime,
                     y: Jdata.MRBound,
                     xaxis: 'x2',
                     yaxis: 'y2',
-                    type: 'scatter'
+                    type: 'scatter',
+                    line: {color: 'rgb(167,25,48)', width: 1}
                 };
                 dataPlot.push(MR);
                 dataPlot.push(MRBound);
@@ -2149,6 +2186,18 @@ sap.ui.define([
                 layout.yaxis2 = {};
                 layout.xaxis2.anchor = "y2";
                 layout.yaxis2.domain = [0, 0.4];
+            } else {
+                if (Number(this.Allarme) === 0) {
+                    layout.xaxis.linecolor = "rgb(124,162,149)";
+                    layout.yaxis.linecolor = "rgb(124,162,149)";
+                } else {
+                    layout.xaxis.linecolor = "rgb(255,211,0)";
+                    layout.yaxis.linecolor = "rgb(255,211,0)";
+                }
+                layout.xaxis.linewidth = 4;
+                layout.xaxis.mirror = true;
+                layout.yaxis.linewidth = 4;
+                layout.yaxis.mirror = true;
             }
             return {dataPlot: dataPlot, layout: layout};
         },
@@ -2378,13 +2427,25 @@ sap.ui.define([
 //      ----------------    FUNZIONI RICORSIVE    ----------------
 
         RecursiveJSONComparison: function (std, bck, arrayName) {
+            var tempJSON;
             for (var key in bck) {
                 if (typeof bck[key] === "object") {
-                    bck[key] = this.RecursiveJSONComparison(std[key], bck[key], arrayName);
+                    if (typeof std === "undefined") {
+                        tempJSON = {};
+                    } else {
+                        tempJSON = std[key];
+                    }
+                    bck[key] = this.RecursiveJSONComparison(tempJSON, bck[key], arrayName);
                 } else {
                     if (key === "value") {
-                        if (((typeof std[key] === "undefined") || (bck[key] !== std[key])) && bck.expand !== 3) {
-                            bck.expand = 2;
+                        if (typeof std === "undefined") {
+                            if (bck.expand !== 3) {
+                                bck.expand = 2;
+                            }
+                        } else {
+                            if (((typeof std[key] === "undefined") || (bck[key] !== std[key])) && bck.expand !== 3) {
+                                bck.expand = 2;
+                            }
                         }
                     }
                 }
@@ -2562,10 +2623,12 @@ sap.ui.define([
             this.exp = 0;
             data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
             if (this.exp === 1) {
-                model.Intestazione.conforme = "***";
+                this.AddColorDescrizione("red");
+            } else {
+                this.AddColorDescrizione("");
             }
             this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
-            if (data.Batch[0].IsAttrezzaggio === "0") {
+            if (data.Batch.IsAttrezzaggio === "0") {
                 this.CreateButtons();
                 this.SwitchColor("");
                 this.EnableButtons(["ButtonPresaInCarico"]);
