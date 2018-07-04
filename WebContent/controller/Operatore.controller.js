@@ -32,7 +32,7 @@ sap.ui.define([
         State: null,
         LOCALState: null,
         ClosingDialog: null,
-        SPCDialog: [null, null],
+        SPCDialog: null,
         Fase: null,
         Allarme: null,
         SPCText: null,
@@ -65,18 +65,12 @@ sap.ui.define([
                 this.RefreshCall();
             }
 
-
-//            var clockL1 = this.getView().byId("clockL1");
             var clockL2 = this.getView().byId("clockL2");
-//            var date = this.GetData();
             var time = this.GetOra();
-//            clockL1.setText(date);
             clockL2.setText(time);
             var that = this;
             setInterval(function () {
-//                var date = that.GetData();
                 var time = that.GetOra();
-//                clockL1.setText(date);
                 clockL2.setText(time);
             }, 1000);
         },
@@ -89,36 +83,33 @@ sap.ui.define([
 
 
         RefreshFunction: function () {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), 5000);
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), 10000);
         },
         RefreshCall: function () {
-            if (typeof this.ModelDetailPages.getData().SKUBatch === "undefined") {
+            var link;
+            var data = this.ModelDetailPages.getData();
+            if (typeof data.Linea === "undefined") {
                 this.State = "";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + data.DettaglioLinea.idLinea + "&OutputParameter=JSON";
+            } else {
+                if (data.Linea.StatoLinea === "Disponibile.AttesaPresaInCarico" || data.Linea.StatoLinea === "Disponibile.Vuota") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + data.DettaglioLinea.idLinea + "&OutputParameter=JSON";
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLineaFast&Content-Type=text/json&LineaID=" + data.DettaglioLinea.idLinea + "&OutputParameter=JSON";
+                }
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&OutputParameter=JSON";
             this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
-            this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
+            this.ModelDetailPages.setProperty("/Linea/", Jdata);
             var link, key;
             var model = this.ModelDetailPages.getData();
-            var data = model.SKUBatch;
+            var data = model.Linea;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
-            model.Intestazione.StatoLinea = this.SetStatoLinea(data.StatoLinea);
-            if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
-
-//                var formato_array = data.SKUattuale.attributi[1].attributi[3].value.split(" ");
-//                var formato = formato_array[formato_array.length - 1];
-//                for (var s = 0; s < formato_array.length - 1; s++) {
-//                    formato += " " + formato_array[s];
-//                }
-//                var formato = data.SKUattuale.attributi[1].attributi[3].value;
-//                var descr = formato + " " + data.SKUattuale.attributi[2].attributi[0].value + " - " + data.SKUattuale.attributi[2].attributi[1].value;
-////                var descr = "ciao";
-//                var dest = data.SKUattuale.attributi[4].attributi[0].value;
-//                model.Intestazione.descrizione = descr;
-//                model.Intestazione.destinazione = dest;
+            model.Intestazione.StatoLinea = this.SetLinea(data.StatoLinea);
+            this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
+            if (typeof data.SKUattuale.attributi !== "undefined") {
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
                 data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
                 this.exp = 0;
@@ -128,7 +119,12 @@ sap.ui.define([
                 } else {
                     this.AddColorDescrizione("");
                 }
-                this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
+                var SKU = {"SKUattuale": data.SKUattuale, "SKUstandard": data.SKUstandard};
+                this.ModelDetailPages.setProperty("/SKU/", SKU);
+            }
+
+            if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
+
                 if (data.Batch.IsAttrezzaggio === "0") {
                     if (typeof sap.ui.getCore().byId("ButtonBatchAttrezzaggio") !== "undefined") {
                         this.DestroyButtons();
@@ -233,7 +229,7 @@ sap.ui.define([
                 }
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.State = this.ModelDetailPages.getData().SKUBatch.StatoLinea;
+            this.State = this.ModelDetailPages.getData().Linea.StatoLinea;
             this.RefreshFunction();
         },
         SUCCESSLavorazioneOEE: function (Jdata) {
@@ -260,17 +256,13 @@ sap.ui.define([
             if (Jdata.avanzamento >= 100) {
                 Jdata.avanzamento = 100;
             }
-            for (var s = 0; s < this.SPCDialog.length; s++) {
-                if (this.SPCDialog[s]) {
-                    if (typeof this.SPCDialog[s] !== "undefined") {
-                        if (this.SPCDialog[s].isOpen()) {
-                            this.CloseSPCDialog();
-                        }
-                    }
+            if (this.SPCDialog) {
+                if (this.SPCDialog.isOpen()) {
+                    this.CloseSPCDialog();
                 }
             }
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
-            var data = this.ModelDetailPages.getData().SKUBatch;
+            var data = this.ModelDetailPages.getData().Linea;
             if (this.State !== "Disponibile.Fermo") {
                 sap.ui.getCore().byId("ButtonFermo").setText("Modifica causale fermo");
                 if (data.CausaleEvento === "---") {
@@ -346,8 +338,8 @@ sap.ui.define([
 //        RICHIAMATO DAL BOTTONE "PRESA IN CARICO NUOVO CONFEZIONAMENTO"
         PresaInCarico: function () {
 
-            var std = this.ModelDetailPages.getData().SKUBatch.SKUstandard;
-            var bck = this.ModelDetailPages.getData().SKUBatch.SKUattuale;
+            var std = this.ModelDetailPages.getData().SKU.SKUstandard;
+            var bck = this.ModelDetailPages.getData().SKU.SKUattuale;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
             this.EnableButtons([]);
@@ -412,14 +404,14 @@ sap.ui.define([
             mod = this.RecursiveParentExpansion(mod);
             mod = this.RecursivePropertyAdder(mod, "valueModify");
             mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
-            if (this.ModelDetailPages.getData().SKUBatch.Batch.IsAttrezzaggio === "0") {
+            if (this.ModelDetailPages.getData().Linea.Batch.IsAttrezzaggio === "0") {
                 mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             }
             this.backupSetupModify = JSON.parse(JSON.stringify(mod));
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
             this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
-            if (this.ModelDetailPages.getData().SKUBatch.Batch.IsAttrezzaggio === "0") {
+            if (this.ModelDetailPages.getData().Linea.Batch.IsAttrezzaggio === "0") {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
             } else {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
@@ -584,33 +576,30 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTONE VERDE A FIANCO DELLA PROGRESS BAR
         SPCGraph: function (event, indice) {
-            if (typeof indice === "undefined") {
-                indice = 0;
+            var data = this.ModelDetailPages.getData();
+            this.indexSPC = indice;
+            this.idBatch = data.Linea.Batch.BatchID;
+            this.idLinea = data.DettaglioLinea.idLinea;
+            this.ParametroID = data.DatiSPC[this.indexSPC].parametroId;
+            this.DescrizioneParametro = data.DatiSPC[this.indexSPC].descrizioneParametro;
+            this.SPCDialog = this.getView().byId("SPCWindow");
+            if (!this.SPCDialog) {
+                this.SPCDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
+                this.getView().addDependent(this.SPCDialog);
             }
-            this.index = indice;
-            this.SPCDialog[indice] = this.getView().byId("SPCWindow");
-            if (!this.SPCDialog[indice]) {
-                this.SPCDialog[indice] = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
-                this.getView().addDependent(this.SPCDialog[indice]);
-            }
-            this.SPCDialog[indice].open();
+            this.SPCDialog.open();
             this.SPCDataCaller();
         },
         SPCDataCaller: function () {
-            if (this.SPCDialog[0] || this.SPCDialog[1]) {
-                if (this.SPCDialog[this.index].isOpen()) {
-//                if (typeof this.index === "undefined") {
-//                    indice = 0;
-//                }
+            if (this.SPCDialog) {
+                if (this.SPCDialog.isOpen()) {
                     var data = this.ModelDetailPages.getData();
                     var link;
                     if (this.ISLOCAL === 1) {
                         link = "model/JSON_SPCData.json";
                     } else {
-                        this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.index].allarme;
-                        this.Fase = data.DatiSPC[this.index].fase;
-                        if (typeof data.DatiSPC[this.index].parametroId !== "undefined") {
-                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[this.index].parametroId;
+                        if (typeof data.DatiSPC[this.indexSPC].parametroId !== "undefined") {
+                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[this.indexSPC].parametroId;
                         }
                     }
                     this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
@@ -619,6 +608,9 @@ sap.ui.define([
         },
         SUCCESSSPCDataLoad: function (Jdata) {
             var isEmpty;
+            this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].allarme;
+            this.Fase = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].avanzamento;
             if (Jdata.valori === "") {
                 isEmpty = 1;
             } else {
@@ -631,18 +623,17 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
             this.SPCDialogFiller(isEmpty);
-            setTimeout(this.SPCDataCaller.bind(this), 5000);
+            setTimeout(this.SPCDataCaller.bind(this), 10000);
         },
         SPCDialogFiller: function (discr) {
             var textHeader = this.getView().byId("headerSPCWindow");
-            textHeader.setText(String(this.ModelDetailPages.getData().DatiSPC[this.index].descrizioneParametro));
+            textHeader.setText(String(this.DescrizioneParametro));
             var samplingHeader = this.getView().byId("samplingSPC");
             if (Number(this.Fase) === 1) {
-                samplingHeader.setText("Campionamento in corso: " + String(this.ModelDetailPages.getData().DatiSPC[this.index].avanzamento) + "/50");
+                samplingHeader.setText("Campionamento in corso: " + String(this.Avanzamento) + "/50");
             } else {
                 samplingHeader.setText("");
             }
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             if (discr !== 1) {
                 var plotBox = this.getView().byId("plotBox");
                 var alarmButton = this.getView().byId("alarmButton");
@@ -655,10 +646,12 @@ sap.ui.define([
                     alarmButton.removeStyleClass("allarmeButton");
                     alarmButton.addStyleClass("chiudiButton");
                 }
-                var data = this.ModelDetailPages.getData().DatiSPC.Data;
-                var result = this.PrepareDataToPlot(data, this.Fase);
-                var ID = jQuery.sap.byId(plotBox.getId()).get(0);
-                Plotly.newPlot(ID, result.dataPlot, result.layout);
+                if (!((Number(this.Fase) === 1) && (this.ModelDetailPages.getData().DatiSPC.Data.valori.length < 50))) {
+                    var data = this.ModelDetailPages.getData().DatiSPC.Data;
+                    var result = this.PrepareDataToPlot(data, this.Fase);
+                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
+                    Plotly.newPlot(ID, result.dataPlot, result.layout);
+                }
             }
         },
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
@@ -1155,12 +1148,12 @@ sap.ui.define([
                     this.FermiAutomaticiCheck();
                 }
             } else {
-                if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disponibile.Lavorazione") {
+                if (this.ModelDetailPages.getData().Linea.StatoLinea === "Disponibile.Lavorazione") {
                     this.getSplitAppObj().toDetail(this.createId("InProgress"));
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                     this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);
                     this.FermiAutomaticiCheck("Disponibile.Lavorazione");
-                } else if (this.ModelDetailPages.getData().SKUBatch.StatoLinea === "Disponibile.Svuotamento") {
+                } else if (this.ModelDetailPages.getData().Linea.StatoLinea === "Disponibile.Svuotamento") {
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/RiassuntoOperatore&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                     this.SyncAjaxCallerData(link, this.SUCCESSChiusura.bind(this));
                 }
@@ -1234,8 +1227,8 @@ sap.ui.define([
 
 //      -------------------------- PRESA IN CARICO --------------------------
         BatchAttrezzaggio: function () {
-            var std = this.ModelDetailPages.getData().SKUBatch.SKUstandard;
-            var bck = this.ModelDetailPages.getData().SKUBatch.SKUattuale;
+            var std = this.ModelDetailPages.getData().SKU.SKUstandard;
+            var bck = this.ModelDetailPages.getData().SKU.SKUattuale;
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveParentExpansion(bck);
             this.EnableButtonsAttr([]);
@@ -1598,8 +1591,8 @@ sap.ui.define([
                 sap.ui.getCore().byId(ButtonIDs[i]).removeStyleClass("styleDisabledButton");
             }
         },
-        SetStatoLinea: function (state) {
-            var data = this.ModelDetailPages.getData().SKUBatch;
+        SetLinea: function (state) {
+            var data = this.ModelDetailPages.getData().Linea;
             switch (state) {
                 case "Disponibile.Vuota":
                     return "VUOTA";
@@ -2060,74 +2053,13 @@ sap.ui.define([
             alarmButton.setEnabled(false);
             alarmButton.removeStyleClass("allarmeButton");
             alarmButton.addStyleClass("chiudiButton");
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.ModelDetailPages.getData().SKUBatch.Batch.BatchID + "&ParametroID=" + this.ModelDetailPages.getData().DatiSPC[this.index].parametroId;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.idBatch + "&ParametroID=" + this.ParametroID;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             this.CloseSPCDialog();
         },
         CloseSPCDialog: function () {
-            this.SPCDialog[this.index].close();
-//            this.getView().byId("plotBox").destroyContent();
-//            this.SPCDialog = null;
+            this.SPCDialog.close();
         },
-//        CreateSPCDialog: function () {
-//            var vbox = new sap.m.VBox({width: "100%", height: "100%"});
-//            var vbPlot = new sap.m.VBox({id: "plotBox", width: "100%", height: "80%"});
-//            var vb1 = new sap.m.VBox({id: "destroyBox", width: "100%", height: "100%"});
-//            var hbox = new sap.m.HBox({height: "100%", width: "100%"});
-//            hbox.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
-//            var vboxPlot = new sap.m.VBox({height: "100%", width: "80%"});
-//            vboxPlot.addItem(new sap.m.VBox({height: "30%", width: "100%"}));
-//            var vboxText = new sap.m.VBox({height: "18%", width: "100%"});
-//            var hb1 = new sap.m.HBox({height: "100%", width: "100%"});
-//            hb1.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
-//            var vbText = new sap.m.VBox({height: "100%", width: "80%"});
-//            var text = new sap.m.Text({text: "Primo campionamento in corso"});
-//            text.addStyleClass("textHugeRed");
-//            vbText.addItem(text);
-//            hb1.addItem(vbText);
-//            hb1.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
-//            vboxText.addItem(hb1);
-//            vboxPlot.addItem(vboxText);
-//            vboxPlot.addItem(new sap.m.VBox({height: "4%", width: "100%"}));
-//            var vboxBar = new sap.m.VBox({height: "18%", width: "100%"});
-//            var PB = new sap.m.ProgressIndicator({
-//                id: "PBSPC",
-//                percentValue: 0,
-//                displayValue: "0%",
-//                showValue: true,
-//                state: "Warning",
-//                height: "120px"});
-//            PB.addStyleClass("customTextBar");
-//            vboxBar.addItem(PB);
-//            vboxPlot.addItem(vboxBar);
-//            vboxPlot.addItem(new sap.m.VBox({height: "30%", width: "100%"}));
-//            hbox.addItem(vboxPlot);
-//            hbox.addItem(new sap.m.VBox({height: "100%", width: "10%"}));
-//            vb1.addItem(hbox);
-//            vbPlot.addItem(vb1);
-//            vbox.addItem(vbPlot);
-//            var vb2 = new sap.m.VBox({width: "100%", height: "10%"});
-//            var vb3 = new sap.m.VBox({width: "100%", height: "5%"});
-//            vbox.addItem(vb3);
-//            var hb = new sap.m.HBox({width: "100%", height: "100%"});
-//            var vb4 = new sap.m.VBox({width: "20%", height: "100%"});
-//            hb.addItem(vb4);
-//            var vb5 = new sap.m.VBox({width: "60%", height: "100%"});
-//            var btn = new sap.m.Button({text: "Chiudi", width: "85%", press: [this.CloseSPCDialog, this]});
-//            btn.addStyleClass("annullaButton");
-//            vb5.addItem(btn);
-//            hb.addItem(vb5);
-//            hb.addItem(vb4);
-//            vb2.addItem(hb);
-//            vbox.addItem(vb2);
-//            vbox.addItem(vb3);
-//            this.SPCDialog = new sap.m.Dialog({
-//                title: 'Grafico SPC',
-//                contentWidth: "1600px",
-//                contentHeight: "1200px",
-//                content: vbox});
-//            this.getView().addDependent(this.SPCDialog);
-//        },
         PrepareDataToPlot: function (Jdata, fase) {
             var dataPlot, layout;
             var valori = {
@@ -2612,9 +2544,9 @@ sap.ui.define([
 
         LOCALCheckStatus: function (Jdata) {
 
-            this.ModelDetailPages.setProperty("/SKUBatch/", Jdata);
+            this.ModelDetailPages.setProperty("/Linea/", Jdata);
             var model = this.ModelDetailPages.getData();
-            var data = model.SKUBatch;
+            var data = model.Linea;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": "", "conforme": ""};
             var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
             model.Intestazione.descrizione = descr;
