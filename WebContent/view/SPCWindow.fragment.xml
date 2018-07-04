@@ -26,7 +26,7 @@
                     </VBox>
                 </HBox>
             </VBox>
-            <VBox id="plotBox" height="800px" width="100%" class="colorPage"/>
+            <VBox id="plotBox" height="790px" width="100%" class="colorPage"/>
                         <!--<VBox id="plotBox" height="72%" width="100%" class="colorPage"/>-->
             <VBox height="3%" width="100%" class="colorPage"/>
             <VBox height="7%" width="100%" class="colorPage">
@@ -44,4 +44,4 @@
             </VBox>
         </VBox>
     </Dialog>
-</core:FragmentDefinition>
+</core:FragmentDefinition>  

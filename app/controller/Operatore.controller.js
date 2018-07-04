@@ -264,7 +264,7 @@ sap.ui.define([
                 if (this.SPCDialog[s]) {
                     if (typeof this.SPCDialog[s] !== "undefined") {
                         if (this.SPCDialog[s].isOpen()) {
-                            this.CloseSPCDialog[s]();
+                            this.CloseSPCDialog();
                         }
                     }
                 }

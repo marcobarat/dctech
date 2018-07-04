@@ -264,7 +264,7 @@ sap.ui.define([
                 if (this.SPCDialog[s]) {
                     if (typeof this.SPCDialog[s] !== "undefined") {
                         if (this.SPCDialog[s].isOpen()) {
-                            this.CloseSPCDialog[s]();
+                            this.CloseSPCDialog();
                         }
                     }
                 }
@@ -412,14 +412,14 @@ sap.ui.define([
             mod = this.RecursiveParentExpansion(mod);
             mod = this.RecursivePropertyAdder(mod, "valueModify");
             mod = this.RecursivePropertyCopy(mod, "valueModify", "value");
-            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+            if (this.ModelDetailPages.getData().SKUBatch.Batch.IsAttrezzaggio === "0") {
                 mod = this.RecursivePropertyAdder(mod, "codeValueModify");
             }
             this.backupSetupModify = JSON.parse(JSON.stringify(mod));
             this.ModelDetailPages.setProperty("/SetupLinea/Old/", std);
             this.ModelDetailPages.setProperty("/SetupLinea/New/", bck);
             this.ModelDetailPages.setProperty("/SetupLinea/Modify/", mod);
-            if (this.ModelDetailPages.getData().SKUBatch.Batch[0].IsAttrezzaggio === "0") {
+            if (this.ModelDetailPages.getData().SKUBatch.Batch.IsAttrezzaggio === "0") {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLinea"));
             } else {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
@@ -588,7 +588,6 @@ sap.ui.define([
                 indice = 0;
             }
             this.index = indice;
-            this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.index].allarme;
             this.SPCDialog[indice] = this.getView().byId("SPCWindow");
             if (!this.SPCDialog[indice]) {
                 this.SPCDialog[indice] = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
@@ -608,6 +607,7 @@ sap.ui.define([
                     if (this.ISLOCAL === 1) {
                         link = "model/JSON_SPCData.json";
                     } else {
+                        this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.index].allarme;
                         this.Fase = data.DatiSPC[this.index].fase;
                         if (typeof data.DatiSPC[this.index].parametroId !== "undefined") {
                             link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[this.index].parametroId;
@@ -2060,7 +2060,7 @@ sap.ui.define([
             alarmButton.setEnabled(false);
             alarmButton.removeStyleClass("allarmeButton");
             alarmButton.addStyleClass("chiudiButton");
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.ModelDetailPages.getData().SKUBatch.Batch[0].BatchID + "&ParametroID=" + this.ModelDetailPages.getData().DatiSPC[this.index].parametroId;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.ModelDetailPages.getData().SKUBatch.Batch.BatchID + "&ParametroID=" + this.ModelDetailPages.getData().DatiSPC[this.index].parametroId;
             this.AjaxCallerVoid(link, this.RefreshCall.bind(this));
             this.CloseSPCDialog();
         },
