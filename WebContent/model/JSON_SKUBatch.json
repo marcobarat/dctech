@@ -4,12 +4,12 @@
     "StatoLinea": "Disponibile.AttesaPresaInCarico",
     "CausaleEvento": "CapoTurno ha trasferito il batch",
     "BatchTrasferito": "True",
-    "Batch": [{
-            "BatchID": "6",
-            "IsAttrezzaggio": "0",
-            "SKUID": "15",
-            "Errore": "0"
-        }],
+    "Batch": {
+        "BatchID": "6",
+        "IsAttrezzaggio": "0",
+        "SKUID": "15",
+        "Errore": "0"
+    },
     "SKUattuale": {
         "attributi": [{
                 "name": "SKU",

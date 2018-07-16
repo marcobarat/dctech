@@ -165,14 +165,15 @@
     font-family: Arial;
 }
 .OEEText {
-    font-size: 20pt;
-    /*font-weight: bold;*/
+    font-size: 35pt;
     color : #003A6B;
     font-family: Arial;
 }
+.underlineOEE {
+    text-decoration: underline;
+}
 .customTextFermo  {
     font-size: 15pt;
-    /*font-weight: bold;*/
     text-align: center;
     color : #A71930;
     font-family: Arial;
@@ -186,9 +187,23 @@
     color : #003A6B;
     font-family: Arial;
 }
-
+.causeText .sapMListTbl .sapMText {
+    font-size: 20pt;
+    color : #003A6B;
+}
+.causeSingleTexts .sapMText {
+    font-size: 20pt;
+    color : #003A6B;
+}
+.causeText .sapMListTbl .sapMLabel {
+    font-size: 20pt;
+    color : #A71930;
+}
 
 /*STILE TAB CONTAINER*/
+.shiftDownCause .sapMBtnInner {
+    top: 1rem;
+}
 .annullaButton .sapMBtnInner {
     font-family: Arial;
     font-size: 20pt;
@@ -320,6 +335,11 @@
     border-color: #003A6B;
     height: 90% !important;
     top: 0.3rem;
+}
+.FaultSPCVBox {
+    border: solid 1px;
+    border-color: #003A6B;
+    height: 120px;
 }
 .customTextBar *{
     font-size: 56pt;
