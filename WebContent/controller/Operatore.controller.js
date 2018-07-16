@@ -1058,12 +1058,17 @@ sap.ui.define([
             }
         },
         SUCCESSCausalizzazione: function (Jdata) {
-
+            
             if (this.ISLOCAL !== 1) {
                 this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", this.AddTimeGaps(Jdata));
                 this.AggiungiSelezioneFermiNonCausalizzati();
             }
-
+            var rows_number = this.ModelDetailPages.getProperty(this.getView().byId("SingoliTable").getBindingInfo("rows").path).length;
+            if (rows_number > 9){
+                this.getView().byId("vbox_table").addStyleClass("scrollingbarTransparent");
+            } else {
+                this.getView().byId("vbox_table").removeStyleClass("scrollingbarTransparent");
+            } 
             this.getView().byId("vbox_table").destroyItems();
             if (this.ModelDetailPages.getData().FermiNonCausalizzati.fermi.length === 0) {
                 var text = new sap.m.Text({

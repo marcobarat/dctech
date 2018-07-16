@@ -939,7 +939,7 @@
                                             <VBox width="10%"/>
                                         </HBox>
                                     </VBox>
-                                    <VBox id="vbox_table" height="15%" width="100%"/>
+                                    <VBox id="vbox_table" height="15%" width="100%" class="vbox_table"/>
                                     <VBox height="70%" width="100%">
                                         <t:Table
                                             id="SingoliTable"
