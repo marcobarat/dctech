@@ -387,8 +387,20 @@ textButtonsDialog .sapMBtnContent {
 }
 .mysapMCb .sapMCb {
     left: 0.375rem;
+    
 }
-
+.scrollingbarTransparent{
+    overflow-y: scroll; 
+}
+.scrollingbarTransparent::-webkit-scrollbar{
+    background-color: transparent !important; 
+}
+.scrollingbarTransparent::-webkit-scrollbar-corner{
+    background-color: transparent;
+}
+.scrollingbarTransparent::-webkit-scrollbar-thumb{
+    background-color: transparent;
+}
 /*STILE TABELLA SINGOLI CAUSALIZZAZIONE*/
 .mysapMTable {
     border-top : 1px solid #dddddd;
