@@ -22,6 +22,12 @@
 .stylePanelBrown {
     background-color: #5E3032; 
 }
+.shiftDown25 {
+    top: 0.25rem;
+}
+.blueBorder {
+    border: solid 1px #003A6B;
+}
 .blueBorderRight {
     border-right: solid 1px #003A6B;
 }
@@ -159,8 +165,12 @@
     font-family: Arial;
 }
 .customText {
-    font-size: 30pt;
-    /*font-weight: bold;*/
+    font-size: 35pt;
+    color : #003A6B;
+    font-family: Arial;
+}
+.customTextFermi .sapMLabel {
+    font-size: 25pt;
     color : #003A6B;
     font-family: Arial;
 }
@@ -262,7 +272,8 @@
     background: #A71930;
     border-radius: 10px;
     height: 200%;
-    padding: 6.5%;
+    padding: 5%;
+    top: 1rem;
 }
 .confermaButtonDialog .sapMBtnInner {
     font-family: Arial;
@@ -271,7 +282,11 @@
     background: #7CA295;
     border-radius: 10px;
     height: 200%;
-    padding: 6.5%;
+    padding: 5%;
+    top: 1rem;
+}
+textButtonsDialog .sapMBtnContent {
+    line-height: 1.8rem;
 }
 /*.sapMTabStrip {
     background: #0085CA;
@@ -336,11 +351,6 @@
     height: 90% !important;
     top: 0.3rem;
 }
-.FaultSPCVBox {
-    border: solid 1px;
-    border-color: #003A6B;
-    height: 120px;
-}
 .customTextBar *{
     font-size: 56pt;
     color : #003A6B;
@@ -362,6 +372,7 @@
 }
 .sapMPIBarNeutral {
     background: white;
+    border-right: 1px solid #003A6B;
 }
 
 /*STILE TABELLA TOTALE CAUSALIZZAZIONE EDO*/
