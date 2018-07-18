@@ -827,6 +827,7 @@ sap.ui.define([
                     }
                 }
                 L1_vbox = new sap.m.VBox(/*{height: L1_height}*/);
+                L1_vbox.addItem(new sap.m.HBox({height: '2rem'}));
                 L1_vbox.addItem(L2_hbox);
                 VB1.addItem(L1_vbox);
             }
