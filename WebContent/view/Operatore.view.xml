@@ -1048,9 +1048,9 @@
                                             height="120px"/>
                                     </VBox>
                                     <VBox width="4%" height="100%"/>
-                                    <VBox width="6.8%" height="100%" class="FaultSPCVBox">
+                                    <VBox width="6.8%" height="120px" class="blueBorder shiftDown25">
                                     </VBox>
-                                    <VBox width="6.8%" height="100%" class="FaultSPCVBox">
+                                    <VBox width="6.8%" height="120px" class="blueBorder shiftDown25">
                                     </VBox>
                                     <VBox width="8.4%" height="100%"/>
                                 </HBox>
@@ -1443,7 +1443,7 @@
                                         </wt:columns>
                                     </wt:CustomTreeTable>
                                     <!--</Panel>-->
-                                    <Button text="CHIUSURA BATCH" width="100%" press="SvuotaLinea" class="attrezzaggioButton"/>
+                                    <Button text="Chiusura Batch" width="100%" press="SvuotaLinea" class="attrezzaggioButton"/>
                                 </VBox>
                                 <VBox width="5%"/>
                             </HBox>
@@ -1511,7 +1511,7 @@
                                         collapseRecursive="true"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="23"
+                                        visibleRowCount="20"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_BatchAttrezzaggio">
                                         <wt:toolbar>
@@ -1564,6 +1564,8 @@
                 </content>
             </Page>
             
+                                                                    
+            
             
             <Page id="PredisposizioneLineaAttrezzaggio" showHeader="false" class="colorPage">
                 <content>
@@ -1606,7 +1608,6 @@
                                                 id="tab1A"
                                                 name="ATTRIBUTI PRODOTTO">
                                                 <content>
-                                                    <!--<Panel>-->
                                                     <wt:CustomTreeTable
                                                         id="TreeTable_AttributiAttrezzaggio"
                                                         rows="{path:'GeneralModel>/SKU/SKUattuale', parameters: {arrayNames:['attributi']}}"
@@ -1614,7 +1615,7 @@
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="23"
+                                                        visibleRowCount="20"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiAttrezzaggio">
                                                         <wt:toolbar>
@@ -1642,95 +1643,89 @@
                                                             </t:Column>
                                                         </wt:columns>
                                                     </wt:CustomTreeTable>
-                                                    <!--</Panel>-->                                                   
                                                 </content>
                                             </TabContainerItem>
                                             <TabContainerItem 
                                                 id="tab2A"
                                                 name="ATTREZZAGGIO LINEA">
                                                 <content>
-                                                    <!--                                                        <FlexBox width="100%" alignItems="Start"
-                                                    justifyContent="Center">-->
-                                                    <HBox height="100%" width="100%">
-                                                        <VBox width="47%">
-                                                            <!--<Panel>-->
-                                                            <wt:CustomTreeTable
-                                                                id="TreeTable_AttrezzaggioOld"
-                                                                rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
-                                                                selectionMode="None"
-                                                                collapseRecursive="true"
-                                                                enableSelectAll="false"
-                                                                ariaLabelledBy="title"
-                                                                visibleRowCount="23"
-                                                                app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"
-                                                                toggleOpenState="COUPLEDTreeTableIconPress"
-                                                                cellClick="LinkClick">
-                                                                <wt:toolbar>
-                                                                    <Toolbar>
-                                                                        <ToolbarSpacer/>
-                                                                        <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
-                                                                        <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
-                                                                        <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
-                                                                    </Toolbar>
-                                                                </wt:toolbar>
-                                                                <wt:columns>
-                                                                    <t:Column width="13rem" resizable="false">
-                                                                        <Label text="ATTRIBUTI"/>
-                                                                        <t:template>
-                                                                            <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
-                                                                        </t:template>
-                                                                    </t:Column>
-                                                                    <t:Column width="7rem" resizable="false">
-                                                                        <Label text="VALORE"/>
-                                                                        <t:template>
-                                                                            <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                        </t:template>
-                                                                    </t:Column>
-                                                                </wt:columns>
-                                                            </wt:CustomTreeTable>
-                                                        </VBox>
-                                                        <VBox width="6%"/>
-                                                        <VBox width="47%">
-                                                            <!--</Panel>-->
-                                                            <!--<Panel>-->
-                                                            <wt:CustomTreeTable
-                                                                id="TreeTable_AttrezzaggioNew"
-                                                                rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
-                                                                selectionMode="None"
-                                                                collapseRecursive="true"
-                                                                enableSelectAll="false"
-                                                                ariaLabelledBy="title"
-                                                                visibleRowCount="23"
-                                                                app:mydata="TreeTable_AttrezzaggioNew,TreeTable_AttrezzaggioOld"
-                                                                toggleOpenState="COUPLEDTreeTableIconPress"
-                                                                cellClick="LinkClick">
-                                                                <wt:toolbar>
-                                                                    <Toolbar>
-                                                                        <ToolbarSpacer/>
-                                                                        <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
-                                                                        <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/> 
-                                                                        <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"/>
-                                                                    </Toolbar>
-                                                                </wt:toolbar>
-                                                                <wt:columns>
-                                                                    <t:Column width="13rem" resizable="false">
-                                                                        <Label text="ATTRIBUTI"/>
-                                                                        <t:template>
-                                                                            <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
-                                                                        </t:template>
-                                                                    </t:Column>
-                                                                    <t:Column width="7rem" resizable="false">
-                                                                        <Label text="VALORE"/>
-                                                                        <t:template>
-                                                                            <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                        </t:template>
-                                                                    </t:Column>
-                                                                </wt:columns>
-                                                            </wt:CustomTreeTable>
-                                                        </VBox>
-                                                        <!--</Panel>-->
-                                                    </HBox>
-                                                    <!--</FlexBox>-->
+                                                    <FlexBox width="100%" alignItems="Start" justifyContent="Center">
+                                                        <HBox height="100%" width="100%">
+                                                            <VBox width="47%">
+                                                                <wt:CustomTreeTable
+                                                                    id="TreeTable_AttrezzaggioOld"
+                                                                    rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
+                                                                    selectionMode="None"
+                                                                    collapseRecursive="true"
+                                                                    enableSelectAll="false"
+                                                                    ariaLabelledBy="title"
+                                                                    visibleRowCount="20"
+                                                                    app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"
+                                                                    toggleOpenState="COUPLEDTreeTableIconPress"
+                                                                    cellClick="LinkClick">
+                                                                    <wt:toolbar>
+                                                                        <Toolbar>
+                                                                            <ToolbarSpacer/>
+                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew" class="COUPLEDTTButton"/>
+                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew" class="COUPLEDTTButton"/>
+                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew" class="COUPLEDTTButton"/>
+                                                                        </Toolbar>
+                                                                    </wt:toolbar>
+                                                                    <wt:columns>
+                                                                        <t:Column width="13rem" resizable="false">
+                                                                            <Label text="ATTRIBUTI"/>
+                                                                            <t:template>
+                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                            </t:template>
+                                                                        </t:Column>
+                                                                        <t:Column width="7rem" resizable="false">
+                                                                            <Label text="VALORE"/>
+                                                                            <t:template>
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                            </t:template>
+                                                                        </t:Column>
+                                                                    </wt:columns>
+                                                                </wt:CustomTreeTable>
+                                                            </VBox>
+                                                            <VBox width="6%"/>
+                                                            <VBox width="47%">
+                                                                <wt:CustomTreeTable
+                                                                    id="TreeTable_AttrezzaggioNew"
+                                                                    rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
+                                                                    selectionMode="None"
+                                                                    collapseRecursive="true"
+                                                                    enableSelectAll="false"
+                                                                    ariaLabelledBy="title"
+                                                                    visibleRowCount="20"
+                                                                    app:mydata="TreeTable_AttrezzaggioNew,TreeTable_AttrezzaggioOld"
+                                                                    toggleOpenState="COUPLEDTreeTableIconPress"
+                                                                    cellClick="LinkClick">
+                                                                    <wt:toolbar>
+                                                                        <Toolbar>
+                                                                            <ToolbarSpacer/>
+                                                                            <Button text="Collassa" press="COUPLEDCollapseAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew" class="COUPLEDTTButton"/>
+                                                                            <Button text="Espandi" press="COUPLEDExpandAll" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew" class="COUPLEDTTButton"/> 
+                                                                            <Button text="Speciali" press="COUPLEDShowRelevant" app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew" class="COUPLEDTTButton"/>
+                                                                        </Toolbar>
+                                                                    </wt:toolbar>
+                                                                    <wt:columns>
+                                                                        <t:Column width="13rem" resizable="false">
+                                                                            <Label text="ATTRIBUTI"/>
+                                                                            <t:template>
+                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                            </t:template>
+                                                                        </t:Column>
+                                                                        <t:Column width="7rem" resizable="false">
+                                                                            <Label text="VALORE"/>
+                                                                            <t:template>
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                            </t:template>
+                                                                        </t:Column>
+                                                                    </wt:columns>
+                                                                </wt:CustomTreeTable>
+                                                            </VBox>
+                                                        </HBox>
+                                                    </FlexBox>
                                                 </content>
                                             </TabContainerItem>
                                         </items>
@@ -1774,7 +1769,6 @@
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
                                         <Text id="ConfermaAttrezzaggioDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1787,15 +1781,29 @@
                             </VBox>
                             <VBox height="5%" width="100%"/>
                         </VBox>
-                        <VBox height="10%" width="100%">
+                        <VBox height="57%" width="100%">
                             <Text/>
                         </VBox>
-                        <VBox height="50%" width="100%">
+                        <!--                        <VBox height="10%" width="100%">
                             <FlexBox alignItems="Start" justifyContent="Center">
-                                <Text text="SVUOTAMENTO LINEA - {GeneralModel>/FineAttrezzaggio/stringa}" class="textTop"/>
+                                <Text text="SVUOTAMENTO LINEA" class="textTop"/>
                             </FlexBox>
                         </VBox>
-                        <VBox height="10%" width="100%">
+                         <VBox height="10%" width="100%">
+                            <FlexBox alignItems="Start" justifyContent="Center">
+                                <Text text="{GeneralModel>/FineAttrezzaggio/stringa}" class="textTop"/>
+                            </FlexBox>
+                        </VBox>-->
+                        <VBox height="8%" width="100%">
+                            <HBox>
+                                <VBox width="10%"/>
+                                <VBox width="80%">
+                                    <Button text="Chiusura Attrezzaggio" width="100%" press="FineAttrezzaggio" class="attrezzaggioButton"/>
+                                </VBox>
+                                <VBox width="10%"/>
+                            </HBox>
+                        </VBox>
+                        <VBox height="10%" width="100%" class="blueBorderTop">
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
@@ -1808,7 +1816,6 @@
                                     <VBox height="100%" width="15%"/>
                                 </HBox>
                             </VBox>
-                            <!--<VBox height="10%" width="100%"/>-->
                         </VBox>
                     </VBox>
                 </content>

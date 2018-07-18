@@ -18,13 +18,13 @@
                     <HBox>
                         <VBox width="70px"/>
                         <VBox width="400px">
-                            <Button text="Annulla" width="400px" press="AnnullaChiusuraConfezionamento" class="annullaButtonDialog"/>
+                            <Button text="Annulla" width="400px" press="AnnullaChiusuraConfezionamento" class="annullaButtonDialog textButtonsDialog"/>
                         </VBox>
                         <VBox  width="60px">
                             <Text/>
                         </VBox>
                         <VBox width="400px">
-                            <Button text="Conferma" width="400px" press="ConfermaChiusuraConfezionamento" class="confermaButtonDialog"/>
+                            <Button text="Conferma" width="400px" press="ConfermaChiusuraConfezionamento" class="confermaButtonDialog textButtonsDialog"/>
                         </VBox>
                         <VBox width="70px"/>
                     </HBox>
