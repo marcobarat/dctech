@@ -793,7 +793,7 @@ sap.ui.define([
             var vb1 = new sap.m.VBox({width: "15%"});
             var VB1 = new sap.m.VBox({width: "85%"});
             var L1_vbox, L2_hbox, L3_vbox, title, subdata;
-            var L1_height = String(Math.round(100 / rows)) + "%";
+//            var L1_height = String(Math.round(100 / rows)) + "%";
             var L3_width = String(Math.round(100 / cols)) + "%";
             var index = 0;
             this.CheckFermo = [];
@@ -821,7 +821,7 @@ sap.ui.define([
                         break;
                     }
                 }
-                L1_vbox = new sap.m.VBox({height: L1_height});
+                L1_vbox = new sap.m.VBox(/*{height: L1_height}*/);
                 L1_vbox.addItem(L2_hbox);
                 VB1.addItem(L1_vbox);
             }
