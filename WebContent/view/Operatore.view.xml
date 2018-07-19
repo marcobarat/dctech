@@ -424,9 +424,9 @@
                                             height="120px"/>
                                     </VBox>
                                     <VBox width="4%" height="100%"/>
-                                    <VBox id="SPCButton" width="13.6%" height="100%">
+                                    <VBox id="SPCButton" width="16%" height="100%">
                                     </VBox>
-                                    <VBox width="8.4%" height="100%"/>
+                                    <VBox width="6%" height="100%"/>
                                 </HBox>
                             </VBox>
                             <!--                            <VBox height="5%" width="100%"/>

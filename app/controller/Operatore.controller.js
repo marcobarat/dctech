@@ -44,11 +44,11 @@ sap.ui.define([
 
         onInit: function () {
 
-            this.IDsTreeTables.setProperty("/IDs/", {});
-            sap.ui.getCore().setModel(this.IDsTreeTables, "IDsTreeTables");
-            for (var key in this.IDsTreeTables.getData().IDs) {
-                this.IDsTreeTables.getData().IDs[key] = 0;
-            }
+//            this.IDsTreeTables.setProperty("/IDs/", {});
+//            sap.ui.getCore().setModel(this.IDsTreeTables, "IDsTreeTables");
+//            for (var key in this.IDsTreeTables.getData().IDs) {
+//                this.IDsTreeTables.getData().IDs[key] = 0;
+//            }
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             sap.ui.getCore().setModel({ISLOCAL: this.ISLOCAL}, "ISLOCAL");
             this.ISATTR = Number(jQuery.sap.getUriParameters().get("ISATTR"));
@@ -2013,7 +2013,9 @@ sap.ui.define([
                 }
                 switch (data[b].fase) {
                     case "1":
-                        btn.setIcon("img/triangolo_buco.png");
+                        if (btn.getIcon() !== "img/triangolo_buco.png") {
+                            btn.setIcon("img/triangolo_buco.png");
+                        }
                         btn.setText(data[b].numeroCampionamenti);
                         btn.addStyleClass("SPCButtonPhase1");
                         if (data.length === 1) {

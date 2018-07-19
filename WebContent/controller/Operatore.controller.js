@@ -38,15 +38,17 @@ sap.ui.define([
         index: null,
         GenSPCProgress: null,
         Counter: 10,
+        SPCCounter: null,
+        SPCTimer: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
 
-            this.IDsTreeTables.setProperty("/IDs/", {});
-            sap.ui.getCore().setModel(this.IDsTreeTables, "IDsTreeTables");
-            for (var key in this.IDsTreeTables.getData().IDs) {
-                this.IDsTreeTables.getData().IDs[key] = 0;
-            }
+//            this.IDsTreeTables.setProperty("/IDs/", {});
+//            sap.ui.getCore().setModel(this.IDsTreeTables, "IDsTreeTables");
+//            for (var key in this.IDsTreeTables.getData().IDs) {
+//                this.IDsTreeTables.getData().IDs[key] = 0;
+//            }
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             sap.ui.getCore().setModel({ISLOCAL: this.ISLOCAL}, "ISLOCAL");
             this.ISATTR = Number(jQuery.sap.getUriParameters().get("ISATTR"));
@@ -590,6 +592,8 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTONE VERDE A FIANCO DELLA PROGRESS BAR
         SPCGraph: function (event, indice) {
+            window.clearInterval(this.SPCTimer);
+            this.SPCCounter = 5;
             var data = this.ModelDetailPages.getData();
             this.indexSPC = indice;
             this.idBatch = data.Linea.Batch.BatchID;
@@ -603,6 +607,10 @@ sap.ui.define([
             }
             this.SPCDialog.open();
             this.SPCDataCaller();
+            var that = this;
+            this.SPCTimer = setInterval(function () {
+                that.SPCCounter++;
+            }, 1000);
         },
         SPCDataCaller: function () {
             if (this.SPCDialog) {
@@ -637,36 +645,18 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
             this.SPCDialogFiller(isEmpty);
-            setTimeout(this.SPCDataCaller.bind(this), 10000);
+            this.SPCRefresh();
         },
-        SPCDialogFiller: function (discr) {
-            var textHeader = this.getView().byId("headerSPCWindow");
-            textHeader.setText(String(this.DescrizioneParametro));
-            var samplingHeader = this.getView().byId("samplingSPC");
-            if (Number(this.Fase) === 1) {
-                samplingHeader.setText("Campionamento in corso: " + String(this.Avanzamento) + "/50");
+        SPCRefresh: function () {
+            if (this.SPCCounter >= 5) {
+                setTimeout(this.SPCDataCaller.bind(this), 5000);
+                this.SPCCounter = 0;
             } else {
-                samplingHeader.setText("");
+                setTimeout(this.SPCVoid.bind(this), 1000);
             }
-            if (discr !== 1) {
-                var plotBox = this.getView().byId("plotBox");
-                var alarmButton = this.getView().byId("alarmButton");
-                if (Number(this.Fase) === 2 && Number(this.Allarme) === 1) {
-                    alarmButton.setEnabled(true);
-                    alarmButton.removeStyleClass("chiudiButton");
-                    alarmButton.addStyleClass("allarmeButton");
-                } else {
-                    alarmButton.setEnabled(false);
-                    alarmButton.removeStyleClass("allarmeButton");
-                    alarmButton.addStyleClass("chiudiButton");
-                }
-                if (!((Number(this.Fase) === 1) && (this.ModelDetailPages.getData().DatiSPC.Data.valori.length < 50))) {
-                    var data = this.ModelDetailPages.getData().DatiSPC.Data;
-                    var result = this.PrepareDataToPlot(data, this.Fase);
-                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
-                    Plotly.newPlot(ID, result.dataPlot, result.layout);
-                }
-            }
+        },
+        SPCVoid: function () {
+            this.SPCRefresh();
         },
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
@@ -1073,17 +1063,17 @@ sap.ui.define([
             }
         },
         SUCCESSCausalizzazione: function (Jdata) {
-            
+
             if (this.ISLOCAL !== 1) {
                 this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", this.AddTimeGaps(Jdata));
                 this.AggiungiSelezioneFermiNonCausalizzati();
             }
             var rows_number = this.ModelDetailPages.getProperty(this.getView().byId("SingoliTable").getBindingInfo("rows").path).length;
-            if (rows_number > 9){
+            if (rows_number > 9) {
                 this.getView().byId("vbox_table").addStyleClass("scrollingbarTransparent");
             } else {
                 this.getView().byId("vbox_table").removeStyleClass("scrollingbarTransparent");
-            } 
+            }
             this.getView().byId("vbox_table").destroyItems();
             if (this.ModelDetailPages.getData().FermiNonCausalizzati.fermi.length === 0) {
                 var text = new sap.m.Text({
@@ -2023,7 +2013,9 @@ sap.ui.define([
                 }
                 switch (data[b].fase) {
                     case "1":
-                        btn.setIcon("img/triangolo_buco.png");
+                        if (btn.getIcon() !== "img/triangolo_buco.png") {
+                            btn.setIcon("img/triangolo_buco.png");
+                        }
                         btn.setText(data[b].numeroCampionamenti);
                         btn.addStyleClass("SPCButtonPhase1");
                         if (data.length === 1) {
@@ -2053,6 +2045,35 @@ sap.ui.define([
                         }
                         btn.addStyleClass("SPCButtonColorYellow");
                         break;
+                }
+            }
+        },
+        SPCDialogFiller: function (discr) {
+            var textHeader = this.getView().byId("headerSPCWindow");
+            textHeader.setText(String(this.DescrizioneParametro));
+            var samplingHeader = this.getView().byId("samplingSPC");
+            if (Number(this.Fase) === 1) {
+                samplingHeader.setText("Campionamento in corso: " + String(this.Avanzamento) + "/50");
+            } else {
+                samplingHeader.setText("");
+            }
+            if (discr !== 1) {
+                var plotBox = this.getView().byId("plotBox");
+                var alarmButton = this.getView().byId("alarmButton");
+                if (Number(this.Fase) === 2 && Number(this.Allarme) === 1) {
+                    alarmButton.setEnabled(true);
+                    alarmButton.removeStyleClass("chiudiButton");
+                    alarmButton.addStyleClass("allarmeButton");
+                } else {
+                    alarmButton.setEnabled(false);
+                    alarmButton.removeStyleClass("allarmeButton");
+                    alarmButton.addStyleClass("chiudiButton");
+                }
+                if (!((Number(this.Fase) === 1) && (this.ModelDetailPages.getData().DatiSPC.Data.valori.length < 50))) {
+                    var data = this.ModelDetailPages.getData().DatiSPC.Data;
+                    var result = this.PrepareDataToPlot(data, this.Fase);
+                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
+                    Plotly.newPlot(ID, result.dataPlot, result.layout);
                 }
             }
         },
@@ -2100,6 +2121,7 @@ sap.ui.define([
             this.CloseSPCDialog();
         },
         CloseSPCDialog: function () {
+            window.clearInterval(this.SPCTimer);
             this.SPCDialog.close();
         },
         PrepareDataToPlot: function (Jdata, fase) {
