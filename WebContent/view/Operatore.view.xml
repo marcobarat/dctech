@@ -126,7 +126,7 @@
                                                 <t:template>
                                                     <!--<Text text="{value}" wrapping="false" />-->
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                         <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
                                                         <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
                                                         <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
@@ -296,7 +296,7 @@
                                                                             <t:template>
                                                                                 <!--                                                                                <Text text="{value}" wrapping="false" />
                                                                                 <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -341,7 +341,7 @@
                                                                             <t:template>
                                                                                 <!--                                                                                <Text text="{value}" wrapping="false" />
                                                                                 <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -705,7 +705,7 @@
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                                         <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
                                                                         <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
                                                                         <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
@@ -778,7 +778,7 @@
                                                                     <!--<Text text="{value}" wrapping="false" />-->
                                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
                                                                     <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == 0}" />-->
-                                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
+                                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" maxLength="20" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
                                                                     <!--<wt:StyleInputTreeTableValue editable="{= ${GeneralModel>modify} === 1}" />-->
                                                                     <!--<Input value="{GeneralModel>value}"/>-->
                                                                     <!--<wt:StyleInputTreeTableModify diff="{TreeTable_ModificaCondizioni>modify}"/>-->
@@ -790,7 +790,7 @@
                                                                     <!--<Text text="{value}" wrapping="false" />-->
                                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
                                                                     <!--<wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === 1}" />-->
-                                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
+                                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" maxLength="20" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
                                                                     <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />-->
                                                                     <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
                                                                 </t:template>
@@ -1328,13 +1328,13 @@
                                             <t:Column width="5rem" resizable="false">
                                                 <Label text="MODIFICA VALORE"/>
                                                 <t:template>
-                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
+                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" maxLength="20" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
                                                 <Label text="MODIFICA SIGLE"/>
                                                 <t:template>
-                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
+                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" maxLength="20" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
                                                 </t:template>
                                             </t:Column>
                                         </wt:columns>
@@ -1442,7 +1442,7 @@
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                     </HBox>
                                                 </t:template>
                                             </t:Column>
@@ -1539,7 +1539,7 @@
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                     </HBox>
                                                 </t:template>
                                             </t:Column>
@@ -1643,7 +1643,7 @@
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                                     </HBox>
                                                                 </t:template>
                                                             </t:Column>
@@ -1687,7 +1687,7 @@
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -1724,7 +1724,7 @@
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" />
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
