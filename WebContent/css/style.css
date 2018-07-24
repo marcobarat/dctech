@@ -371,12 +371,15 @@ textButtonsDialog .sapMBtnContent {
 }
 .sapMPIBarPositive {
     background: #7CA295;
+    border-right: 1px solid #003A6B;
 }
 .sapMPIBarNegative{
     background: #d47600;
+    border-right: 1px solid #003A6B;
 }
 .sapMPIBarCritical {
     background: #FFD300;
+    border-right: 1px solid #003A6B;
 }
 .sapMPIBarNeutral {
     background: white;
