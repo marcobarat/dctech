@@ -437,8 +437,10 @@ sap.ui.define([
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var that = this;
             setTimeout(function () {
-                var VS = [that.getView().byId("TreeTable_ConfermaSetupOld"), that.getView().byId("TreeTable_ConfermaSetupNew")];
-                that.CollapseNotRelevant(VS);
+                var VS = "TreeTable_ConfermaSetupOld";
+                that.ShowRelevant(null, VS);
+                VS = "TreeTable_ConfermaSetupNew";
+                that.ShowRelevant(null, VS);
                 that.GlobalBusyDialog.close();
             }, 100);
         },
@@ -481,6 +483,7 @@ sap.ui.define([
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
                 selectionMode: "None",
                 collapseRecursive: true,
+                enableColumnReordering: false,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
                 visibleRowCount: 10,
@@ -1332,6 +1335,7 @@ sap.ui.define([
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
                 selectionMode: "None",
                 collapseRecursive: true,
+                enableColumnReordering: false,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
                 visibleRowCount: 10,
@@ -1440,6 +1444,7 @@ sap.ui.define([
                 rows: "{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}",
                 selectionMode: "None",
                 collapseRecursive: true,
+                enableColumnReordering: false,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
                 visibleRowCount: 10,
@@ -1838,6 +1843,9 @@ sap.ui.define([
                 View = this.getView().byId(event.getSource().data("mydata"));
             } else {
                 View = sap.ui.getCore().byId(TT);
+                if (typeof View === "undefined") {
+                    View = this.getView().byId(TT);
+                }
             }
             View.expandToLevel(20);
             this.GlobalBusyDialog.open();

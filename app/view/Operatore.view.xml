@@ -7,7 +7,7 @@
     <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" > 
         <detailPages>
                     
-                    
+                   
             <Page id="Home" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
@@ -98,6 +98,7 @@
                                         selectionMode="None"
                                         collapseRecursive="true"
                                         enableSelectAll="false"
+                                        enableColumnReordering="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="20"
                                         rowSelectionChange="ciao"
@@ -199,6 +200,7 @@
                                                         selectionMode="None"
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
+                                                        enableColumnReordering="false"
                                                         ariaLabelledBy="title"
                                                         visibleRowCount="20"
                                                         cellClick="TreeTableRowClickExpander"
@@ -243,6 +245,7 @@
                                                                     rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
+                                                                    enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"
@@ -282,6 +285,7 @@
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
                                                                     enableSelectAll="false"
+                                                                    enableColumnReordering="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"
                                                                     app:mydata="TreeTable_ConfermaSetupNew,TreeTable_ConfermaSetupOld"
@@ -630,6 +634,7 @@
                                                         rows="{path:'GeneralModel>/SKU/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         collapseRecursive="true"
+                                                        enableColumnReordering="false"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
                                                         visibleRowCount="20"
@@ -671,6 +676,7 @@
                                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         ariaLabelledBy="title"
+                                                        enableColumnReordering="false"
                                                         visibleRowCount="10"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_ModificaCondizioni">
@@ -1204,6 +1210,7 @@
                                         selectionMode="None"
                                         collapseRecursive="true"
                                         enableSelectAll="false"
+                                        enableColumnReordering="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="11"
                                         cellClick="TreeTableRowClickExpander"
@@ -1322,6 +1329,7 @@
                                         rows="{path:'GeneralModel>/ParametriChiusura', parameters: {arrayNames:['attributi']}}"
                                         selectionMode="None"
                                         collapseRecursive="true"
+                                        enableColumnReordering="false"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="18"
@@ -1417,6 +1425,7 @@
                                         rows="{path:'GeneralModel>/SKU/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                         selectionMode="None"
                                         collapseRecursive="true"
+                                        enableColumnReordering="false"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="20"
@@ -1520,6 +1529,7 @@
                                                         selectionMode="None"
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
+                                                        enableColumnReordering="false"
                                                         ariaLabelledBy="title"
                                                         visibleRowCount="20"
                                                         cellClick="TreeTableRowClickExpander"
@@ -1563,6 +1573,7 @@
                                                                     rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
+                                                                    enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"
@@ -1600,6 +1611,7 @@
                                                                     rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
+                                                                    enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"

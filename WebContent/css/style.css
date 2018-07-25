@@ -500,14 +500,18 @@ monobuttonSPC .sapMBtnInner {
     position: relative;
     text-shadow: none;
 }
-
 .bibuttonSPC .sapMBtnIcon {
     position: absolute;
 }
-
 .bibuttonSPC .sapMBtnContent {
     position: absolute;
     left: 22%;
     top: 2.5%;
     background-color: transparent !important;
+}
+.sapMSplitContainerMaster:after {
+    border-right: none;
+}
+.sapMSplitContainerMaster:before {
+    border-right: none;
 }
