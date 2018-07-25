@@ -13,7 +13,6 @@ sap.ui.define([
         ISLOCAL: 0,
         ISATTR: 0,
         IDsTreeTables: new JSONModel({}),
-//        LineDetails: {Linea: "Coppia 05", idLinea: "1", Descrizione: "Penne mezzane rigate 241 - Astuccio 3000gr", Destinazione: "HBEX COMERCIAL EXPORTADORA E IMPORTAD. LTDA"},
         LineDetails: {Linea: "Coppia 05", idLinea: "1", Descrizione: "Penne mezzane rigate 241 - Astuccio 3000gr", Destinazione: "HBEX COMERCIAL EXPORTADORA E IMPORTAD. LTDA"},
         ModelDetailPages: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
@@ -435,8 +434,13 @@ sap.ui.define([
             } else {
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
             }
-            this.GlobalBusyDialog.close();
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function () {
+                var VS = [that.getView().byId("TreeTable_ConfermaSetupOld"), that.getView().byId("TreeTable_ConfermaSetupNew")];
+                that.CollapseNotRelevant(VS);
+                that.GlobalBusyDialog.close();
+            }, 100);
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -458,12 +462,16 @@ sap.ui.define([
             var inputValueMod = new sap.m.Input({
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
-                value: "{GeneralModel>valueModify}"});
+                value: "{GeneralModel>valueModify}",
+                type: "Text",
+                maxLength: 30});
             inputValueMod.addStyleClass("diffStandard");
             var inputCodeValue = new sap.m.Input({
                 placeholder: "{GeneralModel>codePlaceholder}",
                 editable: "{= ${GeneralModel>code} === 1}",
-                value: "{GeneralModel>codeValue}"});
+                value: "{GeneralModel>codeValue}",
+                type: "Text",
+                maxLength: 30});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizione";
             this.IDsTreeTables.getData().IDs.TreeTable_FinePredisposizione = 0;
@@ -492,13 +500,16 @@ sap.ui.define([
                         resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
-                            text: "{GeneralModel>name}"})}),
+                            text: "{GeneralModel>name}",
+                            maxLines: 1})}),
                     new sap.ui.table.Column({
                         label: "Valore",
                         resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
-                            text: "{GeneralModel>value}"})}),
+                            text: "{GeneralModel>value}",
+                            maxLines: 1,
+                            tooltip: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
                         label: "Modifica",
                         resizable: false,
@@ -566,9 +577,6 @@ sap.ui.define([
             data = this.RecursiveJSONCodeCheck(data, "codeValue");
             if (this.codeCheck === 0) {
 
-//                var tab = this.TabContainer.getItems()[2];
-//                this.TabContainer.removeItem(tab);
-//                this.Item.destroyContent();
                 var link;
                 this.GlobalBusyDialog.open();
                 if (this.ISLOCAL === 1) {
@@ -1306,12 +1314,16 @@ sap.ui.define([
             var inputValueMod = new sap.m.Input({
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
-                value: "{GeneralModel>valueModify}"});
+                value: "{GeneralModel>valueModify}",
+                type: "Text",
+                maxLength: 30});
             inputValueMod.addStyleClass("diffStandard");
             var inputCodeValue = new sap.m.Input({
                 placeholder: "{GeneralModel>codePlaceholder}",
                 editable: "{= ${GeneralModel>code} === 1}",
-                value: "{GeneralModel>codeValue}"});
+                value: "{GeneralModel>codeValue}",
+                type: "Text",
+                maxLength: 30});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
             var btn1, btn2, btn3, btn4;
@@ -1339,13 +1351,16 @@ sap.ui.define([
                         resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
-                            text: "{GeneralModel>name}"})}),
+                            text: "{GeneralModel>name}",
+                            maxLines: 1})}),
                     new sap.ui.table.Column({
                         label: "VALORE",
                         resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
-                            text: "{GeneralModel>value}"})}),
+                            text: "{GeneralModel>value}",
+                            maxLines: 1,
+                            tooltip: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
                         label: "MODIFICA",
                         resizable: false,
@@ -1407,12 +1422,16 @@ sap.ui.define([
             var inputValueMod = new sap.m.Input({
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
-                value: "{= ${GeneralModel>modify} === 1 ? '#ND': ''}"});
+                value: "{= ${GeneralModel>modify} === 1 ? '#ND': ''}",
+                type: "Text",
+                maxLength: 30});
             inputValueMod.addStyleClass("diffStandard");
             var inputCodeValue = new sap.m.Input({
                 placeholder: "",
                 editable: "{= ${GeneralModel>code} === 1}",
-                value: ""});
+                value: "",
+                type: "Text",
+                maxLength: 30});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
             var btn1, btn2, btn3, btn4;
@@ -1440,13 +1459,16 @@ sap.ui.define([
                         resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
-                            text: "{GeneralModel>name}"})}),
+                            text: "{GeneralModel>name}",
+                            maxLines: 1})}),
                     new sap.ui.table.Column({
                         label: "VALORE",
                         resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
-                            text: "{GeneralModel>value}"})}),
+                            text: "{GeneralModel>value}",
+                            maxLines: 1,
+                            tooltip: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
                         label: "MODIFICA",
                         resizable: false,
@@ -1860,7 +1882,8 @@ sap.ui.define([
             return (heading + body + bottom);
         },
         TreeTableRowClickExpander: function (event, TT) {
-            var View;
+            var View, txt;
+            var path = event.getParameters().rowBindingContext.sPath;
             if (typeof TT === "undefined") {
                 View = this.getView().byId(event.getSource().data("mydata"));
             } else {
@@ -1868,12 +1891,26 @@ sap.ui.define([
             }
             var clicked_row = event.getParameters().rowIndex;
             var clicked_column = event.getParameters().columnIndex;
-            if (clicked_column === "0") {
-                if (!View.isExpanded(clicked_row)) {
-                    View.expand(clicked_row);
-                } else {
-                    View.collapse(clicked_row);
-                }
+            switch (clicked_column) {
+                case "0":
+                    if (!View.isExpanded(clicked_row)) {
+                        View.expand(clicked_row);
+                    } else {
+                        View.collapse(clicked_row);
+                    }
+                    break;
+                case "1":
+                    txt = this.ModelDetailPages.getProperty(path).value;
+                    if (txt !== "") {
+                        MessageToast.show(txt, {duration: 10000});
+                    }
+                    break;
+                case "2":
+                    txt = this.ModelDetailPages.getProperty(path).codeValue;
+                    if (txt !== "") {
+                        MessageToast.show(txt, {duration: 10000});
+                    }
+                    break;
             }
         },
 //      ----------------    FUNZIONI ATTREZZAGGIO    ----------------
@@ -1902,6 +1939,10 @@ sap.ui.define([
                     Item.addContent(image);
                     this.TabContainer.addItem(Item);
                     this.TabContainer.setSelectedItem(Item);
+                } else {
+                    if (binding.value !== "") {
+                        MessageToast.show(binding.value, {duration: 10000});
+                    }
                 }
             }
         },
@@ -1957,7 +1998,7 @@ sap.ui.define([
             var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
             if (data.OEE !== "attesa dati") {
                 for (var i in toMod) {
-                    data[toMod[i]] = data[toMod[i]] +  "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
+                    data[toMod[i]] = data[toMod[i]] + "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
                 }
             }
         },
