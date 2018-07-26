@@ -6,8 +6,6 @@
           controllerName="myapp.controller.Operatore">
     <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" > 
         <detailPages>
-                    
-                    
             <Page id="Home" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
@@ -31,7 +29,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text id="destinazione0" text="{GeneralModel>/Intestazione/destinazione}"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -82,7 +80,7 @@
                             <VBox height="30%" width="100%">    
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text id="destinazione1" text="{GeneralModel>/Intestazione/destinazione}"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -92,13 +90,13 @@
                             <HBox height="100%" width="100%">
                                 <VBox width="5%"/>
                                 <VBox width="90%">
-                                    <!--<Panel>-->
                                     <wt:CustomTreeTable
                                         id="TreeTable_PresaInCarico"
                                         rows="{path:'GeneralModel>/SKU/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                         selectionMode="None"
                                         collapseRecursive="true"
                                         enableSelectAll="false"
+                                        enableColumnReordering="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="20"
                                         rowSelectionChange="ciao"
@@ -116,28 +114,20 @@
                                             <t:Column width="10rem" resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
-                                                    <!--<Text text="{name}" wrapping="false" />-->
-                                                    <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}" />-->
-                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1" />
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="10rem" resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
-                                                    <!--<Text text="{value}" wrapping="false" />-->
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
-                                                        <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
+                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                     </HBox>
                                                 </t:template>
                                             </t:Column>
                                         </wt:columns>
                                     </wt:CustomTreeTable>
-                                    <!--</Panel>-->
                                     <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" press="ConfermaBatch" class="attrezzaggioButton"/>
-                                    <!--<Button text="Continua" width="100%" press="RefreshCall"/>-->
                                 </VBox>
                                 <VBox width="5%"/>
                             </HBox>
@@ -184,7 +174,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione2"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -202,16 +192,13 @@
                                                 id="tab1"
                                                 name="ATTRIBUTI PRODOTTO">
                                                 <content>
-                                                    <!--                                            <FlexBox width="100%" alignItems="Start"
-                                                         justifyContent="Center">
-                                                    <HBox height="100%" width="50%">-->
-                                                    <!--<Panel>-->
                                                     <wt:CustomTreeTable
                                                         id="TreeTable_AttributiPredisposizione"
                                                         rows="{path:'GeneralModel>/SKU/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
+                                                        enableColumnReordering="false"
                                                         ariaLabelledBy="title"
                                                         visibleRowCount="20"
                                                         cellClick="TreeTableRowClickExpander"
@@ -228,28 +215,19 @@
                                                             <t:Column width="13rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{name}" wrapping="false" />-->
-                                                                    <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}" />-->
-                                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1" />
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="7rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{value}" wrapping="false" />-->
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
-                                                                        <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
+                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                     </HBox>
                                                                 </t:template>
                                                             </t:Column>
                                                         </wt:columns>
                                                     </wt:CustomTreeTable>
-                                                    <!--</Panel>-->                                                   
-                                                    <!--                                                </HBox>
-                                                    </FlexBox>-->
                                                 </content>
                                             </TabContainerItem>
                                             <TabContainerItem 
@@ -260,13 +238,12 @@
                                                              justifyContent="Center">
                                                         <HBox height="100%" width="100%">
                                                             <VBox width="47%">
-                                                                <!--<Panel>-->
-                                                                <!--rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"-->
                                                                 <wt:CustomTreeTable
                                                                     id="TreeTable_ConfermaSetupOld"
                                                                     rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
+                                                                    enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"
@@ -286,33 +263,27 @@
                                                                         <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
-                                                                                <!--                                                                                <Text text="{name}" wrapping="false" />
-                                                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>-->
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <!--                                                                                <Text text="{value}" wrapping="false" />
-                                                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
                                                                 </wt:CustomTreeTable>
-                                                                <!--</Panel>-->
                                                             </VBox>
                                                             <VBox width="6%"/>
                                                             <VBox height="100%" width="47%">
-                                                                <!--<Panel>-->
-                                                                <!--rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"-->
                                                                 <wt:CustomTreeTable
                                                                     id="TreeTable_ConfermaSetupNew"
                                                                     rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
                                                                     enableSelectAll="false"
+                                                                    enableColumnReordering="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"
                                                                     app:mydata="TreeTable_ConfermaSetupNew,TreeTable_ConfermaSetupOld"
@@ -331,22 +302,17 @@
                                                                         <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
-                                                                                <!--                                                                                <Text text="{name}" wrapping="false" />
-                                                                                <wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>-->
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <!--                                                                                <Text text="{value}" wrapping="false" />
-                                                                                <wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
                                                                 </wt:CustomTreeTable>
-                                                                <!--</Panel>-->
                                                             </VBox>
                                                         </HBox>
                                                     </FlexBox>
@@ -402,7 +368,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione3"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -424,17 +390,11 @@
                                             height="120px"/>
                                     </VBox>
                                     <VBox width="4%" height="100%"/>
-                                    <VBox id="SPCButton" width="13.6%" height="100%">
+                                    <VBox id="SPCButton" width="16%" height="100%">
                                     </VBox>
-                                    <VBox width="8.4%" height="100%"/>
+                                    <VBox width="6%" height="100%"/>
                                 </HBox>
                             </VBox>
-                            <!--                            <VBox height="5%" width="100%"/>
-                            <VBox height="10%" width="100%">
-                                <FlexBox alignItems="Start" justifyContent="Center">
-                                    <Text  text="Stato confezionamento" class="textTop"/>
-                                </FlexBox>
-                            </VBox>-->
                             <VBox height="10%" width="100%"/>
                             <VBox height="35%" width="100%">
                                 <HBox>
@@ -496,7 +456,7 @@
                                             <VBox height="100%" width="5%"/>
                                             <VBox height="100%" width="47.5%">
                                                 <VBox height="30%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/OEE}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
@@ -504,17 +464,17 @@
                                                     <Text/>
                                                 </VBox>
                                                 <VBox height="20%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/disponibilita}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
                                                 <VBox height="20%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/efficienza}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
                                                 <VBox height="20%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/qualita}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
@@ -643,14 +603,13 @@
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
                                         <Text id="ModificaCondizioniDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione4"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -668,16 +627,12 @@
                                                 id="tab1-mod"
                                                 name="ATTRIBUTI PRODOTTO">
                                                 <content>
-                                                    
-                                                    <!--                                            <FlexBox width="100%" alignItems="Start"
-                                                         justifyContent="Center">
-                                                    <HBox height="100%" width="50%">-->
-                                                    <!--<Panel>-->
                                                     <wt:CustomTreeTable
                                                         id="TreeTable_AttributiModifica"
                                                         rows="{path:'GeneralModel>/SKU/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         collapseRecursive="true"
+                                                        enableColumnReordering="false"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
                                                         visibleRowCount="20"
@@ -695,42 +650,32 @@
                                                             <t:Column width="13rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{name}" wrapping="false" />-->
-                                                                    <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}" />-->
-                                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="7rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{value}" wrapping="false" />-->
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
-                                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                        <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
-                                                                        <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
+                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                     </HBox>
                                                                 </t:template>
                                                             </t:Column>
                                                         </wt:columns>
                                                     </wt:CustomTreeTable>
-                                                    <!--</Panel>-->                                                   
-                                                    <!--                                                </HBox>
-                                                    </FlexBox>-->
                                                 </content>
                                             </TabContainerItem>
                                             <TabContainerItem 
                                                 id="tab2-mod"
                                                 name="MODIFICA CONDIZIONI">
                                                 <content>
-                                           
-                                                    <!--<Panel>-->
                                                     <wt:CustomTreeTable
                                                         class="modificaCondizioniHeight"
                                                         id="TreeTable_ModificaCondizioni"
                                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
                                                         ariaLabelledBy="title"
+                                                        enableColumnReordering="false"
                                                         visibleRowCount="10"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_ModificaCondizioni">
@@ -747,73 +692,44 @@
                                                             <t:Column width="15rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{name}" wrapping="false" />-->
-                                                                    <!--<wt:RedTextTreetable text="{name}" diff="{= ${expand} === 1}"/>-->
-                                                                    <Text text="{GeneralModel>name}" />
+                                                                    <Text text="{GeneralModel>name}" maxLines="1"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{value}" wrapping="false" />-->
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                    <Text text="{GeneralModel>value}" />
+                                                                    <Text text="{GeneralModel>value}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
                                                                 <Label text="MATRICOLA/LOTTO"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{value}" wrapping="false" />-->
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                    <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" />
-                                                                    <!--<Input placeholder="{= ${TreeTable_ModificaCondizioni>code} === 1 ? ${TreeTable_ModificaCondizioni>codePlaceholder}: ''}" editable="{= ${TreeTable_ModificaCondizioni>code} === 1}" />-->
-                                                                    <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />-->
-                                                                    <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
+                                                                    <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" maxLines="1" tooltip="{GeneralModel>codeValue}" />
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
                                                                 <Label text="MODIFICA VALORE"/>
                                                                 <t:template>
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}" visible="{= ${expand} === 1}"/>-->
-                                                                    <!--<Button text="{value}" visible="{= ${expand} === 0}"/>-->
-                                                                    <!--<Text text="{value}" wrapping="false" />-->
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                    <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" visible="{= ${modify} == 0}" />-->
-                                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
-                                                                    <!--<wt:StyleInputTreeTableValue editable="{= ${GeneralModel>modify} === 1}" />-->
-                                                                    <!--<Input value="{GeneralModel>value}"/>-->
-                                                                    <!--<wt:StyleInputTreeTableModify diff="{TreeTable_ModificaCondizioni>modify}"/>-->
+                                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" type="Text" maxLength="30" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
                                                                 <Label text="MODIFICA MATRICOLA/LOTTO"/>
                                                                 <t:template>
-                                                                    <!--<Text text="{value}" wrapping="false" />-->
-                                                                    <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
-                                                                    <!--<wt:StyleInputTreeTableValue value="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codeValue}: ''}" diff="{GeneralModel>code}" placeholder="{= ${GeneralModel>code} === 1 ? ${GeneralModel>codePlaceholder}: ''}" editable="{= ${GeneralModel>code} === 1}" />-->
-                                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
-                                                                    <!--<Input value="" placeholder="" enabled="{= ${TreeTable_ModificaCondizioni>code} === 0}" />-->
-                                                                    <!--<wt:StyleTextTreeTableValue text="{TreeTable_ModificaCondizioni>value}" diff="{TreeTable_ModificaCondizioni>expand}" />-->
+                                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" type="Text" maxLength="30" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
                                                                 </t:template>
                                                             </t:Column>
                                                         </wt:columns>
                                                     </wt:CustomTreeTable>
-                                                    <!--</Panel>-->
                                                     <HBox>
-                                                        <!--                                                        <VBox width="20%">
-                                                            <Button text="PREDEFINITO" width="100%" press="RestoreDefault"/>
-                                                        </VBox>
-                                                        <VBox  width="7%">
-                                                            <Text/>
-                                                        </VBox>-->
                                                         <VBox width="47%">
-                                                            <Button text="ANNULLA" width="100%" press="AnnullaModifica" class="annullaButton"/>
+                                                            <Button text="Annulla" width="100%" press="AnnullaModifica" class="annullaButton"/>
                                                         </VBox>
                                                         <VBox  width="6%">
                                                             <Text/>
                                                         </VBox>
                                                         <VBox width="47%">
-                                                            <Button text="CONFERMA" width="100%" press="ConfermaModifica" class="confermaButton"/>
+                                                            <Button text="Conferma" width="100%" press="ConfermaModifica" class="confermaButton"/>
                                                         </VBox> 
                                                     </HBox>
                                                 </content>
@@ -866,7 +782,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione5"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -921,7 +837,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione6"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1035,7 +951,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione7"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1123,7 +1039,7 @@
                                             <VBox height="100%" width="5%"/>
                                             <VBox height="100%" width="47.5%">
                                                 <VBox height="30%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/OEE}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
@@ -1131,17 +1047,17 @@
                                                     <Text/>
                                                 </VBox>
                                                 <VBox height="20%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/disponibilita}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
                                                 <VBox height="20%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/efficienza}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
                                                 <VBox height="20%" width="100%">
-                                                    <FlexBox justifyContent="Start">
+                                                    <FlexBox justifyContent="End">
                                                         <Text text="{GeneralModel>/DatiOEE/qualita}" class="OEEText"/>
                                                     </FlexBox>
                                                 </VBox>
@@ -1277,7 +1193,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione8"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1287,13 +1203,13 @@
                             <HBox height="100%" width="100%">
                                 <VBox width="5%"/>
                                 <VBox width="90%">
-                                    <!--<Panel>-->
                                     <wt:CustomTreeTable
                                         id="TreeTable_RipristinoCondizioni"
                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                         selectionMode="None"
                                         collapseRecursive="true"
                                         enableSelectAll="false"
+                                        enableColumnReordering="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="11"
                                         cellClick="TreeTableRowClickExpander"
@@ -1311,51 +1227,44 @@
                                             <t:Column width="15rem" resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
-                                                    <Text text="{GeneralModel>name}" />
+                                                    <Text text="{GeneralModel>name}" maxLines="1"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
-                                                    <Text text="{GeneralModel>value}" />
+                                                    <Text text="{GeneralModel>value}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
-                                                <Label text="SIGLE"/>
+                                                <Label text="MATRICOLA/LOTTO"/>
                                                 <t:template>
-                                                    <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" />
+                                                    <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" maxLines="1" tooltip="{GeneralModel>codeValue}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
                                                 <Label text="MODIFICA VALORE"/>
                                                 <t:template>
-                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
+                                                    <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" type="Text" maxLength="30" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
-                                                <Label text="MODIFICA SIGLE"/>
+                                                <Label text="MODIFICA MATRICOLA/LOTTO"/>
                                                 <t:template>
-                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
+                                                    <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" type="Text" maxLength="30" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
                                                 </t:template>
                                             </t:Column>
                                         </wt:columns>
                                     </wt:CustomTreeTable>
-                                    <!--</Panel>-->
                                     <HBox>
-                                        <!--                                        <VBox width="20%">
-                                            <Button text="Default" width="100%" press="RestoreDefault"/>
-                                        </VBox>
-                                        <VBox  width="7%">
-                                            <Text/>
-                                        </VBox>-->
                                         <VBox width="47%">
-                                            <Button text="ANNULLA" width="100%" press="AnnullaRipristino" class="annullaButton"/>
+                                            <Button text="Annulla" width="100%" press="AnnullaRipristino" class="annullaButton"/>
                                         </VBox>
                                         <VBox  width="6%">
                                             <Text/>
                                         </VBox>
                                         <VBox width="47%">
-                                            <Button text="CONFERMA" width="100%" press="ConfermaRipristino" class="confermaButton"/>
+                                            <Button text="Conferma" width="100%" press="ConfermaRipristino" class="confermaButton"/>
                                         </VBox> 
                                     </HBox>
                                 </VBox>
@@ -1404,14 +1313,13 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione9"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="65%" width="100%">
-                            <!--<Panel>-->
                             <HBox height="100%" width="100%">
                                 <VBox width="5%"/>
                                 <VBox width="90%">
@@ -1420,6 +1328,7 @@
                                         rows="{path:'GeneralModel>/ParametriChiusura', parameters: {arrayNames:['attributi']}}"
                                         selectionMode="None"
                                         collapseRecursive="true"
+                                        enableColumnReordering="false"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="18"
@@ -1436,20 +1345,19 @@
                                             <t:Column width="10rem"  resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
-                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="10rem"  resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLines="1" tooltip="{GeneralModel>value}" diff="{GeneralModel>expand}" />
                                                     </HBox>
                                                 </t:template>
                                             </t:Column>
                                         </wt:columns>
                                     </wt:CustomTreeTable>
-                                    <!--</Panel>-->
                                     <Button text="Chiusura Batch" width="100%" press="SvuotaLinea" class="attrezzaggioButton"/>
                                 </VBox>
                                 <VBox width="5%"/>
@@ -1500,7 +1408,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione10"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1516,6 +1424,7 @@
                                         rows="{path:'GeneralModel>/SKU/SKUattuale', parameters: {arrayNames:['attributi']}}"
                                         selectionMode="None"
                                         collapseRecursive="true"
+                                        enableColumnReordering="false"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
                                         visibleRowCount="20"
@@ -1533,22 +1442,20 @@
                                             <t:Column width="10rem" resizable="false">
                                                 <Label text="ATTRIBUTI"/>
                                                 <t:template>
-                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="10rem" resizable="false">
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                     </HBox>
                                                 </t:template>
                                             </t:Column>
                                         </wt:columns>
                                     </wt:CustomTreeTable>
-                                    <!--</Panel>-->
                                     <Button text="Conferma presa in carico e inizio attrezzaggio" width="100%" press="ConfermaBatchAttrezzaggio" class="attrezzaggioButton"/>
-                                    <!--<Button text="Conferma" width="100%" press="ConfermaBatchAttrezzaggio"/>-->
                                 </VBox>
                                 <VBox width="5%"/>
                             </HBox>
@@ -1597,7 +1504,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione11"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1621,6 +1528,7 @@
                                                         selectionMode="None"
                                                         collapseRecursive="true"
                                                         enableSelectAll="false"
+                                                        enableColumnReordering="false"
                                                         ariaLabelledBy="title"
                                                         visibleRowCount="20"
                                                         cellClick="TreeTableRowClickExpander"
@@ -1637,14 +1545,14 @@
                                                             <t:Column width="13rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
-                                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                    <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="7rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                     </HBox>
                                                                 </t:template>
                                                             </t:Column>
@@ -1664,6 +1572,7 @@
                                                                     rows="{path:'GeneralModel>/SetupLinea/Old', parameters: {arrayNames:['attributi']}}"
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
+                                                                    enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"
@@ -1682,13 +1591,13 @@
                                                                         <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -1701,6 +1610,7 @@
                                                                     rows="{path:'GeneralModel>/SetupLinea/New', parameters: {arrayNames:['attributi']}}"
                                                                     selectionMode="None"
                                                                     collapseRecursive="true"
+                                                                    enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
                                                                     visibleRowCount="20"
@@ -1719,13 +1629,13 @@
                                                                         <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" />
+                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" />
+                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -1782,7 +1692,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" class="textTop"/>
+                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione12"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1791,16 +1701,6 @@
                         <VBox height="57%" width="100%">
                             <Text/>
                         </VBox>
-                        <!--                        <VBox height="10%" width="100%">
-                            <FlexBox alignItems="Start" justifyContent="Center">
-                                <Text text="SVUOTAMENTO LINEA" class="textTop"/>
-                            </FlexBox>
-                        </VBox>
-                         <VBox height="10%" width="100%">
-                            <FlexBox alignItems="Start" justifyContent="Center">
-                                <Text text="{GeneralModel>/FineAttrezzaggio/stringa}" class="textTop"/>
-                            </FlexBox>
-                        </VBox>-->
                         <VBox height="8%" width="100%">
                             <HBox>
                                 <VBox width="10%"/>

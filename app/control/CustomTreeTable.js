@@ -1,10 +1,3 @@
-//jQuery.sap.declare("myapp.control.CustomTreeTable");
-//sap.ui.table.TreeTable.extend("myapp.control.CustomTreeTable", {
-//    
-//    renderer: {}
-//});
-
-
 sap.ui.define([
     "sap/ui/core/Control",
     "sap/ui/table/TreeTable"],

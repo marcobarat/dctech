@@ -107,12 +107,10 @@
 }
 .diffRed {
     color : #A71930;
-    /*font-weight: bold;*/
 }
 .diffLink {
     color : #003A6B;
     text-decoration: underline;
-    /*font-weight: bold;*/
 }
 .sapMTB-Transparent-CTX .sapMBtnInner {
     color: #003A6B;
@@ -157,6 +155,16 @@
 }
 .textTop {
     font-size: 56pt;
+    color : #003A6B;
+    font-family: Arial;
+}
+.textTopReduced1 {
+    font-size: 48pt;
+    color : #003A6B;
+    font-family: Arial;
+}
+.textTopReduced2 {
+    font-size: 40pt;
     color : #003A6B;
     font-family: Arial;
 }
@@ -335,7 +343,7 @@ textButtonsDialog .sapMBtnContent {
 }
 .DualSPCButtonContent .sapMBtnContent {
     position: absolute;
-    left: 37.4%;
+    left: 34%;
     top: 36%;
     font-size: 24pt;
 }
@@ -343,8 +351,8 @@ textButtonsDialog .sapMBtnContent {
     position: absolute;
     max-height: 100%;
     height: 90%;
-    width: 45%;
-    left: 30%;
+    width: 70%;
+    left: 18%;
     top: 5%;
 }
 .borderBlue .sapMBtnInner {
@@ -369,12 +377,15 @@ textButtonsDialog .sapMBtnContent {
 }
 .sapMPIBarPositive {
     background: #7CA295;
+    border-right: 1px solid #003A6B;
 }
 .sapMPIBarNegative{
     background: #d47600;
+    border-right: 1px solid #003A6B;
 }
 .sapMPIBarCritical {
     background: #FFD300;
+    border-right: 1px solid #003A6B;
 }
 .sapMPIBarNeutral {
     background: white;
@@ -495,17 +506,16 @@ monobuttonSPC .sapMBtnInner {
     position: relative;
     text-shadow: none;
 }
-
 .bibuttonSPC .sapMBtnIcon {
     position: absolute;
 }
-
 .bibuttonSPC .sapMBtnContent {
     position: absolute;
     left: 22%;
     top: 2.5%;
     background-color: transparent !important;
 }
+<<<<<<< HEAD
 
 /* TAB STRIP OVERWRITE  */
 
@@ -565,4 +575,11 @@ monobuttonSPC .sapMBtnInner {
     padding-top: 0.5rem; 
     white-space: normal; 
     line-height: 1.5rem;
+=======
+.sapMSplitContainerMaster:after {
+    border-right: none;
+}
+.sapMSplitContainerMaster:before {
+    border-right: none;
+>>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
 }
