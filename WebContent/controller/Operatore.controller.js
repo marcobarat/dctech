@@ -252,11 +252,7 @@ sap.ui.define([
             if (Jdata.OEE.avanzamento >= 100) {
                 Jdata.OEE.avanzamento = 100;
             }
-<<<<<<< HEAD
-            this.AddSpaces(Jdata);
-=======
             this.AddSpaces(Jdata.OEE);
->>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata.OEE);
             this.ModelDetailPages.setProperty("/DatiSPC/", Jdata.SPC);
             if (this.State !== "Disponibile.Lavorazione") {
@@ -449,7 +445,7 @@ sap.ui.define([
                 } else {
                     VS = ["TreeTable_AttrezzaggioOld", "TreeTable_AttrezzaggioNew"];
                 }
-                for (var i = 0;i < VS.length; i++) {
+                for (var i = 0; i < VS.length; i++) {
                     that.ShowRelevant(null, VS[i]);
                 }
                 that.GlobalBusyDialog.close();
@@ -510,14 +506,14 @@ sap.ui.define([
                         ]})],
                 columns: [
                     new sap.ui.table.Column({
-                        label: "Attributi",
+                        label: "ATTRIBUTI",
                         resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}",
                             maxLines: 1})}),
                     new sap.ui.table.Column({
-                        label: "Valore",
+                        label: "VALORE",
                         resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
@@ -525,7 +521,7 @@ sap.ui.define([
                             maxLines: 1,
                             tooltip: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
-                        label: "Modifica",
+                        label: "MODIFICA",
                         resizable: false,
                         width: "5rem",
                         template: inputValueMod}),
@@ -568,6 +564,10 @@ sap.ui.define([
             this.RemoveClosingButtons(3);
             this.EnableButtons([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
 //      RICHIAMATO DAL PULSANTE ANNULLA ALLA FINE DELLA PREDISPOSIZIONE
         AnnullaPredisposizione: function () {
@@ -1426,6 +1426,10 @@ sap.ui.define([
             this.RemoveClosingButtons(3);
             this.EnableButtonsAttr([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
         SospensioneAttrezzaggio: function () {
 
@@ -1534,6 +1538,10 @@ sap.ui.define([
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
             this.EnableButtonsAttr([]);
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
         AnnullaAttrezzaggio: function () {
             this.EnableButtonsAttr(["ButtonSospensioneAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio"]);
@@ -2021,19 +2029,10 @@ sap.ui.define([
 //      ----------------    FUNZIONI LAVORAZIONE    ----------------
 //      
         AddSpaces: function (data) {
-<<<<<<< HEAD
-            var lngt;
-            var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
-            if (data.OEE !== "attesa dati") {
-                for (var i in toMod) {
-                    lngt = data[toMod[i]].length;
-                    data[toMod[i]] = new Array(7 - lngt).join('\u00A0') + data[toMod[i]];
-=======
             var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
             if (data.OEE !== "attesa dati") {
                 for (var i in toMod) {
                     data[toMod[i]] = data[toMod[i]] + "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
->>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
                 }
             }
         },

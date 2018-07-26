@@ -1204,6 +1204,7 @@
                                 <VBox width="5%"/>
                                 <VBox width="90%">
                                     <wt:CustomTreeTable
+                                        class="modificaCondizioniHeight"
                                         id="TreeTable_RipristinoCondizioni"
                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                         selectionMode="None"

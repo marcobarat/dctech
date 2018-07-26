@@ -515,7 +515,7 @@ monobuttonSPC .sapMBtnInner {
     top: 2.5%;
     background-color: transparent !important;
 }
-<<<<<<< HEAD
+
 
 /* TAB STRIP OVERWRITE  */
 
@@ -563,7 +563,7 @@ monobuttonSPC .sapMBtnInner {
 }
 
 .modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol{
-    height: 70px !important; 
+    height: 60px !important; 
 }
 
 .modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell {
@@ -572,14 +572,12 @@ monobuttonSPC .sapMBtnInner {
 
 .modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell .sapMLabel{
     height: 100%;
-    padding-top: 0.5rem; 
     white-space: normal; 
     line-height: 1.5rem;
-=======
+}
 .sapMSplitContainerMaster:after {
     border-right: none;
 }
 .sapMSplitContainerMaster:before {
     border-right: none;
->>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
 }

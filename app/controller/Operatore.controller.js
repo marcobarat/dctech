@@ -506,14 +506,14 @@ sap.ui.define([
                         ]})],
                 columns: [
                     new sap.ui.table.Column({
-                        label: "Attributi",
+                        label: "ATTRIBUTI",
                         resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}",
                             maxLines: 1})}),
                     new sap.ui.table.Column({
-                        label: "Valore",
+                        label: "VALORE",
                         resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
@@ -521,7 +521,7 @@ sap.ui.define([
                             maxLines: 1,
                             tooltip: "{GeneralModel>value}"})}),
                     new sap.ui.table.Column({
-                        label: "Modifica",
+                        label: "MODIFICA",
                         resizable: false,
                         width: "5rem",
                         template: inputValueMod}),
@@ -564,6 +564,10 @@ sap.ui.define([
             this.RemoveClosingButtons(3);
             this.EnableButtons([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
 //      RICHIAMATO DAL PULSANTE ANNULLA ALLA FINE DELLA PREDISPOSIZIONE
         AnnullaPredisposizione: function () {
@@ -1422,6 +1426,10 @@ sap.ui.define([
             this.RemoveClosingButtons(3);
             this.EnableButtonsAttr([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
         SospensioneAttrezzaggio: function () {
 
@@ -1530,6 +1538,10 @@ sap.ui.define([
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
             this.EnableButtonsAttr([]);
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
         AnnullaAttrezzaggio: function () {
             this.EnableButtonsAttr(["ButtonSospensioneAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio"]);

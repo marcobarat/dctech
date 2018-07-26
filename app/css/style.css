@@ -563,7 +563,7 @@ monobuttonSPC .sapMBtnInner {
 }
 
 .modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol{
-    height: 70px !important; 
+    height: 60px !important; 
 }
 
 .modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell {
@@ -572,7 +572,6 @@ monobuttonSPC .sapMBtnInner {
 
 .modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell .sapMLabel{
     height: 100%;
-    padding-top: 0.5rem; 
     white-space: normal; 
     line-height: 1.5rem;
 }
