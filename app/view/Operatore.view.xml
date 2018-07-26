@@ -670,6 +670,7 @@
                                                 name="MODIFICA CONDIZIONI">
                                                 <content>
                                                     <wt:CustomTreeTable
+                                                        class="modificaCondizioniHeight"
                                                         id="TreeTable_ModificaCondizioni"
                                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"

@@ -445,7 +445,7 @@ sap.ui.define([
                 } else {
                     VS = ["TreeTable_AttrezzaggioOld", "TreeTable_AttrezzaggioNew"];
                 }
-                for (var i = 0;i < VS.length; i++) {
+                for (var i = 0; i < VS.length; i++) {
                     that.ShowRelevant(null, VS[i]);
                 }
                 that.GlobalBusyDialog.close();
@@ -532,6 +532,7 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            TreeTable.addStyleClass("defaultHeight");
             btn1.addStyleClass("TTButton");
             btn2.addStyleClass("TTButton");
             btn3.addStyleClass("TTButton");
@@ -2743,6 +2744,7 @@ sap.ui.define([
             Jdata.tempoFermiAutomatici = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.AddSpaces(Jdata);
             this.SwitchColor("green");
             this.BarColor(Jdata);
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);

@@ -252,7 +252,11 @@ sap.ui.define([
             if (Jdata.OEE.avanzamento >= 100) {
                 Jdata.OEE.avanzamento = 100;
             }
+<<<<<<< HEAD
+            this.AddSpaces(Jdata);
+=======
             this.AddSpaces(Jdata.OEE);
+>>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata.OEE);
             this.ModelDetailPages.setProperty("/DatiSPC/", Jdata.SPC);
             if (this.State !== "Disponibile.Lavorazione") {
@@ -532,6 +536,7 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            TreeTable.addStyleClass("defaultHeight");
             btn1.addStyleClass("TTButton");
             btn2.addStyleClass("TTButton");
             btn3.addStyleClass("TTButton");
@@ -2016,10 +2021,19 @@ sap.ui.define([
 //      ----------------    FUNZIONI LAVORAZIONE    ----------------
 //      
         AddSpaces: function (data) {
+<<<<<<< HEAD
+            var lngt;
+            var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
+            if (data.OEE !== "attesa dati") {
+                for (var i in toMod) {
+                    lngt = data[toMod[i]].length;
+                    data[toMod[i]] = new Array(7 - lngt).join('\u00A0') + data[toMod[i]];
+=======
             var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
             if (data.OEE !== "attesa dati") {
                 for (var i in toMod) {
                     data[toMod[i]] = data[toMod[i]] + "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
+>>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
                 }
             }
         },
@@ -2743,6 +2757,7 @@ sap.ui.define([
             Jdata.tempoFermiAutomatici = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.AddSpaces(Jdata);
             this.SwitchColor("green");
             this.BarColor(Jdata);
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);

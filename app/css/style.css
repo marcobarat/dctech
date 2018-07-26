@@ -144,8 +144,14 @@
     font-family: Arial;
 }
 .sapMLabel {
-    font-size: 15pt;
+    color: #003A6B !important; 
+    font-size: 14pt;
     font-family: Arial;
+}
+.sapUiLbl {
+    font-size: 15pt !important;
+    font-family: Arial;  
+    color: #003A6B !important; 
 }
 .textTop {
     font-size: 56pt;
@@ -398,7 +404,7 @@ textButtonsDialog .sapMBtnContent {
 }
 .mysapMCb .sapMCb {
     left: 0.375rem;
-    
+
 }
 .scrollingbarTransparent{
     overflow-y: scroll; 
@@ -508,6 +514,67 @@ monobuttonSPC .sapMBtnInner {
     left: 22%;
     top: 2.5%;
     background-color: transparent !important;
+}
+
+
+/* TAB STRIP OVERWRITE  */
+
+.sapMTabStrip {
+    background: white;
+}
+.sapMTabStripItem {
+    outline: none !important;
+    padding-left: 0px !important;
+    margin-left: 1rem !important; 
+    margin-right: 1rem !important;
+    background: white !important;
+    border: 0px !important;
+    color: #003A6B !important; 
+}
+.sapMTabStripItem:focus::before {
+    border: 0px !important; 
+}
+.sapMTabStripItem:hover {
+    background: white !important;
+}
+.sapMTabStripItemSelected {
+    border-top: 2px solid #003A6B !important;
+    border-bottom: 2px solid #003A6B !important;
+}
+.sapMTSItemCloseBtnCnt {
+    width: 0px !important; 
+}
+.sapMTabStripItemLabel {
+    font-size: 15pt; 
+}
+
+
+.defaultHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol{
+    height: 51px; 
+}
+
+.defaultHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell {
+    height: 100%;
+}
+
+.defaultHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell .sapUiLbl{
+    height: 100%;
+    padding-top: 0.5rem; 
+}
+
+.modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol{
+    height: 70px !important; 
+}
+
+.modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell {
+    height: 100%;
+}
+
+.modificaCondizioniHeight .sapUiTableCnt .sapUiTableColHdrCnt .sapUiTableColHdrScr .sapUiTableColHdr .sapUiTableCol .sapUiTableColCell .sapMLabel{
+    height: 100%;
+    padding-top: 0.5rem; 
+    white-space: normal; 
+    line-height: 1.5rem;
 }
 .sapMSplitContainerMaster:after {
     border-right: none;
