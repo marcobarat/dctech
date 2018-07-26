@@ -244,7 +244,7 @@ sap.ui.define([
             if (Jdata.OEE.avanzamento >= 100) {
                 Jdata.OEE.avanzamento = 100;
             }
-//            this.AddSpaces(Jdata.OEE);
+            this.AddSpaces(Jdata);
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata.OEE);
             this.ModelDetailPages.setProperty("/DatiSPC/", Jdata.SPC);
             if (this.State !== "Disponibile.Lavorazione") {
@@ -270,7 +270,7 @@ sap.ui.define([
                 }
             }
             this.GlobalBusyDialog.close();
-//            this.AddSpaces(Jdata);
+            this.AddSpaces(Jdata);
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             var data = this.ModelDetailPages.getData().Linea;
             if (this.State !== "Disponibile.Fermo") {
@@ -504,6 +504,7 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            TreeTable.addStyleClass("defaultHeight");
             btn1.addStyleClass("TTButton");
             btn2.addStyleClass("TTButton");
             btn3.addStyleClass("TTButton");
@@ -1073,17 +1074,17 @@ sap.ui.define([
             }
         },
         SUCCESSCausalizzazione: function (Jdata) {
-            
+
             if (this.ISLOCAL !== 1) {
                 this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", this.AddTimeGaps(Jdata));
                 this.AggiungiSelezioneFermiNonCausalizzati();
             }
             var rows_number = this.ModelDetailPages.getProperty(this.getView().byId("SingoliTable").getBindingInfo("rows").path).length;
-            if (rows_number > 9){
+            if (rows_number > 9) {
                 this.getView().byId("vbox_table").addStyleClass("scrollingbarTransparent");
             } else {
                 this.getView().byId("vbox_table").removeStyleClass("scrollingbarTransparent");
-            } 
+            }
             this.getView().byId("vbox_table").destroyItems();
             if (this.ModelDetailPages.getData().FermiNonCausalizzati.fermi.length === 0) {
                 var text = new sap.m.Text({
@@ -1945,16 +1946,16 @@ sap.ui.define([
         },
 //      ----------------    FUNZIONI LAVORAZIONE    ----------------
 //      
-//        AddSpaces: function (data) {
-//            var lngt;
-//            var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
-//            if (data.OEE !== "attesa dati") {
-//                for (var i in toMod) {
-//                    lngt = data[toMod[i]].length;
-//                    data[toMod[i]] = new Array(7 - lngt).join(' ') + data[toMod[i]];
-//                }
-//            }
-//        },
+        AddSpaces: function (data) {
+            var lngt;
+            var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
+            if (data.OEE !== "attesa dati") {
+                for (var i in toMod) {
+                    lngt = data[toMod[i]].length;
+                    data[toMod[i]] = new Array(7 - lngt).join('\u00A0') + data[toMod[i]];
+                }
+            }
+        },
         BarColor: function (data) {
             var bar = this.getView().byId("progressBar");
             switch (data.barColor) {
@@ -2640,6 +2641,7 @@ sap.ui.define([
             Jdata.tempoFermiAutomatici = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale.tempoGuastoTotale;
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             this.getSplitAppObj().toDetail(this.createId("InProgress"));
+            this.AddSpaces(Jdata);
             this.SwitchColor("green");
             this.BarColor(Jdata);
             this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonCausalizzazione", "ButtonChiusuraConfezionamento"]);

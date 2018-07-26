@@ -726,6 +726,7 @@
                                            
                                                     <!--<Panel>-->
                                                     <wt:CustomTreeTable
+                                                        class="modificaCondizioniHeight"
                                                         id="TreeTable_ModificaCondizioni"
                                                         rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                                                         selectionMode="None"
@@ -760,7 +761,7 @@
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
-                                                                <Label text="SIGLE"/>
+                                                                <Label text="MATRICOLA/LOTTO"/>
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
                                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
@@ -785,7 +786,7 @@
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
-                                                                <Label text="MODIFICA SIGLE"/>
+                                                                <Label text="MODIFICA MATRICOLA/LOTTO"/>
                                                                 <t:template>
                                                                     <!--<Text text="{value}" wrapping="false" />-->
                                                                     <!--<wt:RedTextTreetable text="{value}" diff="{= ${expand} === 1}"/>-->
