@@ -509,7 +509,7 @@ sap.ui.define([
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}",
-                            maxLines: 1})}),
+                            maxLines: 1}).addStyleClass("verticalAlignment")}),
                     new sap.ui.table.Column({
                         label: "Valore",
                         resizable: false,
@@ -517,7 +517,7 @@ sap.ui.define([
                         template: new sap.m.Text({
                             text: "{GeneralModel>value}",
                             maxLines: 1,
-                            tooltip: "{GeneralModel>value}"})}),
+                            tooltip: "{GeneralModel>value}"}).addStyleClass("verticalAlignment")}),
                     new sap.ui.table.Column({
                         label: "Modifica",
                         resizable: false,

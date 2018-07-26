@@ -224,6 +224,9 @@
     color : #A71930;
 }
 
+.verticalAlignment {
+    vertical-align: middle; 
+}
 /*STILE TAB CONTAINER*/
 .shiftDownCause .sapMBtnInner {
     top: 1rem;
@@ -515,7 +518,7 @@ monobuttonSPC .sapMBtnInner {
     top: 2.5%;
     background-color: transparent !important;
 }
-<<<<<<< HEAD
+
 
 /* TAB STRIP OVERWRITE  */
 
@@ -545,7 +548,7 @@ monobuttonSPC .sapMBtnInner {
     width: 0px !important; 
 }
 .sapMTabStripItemLabel {
-    font-size: 15pt; 
+    font-size: 20pt; 
 }
 
 
@@ -575,11 +578,14 @@ monobuttonSPC .sapMBtnInner {
     padding-top: 0.5rem; 
     white-space: normal; 
     line-height: 1.5rem;
-=======
+}
 .sapMSplitContainerMaster:after {
     border-right: none;
 }
 .sapMSplitContainerMaster:before {
     border-right: none;
->>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
+}
+/* SAPMINPUTBASEINNER OVERWRITE */
+.sapMInputBaseInner {
+    font-size: 15pt; 
 }

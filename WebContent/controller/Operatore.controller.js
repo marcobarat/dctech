@@ -250,11 +250,7 @@ sap.ui.define([
             if (Jdata.OEE.avanzamento >= 100) {
                 Jdata.OEE.avanzamento = 100;
             }
-<<<<<<< HEAD
-            this.AddSpaces(Jdata);
-=======
             this.AddSpaces(Jdata.OEE);
->>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata.OEE);
             this.ModelDetailPages.setProperty("/DatiSPC/", Jdata.SPC);
             if (this.State !== "Disponibile.Lavorazione") {
@@ -447,7 +443,7 @@ sap.ui.define([
                 } else {
                     VS = ["TreeTable_AttrezzaggioOld", "TreeTable_AttrezzaggioNew"];
                 }
-                for (var i = 0;i < VS.length; i++) {
+                for (var i = 0; i < VS.length; i++) {
                     that.ShowRelevant(null, VS[i]);
                 }
                 that.GlobalBusyDialog.close();
@@ -513,7 +509,7 @@ sap.ui.define([
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}",
-                            maxLines: 1})}),
+                            maxLines: 1}).addStyleClass("verticalAlignment")}),
                     new sap.ui.table.Column({
                         label: "Valore",
                         resizable: false,
@@ -521,7 +517,7 @@ sap.ui.define([
                         template: new sap.m.Text({
                             text: "{GeneralModel>value}",
                             maxLines: 1,
-                            tooltip: "{GeneralModel>value}"})}),
+                            tooltip: "{GeneralModel>value}"}).addStyleClass("verticalAlignment")}),
                     new sap.ui.table.Column({
                         label: "Modifica",
                         resizable: false,
@@ -2013,19 +2009,10 @@ sap.ui.define([
 //      ----------------    FUNZIONI LAVORAZIONE    ----------------
 //      
         AddSpaces: function (data) {
-<<<<<<< HEAD
-            var lngt;
-            var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
-            if (data.OEE !== "attesa dati") {
-                for (var i in toMod) {
-                    lngt = data[toMod[i]].length;
-                    data[toMod[i]] = new Array(7 - lngt).join('\u00A0') + data[toMod[i]];
-=======
             var toMod = ["OEE", "qualita", "efficienza", "disponibilita"];
             if (data.OEE !== "attesa dati") {
                 for (var i in toMod) {
                     data[toMod[i]] = data[toMod[i]] + "\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0";
->>>>>>> 8eba9950141c321e0ba5855cb1c8024f2a0a7c60
                 }
             }
         },

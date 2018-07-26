@@ -692,19 +692,19 @@
                                                             <t:Column width="15rem" resizable="false">
                                                                 <Label text="ATTRIBUTI"/>
                                                                 <t:template>
-                                                                    <Text text="{GeneralModel>name}" maxLines="1"/>
+                                                                    <Text text="{GeneralModel>name}" maxLines="1" class="verticalAlignment"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
-                                                                    <Text text="{GeneralModel>value}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                    <Text text="{GeneralModel>value}" maxLines="1" tooltip="{GeneralModel>value}" class="verticalAlignment"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
                                                                 <Label text="MATRICOLA/LOTTO"/>
                                                                 <t:template>
-                                                                    <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" maxLines="1" tooltip="{GeneralModel>codeValue}" />
+                                                                    <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" maxLines="1" tooltip="{GeneralModel>codeValue}" class="verticalAlignment"/>
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">

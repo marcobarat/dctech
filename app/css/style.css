@@ -224,6 +224,9 @@
     color : #A71930;
 }
 
+.verticalAlignment {
+    vertical-align: middle; 
+}
 /*STILE TAB CONTAINER*/
 .shiftDownCause .sapMBtnInner {
     top: 1rem;
@@ -545,7 +548,7 @@ monobuttonSPC .sapMBtnInner {
     width: 0px !important; 
 }
 .sapMTabStripItemLabel {
-    font-size: 15pt; 
+    font-size: 20pt; 
 }
 
 
@@ -581,4 +584,8 @@ monobuttonSPC .sapMBtnInner {
 }
 .sapMSplitContainerMaster:before {
     border-right: none;
+}
+/* SAPMINPUTBASEINNER OVERWRITE */
+.sapMInputBaseInner {
+    font-size: 15pt; 
 }
