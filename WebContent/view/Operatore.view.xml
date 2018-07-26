@@ -6,8 +6,6 @@
           controllerName="myapp.controller.Operatore">
     <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" > 
         <detailPages>
-                    
-                   
             <Page id="Home" showHeader="false" class="colorPage">
                 <content>
                     <VBox height="100%" width="100%">
@@ -703,7 +701,7 @@
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
-                                                                <Label text="SIGLE"/>
+                                                                <Label text="MATRICOLA/LOTTO"/>
                                                                 <t:template>
                                                                     <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" maxLines="1" tooltip="{GeneralModel>codeValue}" />
                                                                 </t:template>
@@ -715,7 +713,7 @@
                                                                 </t:template>
                                                             </t:Column>
                                                             <t:Column width="5rem" resizable="false">
-                                                                <Label text="MODIFICA SIGLE"/>
+                                                                <Label text="MODIFICA MATRICOLA/LOTTO"/>
                                                                 <t:template>
                                                                     <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" type="Text" maxLength="30" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
                                                                 </t:template>
@@ -1238,7 +1236,7 @@
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
-                                                <Label text="SIGLE"/>
+                                                <Label text="MATRICOLA/LOTTO"/>
                                                 <t:template>
                                                     <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" maxLines="1" tooltip="{GeneralModel>codeValue}"/>
                                                 </t:template>
@@ -1250,7 +1248,7 @@
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
-                                                <Label text="MODIFICA SIGLE"/>
+                                                <Label text="MODIFICA MATRICOLA/LOTTO"/>
                                                 <t:template>
                                                     <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" type="Text" maxLength="30" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
                                                 </t:template>

@@ -437,10 +437,15 @@ sap.ui.define([
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var that = this;
             setTimeout(function () {
-                var VS = "TreeTable_ConfermaSetupOld";
-                that.ShowRelevant(null, VS);
-                VS = "TreeTable_ConfermaSetupNew";
-                that.ShowRelevant(null, VS);
+                var VS;
+                if (that.ModelDetailPages.getData().Linea.Batch.IsAttrezzaggio === "0") {
+                    VS = ["TreeTable_ConfermaSetupOld", "TreeTable_ConfermaSetupNew"];
+                } else {
+                    VS = ["TreeTable_AttrezzaggioOld", "TreeTable_AttrezzaggioNew"];
+                }
+                for (var i = 0;i < VS.length; i++) {
+                    that.ShowRelevant(null, VS[i]);
+                }
                 that.GlobalBusyDialog.close();
             }, 100);
         },
@@ -519,7 +524,7 @@ sap.ui.define([
                         width: "5rem",
                         template: inputValueMod}),
                     new sap.ui.table.Column({
-                        label: "Sigle",
+                        label: "MATRICOLA/LOTTO",
                         resizable: false,
                         width: "5rem",
                         template: inputCodeValue})
@@ -1371,7 +1376,7 @@ sap.ui.define([
                         width: "5rem",
                         template: inputValueMod}),
                     new sap.ui.table.Column({
-                        label: "SIGLE",
+                        label: "MATRICOLA/LOTTO",
                         resizable: false,
                         width: "5rem",
                         template: inputCodeValue})
@@ -1480,7 +1485,7 @@ sap.ui.define([
                         width: "5rem",
                         template: inputValueMod}),
                     new sap.ui.table.Column({
-                        label: "SIGLE",
+                        label: "MATRICOLA/LOTTO",
                         resizable: false,
                         width: "5rem",
                         template: inputCodeValue})
