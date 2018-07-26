@@ -39,6 +39,8 @@ sap.ui.define([
         Counter: 10,
         SPCCounter: null,
         SPCTimer: null,
+        TIMER: null,
+        STOPSPC: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -46,6 +48,7 @@ sap.ui.define([
             oRouter.getRoute("Operatore").attachPatternMatched(this.Starter, this);
         },
         Starter: function () {
+            clearInterval(this.TIMER);
             this.IDsTreeTables.setProperty("/IDs/", {});
             for (var key in this.IDsTreeTables.getData().IDs) {
                 this.IDsTreeTables.getData().IDs[key] = 0;
@@ -72,7 +75,7 @@ sap.ui.define([
             var time = this.GetOra();
             clockL2.setText(time);
             var that = this;
-            setInterval(function () {
+            this.TIMER = setInterval(function () {
                 try {
                     var time = that.GetOra();
                     clockL2.setText(time);
@@ -243,7 +246,6 @@ sap.ui.define([
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.State = this.ModelDetailPages.getData().Linea.StatoLinea;
-//            this.RefreshFunction();
             this.Counter = 0;
         },
         SUCCESSLavorazioneOEE: function (Jdata) {
@@ -504,14 +506,14 @@ sap.ui.define([
                         ]})],
                 columns: [
                     new sap.ui.table.Column({
-                        label: "Attributi",
+                        label: "ATTRIBUTI",
                         resizable: false,
                         width: "15rem",
                         template: new sap.m.Text({
                             text: "{GeneralModel>name}",
                             maxLines: 1}).addStyleClass("verticalAlignment")}),
                     new sap.ui.table.Column({
-                        label: "Valore",
+                        label: "VALORE",
                         resizable: false,
                         width: "5rem",
                         template: new sap.m.Text({
@@ -519,7 +521,7 @@ sap.ui.define([
                             maxLines: 1,
                             tooltip: "{GeneralModel>value}"}).addStyleClass("verticalAlignment")}),
                     new sap.ui.table.Column({
-                        label: "Modifica",
+                        label: "MODIFICA",
                         resizable: false,
                         width: "5rem",
                         template: inputValueMod}),
@@ -562,6 +564,10 @@ sap.ui.define([
             this.RemoveClosingButtons(3);
             this.EnableButtons([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
 //      RICHIAMATO DAL PULSANTE ANNULLA ALLA FINE DELLA PREDISPOSIZIONE
         AnnullaPredisposizione: function () {
@@ -614,7 +620,8 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTONE VERDE A FIANCO DELLA PROGRESS BAR
         SPCGraph: function (event, indice) {
-            window.clearInterval(this.SPCTimer);
+            this.STOPSPC = 0;
+            clearInterval(this.SPCTimer);
             this.SPCCounter = 5;
             var data = this.ModelDetailPages.getData();
             this.indexSPC = indice;
@@ -631,24 +638,15 @@ sap.ui.define([
             this.SPCDataCaller();
             var that = this;
             this.SPCTimer = setInterval(function () {
-                that.SPCCounter++;
-            }, 1000);
-        },
-        SPCDataCaller: function () {
-            if (this.SPCDialog) {
-                if (this.SPCDialog.isOpen()) {
-                    var data = this.ModelDetailPages.getData();
-                    var link;
-                    if (this.ISLOCAL === 1) {
-                        link = "model/JSON_SPCData.json";
-                    } else {
-                        if (typeof data.DatiSPC[this.indexSPC].parametroId !== "undefined") {
-                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[this.indexSPC].parametroId;
-                        }
+                try {
+                    that.SPCCounter++;
+                    if (that.STOPSPC === 0 && that.SPCCounter >= 5) {
+                        that.SPCRefresh();
                     }
-                    this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
+                } catch (e) {
+                    console.log(e);
                 }
-            }
+            }, 1000);
         },
         SUCCESSSPCDataLoad: function (Jdata) {
             var isEmpty;
@@ -667,18 +665,32 @@ sap.ui.define([
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
             this.SPCDialogFiller(isEmpty);
-            this.SPCRefresh();
-        },
-        SPCRefresh: function () {
-            if (this.SPCCounter >= 5) {
-                setTimeout(this.SPCDataCaller.bind(this), 5000);
+            if (this.STOPSPC === 0) {
                 this.SPCCounter = 0;
-            } else {
-                setTimeout(this.SPCVoid.bind(this), 1000);
             }
         },
-        SPCVoid: function () {
-            this.SPCRefresh();
+        SPCRefresh: function (msec) {
+            this.SPCCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.SPCDataCaller.bind(this), msec);
+        },
+        SPCDataCaller: function () {
+            if (this.SPCDialog) {
+                if (this.SPCDialog.isOpen()) {
+                    var data = this.ModelDetailPages.getData();
+                    var link;
+                    if (this.ISLOCAL === 1) {
+                        link = "model/JSON_SPCData.json";
+                    } else {
+                        if (typeof data.DatiSPC[this.indexSPC].parametroId !== "undefined") {
+                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + data.DettaglioLinea.idLinea + "&ParametroID=" + data.DatiSPC[this.indexSPC].parametroId;
+                        }
+                    }
+                    this.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
+                }
+            }
         },
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
@@ -1414,6 +1426,10 @@ sap.ui.define([
             this.RemoveClosingButtons(3);
             this.EnableButtonsAttr([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
         SospensioneAttrezzaggio: function () {
 
@@ -1522,6 +1538,10 @@ sap.ui.define([
             this.TabContainer.setSelectedItem(this.Item);
             this.RemoveClosingButtons(3);
             this.EnableButtonsAttr([]);
+            var that = this;
+            setTimeout(function() {
+                that.ShowRelevant(null, TT);
+            }, 200);
         },
         AnnullaAttrezzaggio: function () {
             this.EnableButtonsAttr(["ButtonSospensioneAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio"]);
@@ -2179,10 +2199,11 @@ sap.ui.define([
                 data.MRBound.push(3.267 * avg);
             }
             data.MRTime = JSON.parse(JSON.stringify(data.time));
-//            data.MRTime.splice(0, 1);
             return data;
         },
         RemoveAlarm: function () {
+            this.STOPSPC = 1;
+            clearInterval(this.SPCTimer);
             var alarmButton = this.getView().byId("alarmButton");
             alarmButton.setEnabled(false);
             alarmButton.removeStyleClass("allarmeButton");
@@ -2192,7 +2213,8 @@ sap.ui.define([
             this.CloseSPCDialog();
         },
         CloseSPCDialog: function () {
-            window.clearInterval(this.SPCTimer);
+            this.STOPSPC = 1;
+            clearInterval(this.SPCTimer);
             this.SPCDialog.close();
         },
         PrepareDataToPlot: function (Jdata, fase) {
