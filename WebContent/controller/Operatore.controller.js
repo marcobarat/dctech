@@ -48,6 +48,7 @@ sap.ui.define([
             oRouter.getRoute("Operatore").attachPatternMatched(this.Starter, this);
         },
         Starter: function () {
+            this.ModelDetailPages = new JSONModel({});
             clearInterval(this.TIMER);
             this.IDsTreeTables.setProperty("/IDs/", {});
             for (var key in this.IDsTreeTables.getData().IDs) {
@@ -393,6 +394,9 @@ sap.ui.define([
             if (typeof tab !== "undefined") {
                 this.TabContainer.removeItem(tab);
                 this.Item.destroyContent();
+            }
+            if (sap.ui.getCore().byId("TreeTable_FinePredisposizione")) {
+                sap.ui.getCore().byId("TreeTable_FinePredisposizione").destroy();
             }
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
@@ -1270,6 +1274,8 @@ sap.ui.define([
 
 
 //      -------------------------- PRESA IN CARICO --------------------------
+
+
         BatchAttrezzaggio: function () {
             var std = this.ModelDetailPages.getData().SKU.SKUstandard;
             var bck = this.ModelDetailPages.getData().SKU.SKUattuale;
@@ -1294,12 +1300,21 @@ sap.ui.define([
                 this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
         },
-//      -------------------------- ATTREZZAGGIO --------------------------
+        
 
+//      -------------------------- ATTREZZAGGIO --------------------------
 
         PredisposizioneLineaAttrezzaggio: function () {
             this.GlobalBusyDialog.open();
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
+            var tab = this.TabContainer.getItems()[2];
+            if (typeof tab !== "undefined") {
+                this.TabContainer.removeItem(tab);
+                this.Item.destroyContent();
+            }
+            if (sap.ui.getCore().byId("TreeTable_FinePredisposizioneAttrezzaggio")) {
+                sap.ui.getCore().byId("TreeTable_FinePredisposizioneAttrezzaggio").destroy();
+            }
             this.RemoveClosingButtons(2);
             var item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(item);
@@ -1319,7 +1334,7 @@ sap.ui.define([
 //          pulsanti che possono chiudere le tabs.
 
         FinePredisposizioneAttrezzaggio: function () {
-
+            
             var data = {"stringa": "SOLO PREDISPOSIZIONE"};
             this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
@@ -1347,6 +1362,7 @@ sap.ui.define([
                 maxLength: 30});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
+            this.IDsTreeTables.getData().IDs.TreeTable_FinePredisposizioneAttrezzaggio = 0;
             var btn1, btn2, btn3, btn4;
             var TreeTable = new CustomTreeTable({
                 id: TT,
@@ -1395,6 +1411,7 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            TreeTable.addStyleClass("defaultHeight");
             btn1.addStyleClass("TTButton");
             btn2.addStyleClass("TTButton");
             btn3.addStyleClass("TTButton");
@@ -1460,6 +1477,7 @@ sap.ui.define([
                 maxLength: 30});
             inputCodeValue.addStyleClass("diffStandard");
             var TT = "TreeTable_FinePredisposizioneAttrezzaggio";
+            this.IDsTreeTables.getData().IDs.TreeTable_FinePredisposizioneAttrezzaggio = 0;
             var btn1, btn2, btn3, btn4;
             var TreeTable = new CustomTreeTable({
                 id: TT,
@@ -1551,7 +1569,7 @@ sap.ui.define([
             this.TabContainer.setSelectedItem(this.TabContainer.getItems()[1]);
             this.Item.destroyContent();
             var data = JSON.parse(JSON.stringify(this.backupSetupModify));
-            this.IDsTreeTables.getData().IDs.TreeTable_FinePredisposizione = 0;
+            this.IDsTreeTables.getData().IDs.TreeTable_FinePredisposizioneAttrezzaggio = 0;
             this.ModelDetailPages.setProperty("/SetupLinea/Modify", data);
         },
         ConfermaAttrezzaggio: function (event, source) {
@@ -1562,9 +1580,6 @@ sap.ui.define([
             if (this.codeCheck === 1 && source === 'F') {
                 MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
             } else {
-                var tab = this.TabContainer.getItems()[2];
-                this.TabContainer.removeItem(tab);
-                this.Item.destroyContent();
                 if (this.ISLOCAL === 1) {
                     this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
                     this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -1579,9 +1594,10 @@ sap.ui.define([
             }
         },
         // ------------------------ CHIUSURA ------------------------
-
-
+        
         FineAttrezzaggio: function () {
+            this.IDsTreeTables.setProperty("/IDs/", {});
+            sap.ui.getCore().setModel(this.IDsTreeTables);
             if (this.ISLOCAL === 1) {
                 this.getSplitAppObj().toDetail(this.createId("Home"));
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
@@ -1595,7 +1611,7 @@ sap.ui.define([
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizioneChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
-//            location.reload();
+            this.getOwnerComponent().getRouter().navTo("Main");
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
