@@ -303,6 +303,10 @@ sap.ui.define([
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.EnableButtons(["ButtonCausalizzazione"]);
             this.FermiAutomaticiCheck("Disponibile.Svuotamento");
+            var that = this;
+            setTimeout(function () {
+                that.ExpandAll(null, "TreeTable_Chiusura");
+            }, 100);
         },
 //        ---------------------------------------------------------------------
 //        -------------------------  FUNZIONI CALLER  -------------------------
@@ -365,6 +369,10 @@ sap.ui.define([
             this.EnableButtons([]);
             this.getSplitAppObj().toDetail(this.createId("PresaInCarico"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function () {
+                that.ShowRelevant(null, "TreeTable_PresaInCarico");
+            }, 100);
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -569,7 +577,7 @@ sap.ui.define([
             this.EnableButtons([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var that = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 that.ShowRelevant(null, TT);
             }, 200);
         },
@@ -730,6 +738,10 @@ sap.ui.define([
             this.Item = this.TabContainer.getItems()[1];
             this.TabContainer.setSelectedItem(this.Item);
             this.EnableButtons([]);
+            var that = this;
+            setTimeout(function () {
+                that.ShowRelevant(null, "TreeTable_ModificaCondizioni");
+            }, 100);
         },
 //      RICHIAMATO DAL PULSANTE DI ANNULLA NELLE MODIFICHE
         AnnullaModifica: function () {
@@ -1037,6 +1049,10 @@ sap.ui.define([
             this.getSplitAppObj().toDetail(this.createId("RipristinoCondizioni"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.EnableButtons([]);
+            var that = this;
+            setTimeout(function () {
+                that.ShowRelevant(null, "TreeTable_RipristinoCondizioni");
+            }, 100);
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA"
         AnnullaRipristino: function () {
@@ -1284,6 +1300,10 @@ sap.ui.define([
             this.EnableButtonsAttr([]);
             this.getSplitAppObj().toDetail(this.createId("BatchAttrezzaggio"));
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            var that = this;
+            setTimeout(function () {
+                that.ShowRelevant(null, "TreeTable_BatchAttrezzaggio");
+            }, 100);
         },
         //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -1300,7 +1320,6 @@ sap.ui.define([
                 this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
         },
-        
 
 //      -------------------------- ATTREZZAGGIO --------------------------
 
@@ -1334,7 +1353,7 @@ sap.ui.define([
 //          pulsanti che possono chiudere le tabs.
 
         FinePredisposizioneAttrezzaggio: function () {
-            
+
             var data = {"stringa": "SOLO PREDISPOSIZIONE"};
             this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
@@ -1444,7 +1463,7 @@ sap.ui.define([
             this.EnableButtonsAttr([]);
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             var that = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 that.ShowRelevant(null, TT);
             }, 200);
         },
@@ -1557,7 +1576,7 @@ sap.ui.define([
             this.RemoveClosingButtons(3);
             this.EnableButtonsAttr([]);
             var that = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 that.ShowRelevant(null, TT);
             }, 200);
         },
@@ -1594,7 +1613,7 @@ sap.ui.define([
             }
         },
         // ------------------------ CHIUSURA ------------------------
-        
+
         FineAttrezzaggio: function () {
             this.IDsTreeTables.setProperty("/IDs/", {});
             sap.ui.getCore().setModel(this.IDsTreeTables);
