@@ -326,9 +326,9 @@ sap.ui.define([
             jQuery.ajax({
                 url: addressOfJSON,
                 method: "GET",
-                dataType: "json",
+                dataType: "xml",
                 async: true,
-                success: successFunc,
+                success: jQuery.proxy(this.WrapperSuccessFunc, this, successFunc),
                 error: errorFunc
             });
         },
@@ -343,11 +343,17 @@ sap.ui.define([
             jQuery.ajax({
                 url: addressOfJSON,
                 method: "GET",
-                dataType: "json",
+                dataType: "xml",
                 async: false,
-                success: successFunc,
+                success: jQuery.proxy(this.WrapperSuccessFunc, this, successFunc),
                 error: errorFunc
             });
+        },
+        WrapperSuccessFunc: function (successFunc, Jdata) {
+            if (jQuery.isXMLDoc(Jdata)) {
+                Jdata = JSON.parse(Jdata.documentElement.textContent);
+            }
+            successFunc(Jdata);
         },
 //        ---------------------------------------------------------------------
 //        ---------------------------  DETAIL PAGES  --------------------------
