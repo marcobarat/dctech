@@ -379,7 +379,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.ShowRelevant(null, "TreeTable_PresaInCarico");
-            }, 100);
+            }, 500);
         },
 //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -428,14 +428,12 @@ sap.ui.define([
             this.AjaxCallerData(link, this.SUCCESSSetup.bind(this));
         },
         SUCCESSSetup: function (Jdata) {
-            this.ModelDetailPages.setProperty("/SetupLinea/Old/", Jdata.Old);
-            this.ModelDetailPages.setProperty("/SetupLinea/New/", Jdata.New);
-            this.ModelDetailPages.setProperty("/SetupLinea/Modify/", JSON.parse(JSON.stringify(Jdata.New)));
-            var std = this.ModelDetailPages.getData().SetupLinea.Old;
-            var bck = this.ModelDetailPages.getData().SetupLinea.New;
-            var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
+            var std = Jdata.Old;
+            var bck = Jdata.New;
+            var mod = JSON.parse(JSON.stringify(Jdata.New));
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
             bck = this.RecursiveLinkValue(bck);
+            bck = this.RecursiveNotIncludedExpansion(bck);
             bck = this.RecursiveParentExpansion(bck);
             std = this.RecursiveStandardAdapt(std, bck);
             mod = this.RecursiveLinkRemoval(mod);
@@ -456,6 +454,7 @@ sap.ui.define([
                 this.getSplitAppObj().toDetail(this.createId("PredisposizioneLineaAttrezzaggio"));
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.ModelDetailPages.refresh();
             var that = this;
             setTimeout(function () {
                 var VS;
@@ -468,7 +467,7 @@ sap.ui.define([
                     that.ShowRelevant(null, VS[i]);
                 }
                 that.GlobalBusyDialog.close();
-            }, 100);
+            }, 500);
         },
 //        RICHIAMATO DAL PULSANTE "FINE PREDISPOSIZIONE INIZIO CONFEZIONAMENTO"
 //          Questa funzione chiude innanzitutto tutte le tabs chiudibili e crea una nuova tab
@@ -586,7 +585,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.ShowRelevant(null, TT);
-            }, 200);
+            }, 500);
         },
 //      RICHIAMATO DAL PULSANTE ANNULLA ALLA FINE DELLA PREDISPOSIZIONE
         AnnullaPredisposizione: function () {
@@ -748,7 +747,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.ShowRelevant(null, "TreeTable_ModificaCondizioni");
-            }, 100);
+            }, 500);
         },
 //      RICHIAMATO DAL PULSANTE DI ANNULLA NELLE MODIFICHE
         AnnullaModifica: function () {
@@ -1059,7 +1058,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.ShowRelevant(null, "TreeTable_RipristinoCondizioni");
-            }, 100);
+            }, 500);
         },
 //      RICHIAMATO DAL PULSANTE "CONFERMA"
         AnnullaRipristino: function () {
@@ -1310,7 +1309,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.ShowRelevant(null, "TreeTable_BatchAttrezzaggio");
-            }, 100);
+            }, 500);
         },
         //        RICHIAMATO DAL BOTTONE "CONFERMA" NELLA SCHERMATA DI PRESA IN CARICO
 //          Questa funzione assegna i modelli alle TreeTables, rimuove la possibilità di
@@ -1472,7 +1471,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.ShowRelevant(null, TT);
-            }, 200);
+            }, 500);
         },
         SospensioneAttrezzaggio: function () {
 
@@ -1585,7 +1584,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.ShowRelevant(null, TT);
-            }, 200);
+            }, 500);
         },
         AnnullaAttrezzaggio: function () {
             this.EnableButtonsAttr(["ButtonSospensioneAttrezzaggio", "ButtonFinePredisposizioneAttrezzaggio"]);
@@ -1925,9 +1924,11 @@ sap.ui.define([
             for (var i = 0; i < Views.length; i++) {
                 total = Views[i]._iBindingLength;
                 for (var j = total - 1; j >= 0; j--) {
-                    temp = Views[i].getContextByIndex(j).getObject();
-                    if (temp.expand === 0) {
-                        Views[i].collapse(j);
+                    if (typeof Views[i].getContextByIndex(j) !== "undefined") {
+                        temp = Views[i].getContextByIndex(j).getObject();
+                        if (temp.expand === 0) {
+                            Views[i].collapse(j);
+                        }
                     }
                 }
             }
@@ -2571,20 +2572,42 @@ sap.ui.define([
                     }
                     bck[key] = this.RecursiveJSONComparison(tempJSON, bck[key], arrayName);
                 } else {
-                    if (key === "value") {
-                        if (typeof std === "undefined") {
-                            if (bck.expand !== 3) {
-                                bck.expand = 2;
+                    switch (key) {
+                        case "value":
+                            if (typeof std === "undefined") {
+                                if (bck.expand !== 3) {
+                                    bck.expand = 2;
+                                }
+                            } else {
+                                if (((typeof std[key] === "undefined") || (bck[key] !== std[key])) && bck.expand !== 3) {
+                                    bck.expand = 2;
+                                }
                             }
-                        } else {
+                            break;
+                        case "isIncluded":
                             if (((typeof std[key] === "undefined") || (bck[key] !== std[key])) && bck.expand !== 3) {
-                                bck.expand = 2;
+                                bck.expand = 1;
                             }
-                        }
+                            break;
                     }
                 }
             }
             return bck;
+        },
+        RecursiveNotIncludedExpansion: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveNotIncludedExpansion(json[key]);
+                } else {
+                    if (key === "isIncluded") {
+                        if (json[key] === "0") {
+                            json.expand = 1;
+                            json.value = "INATTIVO";
+                        }
+                    }
+                }
+            }
+            return json;
         },
         RecursiveParentExpansion: function (json) {
             for (var key in json) {
@@ -2595,20 +2618,6 @@ sap.ui.define([
                         json[key].expand = this.exp;
                     }
                     json[key] = this.RecursiveParentExpansion(json[key]);
-                }
-            }
-            return json;
-        },
-        RecursiveLinkValue: function (json) {
-            for (var key in json) {
-                if (typeof json[key] === "object") {
-                    json[key] = this.RecursiveLinkValue(json[key]);
-                } else {
-                    if (key === "expand") {
-                        if (json[key] === 3) {
-                            json.value = "dececco.jpg";
-                        }
-                    }
                 }
             }
             return json;
@@ -2627,20 +2636,48 @@ sap.ui.define([
             }
             return json;
         },
+        RecursiveLinkValue: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveLinkValue(json[key]);
+                } else {
+                    if (key === "expand") {
+                        if (json[key] === 3) {
+                            json.value = "dececco.jpg";
+                        }
+                    }
+                }
+            }
+            return json;
+        },
         RecursiveStandardAdapt: function (std, bck) {
             for (var key in std) {
                 if (typeof std[key] === "object") {
-                    if (key === "expand") {
-                        if (bck[key] > 0) {
-                            std[key] = 1;
-                        }
+                    switch (key) {
+                        case "expand":
+                            if (bck[key] > 0) {
+                                std[key] = 1;
+                            }
+                            break;
+                        case "isIncluded":
+                            if (std[key] === "0") {
+                                std.value = "INATTIVO";
+                            }
+                            break;
                     }
                     std[key] = this.RecursiveStandardAdapt(std[key], bck[key]);
                 } else {
-                    if (key === "expand") {
-                        if (bck[key] > 0) {
-                            std[key] = 1;
-                        }
+                    switch (key) {
+                        case "expand":
+                            if (bck[key] > 0) {
+                                std[key] = 1;
+                            }
+                            break;
+                        case "isIncluded":
+                            if (std[key] === "0") {
+                                std.value = "INATTIVO";
+                            }
+                            break;
                     }
                 }
             }

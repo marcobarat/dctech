@@ -18,7 +18,8 @@ sap.ui.define([
 
             properties: {
                 diff: {type: "number", defaultValue: 0},
-                discr: {type: "string", defaultValue: ""}
+                discr: {type: "string", defaultValue: ""},
+                included: {type: "string", defaultValue: "1"}
             }
         },
         renderer: function (oRm, oControl) {
@@ -28,10 +29,16 @@ sap.ui.define([
 
         onAfterRendering: function () {
 
-            if (this.getDiff() === 2 && this.getDiscr() !== "") {
-                this.addStyleClass('diffRed');
-            } else {
+            if (this.getIncluded() === "0") {
                 this.removeStyleClass('diffRed');
+                this.addStyleClass('notIncluded');
+            } else {
+                this.removeStyleClass('notIncluded');
+                if (this.getDiff() === 2 && this.getDiscr() !== "") {
+                    this.addStyleClass('diffRed');
+                } else {
+                    this.removeStyleClass('diffRed');
+                }
             }
         }
     });

@@ -112,6 +112,10 @@
     color : #003A6B;
     text-decoration: underline;
 }
+.notIncluded {
+    color: #dddddd;
+    font-style: italic;
+}
 .sapMTB-Transparent-CTX .sapMBtnInner {
     color: #003A6B;
     background-color:#efeff5;
