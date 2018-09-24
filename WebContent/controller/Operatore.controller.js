@@ -44,11 +44,13 @@ sap.ui.define([
 //------------------------------------------------------------------------------
 
         onInit: function () {
+            this.IDsTreeTables.setSizeLimit("1000");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("Operatore").attachPatternMatched(this.Starter, this);
         },
         Starter: function () {
             this.ModelDetailPages = new JSONModel({});
+            this.ModelDetailPages.setSizeLimit("1000");
             clearInterval(this.TIMER);
             this.IDsTreeTables.setProperty("/IDs/", {});
             for (var key in this.IDsTreeTables.getData().IDs) {

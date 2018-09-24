@@ -789,9 +789,9 @@
                             <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox>
-                            <ScrollContainer height="800px" vertical="true">
+                            <ScrollContainer height="750px" vertical="true">
                                 <content>
-                                    <VBox id="vboxFermo" height="800px" width="100%"/> <!-- height="65%" -->
+                                    <VBox id="vboxFermo" height="750px" width="100%"/> <!-- height="65%" -->
                                 </content>
                             </ScrollContainer>
                         </VBox>

@@ -11,21 +11,8 @@ sap.ui.define([
         onInit: function () {
 
             this.getOwnerComponent().setModel(this.Global, "Global");
-
-            var model = new JSONModel({});
-            var param = {};
-            var req = jQuery.ajax({
-                url: "model/JSON_Main.json",
-                data: param,
-                method: "GET",
-                dataType: "json",
-                async: true,
-                Selected: true
-            });
-            var tempfunc = jQuery.proxy(this.FillModel, this, model);
-            req.done(tempfunc);
-
-            this.getView().setModel(model);
+            this.SyncAjaxCallerData("/XMII/Runner?Transaction=DeCecco/Transactions/GetAllReparti&Content-Type=text/json&OutputParameter=JSON", this.DoNothing.bind(this), this.RefreshPage.bind(this));
+            this.SyncAjaxCallerData("model/JSON_Main.json", this.FillModel.bind(this));
 
         },
         GoToOperatore: function (event) {
@@ -40,9 +27,27 @@ sap.ui.define([
             sap.ui.getCore().setModel(this.Global, "Global");
             this.getOwnerComponent().getRouter().navTo("Operatore");
         },
-        FillModel: function (model, data) {
+        SyncAjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
+            jQuery.ajax({
+                url: addressOfJSON,
+                method: "GET",
+                dataType: "json",
+                async: false,
+                success: successFunc,
+                error: errorFunc
+            });
+        },
+        DoNothing: function () {
+            console.log("");
+        },
+        RefreshPage: function () {
+            location.reload(true);
+        },
+        FillModel: function (data) {
+            var model = new JSONModel({});
             model.setProperty("/", data);
             this.JSONLinee.setData(data);
+            this.getView().setModel(model);
         }
 
 
