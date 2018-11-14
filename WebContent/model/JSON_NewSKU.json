@@ -1,0 +1,382 @@
+{
+    "error": "0",
+    "errorMessage": "",
+    "StatoLinea": "Disponibile.AttesaPresaInCarico",
+    "CausaleEvento": "CapoTurno ha trasferito il batch",
+    "BatchTrasferito": "True",
+    "Batch": {
+        "BatchID": "114",
+        "IsAttrezzaggio": "0",
+        "SKUID": "64",
+        "Errore": "NA",
+        "Descrizione": "Millerighe 025 - Film 500 gr",
+        "Destinazione": "ITA + ESTERO"
+    },
+    "SKUattuale": {
+        "attributi": [{
+                "name": "Descrizione",
+                "value": "",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": []
+            }, {
+                "name": "Formato",
+                "value": "Millerighe 025",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": [{
+                        "name": "Categoria",
+                        "value": "Pasta corta",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }, {
+                        "name": "Impasto",
+                        "value": "Semola",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }, {
+                        "name": "Formato",
+                        "value": "025",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }, {
+                        "name": "Descrizione",
+                        "value": "Millerighe",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }]
+            }, {
+                "name": "Confezione",
+                "value": "Film 500 gr",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": [{
+                        "name": "Grammatura",
+                        "value": "500",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }]
+            }, {
+                "name": "Destinazione",
+                "value": "ITA + ESTERO",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": [{
+                        "name": "Confezionamento Primario",
+                        "value": "",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": [{
+                                "name": "Quantita",
+                                "value": "500",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": []
+                            }, {
+                                "name": "Controllo Peso",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "IDinterno",
+                                        "value": "001",
+                                        "isArray": 0,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }, {
+                                        "name": "Descrizione",
+                                        "value": "Conf. 500 gr. norma CEE",
+                                        "isArray": 0,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }, {
+                                "name": "Marcature",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "",
+                                        "value": [{
+                                            "alternativa": "001 - Standard"
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }, {
+                                "name": "Materiali",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "",
+                                        "value": [{
+                                            "alternativa": "60083 - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }]
+                    }, {
+                        "name": "Confezionamento Secondario",
+                        "value": "",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": [{
+                                "name": "Quantita",
+                                "value": "24",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": []
+                            }, {
+                                "name": "Etichette",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "Etichetta cartone std",
+                                        "value": [{
+                                            "alternativa": "001 - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }, {
+                                "name": "Materiali",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "Cartone",
+                                        "value": [{
+                                            "alternativa": "11064 - "
+                                        },
+                                        {
+                                            "alternativa":  "11066 - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }]
+                    }, {
+                        "name": "Palletizzazione",
+                        "value": "",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": [{
+                                "name": "Quantita",
+                                "value": "18",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": []
+                            }, {
+                                "name": "Etichette",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "",
+                                        "value": [{
+                                            "alternativa": "CEE - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }]
+                    }]
+            }]
+    },
+    "SKUstandard": {
+        "attributi": [{
+                "name": "Descrizione",
+                "value": "",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": []
+            }, {
+                "name": "Formato",
+                "value": "Millerighe 025",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": [{
+                        "name": "Categoria",
+                        "value": "Pasta corta",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }, {
+                        "name": "Impasto",
+                        "value": "Semola",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }, {
+                        "name": "Formato",
+                        "value": "025",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }, {
+                        "name": "Descrizione",
+                        "value": "Millerighe",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }]
+            }, {
+                "name": "Confezione",
+                "value": "Film 500 gr",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": [{
+                        "name": "Grammatura",
+                        "value": "500",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": []
+                    }]
+            }, {
+                "name": "Destinazione",
+                "value": "ITA + ESTERO",
+                "isArray": 0,
+                "expand": 0,
+                "attributi": [{
+                        "name": "Confezionamento Primario",
+                        "value": "",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": [{
+                                "name": "Quantita",
+                                "value": "500",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": []
+                            }, {
+                                "name": "Controllo Peso",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "IDinterno",
+                                        "value": "001",
+                                        "isArray": 0,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }, {
+                                        "name": "Descrizione",
+                                        "value": "Conf. 500 gr. norma CEE",
+                                        "isArray": 0,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }, {
+                                "name": "Marcature",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "",
+                                        "value": [{
+                                            "alternativa": "001 - Standard"
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }, {
+                                "name": "Materiali",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "",
+                                        "value": [{
+                                            "alternativa": "60083 - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }]
+                    }, {
+                        "name": "Confezionamento Secondario",
+                        "value": "",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": [{
+                                "name": "Quantita",
+                                "value": "24",
+                                "expand": 0,
+                                "attributi": []
+                            }, {
+                                "name": "Etichette",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "Etichetta cartone std",
+                                        "value": [{
+                                            "alternativa": "001 - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }, {
+                                "name": "Materiali",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "Cartone",
+                                        "value": [{
+                                            "alternativa": "11064 - "
+                                        },
+                                        {
+                                            "alternativa":  "11066 - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }]
+                    }, {
+                        "name": "Palletizzazione",
+                        "value": "",
+                        "isArray": 0,
+                        "expand": 0,
+                        "attributi": [{
+                                "name": "Quantita",
+                                "value": "18",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": []
+                            }, {
+                                "name": "Etichette",
+                                "value": "",
+                                "isArray": 0,
+                                "expand": 0,
+                                "attributi": [{
+                                        "name": "",
+                                        "value": [{
+                                            "alternativa": "CEE - "
+                                        }],
+                                        "isArray": 1,
+                                        "expand": 0,
+                                        "attributi": []
+                                    }]
+                            }]
+                    }]
+            }]
+    }
+}

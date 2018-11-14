@@ -1,0 +1,111 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:t="sap.ui.table"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    controllerName="myapp.controller.Operatore">
+    <Dialog horizontalScrolling="true" contentHeight="650px" contentWidth="1200px" afterClose="DestroyDialogMsg" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="messaggi">
+        <VBox height="100%" width="100%">
+            <VBox height="90%" width="100%">
+                <TabContainer id="MessageContainer" itemSelect="MessageTabSelection">
+                    <items>    
+                        <TabContainerItem name="Log di Sistema" id="Sistema">
+                            <content>
+                                <VBox height="345px">
+                                    <t:Table
+                                        width="100%"
+                                        rowHeight="40px"
+                                        enableColumnReordering="false"
+                                        id="sistemaTable"
+                                        visibleRowCount="10"
+                                        class="alternate-color"
+                                        selectionMode="None"
+                                        rows="{messaggi>/sistema/}"
+                                        app:mydata="sistemaTable"
+                                        firstVisibleRowChanged="ColorTableText">
+                                        <t:columns>
+                                            <t:Column hAlign="Center" width="20%" resizable="false">
+                                                <Label text="Data"/>
+                                                <t:template>
+                                                    <Text text="{messaggi>datalog}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column width="80%" resizable="false">
+                                                <Label text="Messaggio"/>
+                                                <t:template class="textCT">
+                                                    <Text text="{messaggi>messaggio}" maxLines="2"/>
+                                                </t:template>
+                                            </t:Column>
+                                        </t:columns>
+                                        <t:noData>
+                                            <Text class="sapUiTableCtrlEmptyMsg" text="Non ci sono messaggi." textAlign="Center"/>
+                                        </t:noData>
+                                    </t:Table>
+                                </VBox>
+                            </content>
+                        </TabContainerItem>
+                        <TabContainerItem name="Chat Capoturno" id="Operatore">
+                            <content>
+                                <VBox height="345px">
+                                    <t:Table
+                                        width="100%"
+                                        rowHeight="40px"
+                                        enableColumnReordering="false"
+                                        id="chatTable"
+                                        visibleRowCount="8"
+                                        class="alternate-color"
+                                        selectionMode="None"
+                                        app:mydata="chatTable"
+                                        firstVisibleRowChanged="ColorTableText"
+                                        rows="{messaggi>/chat/}">
+                                        <t:columns>
+                                            <t:Column hAlign="Center" width="20%" resizable="false">
+                                                <Label text="Data"/>
+                                                <t:template>
+                                                    <Text text="{messaggi>datalog}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column width="80%" resizable="false">
+                                                <Label text="Messaggio"/>
+                                                <t:template>
+                                                    <Text textAlign="Begin" text="{messaggi>origine}: {messaggi>messaggio}" maxLines="2" class="{= ${messaggio>origine} === 'Capoturno' ? textCT : textOP}"/>
+                                                </t:template>
+                                            </t:Column>
+                                        </t:columns>
+                                        <t:noData>
+                                            <Text class="sapUiTableCtrlEmptyMsg" text="Non ci sono messaggi" textAlign="Center"/>
+                                        </t:noData>
+                                    </t:Table>
+                                </VBox>
+                                <VBox height="190px" width="100%" alignItems="Center">
+                                    <HBox width="100%" height="100%" class="shiftDown">
+                                        <VBox width="5%"/>
+                                        <VBox width="65%">
+                                            <Label text="Scrivi al Capoturno (max 100 caratteri)" class="blueLabel"/>
+                                            <Input submit="SendMessage" id="inputMessage" enableSuggestionsHighlighting="false" maxLength="100"/>
+                                        </VBox>
+                                        <VBox width="5%"/>
+                                        <VBox width="20%">
+                                            <Button text="Invia" class="chiudiButtonStatoLinea" press="SendMessage"/>
+                                        </VBox>
+                                        <VBox width="5%"/>
+                                    </HBox>                
+                                </VBox>
+                            </content>
+                        </TabContainerItem>
+                    </items>
+                </TabContainer>
+            </VBox>
+            <VBox height="10%" width="100%">
+                <HBox>
+                    <VBox height="100%" width="30%"/>
+                    <VBox height="100%" width="40%">
+                        <Button text="Chiudi" width="100%" class="annullaButton" press="DestroyDialogMsg"/>
+                    </VBox>
+                    <VBox height="100%" width="30%"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

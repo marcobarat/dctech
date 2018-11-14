@@ -5,6 +5,61 @@
 .sfondobianco {
     background-color: white !important;
 }
+.bckgPage
+{
+    background-image: url('dececco_marchio_standard_rgb.png');
+    background-size:cover;
+}
+
+/*STILE TILES*/
+
+.tileMargin {
+    margin: 1rem; 
+}
+.tileSize {
+    width: 250px !important;
+    height: 250px !important;
+}
+.tileTitle .sapMGTHdrContent {
+    margin: 0rem;
+    padding: 1rem;
+    background: white;
+    height: 2rem;
+}
+.tileTitle .sapMGTHdrContent .sapMText{
+    font-size: 20pt;
+    font-family: Arial;
+    line-height: 18pt;
+    white-space: normal;
+    color: #004785;
+}
+.tileTitle .sapMGTHdrContent .sapMText .sapMTextLineClamp {
+    height: 100%; 
+}
+.tileTitle .sapMGTHdrContent .sapMGTHdrTxt{
+    height: 100%;
+}
+.absoluteTileContentPosition {
+    position: absolute;
+    top: 0px;
+    right: 0px; 
+    padding: 0px;
+    margin: 1rem;
+    height: 2rem !important;
+    width: 2rem; 
+}
+.absoluteTileContentPosition .sapMTileCntContent {
+    position: absolute; 
+    padding: 0px;
+    margin: 0px;
+    height: 2rem;
+    width: 2rem; 
+    right: 0px; 
+}
+.blueBorder {
+    border: solid 1px #004785;
+}
+
 
 /*STILE MASTER PAGE*/
 .MasterPanels {
@@ -48,6 +103,58 @@
 }
 .greenBorder {
     border: solid 5px #7CA295;
+}
+.shiftDown {
+    margin: 4rem;
+}
+.textCT {
+    color: #A71930;
+}
+.textOP {
+    color: #003A6B;
+}
+.chiudiButtonStatoLinea .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #f2f2f2;
+    color: #003A6B;
+    border-radius: 10px;
+    height: 105%;
+    width: 100%;
+    text-shadow: 0 0 0 ;
+    top: 1.5rem;
+}
+.messageButton .sapMBtnInner {
+    background: white;
+    color: #003A6B;
+    border-radius: 100px;
+    border-color: #003A6B;
+    left: 6rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0.6rem;
+}
+.messageButton .sapMBtnIcon {
+    color: #003A6B;
+    font-size: 3rem;
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
+}
+.newMessageButton .sapMBtnInner {
+    background: #FFD300;
+    color: #003A6B;
+    border-radius: 100px;
+    border-color: #003A6B;
+    left: 6rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0.6rem;
+}
+.newMessageButton .sapMBtnIcon {
+    color: #003A6B;
+    font-size: 3rem;
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
 }
 /*STILE BOTTONI SULLA MASTER PAGE*/
 .styleButton .sapMBtnInner {
@@ -213,6 +320,16 @@
 .textNormal {
     font-size: 15pt;
     color : #003A6B;
+    font-family: Arial;
+}
+.textSelect .sapMSltLabel{
+    font-size: 15pt;
+    color : black;
+    font-family: Arial;
+}
+.sapMSelectListItemBase{
+    font-size: 15pt !important;
+    color : black;
     font-family: Arial;
 }
 .causeText .sapMListTbl .sapMText {

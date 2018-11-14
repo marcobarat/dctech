@@ -47,7 +47,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton1" icon="sap-icon://message-popup" press="ShowMessaggi" class="messageButton"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                             <!--<VBox height="10%" width="100%"/>-->
@@ -98,7 +100,8 @@
                                         enableSelectAll="false"
                                         enableColumnReordering="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="20"
+                                        visibleRowCount="11"
+                                        rowHeight="50px"
                                         rowSelectionChange="ciao"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_PresaInCarico">
@@ -121,7 +124,10 @@
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                        <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
+                                                        <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
+                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                        </Select>
                                                     </HBox>
                                                 </t:template>
                                             </t:Column>
@@ -142,7 +148,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton2" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -200,7 +208,8 @@
                                                         enableSelectAll="false"
                                                         enableColumnReordering="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="20"
+                                                        visibleRowCount="11"
+                                                        rowHeight="50px"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiPredisposizione">
                                                         <wt:toolbar>
@@ -222,7 +231,10 @@
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                        <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
+                                                                        <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
+                                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                                        </Select>
                                                                     </HBox>
                                                                 </t:template>
                                                             </t:Column>
@@ -334,7 +346,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton3" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -578,7 +592,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton4" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -635,7 +651,8 @@
                                                         enableColumnReordering="false"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="20"
+                                                        visibleRowCount="11"
+                                                        rowHeight="50px"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiModifica">
                                                         <wt:toolbar>
@@ -657,7 +674,10 @@
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                        <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
+                                                                        <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
+                                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                                        </Select>
                                                                     </HBox>
                                                                 </t:template>
                                                             </t:Column>
@@ -750,7 +770,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton5" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -805,7 +827,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton6" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -919,7 +943,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton7" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1161,7 +1187,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton8" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1282,7 +1310,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton9" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1374,7 +1404,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton10" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1428,7 +1460,8 @@
                                         enableColumnReordering="false"
                                         enableSelectAll="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="20"
+                                        visibleRowCount="11"
+                                        rowHeight="50px"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_BatchAttrezzaggio">
                                         <wt:toolbar>
@@ -1450,7 +1483,10 @@
                                                 <Label text="VALORE"/>
                                                 <t:template>
                                                     <HBox>
-                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                        <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
+                                                        <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
+                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                        </Select>
                                                     </HBox>
                                                 </t:template>
                                             </t:Column>
@@ -1471,7 +1507,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton11" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1531,7 +1569,8 @@
                                                         enableSelectAll="false"
                                                         enableColumnReordering="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="20"
+                                                        visibleRowCount="11"
+                                                        rowHeight="50px"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiAttrezzaggio">
                                                         <wt:toolbar>
@@ -1553,7 +1592,10 @@
                                                                 <Label text="VALORE"/>
                                                                 <t:template>
                                                                     <HBox>
-                                                                        <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                        <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
+                                                                        <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
+                                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                                        </Select>
                                                                     </HBox>
                                                                 </t:template>
                                                             </t:Column>
@@ -1662,7 +1704,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton12" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1721,7 +1765,9 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="15%"/>
+                                    <VBox height="100%" width="15%">
+                                        <Button id="msgButton13" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                    </VBox>
                                 </HBox>
                             </VBox>
                         </VBox>

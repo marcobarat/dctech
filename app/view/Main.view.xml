@@ -1,9 +1,57 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" xmlns:cust="myapp.control"
           controllerName="myapp.controller.Main">
+    
     <Page showHeader="false" class="colorPage">
         <content>
-            <!--<Button text="{locale>myapp.goto.tmp}" press="onToTmpPage" class="sapUiSmallMarginEnd"/>-->
+            <VBox height="100%" width="100%">
+                <VBox height="25%">
+                    <HBox>
+                        <VBox width="15%">
+                            <VBox height="10%" width="100%"/>
+                            <VBox height="65%" width="100%">
+                                <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
+                            </VBox>
+                            <VBox height="25%" width="100%"/>
+                        </VBox>
+                        <VBox width="70%">
+                            <VBox height="30%"/>
+                            <VBox height="70%">
+                                <FlexBox alignItems="Start" justifyContent="Center">
+                                    <Text text="De Cecco - Fara San Martino" class="textTop"/>
+                                </FlexBox>
+                            </VBox>
+                        </VBox>
+                        <VBox width="15%"/>
+                    </HBox>
+                </VBox>
+                
+                <VBox height="75%">
+                    <VBox height="15%"/>
+                    <VBox height="85%">
+                        <FlexBox alignItems="Start" justifyContent="Center">
+                            <ScrollContainer id="container" height="600px" width="852px" vertical="true" horizontal="false" content="{path:'linee>/linee/'}">
+                                <GenericTile header="{linee>linea}" press="GoToOperatore" class="tileSize tileMargin blueBorder tileTitle bckgPage">
+                                    <tileContent>
+                                        <TileContent footer="{linee>formato}">
+                                            <content>
+                                                <NumericContent nullifyValue="SMPL" truncateValueTo="7" state="Enabled" width="100%" value="{linee>avanzamento}" class="iconWhite" icon="sap-icon://circle-task-2" />
+                                            </content>
+                                        </TileContent>
+                                    </tileContent>
+                                </GenericTile>
+                            </ScrollContainer>
+                        </FlexBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </content>
+    </Page>
+    
+    
+    <!--    <Page showHeader="false" class="colorPage">
+        <content>
+            <Button text="{locale>myapp.goto.tmp}" press="onToTmpPage" class="sapUiSmallMarginEnd"/>
             <FlexBox alignItems="Start" justifyContent="Center">
                 <Text text="{/descrizione}" class="textTop"/>
             </FlexBox>
@@ -22,5 +70,5 @@
                     press="GoToOperatore"/>
             </TileContainer>
         </content>
-    </Page>
+    </Page>-->
 </mvc:View>

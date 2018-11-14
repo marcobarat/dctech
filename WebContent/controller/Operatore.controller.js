@@ -15,6 +15,7 @@ sap.ui.define([
         IDsTreeTables: new JSONModel({}),
         LineDetails: {Linea: "Coppia 05", idLinea: "1", Descrizione: "Penne mezzane rigate 241 - Astuccio 3000gr", Destinazione: "HBEX COMERCIAL EXPORTADORA E IMPORTAD. LTDA"},
         ModelDetailPages: new JSONModel({}),
+        ModelMessaggi: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
         CheckFermo: null,
@@ -41,6 +42,14 @@ sap.ui.define([
         SPCTimer: null,
         TIMER: null,
         STOPSPC: null,
+        vecs: null,
+        tempPath: null,
+        TempModel: null,
+        SMTimer: null,
+        StopMSG: null,
+        RefreshMsgCounter: null,
+        linea_id: null,
+        oDialog: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -51,6 +60,8 @@ sap.ui.define([
         Starter: function () {
             this.ModelDetailPages = new JSONModel({});
             this.ModelDetailPages.setSizeLimit("1000");
+            this.TempModel = new JSONModel({});
+            this.TempModel.setSizeLimit("1000");
             clearInterval(this.TIMER);
             this.IDsTreeTables.setProperty("/IDs/", {});
             for (var key in this.IDsTreeTables.getData().IDs) {
@@ -66,7 +77,7 @@ sap.ui.define([
                 if (this.ISATTR === 1) {
                     link = "model/JSON_SKUBatch_ATTR.json";
                 } else {
-                    link = "model/JSON_SKUBatch.json";
+                    link = "model/JSON_NewSKU.json";
                 }
                 this.AjaxCallerData(link, this.LOCALCheckStatus.bind(this));
             } else {
@@ -124,6 +135,7 @@ sap.ui.define([
         CheckStatus: function (Jdata) {
             this.ModelDetailPages.setProperty("/Linea/", Jdata);
             var link, key;
+            this.NewMessage();
             var model = this.ModelDetailPages.getData();
             var data = model.Linea;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
@@ -310,6 +322,24 @@ sap.ui.define([
                 that.ExpandAll(null, "TreeTable_Chiusura");
             }, 100);
         },
+        NewMessage: function () {
+            var classes = ["messageButton", "newMessageButton"];
+            var data = this.ModelDetailPages.getData().Linea;
+            var i, j, button;
+            for (i = 1; i < 14; i++) {
+                if (typeof this.getView().byId("msgButton" + String(i)) !== "undefined") {
+                    button = this.getView().byId("msgButton" + String(i));
+                }
+                for (j = 0; j < classes.length; j++) {
+                    button.removeStyleClass(classes[j]);
+                }
+                if (Number(data.msg) > 0) {
+                    button.addStyleClass("newMessageButton");
+                } else {
+                    button.addStyleClass("messageButton");
+                }
+            }
+        },
 //        ---------------------------------------------------------------------
 //        -------------------------  FUNZIONI CALLER  -------------------------
 //        ---------------------------------------------------------------------
@@ -362,6 +392,112 @@ sap.ui.define([
 //        ---------------------------  DETAIL PAGES  --------------------------
 //        ---------------------------------------------------------------------
 
+//        -------------------------  MESSAGGISTICA  -------------------------
+
+        ShowMessaggi: function (event) {
+            clearInterval(this.SMTIMER);
+            this.linea_id = this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.STOPMSG = 0;
+            var oView = this.getView();
+            this.oDialog = oView.byId("messaggi");
+            if (!this.oDialog) {
+                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.MessagePopup", this);
+                oView.addDependent(this.oDialog);
+            }
+            this.oDialog.open();
+            this.RefreshMsgCounter = 2;
+            var that = this;
+            this.SMTIMER = setInterval(function () {
+                try {
+                    that.RefreshMsgCounter++;
+                    if (that.STOPMSG === 0 && that.RefreshMsgCounter >= 2) {
+                        that.RefreshMsgFunction();
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }, 1000);
+            this.TabContainer = this.getView().byId("MessageContainer");
+            this.RemoveClosingButtons(2);
+        },
+        ColorTableText: function (event, Table) {
+            var View, classCol, i, j, k;
+            var classes = ["textCT", "textOP"];
+            if (typeof Table === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = this.getView().byId(Table);
+            }
+            if (View.getId().indexOf("sistema") > -1) {
+                for (i = 0; i < View.getRows().length; i++) {
+                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
+                        View.getRows()[i].getCells()[j].addStyleClass("textCT");
+                    }
+                }
+            } else {
+                for (i = 0; i < View.getRows().length; i++) {
+                    classCol = (View.getRows()[i].getCells()[1].getProperty("text").indexOf("CAPOTURNO") > -1) ? "textCT" : "textOP";
+                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
+                        for (k = 0; k < classes.length; k++) {
+                            View.getRows()[i].getCells()[j].removeStyleClass(classes[k]);
+                        }
+                        View.getRows()[i].getCells()[j].addStyleClass(classCol);
+                    }
+                }
+            }
+        },
+        SUCCESSMessaggi: function (Jdata) {
+            var temp, i;
+            if (this.oDialog) {
+                if (this.oDialog.isOpen()) {
+                    for (i = 0; i < Jdata.sistema.length; i++) {
+                        temp = Jdata.sistema[i].datalog.split("T");
+                        Jdata.sistema[i].datalog = temp[0].split("-").reverse().join("/") + ", " + temp[1];
+                    }
+                    for (i = 0; i < Jdata.chat.length; i++) {
+                        Jdata.chat[i].origine = Jdata.chat[i].origine.toUpperCase();
+                        temp = Jdata.chat[i].datalog.split("T");
+                        Jdata.chat[i].datalog = temp[0].split("-").reverse().join("/") + ", " + temp[1];
+                    }
+                    this.ModelMessaggi.setData(Jdata);
+                    this.getView().setModel(this.ModelMessaggi, "messaggi");
+                    if (this.STOPMSG === 0) {
+                        this.RefreshMsgCounter = 0;
+                    }
+                    this.ColorTableText(null, "sistemaTable");
+                    this.ColorTableText(null, "chatTable");
+                }
+            }
+        },
+        RefreshMsgFunction: function (msec) {
+            this.RefreshMsgCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.RefreshMsgCall.bind(this), msec);
+        },
+        RefreshMsgCall: function () {
+            var link;
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMessagesFromLineaIDOrigine&Content-Type=text/json&LineaID=" + this.linea_id + "&Origine=Operatore&OutputParameter=JSON";
+            }
+            this.SyncAjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
+        },
+        DestroyDialogMsg: function () {
+            clearInterval(this.SMTIMER);
+            this.GlobalBusyDialog.close();
+            this.STOPMSG = 1;
+            this.oDialog.destroy();
+        },
+        SendMessage: function () {
+            var link;
+            var msg = this.getView().byId("inputMessage").getValue();
+            this.getView().byId("inputMessage").setValue("");
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SendMessageChat&Content-Type=text/json&LineaID=" + this.linea_id + "&Messaggio=" + this.EncodeForUri(msg) + "&Imp=1&Origine=Operatore&OutputParameter=JSON";
+            }
+            this.SyncAjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
+        },
 
 //        -------------------------  PRESA IN CARICO  -------------------------       
 
@@ -395,9 +531,22 @@ sap.ui.define([
                 this.LOCALState = "Disponibile.Attrezzaggio";
             } else {
                 this.GlobalBusyDialog.open();
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
+                this.TempModel.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
+                var xmlSelection = this.XMLSelectionsBuilder(this.TempModel, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID);
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xmlSelection + "&OutputParameter=JSON";
+                this.SyncAjaxCallerVoid(link, this.SUCCESSSelectSKU.bind(this));
             }
+        },
+        SUCCESSSelectSKU: function (data) {
+            var Jdata = data.SKUattuale;
+            Jdata = this.RecursiveJSONComparison(this.ModelDetailPages.getData().Linea.SKUstandard, Jdata, "attributi");
+            Jdata = this.RecursiveParentExpansion(Jdata);
+            this.exp = 0;
+            Jdata = this.RecursiveJSONExpansionFinder(Jdata);
+            Jdata = this.RecursiveSelectReordering(Jdata);
+            this.ModelDetailPages.setProperty("/SKU/SKUattuale/", Jdata);
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
         },
 //        -------------------------  ATTREZZAGGIO LINEA  -------------------------       
 
@@ -628,11 +777,25 @@ sap.ui.define([
         SUCCESSConfermaAttrezzaggio: function (Jdata) {
             this.ModelDetailPages.setProperty("/SuccessConfermaAttrezzaggio/", Jdata);
             if (Jdata.error === 0) {
-                this.RefreshFunction(0);
+                this.TempModel.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
+                var xmlSelection = this.XMLSelectionsBuilder(this.TempModel, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID);
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xmlSelection + "&OutputParameter=JSON";
+                this.SyncAjaxCallerVoid(link, this.SUCCESSSelectSKUCP.bind(this));
+
             } else {
                 alert(Jdata.errorMessage);
             }
+        },
+        SUCCESSSelectSKUCP: function (data) {
+            var Jdata = data.SKUattuale;
+            Jdata = this.RecursiveJSONComparison(this.ModelDetailPages.getData().Linea.SKUstandard, Jdata, "attributi");
+            Jdata = this.RecursiveParentExpansion(Jdata);
+            this.exp = 0;
+            Jdata = this.RecursiveJSONExpansionFinder(Jdata);
+            Jdata = this.RecursiveSelectReordering(Jdata);
+            this.ModelDetailPages.setProperty("/SKU/SKUattuale/", Jdata);
             this.GlobalBusyDialog.close();
+            this.RefreshFunction(0);
         },
         //        -------------------------  LAVORAZIONE  -------------------------       
 
@@ -796,7 +959,6 @@ sap.ui.define([
                     var XMLstring = this.XMLSetupUpdates(data, this.ModelDetailPages.getData().DettaglioLinea.idLinea, this.ModelDetailPages.getData().Linea.Batch.SKUID);
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=1&OutputParameter=JSON";
                     this.AjaxCallerData(link, this.SUCCESSConfermaModifica.bind(this));
-                    this.RefreshFunction(0);
                 }
             } else {
                 MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
@@ -806,7 +968,22 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/SuccessConfermaModifica/", Jdata);
             if (Jdata.error === 1) {
                 alert(Jdata.errorMessage);
+            } else {
+                this.TempModel.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
+                var xmlSelection = this.XMLSelectionsBuilder(this.TempModel, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID);
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xmlSelection + "&OutputParameter=JSON";
+                this.SyncAjaxCallerVoid(link, this.SUCCESSSelectSKUMC.bind(this));
             }
+        },
+        SUCCESSSelectSKUMC: function (data) {
+            var Jdata = data.SKUattuale;
+            Jdata = this.RecursiveJSONComparison(this.ModelDetailPages.getData().Linea.SKUstandard, Jdata, "attributi");
+            Jdata = this.RecursiveParentExpansion(Jdata);
+            this.exp = 0;
+            Jdata = this.RecursiveJSONExpansionFinder(Jdata);
+            Jdata = this.RecursiveSelectReordering(Jdata);
+            this.ModelDetailPages.setProperty("/SKU/SKUattuale/", Jdata);
+            this.RefreshFunction(0);
         },
 //        ----------------------  FERMO  ----------------------
 
@@ -1328,7 +1505,6 @@ sap.ui.define([
                 this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
         },
-
 //      -------------------------- ATTREZZAGGIO --------------------------
 
         PredisposizioneLineaAttrezzaggio: function () {
@@ -1960,8 +2136,98 @@ sap.ui.define([
             }
             return (heading + body + bottom);
         },
+        AlternativeSelectionChange: function (event) {
+            var selectObj = event.getSource();
+            var path = selectObj.getParent().getBindingContext("GeneralModel").sPath;
+            var itemList = this.ModelDetailPages.getProperty(path).value;
+            var ID = selectObj.getSelectedKey();
+            for (var i = 0; i < itemList.length; i++) {
+                itemList[i].isSelected = (itemList[i].ID === ID) ? "1" : "0";
+            }
+        },
+        XMLSelectionsBuilder: function (SKU, idBatch, idSKU) {
+            var i, j, k, temp;
+            var JSON = SKU.getData();
+            var heading = "<Alternative>" +
+                    "<SKUID>" + idSKU + "</SKUID>" +
+                    "<BatchID>" + idBatch + "</BatchID>" +
+                    "<AlternativeList>";
+            var bottom = "</AlternativeList>" +
+                    "</Alternative>";
+            this.vecs = [];
+            this.tempPath = "";
+            JSON = this.RecursiveJSONSelectPathFinder(JSON);
+            this.tempPath = this.tempPath.split("<>").slice(0, -1);
+            var paths = [];
+            for (i = 0; i < this.tempPath.length; i++) {
+                temp = this.tempPath[i].split(".");
+                temp.shift();
+                paths.push(temp);
+            }
+            var padri = [];
+            var nodi = [];
+            var ramiID = [];
+            var foglieID = [];
+            for (i = 0; i < paths.length; i++) {
+                temp = "";
+                for (j = 0; j < 4; j++) {
+                    temp += "/" + paths[i][j];
+                }
+                padri.push(SKU.getProperty(temp).name);
+                for (j = 4; j < 6; j++) {
+                    temp += "/" + paths[i][j];
+                }
+                nodi.push(SKU.getProperty(temp).name);
+                for (j = 6; j < paths[i].length; j++) {
+                    temp += "/" + paths[i][j];
+                }
+                ramiID.push(SKU.getProperty(temp).ramoID);
+                for (k = 0; k < SKU.getProperty(temp).value.length; k++) {
+                    if (SKU.getProperty(temp).value[k].isSelected === "1") {
+                        foglieID.push(SKU.getProperty(temp).value[k].ID);
+                    }
+                }
+            }
+            var body = "";
+            for (i = 0; i < paths.length; i++) {
+                body += "<Alternativa><Padre>" + padri[i] + "</Padre><Nodo>" + nodi[i] + "</Nodo><RamoID>" + ramiID[i] + "</RamoID><FogliaID>" + foglieID[i] + "</FogliaID></Alternativa>";
+            }
+            return this.EncodeForUri(heading + body + bottom);
+        },
+        EncodeForUri: function (string) {
+            string = this.ReplaceAll('!', '%21', string);
+            string = this.ReplaceAll('#', '%23', string);
+            string = this.ReplaceAll('$', '%24', string);
+            string = this.ReplaceAll('&', '%26', string);
+            string = this.ReplaceAll("'", '%27', string);
+            string = this.ReplaceAll('(', '%28', string);
+            string = this.ReplaceAll(')', '%29', string);
+            string = this.ReplaceAll('*', '%2A', string);
+            string = this.ReplaceAll('+', '%2B', string);
+            string = this.ReplaceAll(',', '%2C', string);
+            string = this.ReplaceAll('/', '%2F', string);
+            string = this.ReplaceAll(':', '%3A', string);
+            string = this.ReplaceAll(';', '%3B', string);
+            string = this.ReplaceAll('=', '%3D', string);
+            string = this.ReplaceAll('?', '%3F', string);
+            string = this.ReplaceAll('@', '%40', string);
+            string = this.ReplaceAll('[', '%5B', string);
+            string = this.ReplaceAll(']', '%5D', string);
+            return string;
+        },
+        ReplaceAll: function (stringToFind, stringToReplace, string) {
+            if (stringToFind === stringToReplace)
+                return string;
+            var temp = string;
+            var index = temp.indexOf(stringToFind);
+            while (index !== -1 && temp[index + 1] !== '#') {
+                temp = temp.replace(stringToFind, stringToReplace);
+                index = temp.indexOf(stringToFind);
+            }
+            return temp;
+        },
         TreeTableRowClickExpander: function (event, TT) {
-            var View, txt;
+            var View, txt, isArray;
             var path = event.getParameters().rowBindingContext.sPath;
             if (typeof TT === "undefined") {
                 View = this.getView().byId(event.getSource().data("mydata"));
@@ -1980,7 +2246,8 @@ sap.ui.define([
                     break;
                 case "1":
                     txt = this.ModelDetailPages.getProperty(path).value;
-                    if (txt !== "") {
+                    isArray = this.ModelDetailPages.getProperty(path).isArray;
+                    if (txt !== "" && isArray === 0) {
                         MessageToast.show(txt, {duration: 10000});
                     }
                     break;
@@ -2778,6 +3045,58 @@ sap.ui.define([
                 }
             }
             return json;
+        },
+        RecursiveJSONSelectPathFinder: function (json) {
+            for (var key in json) {
+                if (key !== "value" && typeof json[key] === "object") {
+                    this.tempPath += "." + key;
+                    json[key] = this.RecursiveJSONSelectPathFinder(json[key]);
+                } else if (key === "value" && typeof json[key] === "object") {
+                    this.vecs.push(json[key]);
+                    this.tempPath = this.AppendNewPath(this.tempPath);
+                }
+            }
+            this.tempPath = this.DeleteLastLevel(this.tempPath);
+            return json;
+        },
+        DeleteLastLevel: function (str) {
+            var ind;
+            if (str.slice(str.length - 2, str.length) !== "<>") {
+                ind = str.lastIndexOf(".");
+                str = str.slice(0, ind);
+            }
+            return str;
+        },
+        AppendNewPath: function (str) {
+            var ind = (str.lastIndexOf("<>") === -1) ? 0 : (str.lastIndexOf("<>") + 2);
+            str += "<>" + str.slice(ind, str.length);
+            return str;
+        },
+        RecursiveSelectReordering: function (json) {
+            for (var key in json) {
+                if (key !== "value" && typeof json[key] === "object") {
+                    json[key] = this.RecursiveSelectReordering(json[key]);
+                } else if (key === "value" && typeof json[key] === "object") {
+                    json[key] = this.ReorderSelect(json[key]);
+                }
+            }
+            return json;
+        },
+        ReorderSelect: function (array) {
+            var ordered = [];
+            var i, index;
+            for (i = 0; i < array.length; i++) {
+                if (array[i].isSelected === "1") {
+                    index = i;
+                }
+            }
+            ordered.push(array[index]);
+            for (i = 0; i < array.length; i++) {
+                if (i !== index) {
+                    ordered.push(array[i]);
+                }
+            }
+            return ordered;
         },
 //      -----------------------------------------------------------------------
 //      --------------------------  FUNZIONI LOCALI  --------------------------
