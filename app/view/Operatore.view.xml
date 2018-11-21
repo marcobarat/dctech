@@ -14,7 +14,8 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <!--<Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>-->
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -48,7 +49,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton1" icon="sap-icon://message-popup" press="ShowMessaggi" class="messageButton"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton1" icon="sap-icon://message-popup" press="ShowMessaggi" class="messageButton"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -149,7 +150,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton2" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton2" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -347,7 +348,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton3" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton3" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -497,8 +498,8 @@
                                     </VBox>
                                     <VBox height="100%" width="30%">
                                         <HBox>
-                                            <VBox height="100%" width="45%"/>
-                                            <VBox height="100%" width="55%">
+                                            <VBox height="100%" width="35%"/>
+                                            <VBox height="100%" width="65%">
                                                 <VBox height="30%" width="100%">
                                                     <FlexBox alignItems="Start" justifyContent="Start">
                                                         <Text text="Valori residui" class="OEEText underlineOEE"/>
@@ -593,7 +594,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton4" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton4" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -771,7 +772,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton5" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton5" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -828,7 +829,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton6" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton6" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -944,7 +945,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton7" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton7" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -1092,8 +1093,8 @@
                                     </VBox>
                                     <VBox height="100%" width="30%">
                                         <HBox>
-                                            <VBox height="100%" width="45%"/>
-                                            <VBox height="100%" width="55%">
+                                            <VBox height="100%" width="35%"/>
+                                            <VBox height="100%" width="65%">
                                                 <VBox height="30%" width="100%">
                                                     <FlexBox alignItems="Start" justifyContent="Start">
                                                         <Text text="Valori residui" class="OEEText underlineOEE"/>
@@ -1188,7 +1189,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton8" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton8" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -1311,7 +1312,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton9" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton9" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -1405,7 +1406,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton10" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton10" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -1508,7 +1509,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton11" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton11" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -1705,7 +1706,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton12" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton12" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>
@@ -1766,7 +1767,7 @@
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
-                                        <Button id="msgButton13" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
+                                        <wt:CustomButtonMessage newMessages="{GeneralModel>/msg}" id="msgButton13" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
                                 </HBox>
                             </VBox>

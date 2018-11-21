@@ -156,6 +156,68 @@
     padding-top: 0.5rem;
     padding-right: 0.5rem;
 }
+
+/* SINOTTICO */
+.shiftImage {
+    padding-top: 5rem;
+}
+
+.buttonSinottico .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    border-radius: 10px;
+    border: 1px solid #003A6B;
+}
+
+.MarcatoreSX {
+    position: absolute;
+    top: 4rem;
+    left: 3rem;
+}
+.MarcatoreDX {
+    position: absolute;
+    left: 3rem;
+    bottom: -1rem;
+}
+.PackItalSX {
+    position: absolute;
+    top: 6rem;
+    left: 18rem;
+}
+.PackItalDX {
+    position: absolute;
+    bottom: 1rem;
+    left: 18rem;
+}
+.Scatolatrice {
+    position: absolute;
+    top: 4rem;
+    right: 30rem;
+}
+.Etichettatrice {
+    position: absolute;
+    bottom: 4rem;
+    right: 7rem;
+}
+
+.buttonGood .sapMBtnInner {
+    color: #003A6B;
+    text-shadow: 0 0 0;
+    background: #7CA295;
+}
+
+.buttonWarning .sapMBtnInner {
+    color: #003A6B;
+    text-shadow: 0 0 0;
+    background: #FFD300;
+}
+
+.buttonError .sapMBtnInner {
+    color: white;
+    text-shadow: 0 0 0;
+    background: #A71930;
+}
+
 /*STILE BOTTONI SULLA MASTER PAGE*/
 .styleButton .sapMBtnInner {
     margin-left: 5%;

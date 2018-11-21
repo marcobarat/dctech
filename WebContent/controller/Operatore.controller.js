@@ -15,6 +15,7 @@ sap.ui.define([
         IDsTreeTables: new JSONModel({}),
         LineDetails: {Linea: "Coppia 05", idLinea: "1", Descrizione: "Penne mezzane rigate 241 - Astuccio 3000gr", Destinazione: "HBEX COMERCIAL EXPORTADORA E IMPORTAD. LTDA"},
         ModelDetailPages: new JSONModel({}),
+        ModelSinottico: new JSONModel({}),
         ModelMessaggi: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
@@ -32,6 +33,9 @@ sap.ui.define([
         LOCALState: null,
         ClosingDialog: null,
         SPCDialog: null,
+        oDialog: null,
+        SinDialog: null,
+        ParamDialog: null,
         Fase: null,
         Allarme: null,
         SPCText: null,
@@ -48,8 +52,13 @@ sap.ui.define([
         SMTimer: null,
         StopMSG: null,
         RefreshMsgCounter: null,
+        SinTimer: null,
+        StopSin: null,
+        RefreshSinCounter: null,
+        ParTimer: null,
+        StopPar: null,
+        RefreshParCounter: null,
         linea_id: null,
-        oDialog: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -135,7 +144,7 @@ sap.ui.define([
         CheckStatus: function (Jdata) {
             this.ModelDetailPages.setProperty("/Linea/", Jdata);
             var link, key;
-            this.NewMessage();
+//            this.NewMessage();
             var model = this.ModelDetailPages.getData();
             var data = model.Linea;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
@@ -392,6 +401,129 @@ sap.ui.define([
 //        ---------------------------  DETAIL PAGES  --------------------------
 //        ---------------------------------------------------------------------
 
+//        ---------------------------  SINOTTICO  ---------------------------
+
+        OpenSinottico: function (event) {
+            clearInterval(this.SinTIMER);
+            this.linea_id = this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            this.STOPSin = 0;
+            this.SinDialog = this.getView().byId("sinottico");
+            if (!this.SinDialog) {
+                this.SinDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.Sinottico", this);
+                this.getView().addDependent(this.oDialog);
+            }
+            this.SinDialog.open();
+            this.SinDialog.setBusy(true);
+            this.RefreshSinCounter = 10;
+            var that = this;
+            this.SinTIMER = setInterval(function () {
+                try {
+                    that.RefreshMsgCounter++;
+                    if (that.STOPSin === 0 && that.RefreshSinCounter >= 10) {
+                        that.RefreshSinFunction();
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }, 1000);
+        },
+        SUCCESSSinottico: function (Jdata) {
+            var i, button, vbox;
+            if (this.SinDialog) {
+                if (this.SinDialog.isOpen()) {
+                    Jdata.IMG = this.ModelDetailPages.getData().DettaglioLinea.Linea.toLowerCase().split(" ").join("_") + ".png";
+                    this.SetNameMacchine(Jdata);
+                    for (i = 0; i < Jdata.Macchine.length; i++) {
+                        Jdata.Macchine[i].class = Jdata.Macchine[i].nome.split(" ").join("");
+                    }
+//                    if (!sap.ui.getCore().byId(Jdata.Macchine[0].nome.split(" ").join("") + "_" + this.linea_id)) {
+//                        vbox = this.getView().byId("vboxSin");
+//                        for (i = 0; i < Jdata.Macchine.length; i++) {
+//                            button = new sap.m.Button({
+//                                id: Jdata.Macchine[i].nome.split(" ").join("") + "_" + this.linea_id,
+//                                text: Jdata.Macchine[i].nome,
+//                                press: [this.ShowParameters, this]});
+//                            button.addStyleClass("buttonSinottico");
+//                            button.addStyleClass(Jdata.Macchine[i].class);
+//                            vbox.addItem(button);
+//                        }
+//                    }
+                    this.ModelSinottico.setData(Jdata);
+                    this.getView().setModel(this.ModelSinottico, "ModelSinottico");
+//                    this.UpdateButtons();
+                    this.SinDialog.setBusy(false);
+                    if (this.STOPSin === 0) {
+                        this.RefreshSinCounter = 0;
+                    }
+                }
+            }
+        },
+        UpdateButtons: function () {
+            var j, k, button;
+            var classes = ["buttonGood", "buttonWarning", "buttonError"];
+            for (j = 0; j < this.ModelSinottico.getData().Macchine.length; j++) {
+                button = sap.ui.getCore().byId(this.ModelSinottico.getData().Macchine[j].nome.split(" ").join("") + "_" + this.linea_id);
+                for (k = 0; k < classes.length; k++) {
+                    button.removeStyleClass(classes[k]);
+                }
+                switch (this.ModelSinottico.getData().Macchine[j].stato) {
+                    case "Good":
+                        button.addStyleClass("buttonGood");
+                        break;
+                    case "Warning":
+                        button.addStyleClass("buttonWarning");
+                        break;
+                    case "Error":
+                        button.addStyleClass("buttonError");
+                        break;
+                }
+            }
+        },
+        SetNameMacchine: function (data_linea) {
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
+            for (var i = 0; i < data_linea.Macchine.length; i++) {
+                for (var j = 0; j < names.length; j++) {
+                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
+                        switch (names[j]) {
+                            case "marcatore":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
+                                break;
+                            case "controllo peso":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
+                                break;
+                            case "etichettatrice":
+                                data_linea.Macchine[i].nome = "Etichettatrice";
+                                break;
+                            case "scatolatrice":
+                                data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                        }
+                    }
+                }
+            }
+        },
+        RefreshSinFunction: function (msec) {
+            this.RefreshMsgCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.RefreshSinCall.bind(this), msec);
+        },
+        RefreshSinCall: function () {
+            var link;
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoByLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&OutputParameter=JSON";
+            }
+            this.SyncAjaxCallerData(link, this.SUCCESSSinottico.bind(this));
+        },
+        DestroyDialogSin: function () {
+            clearInterval(this.SinTIMER);
+            this.ModelSinottico.setData({});
+            this.GlobalBusyDialog.close();
+            this.STOPSin = 1;
+            this.SinDialog.destroy();
+        },
+
 //        -------------------------  MESSAGGISTICA  -------------------------
 
         ShowMessaggi: function (event) {
@@ -405,6 +537,7 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
             this.oDialog.open();
+            this.oDialog.setBusy(true);
             this.RefreshMsgCounter = 2;
             var that = this;
             this.SMTIMER = setInterval(function () {
@@ -420,32 +553,32 @@ sap.ui.define([
             this.TabContainer = this.getView().byId("MessageContainer");
             this.RemoveClosingButtons(2);
         },
-        ColorTableText: function (event, Table) {
-            var View, classCol, i, j, k;
-            var classes = ["textCT", "textOP"];
-            if (typeof Table === "undefined") {
-                View = this.getView().byId(event.getSource().data("mydata"));
-            } else {
-                View = this.getView().byId(Table);
-            }
-            if (View.getId().indexOf("sistema") > -1) {
-                for (i = 0; i < View.getRows().length; i++) {
-                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
-                        View.getRows()[i].getCells()[j].addStyleClass("textCT");
-                    }
-                }
-            } else {
-                for (i = 0; i < View.getRows().length; i++) {
-                    classCol = (View.getRows()[i].getCells()[1].getProperty("text").indexOf("CAPOTURNO") > -1) ? "textCT" : "textOP";
-                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
-                        for (k = 0; k < classes.length; k++) {
-                            View.getRows()[i].getCells()[j].removeStyleClass(classes[k]);
-                        }
-                        View.getRows()[i].getCells()[j].addStyleClass(classCol);
-                    }
-                }
-            }
-        },
+//        ColorTableText: function (event, Table) {
+//            var View, classCol, i, j, k;
+//            var classes = ["textCT", "textOP"];
+//            if (typeof Table === "undefined") {
+//                View = this.getView().byId(event.getSource().data("mydata"));
+//            } else {
+//                View = this.getView().byId(Table);
+//            }
+//            if (View.getId().indexOf("sistema") > -1) {
+//                for (i = 0; i < View.getRows().length; i++) {
+//                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
+//                        View.getRows()[i].getCells()[j].addStyleClass("textCT");
+//                    }
+//                }
+//            } else {
+//                for (i = 0; i < View.getRows().length; i++) {
+//                    classCol = (View.getRows()[i].getCells()[1].getProperty("text").indexOf("CAPOTURNO") > -1) ? "textCT" : "textOP";
+//                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
+//                        for (k = 0; k < classes.length; k++) {
+//                            View.getRows()[i].getCells()[j].removeStyleClass(classes[k]);
+//                        }
+//                        View.getRows()[i].getCells()[j].addStyleClass(classCol);
+//                    }
+//                }
+//            }
+//        },
         SUCCESSMessaggi: function (Jdata) {
             var temp, i;
             if (this.oDialog) {
@@ -461,11 +594,12 @@ sap.ui.define([
                     }
                     this.ModelMessaggi.setData(Jdata);
                     this.getView().setModel(this.ModelMessaggi, "messaggi");
+                    this.oDialog.setBusy(false);
                     if (this.STOPMSG === 0) {
                         this.RefreshMsgCounter = 0;
                     }
-                    this.ColorTableText(null, "sistemaTable");
-                    this.ColorTableText(null, "chatTable");
+//                    this.ColorTableText(null, "sistemaTable");
+//                    this.ColorTableText(null, "chatTable");
                 }
             }
         },
@@ -485,6 +619,7 @@ sap.ui.define([
         },
         DestroyDialogMsg: function () {
             clearInterval(this.SMTIMER);
+            this.ModelMessaggi.setData({});
             this.GlobalBusyDialog.close();
             this.STOPMSG = 1;
             this.oDialog.destroy();

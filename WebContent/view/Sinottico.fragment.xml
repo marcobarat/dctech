@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:wt="myapp.control"
+    xmlns:core="sap.ui.core"
+    controllerName="myapp.controller.Operatore">
+    <Dialog horizontalScrolling="true" contentHeight="900px" contentWidth="1400px" afterClose="DestroyDialogSin" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="sinottico">
+        <VBox height="100%" width="100%">
+            <VBox height="90%" width="100%" id="vboxSin">
+                <Image src="img/{ModelSinottico>/IMG}" width="100%" class="shiftImage"/>
+            </VBox>
+            <VBox height="10%" width="100%">
+                <HBox>
+                    <VBox height="100%" width="30%"/>
+                    <VBox height="100%" width="40%">
+                        <Button text="Chiudi" width="100%" class="annullaButton" press="DestroyDialogSin"/>
+                    </VBox>
+                    <VBox height="100%" width="30%"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

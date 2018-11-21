@@ -1,5 +1,6 @@
 <core:FragmentDefinition
     xmlns="sap.m"
+    xmlns:wt="myapp.control"
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     xmlns:t="sap.ui.table"
@@ -22,19 +23,18 @@
                                         class="alternate-color"
                                         selectionMode="None"
                                         rows="{messaggi>/sistema/}"
-                                        app:mydata="sistemaTable"
-                                        firstVisibleRowChanged="ColorTableText">
+                                        app:mydata="sistemaTable">
                                         <t:columns>
                                             <t:Column hAlign="Center" width="20%" resizable="false">
                                                 <Label text="Data"/>
                                                 <t:template>
-                                                    <Text text="{messaggi>datalog}"/>
+                                                    <wt:CustomTextMessages text="{messaggi>datalog}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="80%" resizable="false">
                                                 <Label text="Messaggio"/>
                                                 <t:template class="textCT">
-                                                    <Text text="{messaggi>messaggio}" maxLines="2"/>
+                                                    <wt:CustomTextMessages text="{messaggi>messaggio}" maxLines="2"/>
                                                 </t:template>
                                             </t:Column>
                                         </t:columns>
@@ -57,19 +57,18 @@
                                         class="alternate-color"
                                         selectionMode="None"
                                         app:mydata="chatTable"
-                                        firstVisibleRowChanged="ColorTableText"
                                         rows="{messaggi>/chat/}">
                                         <t:columns>
                                             <t:Column hAlign="Center" width="20%" resizable="false">
                                                 <Label text="Data"/>
                                                 <t:template>
-                                                    <Text text="{messaggi>datalog}"/>
+                                                    <wt:CustomTextMessages origine="{messaggi>origine}" text="{messaggi>datalog}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="80%" resizable="false">
                                                 <Label text="Messaggio"/>
                                                 <t:template>
-                                                    <Text textAlign="Begin" text="{messaggi>origine}: {messaggi>messaggio}" maxLines="2" class="{= ${messaggio>origine} === 'Capoturno' ? textCT : textOP}"/>
+                                                    <wt:CustomTextMessages textAlign="Begin" origine="{messaggi>origine}" text="{messaggi>origine}: {messaggi>messaggio}" maxLines="2"/>
                                                 </t:template>
                                             </t:Column>
                                         </t:columns>
