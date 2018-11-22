@@ -171,7 +171,7 @@
 
 .MarcatoreSX {
     position: absolute;
-    top: 4rem;
+    bottom: 26rem;
     left: 3rem;
 }
 .MarcatoreDX {
@@ -181,23 +181,23 @@
 }
 .PackItalSX {
     position: absolute;
-    top: 6rem;
-    left: 18rem;
+    bottom: 23rem;
+    left: 22rem;
 }
 .PackItalDX {
     position: absolute;
-    bottom: 1rem;
-    left: 18rem;
+    bottom: 2rem;
+    left: 22rem;
 }
 .Scatolatrice {
     position: absolute;
-    top: 4rem;
-    right: 30rem;
+    bottom: 26rem;
+    right: 37rem;
 }
 .Etichettatrice {
     position: absolute;
-    bottom: 4rem;
-    right: 7rem;
+    bottom: 5rem;
+    right: 10rem;
 }
 
 .buttonGood .sapMBtnInner {
@@ -216,6 +216,16 @@
     color: white;
     text-shadow: 0 0 0;
     background: #A71930;
+}
+.isAlarm {
+    background: rgba(167,25,48, 0.3);
+}
+.isWarning {
+    background: rgba(255,211,0, 0.3);
+}
+.sapUiTableColCell .sapUiLbl {
+    text-align: center !important;
+    color: #003A6B;
 }
 
 /*STILE BOTTONI SULLA MASTER PAGE*/

@@ -1,0 +1,56 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:wt="myapp.control" 
+    controllerName="myapp.controller.Operatore"
+    xmlns:t="sap.ui.table">
+    <Dialog contentWidth="70rem" contentHeight="50rem" horizontalScrolling="false" afterClose="DestroyDialog" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu"  id="allarmiMacchina">
+        <VBox height="100%" width="100%">
+            <VBox height="90%" width="100%">
+                <VBox height="100%" width="100%">
+                    <TabContainer id="allarmiContainer">
+                        <items>    
+                            <TabContainerItem name="Parametri" id="Parametri">
+                                <content>
+                                    <t:Table
+                                        class="tableHeaders"
+                                        enableColumnReordering="false"
+                                        selectionMode="None"
+                                        visibleRowCount="16"
+                                        rows="{parametri>/}"
+                                        id="parametriTable">
+                                        <t:columns>
+                                            <t:Column hAlign="Center" vAlign="Middle" width="50%">
+                                                <Label text="Parametro"/>
+                                                <t:template>
+                                                    <Text text="{parametri>parametro}" maxLines="1"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" vAlign="Middle" width="50%">
+                                                <Label text="Valore"/>
+                                                <t:template>
+                                                    <Text text="{parametri>valore}" maxLines="1"/>
+                                                </t:template>
+                                            </t:Column>
+                                        </t:columns>
+                                    </t:Table>
+                                </content>
+                            </TabContainerItem>                
+                        </items>
+                    </TabContainer>
+                </VBox>
+            </VBox>
+            <VBox height="10%" width="100%">
+                <HBox>
+                    <VBox height="100%" width="30%"/>
+                    <VBox height="100%" width="40%">
+                        <Button text="Chiudi" width="100%" class="annullaButton" press="CloseDialog"></Button>
+                    </VBox>
+                    <VBox height="100%" width="30%"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

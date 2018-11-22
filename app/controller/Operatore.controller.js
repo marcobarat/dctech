@@ -3,9 +3,11 @@ sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'myapp/control/CustomTreeTable',
+    'myapp/control/CustomButtonSin',
+    'myapp/control/CustomTextAlarms',
     'sap/m/MessageToast',
     'myapp/control/CustomSPCButton'
-], function (jQuery, Controller, JSONModel, CustomTreeTable, MessageToast, CustomSPCButton) {
+], function (jQuery, Controller, JSONModel, CustomTreeTable, CustomButtonSin, CustomTextAlarms, MessageToast, CustomSPCButton) {
     "use strict";
     var OperatoreController = Controller.extend("myapp.controller.Operatore", {
 
@@ -17,6 +19,8 @@ sap.ui.define([
         ModelDetailPages: new JSONModel({}),
         ModelSinottico: new JSONModel({}),
         ModelMessaggi: new JSONModel({}),
+        ModelAllarmi: new JSONModel({}),
+        ModelParametri: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
         CheckFermo: null,
@@ -35,7 +39,7 @@ sap.ui.define([
         SPCDialog: null,
         oDialog: null,
         SinDialog: null,
-        ParamDialog: null,
+        AlarmDialog: null,
         Fase: null,
         Allarme: null,
         SPCText: null,
@@ -59,6 +63,8 @@ sap.ui.define([
         StopPar: null,
         RefreshParCounter: null,
         linea_id: null,
+        macchina: null,
+        macchinaID: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -418,7 +424,7 @@ sap.ui.define([
             var that = this;
             this.SinTIMER = setInterval(function () {
                 try {
-                    that.RefreshMsgCounter++;
+                    that.RefreshSinCounter++;
                     if (that.STOPSin === 0 && that.RefreshSinCounter >= 10) {
                         that.RefreshSinFunction();
                     }
@@ -436,46 +442,27 @@ sap.ui.define([
                     for (i = 0; i < Jdata.Macchine.length; i++) {
                         Jdata.Macchine[i].class = Jdata.Macchine[i].nome.split(" ").join("");
                     }
-//                    if (!sap.ui.getCore().byId(Jdata.Macchine[0].nome.split(" ").join("") + "_" + this.linea_id)) {
-//                        vbox = this.getView().byId("vboxSin");
-//                        for (i = 0; i < Jdata.Macchine.length; i++) {
-//                            button = new sap.m.Button({
-//                                id: Jdata.Macchine[i].nome.split(" ").join("") + "_" + this.linea_id,
-//                                text: Jdata.Macchine[i].nome,
-//                                press: [this.ShowParameters, this]});
-//                            button.addStyleClass("buttonSinottico");
-//                            button.addStyleClass(Jdata.Macchine[i].class);
-//                            vbox.addItem(button);
-//                        }
-//                    }
+                    if (!sap.ui.getCore().byId(Jdata.Macchine[0].nome.split(" ").join("") + "_" + this.linea_id)) {
+                        vbox = this.getView().byId("vboxSin");
+                        for (i = 0; i < Jdata.Macchine.length; i++) {
+                            button = new CustomButtonSin({
+                                id: Jdata.Macchine[i].nome.split(" ").join("") + "_" + this.linea_id,
+                                text: Jdata.Macchine[i].nome,
+                                stato: Jdata.Macchine[i].stato,
+                                press: [this.ShowParameters, this]});
+                            button.addStyleClass("buttonSinottico");
+                            button.addStyleClass(Jdata.Macchine[i].class);
+                            vbox.addItem(button);
+                        }
+                    }
                     this.ModelSinottico.setData(Jdata);
                     this.getView().setModel(this.ModelSinottico, "ModelSinottico");
+                    sap.ui.getCore().setModel(this.ModelSinottico, "ModelSinottico");
 //                    this.UpdateButtons();
                     this.SinDialog.setBusy(false);
                     if (this.STOPSin === 0) {
                         this.RefreshSinCounter = 0;
                     }
-                }
-            }
-        },
-        UpdateButtons: function () {
-            var j, k, button;
-            var classes = ["buttonGood", "buttonWarning", "buttonError"];
-            for (j = 0; j < this.ModelSinottico.getData().Macchine.length; j++) {
-                button = sap.ui.getCore().byId(this.ModelSinottico.getData().Macchine[j].nome.split(" ").join("") + "_" + this.linea_id);
-                for (k = 0; k < classes.length; k++) {
-                    button.removeStyleClass(classes[k]);
-                }
-                switch (this.ModelSinottico.getData().Macchine[j].stato) {
-                    case "Good":
-                        button.addStyleClass("buttonGood");
-                        break;
-                    case "Warning":
-                        button.addStyleClass("buttonWarning");
-                        break;
-                    case "Error":
-                        button.addStyleClass("buttonError");
-                        break;
                 }
             }
         },
@@ -522,6 +509,206 @@ sap.ui.define([
             this.GlobalBusyDialog.close();
             this.STOPSin = 1;
             this.SinDialog.destroy();
+        },
+
+        ShowParameters: function (event) {
+            this.macchina = event.getSource().getProperty("text");
+            var stato;
+            for (var i = 0; i < this.ModelSinottico.getData().Macchine.length; i++) {
+                if (this.ModelSinottico.getData().Macchine[i].nome === this.macchina) {
+                    this.macchinaID = this.ModelSinottico.getData().Macchine[i].risorsaid;
+                    stato = this.ModelSinottico.getData().Macchine[i].stato;
+                }
+            }
+            if (stato !== "") {
+                clearInterval(this.AlarmTIMER);
+                this.AlarmSTOP = 0;
+                this.AlarmCounter = 10;
+                this.AlarmDialog = this.getView().byId("allarmiMacchina");
+                if (!this.AlarmDialog) {
+                    this.AlarmDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AllarmiMacchina", this);
+                    this.getView().addDependent(this.AlarmDialog);
+                }
+                this.AlarmDialog.open();
+                this.AlarmDataCaller();
+                var that = this;
+                this.AlarmTIMER = setInterval(function () {
+                    try {
+                        that.AlarmCounter++;
+                        if (that.AlarmSTOP === 0 && that.AlarmCounter >= 5) {
+                            that.AlarmRefresh();
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }, 1000);
+            } else {
+                MessageToast.show("La macchina è spenta o non raggiungibile", {width: "25em"});
+            }
+        },
+        AlarmRefresh: function (msec) {
+            this.AlarmCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.AlarmDataCaller.bind(this), msec);
+        },
+        AlarmDataCaller: function () {
+            var link;
+            if (this.AlarmDialog) {
+                if (this.AlarmDialog.isOpen()) {
+                    if (this.ISLOCAL !== 1) {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAlarmsFromMacchinaLineaID&Content-Type=text/json&MacchinaID=" + this.macchinaID + "&OutputParameter=JSON";
+                    }
+                    this.SyncAjaxCallerData(link, this.SUCCESSParametersReceived.bind(this), this.FAILUREParametersReceived.bind(this));
+                }
+            }
+        },
+        FAILUREParametersReceived: function () {
+            this.CloseDialog();
+            MessageToast.show("La macchina è spenta o non raggiungibile", {width: "25em"});
+        },
+        SUCCESSParametersReceived: function (Jdata) {
+            if (Jdata.error === "0") {
+                var parametri = [];
+                var allarmi = [];
+                var causale = Jdata.causaleAllarme;
+                var i;
+                for (i = 0; i < Jdata.parametri.length; i++) {
+                    if (Jdata.parametri[i].isAllarme === "0") {
+                        parametri.push(Jdata.parametri[i]);
+                    } else {
+                        Jdata.parametri[i].isActive = "";
+                        if (Jdata.parametri[i].valore === "1") {
+                            Jdata.parametri[i].isActive = "1";
+                        }
+                        allarmi.push(Jdata.parametri[i]);
+                    }
+                }
+                this.ModelAllarmi.setData({"causale": causale, "allarmi": allarmi});
+                this.ModelParametri.setData(parametri);
+                this.TabsIntelligence();
+                this.getView().setModel(this.ModelAllarmi, "allarmi");
+                this.getView().setModel(this.ModelParametri, "parametri");
+                if (this.AlarmSTOP === 0) {
+                    this.AlarmCounter = 0;
+                }
+                this.TabContainer = this.getView().byId("allarmiContainer");
+                this.RemoveClosingButtons(3);
+            } else {
+                this.AlarmDialog.setBusy(false);
+                this.CloseDialog();
+                MessageToast.show(Jdata.errorMessage, {width: "25em", duration: "3000"});
+            }
+        },
+        TabsIntelligence: function () {
+            var container = this.getView().byId("allarmiContainer");
+            var causale = this.ModelAllarmi.getData().causale;
+            var allarmi = this.ModelAllarmi.getData().allarmi;
+            if (allarmi.length > 0) {
+                if (!sap.ui.getCore().byId("allarmiTab")) {
+                    var Item = new sap.m.TabContainerItem({id: "allarmiTab"});
+                    Item.setName("Allarmi");
+                    var Table = new sap.ui.table.Table({
+                        id: "allarmiTable",
+                        rows: "{path:'allarmi>/allarmi'}",
+                        selectionMode: "None",
+                        enableColumnReordering: false,
+                        enableSelectAll: false,
+                        ariaLabelledBy: "title",
+                        visibleRowCount: 12,
+                        columns: [
+                            new sap.ui.table.Column({
+                                label: "Allarme",
+                                hAlign: "Center",
+                                vAlign: "Middle",
+                                resizable: false,
+                                template: new CustomTextAlarms({
+                                    text: "{allarmi>parametro}",
+                                    maxLines: 1,
+                                    isAlarm: "{allarmi>isAllarme}",
+                                    isBlock: "{allarmi>isBloccante}",
+                                    isActive: "{allarmi>isActive}"})}),
+                            new sap.ui.table.Column({
+                                label: "Valore",
+                                hAlign: "Center",
+                                vAlign: "Middle",
+                                resizable: false,
+                                template: new CustomTextAlarms({
+                                    text: "{allarmi>valore}",
+                                    maxLines: 1,
+                                    isAlarm: "{allarmi>isAllarme}",
+                                    isBlock: "{allarmi>isBloccante}",
+                                    isActive: "{allarmi>isActive}"})})
+                        ]
+                    });
+                    Item.addContent(Table);
+                    container.addItem(Item);
+                    container.setSelectedItem(Item);
+                }
+                if (this.macchina === "Scatolatrice") {
+                    if (!sap.ui.getCore().byId("scatoTab")) {
+                        var ItemScato = new sap.m.TabContainerItem({id: "scatoTab"});
+                        var name_linea = sap.ui.getCore().byId(this.getView().byId("schemaLineeContainer").getSelectedItem()).getName();
+                        ItemScato.setName("Sinottico");
+                        var flexy = (!sap.ui.getCore().byId("sinotticoFlex")) ? new sap.m.FlexBox({id: "sinotticoFlex", alignItems: "Start", justifyContent: "Center"}) : sap.ui.getCore().byId("sinotticoFlex");
+                        var img = (!sap.ui.getCore().byId("sinotticoScat")) ? new sap.m.Image({id: "sinotticoScat", height: "30rem"}) : sap.ui.getCore().byId("sinotticoScat");
+                        img.setSrc("img/" + name_linea.toLowerCase().split(" ").join("_") + "_scatolatrice.png");
+                        flexy.addItem(img);
+                        ItemScato.addContent(flexy);
+                        container.addItem(ItemScato);
+                        container.setSelectedItem(ItemScato);
+                    }
+                } else {
+                    if (sap.ui.getCore().byId("scatoTab")) {
+                        container.removeItem(sap.ui.getCore().byId("scatoTab"));
+                        sap.ui.getCore().byId("sinotticoScat").destroy();
+                        sap.ui.getCore().byId("sinotticoFlex").destroy();
+                        sap.ui.getCore().byId("scatoTab").destroy();
+                    }
+                }
+            } else {
+                if (sap.ui.getCore().byId("allarmiTab")) {
+                    container.removeItem(sap.ui.getCore().byId("allarmiTab"));
+                    sap.ui.getCore().byId("allarmiTable").destroy();
+                    sap.ui.getCore().byId("allarmiTab").destroy();
+                }
+                if (sap.ui.getCore().byId("scatoTab")) {
+                    container.removeItem(sap.ui.getCore().byId("scatoTab"));
+                    sap.ui.getCore().byId("sinotticoScat").destroy();
+                    sap.ui.getCore().byId("sinotticoFlex").destroy();
+                    sap.ui.getCore().byId("scatoTab").destroy();
+                }
+            }
+            var text;
+            if (causale !== "") {
+                if (!sap.ui.getCore().byId("textCausale")) {
+                    text = new sap.m.Text({
+                        id: "textCausale",
+                        text: "Causale Allarme: {allarmi>/causale}",
+                        maxLines: 1
+                    });
+                } else {
+                    text = sap.ui.getCore().byId("textCausale");
+                }
+                text.addStyleClass("causale");
+                if (sap.ui.getCore().byId("allarmiTab")) {
+                    sap.ui.getCore().byId("allarmiTab").addContent(text);
+                }
+            } else {
+                text = sap.ui.getCore().byId("textCausale");
+                if (text) {
+                    sap.ui.getCore().byId("allarmiTab").removeContent(text);
+                }
+            }
+        },
+        //  FUNZIONI DI REFRESH
+        CloseDialog: function () {
+            this.AlarmSTOP = 1;
+            clearInterval(this.Timer);
+            this.AlarmDialog.setBusy(false);
+            this.AlarmDialog.close();
+            this.getView().setModel(new JSONModel(), "allarmi");
         },
 
 //        -------------------------  MESSAGGISTICA  -------------------------
@@ -2468,8 +2655,10 @@ sap.ui.define([
             var oTabStrip = this.TabContainer.getAggregation("_tabStrip");
             var oItems = oTabStrip.getItems();
             for (var i = 0; i < n_tabs; i++) {
-                var oCloseButton = oItems[i].getAggregation("_closeButton");
-                oCloseButton.setVisible(false);
+                if (oItems[i]) {
+                    var oCloseButton = oItems[i].getAggregation("_closeButton");
+                    oCloseButton.setVisible(false);
+                }
             }
             this.TabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
         },
