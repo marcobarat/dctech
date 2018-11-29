@@ -223,9 +223,33 @@
 .isWarning {
     background: rgba(255,211,0, 0.3);
 }
-.sapUiTableColCell .sapUiLbl {
+.labelTable .sapUiTableColCell .sapUiLbl {
     text-align: center !important;
     color: #003A6B;
+    font-size: 20pt !important;
+    line-height: 22pt;
+}
+.labelTable .sapMLabel {
+    text-align: center !important;
+    color: #003A6B;
+    font-size: 20pt !important;
+    line-height: 22pt;
+}
+.labelTable .sapUiTableColCell, .sapUiTableColRowHdrIco {
+    text-align: center !important;
+    color: #003A6B;
+    font-size: 20pt !important;
+}
+.fontTable .sapMText {
+    font-size: 20pt;
+}
+.causale {
+    position: absolute;
+    bottom: -4rem;
+    left: 2rem;
+    font-family: Arial;
+    font-size: 20pt;
+    color: #A71930;
 }
 
 /*STILE BOTTONI SULLA MASTER PAGE*/
@@ -343,11 +367,31 @@
 }
 .textTopReduced1 {
     font-size: 48pt;
+    padding-top: 0.7rem;
     color : #003A6B;
     font-family: Arial;
 }
 .textTopReduced2 {
     font-size: 40pt;
+    padding-top: 1rem;
+    color : #003A6B;
+    font-family: Arial;
+}
+.textTopReduced2a {
+    font-size: 36pt;
+    padding-top: 1rem;
+    color : #003A6B;
+    font-family: Arial;
+}
+.textTopReduced3 {
+    font-size: 30pt;
+    padding-top: 1.5rem;
+    color : #003A6B;
+    font-family: Arial;
+}
+.textTopReduced4 {
+    font-size: 22pt;
+    padding-top: 2rem;
     color : #003A6B;
     font-family: Arial;
 }

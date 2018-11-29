@@ -22,7 +22,7 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="HomeDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione0" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -45,7 +45,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo0"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -68,14 +68,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="PresaInCaricoDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione1" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -146,7 +146,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo1"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -169,14 +169,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="PredisposizioneLineaDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione2" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -209,7 +209,7 @@
                                                         enableSelectAll="false"
                                                         enableColumnReordering="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="11"
+                                                        visibleRowCount="10"
                                                         rowHeight="50px"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiPredisposizione">
@@ -259,7 +259,7 @@
                                                                     enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="20"
+                                                                    visibleRowCount="19"
                                                                     app:mydata="TreeTable_ConfermaSetupOld,TreeTable_ConfermaSetupNew"
                                                                     cellClick="LinkClick"
                                                                     toggleOpenState="COUPLEDTreeTableIconPress">
@@ -298,7 +298,7 @@
                                                                     enableSelectAll="false"
                                                                     enableColumnReordering="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="20"
+                                                                    visibleRowCount="19"
                                                                     app:mydata="TreeTable_ConfermaSetupNew,TreeTable_ConfermaSetupOld"
                                                                     cellClick="LinkClick"
                                                                     toggleOpenState="COUPLEDTreeTableIconPress">
@@ -344,7 +344,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo2"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -369,14 +369,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="InProgressDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione3" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -590,7 +590,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo3"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -612,14 +612,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="ModificaCondizioniDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione4" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -652,7 +652,7 @@
                                                         enableColumnReordering="false"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="11"
+                                                        visibleRowCount="10"
                                                         rowHeight="50px"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiModifica">
@@ -697,7 +697,7 @@
                                                         selectionMode="None"
                                                         ariaLabelledBy="title"
                                                         enableColumnReordering="false"
-                                                        visibleRowCount="10"
+                                                        visibleRowCount="9"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_ModificaCondizioni">
                                                         <wt:toolbar>
@@ -768,7 +768,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo4"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -790,14 +790,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="FermoDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione5" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -825,7 +825,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo5"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -847,14 +847,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="CausalizzazioneDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione6" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -941,7 +941,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo6"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -963,14 +963,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="FaultDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione7" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -1185,7 +1185,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo7"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -1207,14 +1207,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="RipristinoCondizioniDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione8" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -1241,7 +1241,7 @@
                                         enableSelectAll="false"
                                         enableColumnReordering="false"
                                         ariaLabelledBy="title"
-                                        visibleRowCount="11"
+                                        visibleRowCount="10"
                                         cellClick="TreeTableRowClickExpander"
                                         app:mydata="TreeTable_RipristinoCondizioni">
                                         <wt:toolbar>
@@ -1308,7 +1308,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo8"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -1330,14 +1330,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="ChiusuraConfezionamentoDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione9" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -1402,7 +1402,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo9"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -1427,14 +1427,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="BatchAttrezzaggioDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione10" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -1505,7 +1505,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo10"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -1529,14 +1529,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="PredisposizioneLineaAttrezzaggioDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione11" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                         
                                     </FlexBox>
                                 </VBox>
@@ -1702,7 +1702,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo11"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">
@@ -1724,14 +1724,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>
+                                        <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="ConfermaAttrezzaggioDescrizione" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <Text id="descrizione12" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1763,7 +1763,7 @@
                                     <VBox height="100%" width="15%"/>
                                     <VBox height="100%" width="70%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop"/>
+                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo12"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="15%">

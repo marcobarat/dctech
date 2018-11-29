@@ -154,19 +154,22 @@ sap.ui.define([
             var model = this.ModelDetailPages.getData();
             var data = model.Linea;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
-            this.SetSizeDestinazione(data.Batch.Destinazione);
+            this.SetSizeDest(data.Batch.Destinazione);
+            this.SetSizeDesc(data.Batch.Descrizione);
             model.Intestazione.StatoLinea = this.SetLinea(data.StatoLinea);
+//            model.Intestazione.StatoLinea = "FERMO - MANCATO AVVIO ";
+            this.SetSizeFermo(model.Intestazione.StatoLinea);
             this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
             if (typeof data.SKUattuale.attributi !== "undefined") {
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
                 data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
                 this.exp = 0;
                 data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
-                if (this.exp === 1) {
-                    this.AddColorDescrizione("red");
-                } else {
-                    this.AddColorDescrizione("");
-                }
+//                if (this.exp === 1) {
+//                    this.AddColorDescrizione("red");
+//                } else {
+//                    this.AddColorDescrizione("");
+//                }
                 var SKU = {"SKUattuale": data.SKUattuale, "SKUstandard": data.SKUstandard};
                 this.ModelDetailPages.setProperty("/SKU/", SKU);
             }
@@ -311,12 +314,21 @@ sap.ui.define([
             this.AddSpaces(Jdata);
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             var data = this.ModelDetailPages.getData().Linea;
+            var fermoClean;
             if (this.State !== "Disponibile.Fermo") {
                 sap.ui.getCore().byId("ButtonFermo").setText("Modifica causale fermo");
                 if (data.CausaleEvento === "---") {
                     this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO AUTOMATICO");
                 } else {
-                    this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + data.CausaleEvento);
+                    if (isNaN(data.CausaleEvento.slice(1, 4)) === false) {
+                        fermoClean = data.CausaleEvento.split("-");
+                        fermoClean.shift();
+                        fermoClean[0] = fermoClean[0].slice(1);
+                        fermoClean.join("");
+                        this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + fermoClean);
+                    } else {
+                        this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + data.CausaleEvento);
+                    }
                 }
                 this.SwitchColor("red");
                 this.getSplitAppObj().toDetail(this.createId("Fault"));
@@ -447,8 +459,8 @@ sap.ui.define([
                         for (i = 0; i < Jdata.Macchine.length; i++) {
                             button = new CustomButtonSin({
                                 id: Jdata.Macchine[i].nome.split(" ").join("") + "_" + this.linea_id,
-                                text: Jdata.Macchine[i].nome,
-                                stato: Jdata.Macchine[i].stato,
+                                text: "{ModelSinottico>/Macchine/" + i + "/nome}",
+                                stato: "{ModelSinottico>/Macchine/" + i + "/stato}",
                                 press: [this.ShowParameters, this]});
                             button.addStyleClass("buttonSinottico");
                             button.addStyleClass(Jdata.Macchine[i].class);
@@ -575,6 +587,7 @@ sap.ui.define([
                 var causale = Jdata.causaleAllarme;
                 var i;
                 for (i = 0; i < Jdata.parametri.length; i++) {
+//                    Jdata.parametri[i].valore = this.GestioneMigliaia(Jdata.parametri[i].valore);
                     if (Jdata.parametri[i].isAllarme === "0") {
                         parametri.push(Jdata.parametri[i]);
                     } else {
@@ -585,6 +598,7 @@ sap.ui.define([
                         allarmi.push(Jdata.parametri[i]);
                     }
                 }
+                allarmi.sort(this.CompareSort);
                 this.ModelAllarmi.setData({"causale": causale, "allarmi": allarmi});
                 this.ModelParametri.setData(parametri);
                 this.TabsIntelligence();
@@ -601,6 +615,16 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {width: "25em", duration: "3000"});
             }
         },
+        CompareSort: function (a, b) {
+            if (a.valore > b.valore)
+                return -1;
+            if (a.valore < b.valore)
+                return 1;
+            return 0;
+        },
+        GestioneMigliaia: function (val) {
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+        },
         TabsIntelligence: function () {
             var container = this.getView().byId("allarmiContainer");
             var causale = this.ModelAllarmi.getData().causale;
@@ -616,32 +640,38 @@ sap.ui.define([
                         enableColumnReordering: false,
                         enableSelectAll: false,
                         ariaLabelledBy: "title",
-                        visibleRowCount: 12,
+                        visibleRowCount: 22,
                         columns: [
                             new sap.ui.table.Column({
                                 label: "Allarme",
-                                hAlign: "Center",
+                                hAlign: "Left",
+                                width: "70%",
                                 vAlign: "Middle",
                                 resizable: false,
                                 template: new CustomTextAlarms({
                                     text: "{allarmi>parametro}",
+                                    tooltip: "{allarmi>parametro}",
                                     maxLines: 1,
                                     isAlarm: "{allarmi>isAllarme}",
                                     isBlock: "{allarmi>isBloccante}",
                                     isActive: "{allarmi>isActive}"})}),
                             new sap.ui.table.Column({
                                 label: "Valore",
+                                width: "30%",
                                 hAlign: "Center",
                                 vAlign: "Middle",
                                 resizable: false,
                                 template: new CustomTextAlarms({
                                     text: "{allarmi>valore}",
+                                    tooltip: "{allarmi>valore}",
                                     maxLines: 1,
                                     isAlarm: "{allarmi>isAllarme}",
                                     isBlock: "{allarmi>isBloccante}",
                                     isActive: "{allarmi>isActive}"})})
                         ]
                     });
+                    Table.addStyleClass("fontTable");
+                    Table.addStyleClass("labelTable");
                     Item.addContent(Table);
                     container.addItem(Item);
                     container.setSelectedItem(Item);
@@ -649,10 +679,10 @@ sap.ui.define([
                 if (this.macchina === "Scatolatrice") {
                     if (!sap.ui.getCore().byId("scatoTab")) {
                         var ItemScato = new sap.m.TabContainerItem({id: "scatoTab"});
-                        var name_linea = sap.ui.getCore().byId(this.getView().byId("schemaLineeContainer").getSelectedItem()).getName();
+                        var name_linea = this.ModelDetailPages.getData().DettaglioLinea.Linea;
                         ItemScato.setName("Sinottico");
-                        var flexy = (!sap.ui.getCore().byId("sinotticoFlex")) ? new sap.m.FlexBox({id: "sinotticoFlex", alignItems: "Start", justifyContent: "Center"}) : sap.ui.getCore().byId("sinotticoFlex");
-                        var img = (!sap.ui.getCore().byId("sinotticoScat")) ? new sap.m.Image({id: "sinotticoScat", height: "30rem"}) : sap.ui.getCore().byId("sinotticoScat");
+                        var flexy = (!sap.ui.getCore().byId("sinotticoFlex")) ? new sap.m.FlexBox({id: "sinotticoFlex", alignItems: "Start", justifyContent: "Center", height: "60rem"}) : sap.ui.getCore().byId("sinotticoFlex");
+                        var img = (!sap.ui.getCore().byId("sinotticoScat")) ? new sap.m.Image({id: "sinotticoScat", height: "55rem"}) : sap.ui.getCore().byId("sinotticoScat");
                         img.setSrc("img/" + name_linea.toLowerCase().split(" ").join("_") + "_scatolatrice.png");
                         flexy.addItem(img);
                         ItemScato.addContent(flexy);
@@ -984,7 +1014,7 @@ sap.ui.define([
                 enableColumnReordering: false,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
-                visibleRowCount: 10,
+                visibleRowCount: 9,
                 cellClick: [TT, this.TreeTableRowClickExpander, this],
                 toolbar: [
                     new sap.m.Toolbar({
@@ -2210,8 +2240,8 @@ sap.ui.define([
                 }
             }
         },
-        SetSizeDestinazione: function (string) {
-            var textDestinazione;
+        SetSizeDest: function (string) {
+            var text;
             var size = 0;
             var specials = [" ", ".", ",", "'", ":", ";", "-", "(", ")"];
             for (var i in string) {
@@ -2222,24 +2252,79 @@ sap.ui.define([
                 }
             }
             for (var j = 0; j < 13; j++) {
-                textDestinazione = this.getView().byId("destinazione" + String(j));
+                text = this.getView().byId("destinazione" + String(j));
                 if (size < 34) {
-                    textDestinazione.removeStyleClass("textTopReduced1");
-                    textDestinazione.removeStyleClass("textTopReduced2");
-                    textDestinazione.addStyleClass("textTop");
+                    text.removeStyleClass("textTopReduced1");
+                    text.removeStyleClass("textTopReduced2");
+                    text.addStyleClass("textTop");
                 } else if (size >= 34 && size < 42) {
-                    textDestinazione.removeStyleClass("textTop");
-                    textDestinazione.removeStyleClass("textTopReduced2");
-                    textDestinazione.addStyleClass("textTopReduced1");
+                    text.removeStyleClass("textTop");
+                    text.removeStyleClass("textTopReduced2");
+                    text.addStyleClass("textTopReduced1");
                 } else {
-                    textDestinazione.removeStyleClass("textTop");
-                    textDestinazione.removeStyleClass("textTopReduced1");
-                    textDestinazione.addStyleClass("textTopReduced2");
+                    text.removeStyleClass("textTop");
+                    text.removeStyleClass("textTopReduced1");
+                    text.addStyleClass("textTopReduced2");
+                }
+            }
+        },
+        SetSizeDesc: function (string) {
+            var text;
+            var size = 0;
+            var specials = [" ", ".", ",", "'", ":", ";", "-", "(", ")"];
+            for (var i in string) {
+                if (specials.indexOf(string[i]) > -1) {
+                    size += 0.5;
+                } else {
+                    size += 1;
+                }
+            }
+            for (var j = 0; j < 13; j++) {
+                text = this.getView().byId("descrizione" + String(j));
+                if (size < 40) {
+                    text.removeStyleClass("textTopReduced1");
+                    text.addStyleClass("textTop");
+                } else {
+                    text.removeStyleClass("textTop");
+                    text.addStyleClass("textTopReduced1");
+                }
+            }
+        },
+        SetSizeFermo: function (string) {
+            var text;
+            var size = 0;
+            var specials = [" ", ".", ",", "'", ":", ";", "-", "(", ")"];
+            for (var i in string) {
+                if (specials.indexOf(string[i]) > -1) {
+                    size += 0.5;
+                } else {
+                    size += 1;
+                }
+            }
+            for (var j = 0; j < 13; j++) {
+                text = this.getView().byId("fermo" + String(j));
+                var classes = ["textTop", "textTopReduced1", "textTopReduced4", "textTopReduced3", "textTopReduced2", "textTopReduced2a"];
+                for (var k = 0; k < classes.length; k++) {
+                    text.removeStyleClass(classes[k]);
+                }
+                if (size < 22) {
+                    text.addStyleClass("textTop");
+                } else if (size >= 22 && size < 28) {
+                    text.addStyleClass("textTopReduced1");
+                } else if (size >= 28 && size < 34) {
+                    text.addStyleClass("textTopReduced2");
+                } else if (size >= 34 && size < 38) {
+                    text.addStyleClass("textTopReduced2a");
+                } else if (size >= 38 && size < 48) {
+                    text.addStyleClass("textTopReduced3");
+                } else {
+                    text.addStyleClass("textTopReduced4");
                 }
             }
         },
         SetLinea: function (state) {
             var data = this.ModelDetailPages.getData().Linea;
+            var fermoClean;
             switch (state) {
                 case "Disponibile.Vuota":
                     return "VUOTA";
@@ -2255,7 +2340,15 @@ sap.ui.define([
                     if (data.CausaleEvento === "---") {
                         return "FERMO AUTOMATICO";
                     } else {
-                        return "FERMO - " + data.CausaleEvento;
+                        if (isNaN(data.CausaleEvento.slice(1, 4)) === false) {
+                            fermoClean = data.CausaleEvento.split("-");
+                            fermoClean.shift();
+                            fermoClean[0] = fermoClean[0].slice(1);
+                            fermoClean.join("");
+                            return "FERMO - " + fermoClean;
+                        } else {
+                            return "FERMO - " + data.CausaleEvento;
+                        }
                     }
                     break;
                 case "Disponibile.Svuotamento":
@@ -3434,7 +3527,8 @@ sap.ui.define([
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": model.DettaglioLinea.Descrizione, "destinazione": model.DettaglioLinea.Destinazione};
 //            var descr = data.SKUattuale.attributi[2].attributi[2].value + " " + data.SKUattuale.attributi[2].attributi[3].value + " " + data.SKUattuale.attributi[3].attributi[0].value;
 //            model.Intestazione.descrizione = descr;
-            this.SetSizeDestinazione(model.DettaglioLinea.Destinazione);
+            this.SetSizeStrings(model.DettaglioLinea.Destinazione, "destinazione");
+            this.SetSizeStrings(model.DettaglioLinea.Descrizione, "descrizione");
             data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
             data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
             this.exp = 0;
