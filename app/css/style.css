@@ -245,10 +245,10 @@
 }
 .causale {
     position: absolute;
-    bottom: -4rem;
-    left: 2rem;
+    bottom: -8rem;
+    left: 4rem;
     font-family: Arial;
-    font-size: 20pt;
+    font-size: 22pt !important;
     color: #A71930;
 }
 
@@ -563,10 +563,12 @@ textButtonsDialog .sapMBtnContent {
     /*height: 3.5rem;*/ 
 }
 .SPCButtonColorGreen .sapMBtnInner {
-    background: #7CA295; 
+    background: #7CA295;
+    height: 300%;
 }
 .SPCButtonColorYellow .sapMBtnInner {
     background: #FFD300;
+    height: 300%;
 }
 .DualSPCButtonTextPadding .sapMBtnInner {
     background: #FFD300;
@@ -594,6 +596,10 @@ textButtonsDialog .sapMBtnContent {
     width: 70%;
     left: 18%;
     top: 5%;
+}
+.SPCButtonEmpty .sapMBtnInner {
+    background: white;
+    height: 300%;
 }
 .borderBlue .sapMBtnInner {
     border: solid 1px;

@@ -82,7 +82,7 @@
                                         <VBox width="5%"/>
                                         <VBox width="65%">
                                             <Label text="Scrivi al Capoturno (max 100 caratteri)" class="blueLabel"/>
-                                            <Input submit="SendMessage" id="inputMessage" enableSuggestionsHighlighting="false" maxLength="100"/>
+                                            <Input submit="SendMessage" id="inputMessage" liveChange="MSGChanged" enableSuggestionsHighlighting="false" maxLength="100"/>
                                         </VBox>
                                         <VBox width="5%"/>
                                         <VBox width="20%">

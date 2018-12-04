@@ -13,6 +13,7 @@ sap.ui.define([
         RefreshCounter: null,
         Reparto: 1,
         Stabilimento: 1,
+        GlobalBusyDialog: new sap.m.BusyDialog(),
 
         onInit: function () {
 
@@ -66,6 +67,7 @@ sap.ui.define([
             this.getView().setModel(this.JSONLinee, "linee");
         },
         GoToOperatore: function (event) {
+            this.GlobalBusyDialog.open();
             clearInterval(this.TIMER);
             this.STOP = 1;
             var path = event.getSource().getBindingContext("linee").sPath;
