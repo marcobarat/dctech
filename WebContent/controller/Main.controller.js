@@ -81,6 +81,7 @@ sap.ui.define([
             this.Global.setProperty("/", {"Linea": line_num, "idLinea": chooser});
             sap.ui.getCore().setModel(this.Global, "Global");
             this.getOwnerComponent().getRouter().navTo("Operatore");
+            this.GlobalBusyDialog.close();
         },
         SyncAjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
             jQuery.ajax({
