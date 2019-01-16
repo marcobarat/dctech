@@ -37,6 +37,7 @@ sap.ui.define([
         LOCALState: null,
         ClosingDialog: null,
         SPCDialog: null,
+        NotifierDialog: null,
         oDialog: null,
         SinDialog: null,
         AlarmDialog: null,
@@ -100,7 +101,7 @@ sap.ui.define([
                 this.ModelDetailPages.setProperty("/DettaglioLinea/", sap.ui.getCore().getModel("Global").getData());
                 this.RefreshFunction(0);
             }
-
+//        Gestione dell'orologio
             var clockL2 = this.getView().byId("clockL2");
             var time = this.GetOra();
             clockL2.setText(time);
@@ -124,7 +125,7 @@ sap.ui.define([
 //        ------------------------- FUNZIONE CICLICA CHE CONTROLLA LO STATO -------------------------
 //        -------------------------------------------------------------------------------------------
 
-
+//      Le prime tre funzioni gestiscono il refresh generale dell'operatore
         RefreshFunction: function (msec) {
             this.Counter = 0;
             if (typeof msec === "undefined") {
@@ -135,6 +136,8 @@ sap.ui.define([
         RefreshCall: function () {
             var link;
             var data = this.ModelDetailPages.getData();
+//          La TRX completa 'StatusLinea' viene chiamata solo nella prima volta e quando la linea è vuota o in Attesa Presa In Carico;
+//          Negli altri casi viene chiamata 'StatusLineaFast' che non aggiorna l'SKU
             if (typeof data.Linea === "undefined") {
                 this.State = "";
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/StatusLinea&Content-Type=text/json&LineaID=" + data.DettaglioLinea.idLinea + "&OutputParameter=JSON";
@@ -151,7 +154,6 @@ sap.ui.define([
         CheckStatus: function (Jdata) {
             this.ModelDetailPages.setProperty("/Linea/", Jdata);
             var link, key;
-//            this.NewMessage();
             var model = this.ModelDetailPages.getData();
             var data = model.Linea;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
@@ -168,7 +170,7 @@ sap.ui.define([
                 var SKU = {"SKUattuale": data.SKUattuale, "SKUstandard": data.SKUstandard};
                 this.ModelDetailPages.setProperty("/SKU/", SKU);
             }
-
+//          Gestione dei possibili stati della linea
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
 
                 if (data.Batch.IsAttrezzaggio === "0") {
@@ -277,15 +279,16 @@ sap.ui.define([
             this.State = this.ModelDetailPages.getData().Linea.StatoLinea;
             this.Counter = 0;
         },
+//      Nel caso di 'Lavorazione', 'Fermo' e 'Chiusura' vengono chiamate altre TRX per ricevere i dati necessari. Qui abbiamo le funzioni di SUCCESS
         SUCCESSLavorazioneOEE: function (Jdata) {
             if (Jdata.OEE.avanzamento >= 100) {
                 Jdata.OEE.avanzamento = 100;
             }
             Jdata.SPC = Jdata.SPC.reverse();
-//            Jdata.SPC.shift();
             this.AddSpaces(Jdata.OEE);
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata.OEE);
             this.ModelDetailPages.setProperty("/DatiSPC/", Jdata.SPC);
+//          Se lo stato precedente non era 'Lavorazione'  
             if (this.State !== "Disponibile.Lavorazione") {
                 sap.ui.getCore().byId("ButtonFermo").setText("Fermo");
                 this.getSplitAppObj().toDetail(this.createId("InProgress"));
@@ -309,6 +312,7 @@ sap.ui.define([
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata);
             var data = this.ModelDetailPages.getData().Linea;
             var fermoClean;
+//          Se lo stato precedente non era 'Fermo'  
             if (this.State !== "Disponibile.Fermo") {
                 sap.ui.getCore().byId("ButtonFermo").setText("Modifica causale fermo");
                 if (data.CausaleEvento === "---") {
@@ -343,30 +347,12 @@ sap.ui.define([
                 that.ExpandAll(null, "TreeTable_Chiusura");
             }, 100);
         },
-        NewMessage: function () {
-            var classes = ["messageButton", "newMessageButton"];
-            var data = this.ModelDetailPages.getData().Linea;
-            var i, j, button;
-            for (i = 1; i < 14; i++) {
-                if (typeof this.getView().byId("msgButton" + String(i)) !== "undefined") {
-                    button = this.getView().byId("msgButton" + String(i));
-                }
-                for (j = 0; j < classes.length; j++) {
-                    button.removeStyleClass(classes[j]);
-                }
-                if (Number(data.msg) > 0) {
-                    button.addStyleClass("newMessageButton");
-                } else {
-                    button.addStyleClass("messageButton");
-                }
-            }
-        },
 //        ---------------------------------------------------------------------
 //        -------------------------  FUNZIONI CALLER  -------------------------
 //        ---------------------------------------------------------------------
 
 
-//        FUNZIONE CHE CHIAMA IL BACKEND PER SCRIVERE NEI LOGS
+//        FUNZIONE CHE FA UNA CHIAMATA ASINCRONA AL BACKEND SENZA RITORNO DI DATI
         AjaxCallerVoid: function (address, Func) {
             var req = jQuery.ajax({
                 url: address,
@@ -374,7 +360,7 @@ sap.ui.define([
             });
             req.always(Func);
         },
-//        DI SEGUITO LE 2 FUNZIONI CHE CARICANO I MODELLI CON I JSON FILES
+//        FUNZIONE CHE FA UNA CHIAMATA ASINCRONA AL BACKEND CON RITORNO DI DATI
         AjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
             jQuery.ajax({
                 url: addressOfJSON,
@@ -385,6 +371,7 @@ sap.ui.define([
                 error: errorFunc
             });
         },
+//        FUNZIONE CHE FA UNA CHIAMATA SINCRONA AL BACKEND SENZA RITORNO DI DATI
         SyncAjaxCallerVoid: function (address, Func) {
             var req = jQuery.ajax({
                 url: address,
@@ -392,6 +379,7 @@ sap.ui.define([
             });
             req.always(Func);
         },
+//        FUNZIONE CHE FA UNA CHIAMATA SINCRONA AL BACKEND CON RITORNO DI DATI
         SyncAjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
             jQuery.ajax({
                 url: addressOfJSON,
@@ -409,13 +397,32 @@ sap.ui.define([
 //            }
 //            successFunc(Jdata);
 //        },
+
+
 //        ---------------------------------------------------------------------
-//        ---------------------------  DETAIL PAGES  --------------------------
+//        --------------------  FUNZIONALITA' TRASVERSALI  --------------------
 //        ---------------------------------------------------------------------
+
+//        ---------------------------  NOTIFICATORE  ---------------------------
+
+//      Queste due funzioni gestiscono l'apertura e la chiusura di una popup che notifica l'operatore
+        OpenNotifier: function (msg) {
+            this.NotifierDialog = this.getView().byId("Notifier");
+            if (!this.NotifierDialog) {
+                this.NotifierDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.Notifier", this);
+                this.getView().addDependent(this.NotifierDialog);
+            }
+            this.getView().byId("Notify").setText(msg);
+            this.NotifierDialog.open();
+        },
+        CloseNotifier: function () {
+            this.NotifierDialog.close();
+        },
 
 //        ---------------------------  SINOTTICO  ---------------------------
 
-        OpenSinottico: function (event) {
+//      Nel seguito la gestione del sinottico per l'operatore
+        OpenSinottico: function () {
             clearInterval(this.SinTIMER);
             this.linea_id = this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.STOPSin = 0;
@@ -428,17 +435,32 @@ sap.ui.define([
             this.SinDialog.setBusy(true);
             this.RefreshSinCounter = 10;
             var that = this;
+//          Timer che regola il refresh del sinottico
             this.SinTIMER = setInterval(function () {
                 try {
                     that.RefreshSinCounter++;
                     if (that.STOPSin === 0 && that.RefreshSinCounter >= 10) {
                         that.RefreshSinFunction();
-//                        that.GlobalBusyDialog.open();
                     }
                 } catch (e) {
                     console.log(e);
                 }
             }, 1000);
+        },
+//        Funzioni di refresh
+        RefreshSinFunction: function (msec) {
+            this.RefreshMsgCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.RefreshSinCall.bind(this), msec);
+        },
+        RefreshSinCall: function () {
+            var link;
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoByLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&OutputParameter=JSON";
+            }
+            this.AjaxCallerData(link, this.SUCCESSSinottico.bind(this));
         },
         SUCCESSSinottico: function (Jdata) {
             this.SinDialog.setBusy(false);
@@ -473,43 +495,7 @@ sap.ui.define([
                 }
             }
         },
-        SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
-            for (var i = 0; i < data_linea.Macchine.length; i++) {
-                for (var j = 0; j < names.length; j++) {
-                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
-                        switch (names[j]) {
-                            case "marcatore":
-                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
-                                break;
-                            case "controllo peso":
-                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
-                                break;
-                            case "etichettatrice":
-                                data_linea.Macchine[i].nome = "Etichettatrice";
-                                break;
-                            case "scatolatrice":
-                                data_linea.Macchine[i].nome = "Scatolatrice";
-                                break;
-                        }
-                    }
-                }
-            }
-        },
-        RefreshSinFunction: function (msec) {
-            this.RefreshMsgCounter = 0;
-            if (typeof msec === "undefined") {
-                msec = 0;
-            }
-            setTimeout(this.RefreshSinCall.bind(this), msec);
-        },
-        RefreshSinCall: function () {
-            var link;
-            if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoByLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&OutputParameter=JSON";
-            }
-            this.AjaxCallerData(link, this.SUCCESSSinottico.bind(this));
-        },
+//        Chiusura della popup di sinottico
         DestroyDialogSin: function () {
             clearInterval(this.SinTIMER);
             this.ModelSinottico.setData({});
@@ -518,6 +504,7 @@ sap.ui.define([
             this.SinDialog.destroy();
         },
 
+//      Gestione della popup dei parametri/allarmi
         ShowParameters: function (event) {
             this.GlobalBusyDialog.open();
             this.macchina = event.getSource().getProperty("text");
@@ -542,19 +529,19 @@ sap.ui.define([
                 this.AlarmDialog.setBusy(true);
                 this.AlarmDataCaller();
                 var that = this;
+//                Timer che regola il refresh dei parametri di macchina
                 this.AlarmTIMER = setInterval(function () {
                     try {
                         that.AlarmCounter++;
                         if (that.AlarmSTOP === 0 && that.AlarmCounter >= 10) {
                             that.AlarmRefresh();
-//                            that.GlobalBusyDialog.open();
                         }
                     } catch (e) {
                         console.log(e);
                     }
                 }, 1000);
             } else {
-                MessageToast.show("La macchina è spenta o non raggiungibile", {width: "25em"});
+                MessageToast.show("La macchina è spenta o non raggiungibile", {duration: 3000});
             }
         },
         AlarmRefresh: function (msec) {
@@ -577,7 +564,7 @@ sap.ui.define([
         },
         FAILUREParametersReceived: function () {
             this.CloseDialog();
-            MessageToast.show("La macchina è spenta o non raggiungibile", {width: "25em"});
+            MessageToast.show("La macchina è spenta o non raggiungibile", {duration: 3000});
         },
         SUCCESSParametersReceived: function (Jdata) {
             this.AlarmDialog.setBusy(false);
@@ -613,113 +600,11 @@ sap.ui.define([
             } else {
                 this.AlarmDialog.setBusy(false);
                 this.CloseDialog();
-                MessageToast.show(Jdata.errorMessage, {width: "25em", duration: "3000"});
+                MessageToast.show(Jdata.errorMessage, {duration: "3000"});
             }
         },
-        SortAlarms: function (arr) {
-            var res = [];
-            var i;
-            for (i = 0;i < arr.length; i++) {
-                if (arr[i].valore === "1" && arr[i].isBloccante === "1") {
-                    res.push(arr[i]);
-                }
-            }
-            for (i = 0;i < arr.length; i++) {
-                if (arr[i].valore === "1" && arr[i].isBloccante === "0") {
-                    res.push(arr[i]);
-                }
-            }
-            for (i = 0;i < arr.length; i++) {
-                if (arr[i].valore === "0") {
-                    res.push(arr[i]);
-                }
-            }
-            return res;
-        },
-        TabsIntelligence: function () {
-            var container = this.getView().byId("allarmiContainer");
-            var causale = this.ModelAllarmi.getData().causale;
-            var allarmi = this.ModelAllarmi.getData().allarmi;
-            if (allarmi.length > 0) {
-                if (!sap.ui.getCore().byId("allarmiTab")) {
-                    var Item = new sap.m.TabContainerItem({id: "allarmiTab"});
-                    Item.setName("Allarmi");
-                    var Table = new sap.ui.table.Table({
-                        id: "allarmiTable",
-                        rows: "{path:'allarmi>/allarmi'}",
-                        selectionMode: "None",
-                        enableColumnReordering: false,
-                        enableSelectAll: false,
-                        ariaLabelledBy: "title",
-                        visibleRowCount: 22,
-                        columns: [
-                            new sap.ui.table.Column({
-                                label: "Allarme",
-                                hAlign: "Left",
-                                width: "70%",
-                                vAlign: "Middle",
-                                resizable: false,
-                                template: new CustomTextAlarms({
-                                    text: "{allarmi>parametro}",
-                                    tooltip: "{allarmi>parametro}",
-                                    maxLines: 1,
-                                    isAlarm: "{allarmi>isAllarme}",
-                                    isBlock: "{allarmi>isBloccante}",
-                                    isActive: "{allarmi>isActive}"})}),
-                            new sap.ui.table.Column({
-                                label: "Valore",
-                                width: "30%",
-                                hAlign: "Center",
-                                vAlign: "Middle",
-                                resizable: false,
-                                template: new CustomTextAlarms({
-                                    text: "{allarmi>valore}",
-                                    tooltip: "{allarmi>valore}",
-                                    maxLines: 1,
-                                    isAlarm: "{allarmi>isAllarme}",
-                                    isBlock: "{allarmi>isBloccante}",
-                                    isActive: "{allarmi>isActive}"})})
-                        ]
-                    });
-                    Table.addStyleClass("fontTable");
-                    Table.addStyleClass("labelTable");
-                    Item.addContent(Table);
-                    container.addItem(Item);
-                    container.setSelectedItem(Item);
-                }
-            } else {
-                if (sap.ui.getCore().byId("allarmiTab")) {
-                    container.removeItem(sap.ui.getCore().byId("allarmiTab"));
-                    sap.ui.getCore().byId("allarmiTable").destroy();
-                    sap.ui.getCore().byId("allarmiTab").destroy();
-                }
-            }
-            var text;
-            if (causale !== "") {
-                if (!sap.ui.getCore().byId("textCausale")) {
-                    text = new sap.m.Text({
-                        id: "textCausale",
-                        text: "Causale Allarme: {allarmi>/causale}",
-                        maxLines: 1
-                    });
-                } else {
-                    text = sap.ui.getCore().byId("textCausale");
-                }
-                text.addStyleClass("causale");
-                if (sap.ui.getCore().byId("allarmiTab")) {
-                    sap.ui.getCore().byId("allarmiTab").addContent(text);
-                }
-            } else {
-                text = sap.ui.getCore().byId("textCausale");
-                if (text) {
-                    sap.ui.getCore().byId("allarmiTab").removeContent(text);
-                }
-            }
-        },
-        //  FUNZIONI DI REFRESH
         CloseDialog: function () {
             this.STOPSin = 0;
-//            this.GlobalBusyDialog.open();
             this.RefreshSinFunction();
             this.AlarmSTOP = 1;
             clearInterval(this.Timer);
@@ -730,7 +615,8 @@ sap.ui.define([
 
 //        -------------------------  MESSAGGISTICA  -------------------------
 
-        ShowMessaggi: function (event) {
+//      Gestione della messaggistica
+        ShowMessaggi: function () {
             clearInterval(this.SMTIMER);
             this.linea_id = this.ModelDetailPages.getData().DettaglioLinea.idLinea;
             this.STOPMSG = 0;
@@ -757,6 +643,20 @@ sap.ui.define([
             this.TabContainer = this.getView().byId("MessageContainer");
             this.RemoveClosingButtons(2);
         },
+        RefreshMsgFunction: function (msec) {
+            this.RefreshMsgCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.RefreshMsgCall.bind(this), msec);
+        },
+        RefreshMsgCall: function () {
+            var link;
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMessagesFromLineaIDOrigine&Content-Type=text/json&LineaID=" + this.linea_id + "&Origine=Operatore&OutputParameter=JSON";
+            }
+            this.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
+        },
         SUCCESSMessaggi: function (Jdata) {
             var temp, i;
             if (this.oDialog) {
@@ -779,20 +679,6 @@ sap.ui.define([
                 }
             }
         },
-        RefreshMsgFunction: function (msec) {
-            this.RefreshMsgCounter = 0;
-            if (typeof msec === "undefined") {
-                msec = 0;
-            }
-            setTimeout(this.RefreshMsgCall.bind(this), msec);
-        },
-        RefreshMsgCall: function () {
-            var link;
-            if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMessagesFromLineaIDOrigine&Content-Type=text/json&LineaID=" + this.linea_id + "&Origine=Operatore&OutputParameter=JSON";
-            }
-            this.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
-        },
         DestroyDialogMsg: function () {
             clearInterval(this.SMTIMER);
             this.ModelMessaggi.setData({});
@@ -813,11 +699,15 @@ sap.ui.define([
             var obj = this.getView().byId("inputMessage");
             if (obj.getValue().indexOf('"') > -1 || obj.getValue().indexOf("'") > -1 || obj.getValue().indexOf("&") > -1 || obj.getValue().indexOf("\\") > -1 || obj.getValue().indexOf("#") > -1 || obj.getValue().indexOf("€") > -1 || obj.getValue().indexOf("+") > -1 || obj.getValue() === "?") {
                 this.getView().byId("inputMessage").setValue(this.bckupMSG);
-                MessageToast.show("Carattere non valido!", {duration: 2000});
+                MessageToast.show("Carattere non valido!", {duration: 3000});
             } else {
                 this.bckupMSG = obj.getValue();
             }
         },
+
+//        ---------------------------------------------------------------------
+//        ---------------------------  DETAIL PAGES  --------------------------
+//        ---------------------------------------------------------------------
 
 //        -------------------------  PRESA IN CARICO  -------------------------       
 
@@ -903,7 +793,7 @@ sap.ui.define([
             var bck = Jdata.New;
             var mod = JSON.parse(JSON.stringify(Jdata.New));
             bck = this.RecursiveJSONComparison(std, bck, "attributi");
-            bck = this.RecursiveLinkValue(bck);
+//            bck = this.RecursiveLinkValue(bck);
             bck = this.RecursiveNotIncludedExpansion(bck);
             bck = this.RecursiveParentExpansion(bck);
             std = this.RecursiveStandardAdapt(std, bck);
@@ -1091,7 +981,7 @@ sap.ui.define([
                     this.SyncAjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
                 }
             } else {
-                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
+                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.", {duration: 3000});
             }
         },
         SUCCESSConfermaAttrezzaggio: function (Jdata) {
@@ -1103,7 +993,8 @@ sap.ui.define([
                 this.SyncAjaxCallerVoid(link, this.SUCCESSSelectSKUCP.bind(this));
 
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 3000});
+//                MessageToast.show(Jdata.errorMessageJdata.errorMessage, {duration: 3000});
+                this.OpenNotifier(Jdata.errorMessage);
                 this.GlobalBusyDialog.close();
             }
         },
@@ -1157,28 +1048,6 @@ sap.ui.define([
             var prefix = (this.indexSPC === 0) ? "SX" : "DX";
             return prefix + " - " + str.replace("[cg]", "[g]");
         },
-        SUCCESSSPCDataLoad: function (Jdata) {
-            var isEmpty;
-            this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].allarme;
-            this.Fase = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].fase;
-            this.Avanzamento = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].avanzamento;
-            if (Jdata.valori === "") {
-                isEmpty = 1;
-            } else {
-                isEmpty = 0;
-                Jdata = this.ParseSPCData(Jdata, "#");
-                if (this.Fase === "1") {
-                    Jdata = this.Phase1(Jdata);
-                }
-                this.ModelDetailPages.setProperty("/DatiSPC/Data/", Jdata);
-                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            }
-            this.SPCDialogFiller(isEmpty);
-            if (this.STOPSPC === 0) {
-                this.SPCCounter = 0;
-            }
-            this.SPCDialog.setBusy(false);
-        },
         SPCRefresh: function (msec) {
             this.SPCCounter = 0;
             if (typeof msec === "undefined") {
@@ -1202,6 +1071,29 @@ sap.ui.define([
                 }
             }
         },
+        SUCCESSSPCDataLoad: function (Jdata) {
+            var isEmpty;
+            this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].allarme;
+            this.Fase = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].avanzamento;
+            if (Jdata.valori === "") {
+                isEmpty = 1;
+            } else {
+                isEmpty = 0;
+                Jdata = this.ParseSPCData(Jdata, "#");
+                if (this.Fase === "1") {
+                    Jdata = this.Phase1(Jdata);
+                }
+                this.ModelDetailPages.setProperty("/DatiSPC/Data/", Jdata);
+                this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            }
+            this.SPCDialogFiller(isEmpty);
+            if (this.STOPSPC === 0) {
+                this.SPCCounter = 0;
+            }
+            this.SPCDialog.setBusy(false);
+        },
+        
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
         ModificaCondizioni: function () {
@@ -1276,19 +1168,13 @@ sap.ui.define([
                     this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
                 }
                 if (this.ISLOCAL !== 1) {
-//                    if (this.SPCDialog) {
-//                        if (typeof this.SPCDialog !== "undefined") {
-//                            this.getView().byId("headerSPCWindow").setText("Campionamento in corso: 0/50");
-////                            this.SPCDialog.destroyContent();
-////                            this.SPCDialog = null;
-//                        }
-//                    }
                     var XMLstring = this.XMLSetupUpdates(data, this.ModelDetailPages.getData().DettaglioLinea.idLinea, this.ModelDetailPages.getData().Linea.Batch.SKUID);
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=1&OutputParameter=JSON";
                     this.AjaxCallerData(link, this.SUCCESSConfermaModifica.bind(this));
                 }
             } else {
-                MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
+                MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.", {duration: 3000});
+//                this.OpenNotifier("Non puoi confermare codici Lotto/Matricola vuoti.");
             }
         },
         SUCCESSConfermaModifica: function (Jdata) {
@@ -1524,11 +1410,8 @@ sap.ui.define([
             }
             this.outerVBox.destroyItems();
         },
-//        SUCCESSCauseChange: function () {
-//            this.getSplitAppObj().toDetail(this.createId("Fault"));
-//            this.EnableButtons(["ButtonModificaCondizioni", "ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
-//        },
-        //        ----------------------  RIAVVIO  ----------------------
+
+    //        ----------------------  RIAVVIO  ----------------------
 
 
 
@@ -1602,7 +1485,7 @@ sap.ui.define([
                     this.RefreshFunction(0);
                 }
             } else {
-                MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.");
+                MessageToast.show("Non puoi confermare codici Lotto/Matricola vuoti.", {duration: 3000});
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
         },
@@ -2108,7 +1991,7 @@ sap.ui.define([
             this.codeCheck = 0;
             data = this.RecursiveJSONCodeCheck(data, "codeValue");
             if (this.codeCheck === 1 && source === 'F') {
-                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.");
+                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.", {duration: 3000});
             } else {
                 if (this.ISLOCAL === 1) {
                     this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
@@ -2149,7 +2032,135 @@ sap.ui.define([
 //------------------------------------------------------------------------------
 
 
+//      ----------------------------------------------------------------------
+//      ----------------  FUNZIONI FUNZIONALITA' TRASVERSALI  ----------------
+//      ----------------------------------------------------------------------
 
+//      ----------------    FUNZIONI SINOTTICO    ----------------
+
+        SetNameMacchine: function (data_linea) {
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
+            for (var i = 0; i < data_linea.Macchine.length; i++) {
+                for (var j = 0; j < names.length; j++) {
+                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
+                        switch (names[j]) {
+                            case "marcatore":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
+                                break;
+                            case "controllo peso":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
+                                break;
+                            case "etichettatrice":
+                                data_linea.Macchine[i].nome = "Etichettatrice";
+                                break;
+                            case "scatolatrice":
+                                data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                        }
+                    }
+                }
+            }
+        },
+        SortAlarms: function (arr) {
+            var res = [];
+            var i;
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i].valore === "1" && arr[i].isBloccante === "1") {
+                    res.push(arr[i]);
+                }
+            }
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i].valore === "1" && arr[i].isBloccante === "0") {
+                    res.push(arr[i]);
+                }
+            }
+            for (i = 0; i < arr.length; i++) {
+                if (arr[i].valore === "0") {
+                    res.push(arr[i]);
+                }
+            }
+            return res;
+        },
+        TabsIntelligence: function () {
+            var container = this.getView().byId("allarmiContainer");
+            var causale = this.ModelAllarmi.getData().causale;
+            var allarmi = this.ModelAllarmi.getData().allarmi;
+            if (allarmi.length > 0) {
+                if (!sap.ui.getCore().byId("allarmiTab")) {
+                    var Item = new sap.m.TabContainerItem({id: "allarmiTab"});
+                    Item.setName("Allarmi");
+                    var Table = new sap.ui.table.Table({
+                        id: "allarmiTable",
+                        rows: "{path:'allarmi>/allarmi'}",
+                        selectionMode: "None",
+                        enableColumnReordering: false,
+                        enableSelectAll: false,
+                        ariaLabelledBy: "title",
+                        visibleRowCount: 22,
+                        columns: [
+                            new sap.ui.table.Column({
+                                label: "Allarme",
+                                hAlign: "Left",
+                                width: "70%",
+                                vAlign: "Middle",
+                                resizable: false,
+                                template: new CustomTextAlarms({
+                                    text: "{allarmi>parametro}",
+                                    tooltip: "{allarmi>parametro}",
+                                    maxLines: 1,
+                                    isAlarm: "{allarmi>isAllarme}",
+                                    isBlock: "{allarmi>isBloccante}",
+                                    isActive: "{allarmi>isActive}"})}),
+                            new sap.ui.table.Column({
+                                label: "Valore",
+                                width: "30%",
+                                hAlign: "Center",
+                                vAlign: "Middle",
+                                resizable: false,
+                                template: new CustomTextAlarms({
+                                    text: "{allarmi>valore}",
+                                    tooltip: "{allarmi>valore}",
+                                    maxLines: 1,
+                                    isAlarm: "{allarmi>isAllarme}",
+                                    isBlock: "{allarmi>isBloccante}",
+                                    isActive: "{allarmi>isActive}"})})
+                        ]
+                    });
+                    Table.addStyleClass("fontTable");
+                    Table.addStyleClass("labelTable");
+                    Item.addContent(Table);
+                    container.addItem(Item);
+                    container.setSelectedItem(Item);
+                }
+            } else {
+                if (sap.ui.getCore().byId("allarmiTab")) {
+                    container.removeItem(sap.ui.getCore().byId("allarmiTab"));
+                    sap.ui.getCore().byId("allarmiTable").destroy();
+                    sap.ui.getCore().byId("allarmiTab").destroy();
+                }
+            }
+            var text;
+            if (causale !== "") {
+                if (!sap.ui.getCore().byId("textCausale")) {
+                    text = new sap.m.Text({
+                        id: "textCausale",
+                        text: "Causale Allarme: {allarmi>/causale}",
+                        maxLines: 1
+                    });
+                } else {
+                    text = sap.ui.getCore().byId("textCausale");
+                }
+                text.addStyleClass("causale");
+                if (sap.ui.getCore().byId("allarmiTab")) {
+                    sap.ui.getCore().byId("allarmiTab").addContent(text);
+                }
+            } else {
+                text = sap.ui.getCore().byId("textCausale");
+                if (text) {
+                    sap.ui.getCore().byId("allarmiTab").removeContent(text);
+                }
+            }
+        },
 
 //      ----------------------------------------------------------------------
 //      -----------------------  FUNZIONI MASTER PAGE  -----------------------

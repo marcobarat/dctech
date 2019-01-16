@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+    controllerName="myapp.controller.Operatore"
+    id="Notifier"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:t="sap.ui.table">
+    <Dialog contentWidth="1200px" contentHeight="400px" id="Notifier" showHeader="false" class="sfondobianco">
+        <VBox height="100%" width="100%">
+            <VBox height="100px" width="1200px" class="colorPage"/>
+            <VBox height="200px" width="1200px" class="colorPage">
+                <FlexBox height="200px" width="1200px" alignItems="Start" justifyContent="Center">
+                    <FlexBox height="200px" width="1100px" alignItems="Start" justifyContent="Center">
+                        <Text id="Notify" class="textTopRed"/>
+                    </FlexBox>
+                </FlexBox>
+            </VBox>
+            <VBox height="100px" width="1200px" class="colorPage">
+                <HBox>
+                    <VBox height="100%" width="30%"/>
+                    <VBox height="100%" width="40%">
+                        <Button text="Chiudi" width="100%" press="CloseNotifier" class="chiudiButton"/>
+                    </VBox>
+                    <VBox height="100%" width="30%"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>  

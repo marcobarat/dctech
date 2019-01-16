@@ -831,3 +831,7 @@ monobuttonSPC .sapMBtnInner {
 .sapMInputBaseInner {
     font-size: 15pt; 
 }
+.sapMMessageToast {
+    font-size: 24pt;
+    width: 60rem !important;
+}
