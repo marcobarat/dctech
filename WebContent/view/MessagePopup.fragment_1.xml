@@ -8,7 +8,7 @@
     controllerName="myapp.controller.Operatore">
     <Dialog horizontalScrolling="true" contentHeight="650px" contentWidth="1200px" afterClose="DestroyDialogMsg" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="messaggi">
         <VBox height="100%" width="100%">
-            <VBox height="90%" width="100%">
+            <VBox height="35rem" width="100%">
                 <TabContainer id="MessageContainer" itemSelect="MessageTabSelection">
                     <items>    
                         <TabContainerItem name="Log di Sistema" id="Sistema">
@@ -82,7 +82,7 @@
                                         <VBox width="5%"/>
                                         <VBox width="65%">
                                             <Label text="Scrivi al Capoturno (max 100 caratteri)" class="blueLabel"/>
-                                            <Input submit="SendMessage" id="inputMessage" enableSuggestionsHighlighting="false" maxLength="100"/>
+                                            <Input submit="SendMessage" id="inputMessage" liveChange="MSGChanged" enableSuggestionsHighlighting="false" maxLength="100"/>
                                         </VBox>
                                         <VBox width="5%"/>
                                         <VBox width="20%">

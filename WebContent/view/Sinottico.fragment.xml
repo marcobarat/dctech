@@ -3,20 +3,12 @@
     xmlns:wt="myapp.control"
     xmlns:core="sap.ui.core"
     controllerName="myapp.controller.Operatore">
-    <Dialog horizontalScrolling="true" contentHeight="45rem" contentWidth="120rem" afterClose="DestroyDialogSin" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="sinottico">
-        <VBox height="100%" width="100%">
-            <VBox height="38rem" width="100%" id="vboxSin">
-                <Image src="img/{ModelSinottico>/IMG}" width="100%" class="shiftImage"/>
-            </VBox>
-            <VBox height="10%" width="100%">
-                <HBox>
-                    <VBox height="100%" width="30%"/>
-                    <VBox height="100%" width="40%">
-                        <Button text="Chiudi" width="100%" class="annullaButton" press="DestroyDialogSin"/>
-                    </VBox>
-                    <VBox height="100%" width="30%"/>
-                </HBox>
-            </VBox>
+    <Dialog horizontalScrolling="true" contentHeight="50rem" contentWidth="120rem" afterClose="DestroyDialogSin" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="sinottico">
+        <VBox id="vboxSin" height="100%" width="100%">
+            <Button icon="sap-icon://decline" class="annullaButtonSin" press="DestroyDialogSin"/>
+            <Button icon="sap-icon://legend" text="Legenda" class="legendaSin" press="ShowLegenda"/>
+            <Image src="img/{ModelLineName>/IMG}" width="100%" class="shiftImage"/>
+            <Button id="setupCompletoButton" icon="sap-icon://begin" text="Invia Setup Completo" class="setupCompletoSin" press="SendCompleteSetup"/>
         </VBox>
     </Dialog>
 </core:FragmentDefinition>

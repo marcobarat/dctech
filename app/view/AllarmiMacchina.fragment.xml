@@ -6,7 +6,7 @@
     xmlns:wt="myapp.control" 
     controllerName="myapp.controller.Operatore"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="95rem" contentHeight="65rem" horizontalScrolling="false" afterClose="DestroyDialog" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu"  id="allarmiMacchina">
+    <Dialog contentWidth="95rem" contentHeight="65rem" horizontalScrolling="false" afterClose="CloseDialog" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu"  id="allarmiMacchina">
         <VBox height="100%" width="100%">
             <VBox height="60rem" width="100%">
                 <VBox height="100%" width="100%">

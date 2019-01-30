@@ -1,0 +1,63 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:wt="myapp.control"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:t="sap.ui.table"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+    controllerName="myapp.controller.Operatore">
+    <Dialog horizontalScrolling="true" contentHeight="650px" contentWidth="1200px" afterClose="DestroyDialogFermi" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="showFermi">
+        <VBox height="100%" width="100%">
+            <VBox height="35rem" width="100%">
+                <t:Table
+                    width="100%"
+                    rowHeight="40px"
+                    enableColumnReordering="false"
+                    visibleRowCount="10"
+                    class="alternate-color"
+                    selectionMode="None"
+                    rows="{ModelFermi>/}"
+                    app:mydata="sistemaTable">
+                    <t:columns>
+                        <t:Column hAlign="Center" width="15%" resizable="false">
+                            <Label text="Inizio"/>
+                            <t:template>
+                                <Text text="{ModelFermi>inizio}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column hAlign="Center" width="15%" resizable="false">
+                            <Label text="Fine"/>
+                            <t:template class="textCT">
+                                <Text text="{ModelFermi>fine}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column hAlign="Center" width="15%" resizable="false">
+                            <Label text="Durata"/>
+                            <t:template>
+                                <Text text="{ModelFermi>durata}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column hAlign="Center" width="55%" resizable="false">
+                            <Label text="Causale"/>
+                            <t:template class="textCT">
+                                <Text text="{ModelFermi>causale}" maxLines="2"/>
+                            </t:template>
+                        </t:Column>
+                    </t:columns>
+                    <t:noData>
+                        <Text class="sapUiTableCtrlEmptyMsg" text="Non ci sono fermi." textAlign="Center"/>
+                    </t:noData>
+                </t:Table>
+            </VBox>
+            <VBox height="10%" width="100%">
+                <HBox>
+                    <VBox height="100%" width="30%"/>
+                    <VBox height="100%" width="40%">
+                        <Button text="Chiudi" width="100%" class="annullaButton" press="DestroyDialogFermi"/>
+                    </VBox>
+                    <VBox height="100%" width="30%"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

@@ -27,7 +27,9 @@ sap.ui.define([
         },
 
         onAfterRendering: function () {
-
+            var id = this.getParent().getId();
+            var obj = jQuery.sap.byId(id);
+            obj.removeClass("isWarning");
             if (this.getIncluded() === "0") {
                 this.removeStyleClass('diffRed');
                 this.removeStyleClass('diffLink');
@@ -37,9 +39,11 @@ sap.ui.define([
                 if (this.getDiff() === 2) {
                     this.removeStyleClass('diffLink');
                     this.addStyleClass('diffRed');
+                    obj.addClass("isWarning");
                 } else if (this.getDiff() === 3) {
                     this.removeStyleClass('diffRed');
                     this.addStyleClass('diffLink');
+                    obj.addClass("isWarning");
                 } else {
                     this.removeStyleClass('diffRed');
                     this.removeStyleClass('diffLink');

@@ -58,7 +58,7 @@
                         port: 50100,
                         changeOrigin: true,
                         headers: {
-                            "Authorization": "Basic bWJhcmF0ZWxsYTpJbml0MTIzNA=="
+                            "Authorization": "Basic ZGVjZWNjbzppbml0MTIzNA=="
                         },
                     }
                 ]

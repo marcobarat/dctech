@@ -11,8 +11,8 @@ sap.ui.define([
         STOP: 0,
         TIMER: null,
         RefreshCounter: null,
-        Reparto: 1,
-        Stabilimento: 1,
+        RepartoID: 1,
+        StabilimentoID: 1,
         GlobalBusyDialog: new sap.m.BusyDialog(),
 
         onInit: function () {
@@ -55,7 +55,7 @@ sap.ui.define([
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_MAIN.json";
             } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/InCombo/GetOverviewPdcAttualeForTiles&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&RepartoID=" + this.RepartoID + "&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/InCombo/GetOverviewPdcAttualeForTiles&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
             }
             this.SyncAjaxCallerData(link, this.SUCCESSDatiTurni.bind(this), this.RefreshPage.bind(this));
         },

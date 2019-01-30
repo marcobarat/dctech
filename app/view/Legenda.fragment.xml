@@ -1,0 +1,12 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:wt="myapp.control"
+    xmlns:core="sap.ui.core"
+    controllerName="myapp.controller.Operatore">
+    <Dialog horizontalScrolling="true" contentHeight="50rem" contentWidth="50rem" afterClose="DestroyDialogLegenda" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="legenda">
+        <VBox height="100%" width="100%">
+            <Button icon="sap-icon://decline" class="annullaButtonLeg" press="DestroyDialogLegenda"/>
+            <Image src="img/Legenda.png" width="99%"/>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

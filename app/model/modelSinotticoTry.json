@@ -1,0 +1,46 @@
+{
+  "Macchine": [
+    {
+      "nome": "Coppia 06 - Marcatore DX",
+      "stato": "Good",
+      "risorsaid": "20",
+      "error": "0",
+      "errorMessage": ""
+    },
+    {
+      "nome": "Coppia 06 - Marcatore SX",
+      "stato": "Good",
+      "risorsaid": "21",
+      "error": "0",
+      "errorMessage": ""
+    },
+    {
+      "nome": "Coppia 06 - Controllo peso pezzo DX",
+      "stato": "",
+      "risorsaid": "24",
+      "error": "1",
+      "errorMessage": "La macchina è spenta o non raggiungibile"
+    },
+    {
+      "nome": "Coppia 06 - Controllo peso pezzo SX",
+      "stato": "",
+      "risorsaid": "25",
+      "error": "1",
+      "errorMessage": "La macchina è spenta o non raggiungibile"
+    },
+    {
+      "nome": "Coppia 06 - Scatolatrice",
+      "stato": "",
+      "risorsaid": "28",
+      "error": "1",
+      "errorMessage": "La macchina è spenta o non raggiungibile"
+    },
+    {
+      "nome": "Coppia 06 - Etichettatrice",
+      "stato": "Good",
+      "risorsaid": "29",
+      "error": "1",
+      "errorMessage": "La macchina è spenta o non raggiungibile"
+    }
+  ]
+}

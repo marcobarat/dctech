@@ -15,7 +15,7 @@ sap.ui.define([
                 }
             },
             properties: {
-                stato: {type: "string", defaultValue: "Good"}
+                stato: {type: "string"}
             }
         },
         renderer: {},
@@ -35,6 +35,8 @@ sap.ui.define([
                     break;
                 case "Good":
                     this.addStyleClass("buttonGood");
+                    break;
+                default:
                     break;
             }
         }

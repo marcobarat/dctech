@@ -4,10 +4,12 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'myapp/control/CustomTreeTable',
     'myapp/control/CustomButtonSin',
+    'myapp/control/CustomButtonSetupAuto',
+    'myapp/control/CustomButtonSetupMan',
     'myapp/control/CustomTextAlarms',
     'sap/m/MessageToast',
     'myapp/control/CustomSPCButton'
-], function (jQuery, Controller, JSONModel, CustomTreeTable, CustomButtonSin, CustomTextAlarms, MessageToast, CustomSPCButton) {
+], function (jQuery, Controller, JSONModel, CustomTreeTable, CustomButtonSin, CustomButtonSetupAuto, CustomButtonSetupMan, CustomTextAlarms, MessageToast, CustomSPCButton) {
     "use strict";
     var OperatoreController = Controller.extend("myapp.controller.Operatore", {
 
@@ -18,9 +20,11 @@ sap.ui.define([
         LineDetails: {Linea: "Coppia 05", idLinea: "1", Descrizione: "Penne mezzane rigate 241 - Astuccio 3000gr", Destinazione: "HBEX COMERCIAL EXPORTADORA E IMPORTAD. LTDA"},
         ModelDetailPages: new JSONModel({}),
         ModelSinottico: new JSONModel({}),
+        ModelLineName: new JSONModel({}),
         ModelMessaggi: new JSONModel({}),
         ModelAllarmi: new JSONModel({}),
         ModelParametri: new JSONModel({}),
+        ModelFermi: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
         CheckFermo: null,
@@ -40,6 +44,7 @@ sap.ui.define([
         NotifierDialog: null,
         oDialog: null,
         SinDialog: null,
+        LegDialog: null,
         AlarmDialog: null,
         Fase: null,
         Allarme: null,
@@ -67,6 +72,10 @@ sap.ui.define([
         macchina: null,
         macchinaID: null,
         bckupMSG: "",
+        skuId: null,
+        manualSetupDialog: null,
+        manualSetupModel: new JSONModel({}),
+        idRisorsa: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -152,6 +161,14 @@ sap.ui.define([
             this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
+            
+            var spl = Jdata.TempoFaseAttuale.split(":");
+            var i, temp = "";
+            for (i = 0;i < spl.length-1; i++) {
+                temp += this.StringTime(Number(spl[i])) + ":";
+            }
+            Jdata.TempoFaseAttuale = temp.slice(0, -1);
+            
             this.ModelDetailPages.setProperty("/Linea/", Jdata);
             var link, key;
             var model = this.ModelDetailPages.getData();
@@ -198,6 +215,7 @@ sap.ui.define([
                                 this.EnableButtons(["ButtonFinePredisposizione"]);
                                 this.PredisposizioneLinea();
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+//                                this.OpenSinottico();
                             }
                             break;
                         case "Disponibile.Lavorazione":
@@ -284,6 +302,19 @@ sap.ui.define([
             if (Jdata.OEE.avanzamento >= 100) {
                 Jdata.OEE.avanzamento = 100;
             }
+            var times = ["tempoAttrezzaggio", "tempoFermi", "tempoFermiAutomatici", "tempoFermoAttuale", "tempoTotaleFermiAutomatici"];
+            var spl, i, temp;
+            for (var key in Jdata.OEE) {
+                if (times.indexOf(key) > -1) {
+                    spl = Jdata.OEE[key].split(":");
+                    temp = "";
+                    for (i = 0; i < spl.length; i++) {
+                        temp += this.StringTime(Number(spl[i])) + ":";
+                    }
+                    Jdata.OEE[key] = temp.slice(0, -1);
+                }
+            }
+
             Jdata.SPC = Jdata.SPC.reverse();
             this.AddSpaces(Jdata.OEE);
             this.ModelDetailPages.setProperty("/DatiOEE/", Jdata.OEE);
@@ -353,12 +384,23 @@ sap.ui.define([
 
 
 //        FUNZIONE CHE FA UNA CHIAMATA ASINCRONA AL BACKEND SENZA RITORNO DI DATI
-        AjaxCallerVoid: function (address, Func) {
-            var req = jQuery.ajax({
-                url: address,
-                async: true
-            });
-            req.always(Func);
+        AjaxCallerVoid: function (address, successFunc, errorFunc) {
+            if (errorFunc) {
+                jQuery.ajax({
+                    url: address,
+                    method: "POST",
+                    dataType: "xml",
+                    async: true,
+                    success: successFunc,
+                    error: errorFunc
+                });
+            } else {
+                var req = jQuery.ajax({
+                    url: address,
+                    async: false
+                });
+                req.always(successFunc);
+            }
         },
 //        FUNZIONE CHE FA UNA CHIAMATA ASINCRONA AL BACKEND CON RITORNO DI DATI
         AjaxCallerData: function (addressOfJSON, successFunc, errorFunc) {
@@ -429,10 +471,21 @@ sap.ui.define([
             this.SinDialog = this.getView().byId("sinottico");
             if (!this.SinDialog) {
                 this.SinDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.Sinottico", this);
-                this.getView().addDependent(this.oDialog);
+                this.getView().addDependent(this.SinDialog);
             }
             this.SinDialog.open();
             this.SinDialog.setBusy(true);
+            this.idBatch = "";
+            this.getView().byId("setupCompletoButton").setEnabled(false);
+            if (this.ModelDetailPages.getData().Linea.Batch.BatchID) {
+                this.idBatch = this.ModelDetailPages.getData().Linea.Batch.BatchID;
+                this.getView().byId("setupCompletoButton").setEnabled(true);
+                this.skuId = this.ModelDetailPages.getData().Linea.Batch.SKUID;
+            }
+            var imgName = this.ModelDetailPages.getData().DettaglioLinea.Linea.toLowerCase().replace(" ", "_") + ".png";
+            this.ModelLineName.setData({"IMG": imgName});
+            this.getView().setModel(this.ModelLineName, "ModelLineName");
+            sap.ui.getCore().setModel(this.ModelLineName, "ModelLineName");
             this.RefreshSinCounter = 10;
             var that = this;
 //          Timer che regola il refresh del sinottico
@@ -464,24 +517,49 @@ sap.ui.define([
         },
         SUCCESSSinottico: function (Jdata) {
             this.SinDialog.setBusy(false);
+            var imgName = this.ModelDetailPages.getData().DettaglioLinea.Linea.toLowerCase().replace(" ", "_") + ".png";
+            this.ModelLineName.setData({"IMG": imgName});
             var i, button, vbox;
             if (this.SinDialog) {
                 if (this.SinDialog.isOpen()) {
-                    Jdata.IMG = this.ModelDetailPages.getData().DettaglioLinea.Linea.toLowerCase().split(" ").join("_") + ".png";
                     this.SetNameMacchine(Jdata);
                     for (i = 0; i < Jdata.Macchine.length; i++) {
                         Jdata.Macchine[i].class = Jdata.Macchine[i].nome.split(" ").join("");
                     }
-                    if (!sap.ui.getCore().byId(Jdata.Macchine[0].nome.split(" ").join("") + "_" + this.linea_id)) {
+                    if (!sap.ui.getCore().byId("P_" + Jdata.Macchine[0].risorsaid)) {
                         vbox = this.getView().byId("vboxSin");
                         for (i = 0; i < Jdata.Macchine.length; i++) {
                             button = new CustomButtonSin({
-                                id: Jdata.Macchine[i].nome.split(" ").join("") + "_" + this.linea_id,
-                                text: "{ModelSinottico>/Macchine/" + i + "/nome}",
+                                id: "P_" + Jdata.Macchine[i].risorsaid,
+//                                text: "{ModelSinottico>/Macchine/" + i + "/nome}",
+                                text: "",
+                                icon: "sap-icon://crm-service-manager",
                                 stato: "{ModelSinottico>/Macchine/" + i + "/stato}",
                                 press: [this.ShowParameters, this]});
                             button.addStyleClass("buttonSinottico");
                             button.addStyleClass(Jdata.Macchine[i].class);
+                            vbox.addItem(button);
+
+                            button = new CustomButtonSetupAuto({
+                                id: "SA_" + Jdata.Macchine[i].risorsaid,
+                                text: "",
+                                icon: "sap-icon://begin",
+                                stato: "{ModelSinottico>/Macchine/" + i + "/statoScritturaAuto}",
+                                batch: this.idBatch,
+                                press: [this.SendSingleSetup, this]});
+                            button.addStyleClass("buttonSinottico");
+                            button.addStyleClass(Jdata.Macchine[i].class + "_SA");
+                            vbox.addItem(button);
+
+                            button = new CustomButtonSetupMan({
+                                id: "SM_" + Jdata.Macchine[i].risorsaid,
+                                text: "",
+                                icon: "sap-icon://user-settings",
+                                stato: "{ModelSinottico>/Macchine/" + i + "/statoScritturaMan}",
+                                batch: this.idBatch,
+                                press: [this.ManualSetup, this]});
+                            button.addStyleClass("buttonSinottico");
+                            button.addStyleClass(Jdata.Macchine[i].class + "_SM");
                             vbox.addItem(button);
                         }
                     }
@@ -503,15 +581,41 @@ sap.ui.define([
             this.STOPSin = 1;
             this.SinDialog.destroy();
         },
+        ShowLegenda: function () {
+            this.LegDialog = this.getView().byId("legenda");
+            if (!this.LegDialog) {
+                this.LegDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.Legenda", this);
+                this.getView().addDependent(this.LegDialog);
+            }
+            this.LegDialog.open();
+        },
+        DestroyDialogLegenda: function () {
+            this.LegDialog.destroy();
+        },
+
+        SendCompleteSetup: function () {
+            this.GlobalBusyDialog.open();
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/Scrittura/ComboWrite&Content-Type=text/json&LineaID=" + this.linea_id + "&BatchID=" + this.idBatch + "&SKUID=" + this.skuId + "&OutputParameter=JSON";
+            this.AjaxCallerVoid(link, this.SUCCESSCompleteSetup.bind(this), this.FAILURECompleteSetup.bind(this));
+        },
+        SUCCESSCompleteSetup: function () {
+//            this.GlobalBusyDialog.close();
+            MessageToast.show("Invio setup completo eseguito", {duration: 3000});
+            this.RefreshSinCall();
+        },
+        FAILURECompleteSetup: function () {
+            this.GlobalBusyDialog.close();
+            MessageToast.show("Invio setup completo fallito", {duration: 3000});
+//            this.RefreshSinCall();
+        },
 
 //      Gestione della popup dei parametri/allarmi
         ShowParameters: function (event) {
             this.GlobalBusyDialog.open();
-            this.macchina = event.getSource().getProperty("text");
+            this.macchinaID = event.getSource().getId().split("_")[1];
             var stato;
             for (var i = 0; i < this.ModelSinottico.getData().Macchine.length; i++) {
-                if (this.ModelSinottico.getData().Macchine[i].nome === this.macchina) {
-                    this.macchinaID = this.ModelSinottico.getData().Macchine[i].risorsaid;
+                if (this.macchinaID === this.ModelSinottico.getData().Macchine[i].risorsaid) {
                     stato = this.ModelSinottico.getData().Macchine[i].stato;
                 }
             }
@@ -541,7 +645,8 @@ sap.ui.define([
                     }
                 }, 1000);
             } else {
-                MessageToast.show("La macchina è spenta o non raggiungibile", {duration: 3000});
+                MessageToast.show("Macchina spenta o non raggiungibile", {duration: 3000});
+                this.GlobalBusyDialog.close();
             }
         },
         AlarmRefresh: function (msec) {
@@ -564,7 +669,7 @@ sap.ui.define([
         },
         FAILUREParametersReceived: function () {
             this.CloseDialog();
-            MessageToast.show("La macchina è spenta o non raggiungibile", {duration: 3000});
+            MessageToast.show("Macchina spenta o non raggiungibile", {duration: 3000});
         },
         SUCCESSParametersReceived: function (Jdata) {
             this.AlarmDialog.setBusy(false);
@@ -603,6 +708,61 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: "3000"});
             }
         },
+        SendSingleSetup: function (event) {
+            this.GlobalBusyDialog.open();
+            this.idRisorsa = event.getSource().getId().split("_")[1];
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/Scrittura/SingleWrite&Content-Type=text/json&RisorsaID=" + this.idRisorsa + "&BatchID=" + this.idBatch + "&SKUID=" + this.skuId + "&OutputParameter=JSON";
+            this.AjaxCallerVoid(link, this.SUCCESSSendSingleSetup.bind(this), this.FAILURESendSingleSetup.bind(this));
+        },
+        SUCCESSSendSingleSetup: function () {
+            this.GlobalBusyDialog.close();
+            MessageToast.show("Invio setup alla macchina eseguito", {duration: 3000});
+        },
+        FAILURESendSingleSetup: function () {
+            this.GlobalBusyDialog.close();
+            MessageToast.show("Invio setup alla macchina fallito", {duration: 3000});
+        },
+        ManualSetup: function (event) {
+            this.GlobalBusyDialog.open();
+            this.idRisorsa = event.getSource().getId().split("_")[1];
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/Scrittura/SingleWriteManual&Content-Type=text/json&RisorsaID=" + this.idRisorsa + "&BatchID=" + this.idBatch + "&SKUID=" + this.skuId + "&IsConferma=false&OutputParameter=JSON";
+            this.AjaxCallerData(link, this.SUCCESSManualSetup.bind(this), this.FAILUREManualSetup.bind(this));
+        },
+        SUCCESSManualSetup: function (Jdata) {
+            this.GlobalBusyDialog.close();
+            this.manualSetupDialog = this.getView().byId("manualSetup");
+            if (!this.manualSetupDialog) {
+                this.manualSetupDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.ManualSetup", this);
+                this.getView().addDependent(this.manualSetupDialog);
+            }
+            this.manualSetupDialog.open();
+            this.manualSetupModel.setData(Jdata);
+            this.getView().setModel(this.manualSetupModel, "manualSetupParams");
+            sap.ui.getCore().setModel(this.manualSetupModel, "manualSetupParams");
+        },
+        FAILUREManualSetup: function () {
+            this.GlobalBusyDialog.close();
+            MessageToast.show("Ricezione setup fallito", {duration: 3000});
+        },
+        CloseDialogSetupManual: function () {
+            this.manualSetupDialog.destroy();
+        },
+        ConfirmManualSetup: function () {
+            this.GlobalBusyDialog.open();
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/Scrittura/SingleWriteManual&Content-Type=text/json&RisorsaID=" + this.idRisorsa + "&BatchID=" + this.idBatch + "&SKUID=" + this.skuId + "&IsConferma=true&OutputParameter=JSON";
+            this.AjaxCallerData(link, this.SUCCESSConfirmManualSetup.bind(this), this.FAILUREConfirmManualSetup.bind(this));
+        },
+        SUCCESSConfirmManualSetup: function () {
+//            this.GlobalBusyDialog.close();
+            this.RefreshSinFunction();
+            this.CloseDialogSetupManual();
+            MessageToast.show("Setup manuale confermato", {duration: 3000});
+        },
+        FAILUREConfirmManualSetup: function () {
+            this.GlobalBusyDialog.close();
+            MessageToast.show("Comunicazione a DB fallita, riprovare", {duration: 3000});
+        },
+
         CloseDialog: function () {
             this.STOPSin = 0;
             this.RefreshSinFunction();
@@ -611,6 +771,43 @@ sap.ui.define([
             this.AlarmDialog.setBusy(false);
             this.AlarmDialog.close();
             this.getView().setModel(new JSONModel(), "allarmi");
+        },
+
+//        --------------------------  POPUP FERMI  --------------------------
+
+        ShowFermi: function () {
+            this.idBatch = this.ModelDetailPages.getData().Linea.Batch.BatchID;
+            this.oDialog = this.getView().byId("showFermi");
+            if (!this.oDialog) {
+                this.oDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.ShowFermi", this);
+                this.getView().addDependent(this.oDialog);
+            }
+            this.oDialog.open();
+            this.oDialog.setBusy(true);
+
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + this.idBatch + "&OutputParameter=JSON";
+            this.AjaxCallerData(link, this.SUCCESSShowFermi.bind(this), this.FAILUREShowFermi.bind(this));
+        },
+        SUCCESSShowFermi: function (Jdata) {
+            var data = Jdata.fermi;
+            var i;
+            for (i = 0;i < data.length; i++) {
+                data[i].inizio = data[i].inizio.split("T")[1];
+                data[i].fine = data[i].fine.split("T")[1];
+                data[i].durata = this.MillisecsToStandard(this.StandardToMillisecs(data[i].fine) - this.StandardToMillisecs(data[i].inizio));
+            }
+            this.ModelFermi.setData(data);
+            this.getView().setModel(this.ModelFermi, "ModelFermi");
+            sap.ui.getCore().setModel(this.ModelFermi, "ModelFermi");
+            this.oDialog.setBusy(false);
+        },
+        FAILUREShowFermi: function () {
+            this.oDialog.setBusy(false);
+            this.DestroyDialogFermi();
+            MessageToast.show("Comunicazione a DB fallita, riprovare", {duration: 3000});
+        },
+        DestroyDialogFermi: function () {
+            this.oDialog.destroy();
         },
 
 //        -------------------------  MESSAGGISTICA  -------------------------
@@ -1093,7 +1290,7 @@ sap.ui.define([
             }
             this.SPCDialog.setBusy(false);
         },
-        
+
 //      RICHIAMATO DAL PULSANTE "MODIFICA CONDIZIONI OPERATIVE"
 //          Questa funzione permette dimodificare le condizioni operative in corso d'opera
         ModificaCondizioni: function () {
@@ -1411,7 +1608,7 @@ sap.ui.define([
             this.outerVBox.destroyItems();
         },
 
-    //        ----------------------  RIAVVIO  ----------------------
+        //        ----------------------  RIAVVIO  ----------------------
 
 
 
