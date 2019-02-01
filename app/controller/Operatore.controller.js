@@ -715,7 +715,8 @@ sap.ui.define([
             this.AjaxCallerVoid(link, this.SUCCESSSendSingleSetup.bind(this), this.FAILURESendSingleSetup.bind(this));
         },
         SUCCESSSendSingleSetup: function () {
-            this.GlobalBusyDialog.close();
+//            this.GlobalBusyDialog.close();
+            this.RefreshSinFunction();
             MessageToast.show("Invio setup alla macchina eseguito", {duration: 3000});
         },
         FAILURESendSingleSetup: function () {

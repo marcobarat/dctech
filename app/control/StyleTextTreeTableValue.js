@@ -39,11 +39,9 @@ sap.ui.define([
                 if (this.getDiff() === 2) {
                     this.removeStyleClass('diffLink');
                     this.addStyleClass('diffRed');
-                    obj.addClass("isWarning");
                 } else if (this.getDiff() === 3) {
                     this.removeStyleClass('diffRed');
                     this.addStyleClass('diffLink');
-                    obj.addClass("isWarning");
                 } else {
                     this.removeStyleClass('diffRed');
                     this.removeStyleClass('diffLink');

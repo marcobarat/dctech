@@ -5,7 +5,7 @@ sap.ui.define([
 ], function (Control, Label, Text) {
     "use strict";
 
-    var StyleTextTreeTableValue = Text.extend("myapp.control.StyleTextTreeTableValue", {
+    var StyleTextTreeTableAttrCFR = Text.extend("myapp.control.StyleTextTreeTableAttrCFR", {
 
         metadata: {
             //eventi 
@@ -18,6 +18,7 @@ sap.ui.define([
 
             properties: {
                 diff: {type: "number", defaultValue: 0},
+                discr: {type: "string", defaultValue: ""},
                 included: {type: "string", defaultValue: "1"}
             }
         },
@@ -32,23 +33,18 @@ sap.ui.define([
             obj.removeClass("isWarning");
             if (this.getIncluded() === "0") {
                 this.removeStyleClass('diffRed');
-                this.removeStyleClass('diffLink');
                 this.addStyleClass('notIncluded');
             } else {
                 this.removeStyleClass('notIncluded');
-                if (this.getDiff() === 2) {
-                    this.removeStyleClass('diffLink');
+                if (this.getDiff() === 2 && this.getDiscr() !== "") {
                     this.addStyleClass('diffRed');
-                } else if (this.getDiff() === 3) {
-                    this.removeStyleClass('diffRed');
-                    this.addStyleClass('diffLink');
+                    obj.addClass("isWarning");
                 } else {
                     this.removeStyleClass('diffRed');
-                    this.removeStyleClass('diffLink');
                 }
             }
         }
     });
 
-    return StyleTextTreeTableValue;
+    return StyleTextTreeTableAttrCFR;
 });

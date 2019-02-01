@@ -38,7 +38,6 @@ sap.ui.define([
                 this.removeStyleClass('notIncluded');
                 if (this.getDiff() === 2 && this.getDiscr() !== "") {
                     this.addStyleClass('diffRed');
-                    obj.addClass("isWarning");
                 } else {
                     this.removeStyleClass('diffRed');
                 }

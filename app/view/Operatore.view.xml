@@ -285,14 +285,14 @@
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
                                                                                 <!--<wt:StyleTextTreeTableAttr text="{GeneralModel>name}" included="{GeneralModel>isIncluded}" diff="{GeneralModel>expand}" discr="{GeneralModel>value}" maxLines="1"/>-->
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" included="{GeneralModel>isIncluded}" maxLines="1"/>
+                                                                                <wt:StyleTextTreeTableAttrCFR text="{GeneralModel>name}" included="{GeneralModel>isIncluded}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
                                                                                 <!--<wt:StyleTextTreeTableValue text="{GeneralModel>value}" included="{GeneralModel>isIncluded}" maxLength="20" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>-->
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" included="{GeneralModel>isIncluded}" maxLength="20" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                                <wt:StyleTextTreeTableValueCFR text="{GeneralModel>value}" included="{GeneralModel>isIncluded}" maxLength="20" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -325,13 +325,13 @@
                                                                         <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" included="{GeneralModel>isIncluded}" discr="{GeneralModel>value}" maxLines="1"/>
+                                                                                <wt:StyleTextTreeTableAttrCFR text="{GeneralModel>name}" diff="{GeneralModel>expand}" included="{GeneralModel>isIncluded}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" included="{GeneralModel>isIncluded}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                                <wt:StyleTextTreeTableValueCFR text="{GeneralModel>value}" maxLength="20" included="{GeneralModel>isIncluded}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -1788,13 +1788,13 @@
                                                                         <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" included="{GeneralModel>isIncluded}" discr="{GeneralModel>value}" maxLines="1"/>
+                                                                                <wt:StyleTextTreeTableAttrCFR text="{GeneralModel>name}" diff="{GeneralModel>expand}" included="{GeneralModel>isIncluded}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" included="{GeneralModel>isIncluded}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                                <wt:StyleTextTreeTableValueCFR text="{GeneralModel>value}" included="{GeneralModel>isIncluded}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
@@ -1826,13 +1826,13 @@
                                                                         <t:Column width="13rem" resizable="false">
                                                                             <Label text="ATTRIBUTI"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableAttr text="{GeneralModel>name}" diff="{GeneralModel>expand}" included="{GeneralModel>isIncluded}" discr="{GeneralModel>value}" maxLines="1"/>
+                                                                                <wt:StyleTextTreeTableAttrCFR text="{GeneralModel>name}" diff="{GeneralModel>expand}" included="{GeneralModel>isIncluded}" discr="{GeneralModel>value}" maxLines="1"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                         <t:Column width="7rem" resizable="false">
                                                                             <Label text="VALORE"/>
                                                                             <t:template>
-                                                                                <wt:StyleTextTreeTableValue text="{GeneralModel>value}" maxLength="20" included="{GeneralModel>isIncluded}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
+                                                                                <wt:StyleTextTreeTableValueCFR text="{GeneralModel>value}" maxLength="20" included="{GeneralModel>isIncluded}" diff="{GeneralModel>expand}" maxLines="1" tooltip="{GeneralModel>value}"/>
                                                                             </t:template>
                                                                         </t:Column>
                                                                     </wt:columns>
