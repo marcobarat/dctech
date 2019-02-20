@@ -215,7 +215,7 @@ sap.ui.define([
                                 this.EnableButtons(["ButtonFinePredisposizione"]);
                                 this.PredisposizioneLinea();
                                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//                                this.OpenSinottico();
+                                this.OpenSinottico();
                             }
                             break;
                         case "Disponibile.Lavorazione":
@@ -332,6 +332,18 @@ sap.ui.define([
         SUCCESSFermoOEE: function (Jdata) {
             if (Jdata.avanzamento >= 100) {
                 Jdata.avanzamento = 100;
+            }
+            var times = ["tempoAttrezzaggio", "tempoFermi", "tempoFermiAutomatici", "tempoFermoAttuale", "tempoTotaleFermiAutomatici"];
+            var spl, i, temp;
+            for (var key in Jdata) {
+                if (times.indexOf(key) > -1) {
+                    spl = Jdata[key].split(":");
+                    temp = "";
+                    for (i = 0; i < spl.length; i++) {
+                        temp += this.StringTime(Number(spl[i])) + ":";
+                    }
+                    Jdata[key] = temp.slice(0, -1);
+                }
             }
             if (this.SPCDialog) {
                 if (this.SPCDialog.isOpen()) {
