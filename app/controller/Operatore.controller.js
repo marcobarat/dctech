@@ -803,11 +803,13 @@ sap.ui.define([
         },
         SUCCESSShowFermi: function (Jdata) {
             var data = Jdata.fermi;
-            var i;
+            var i, msec_in, msec_fin;
             for (i = 0;i < data.length; i++) {
                 data[i].inizio = data[i].inizio.split("T")[1];
                 data[i].fine = data[i].fine.split("T")[1];
-                data[i].durata = this.MillisecsToStandard(this.StandardToMillisecs(data[i].fine) - this.StandardToMillisecs(data[i].inizio));
+                msec_in = this.StandardToMillisecs(data[i].inizio);
+                msec_fin = this.StandardToMillisecs(data[i].fine);
+                data[i].durata = (msec_fin < msec_in) ? this.MillisecsToStandard(msec_fin - msec_in + 86400000) : this.MillisecsToStandard(msec_fin - msec_in);
             }
             this.ModelFermi.setData(data);
             this.getView().setModel(this.ModelFermi, "ModelFermi");
