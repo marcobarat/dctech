@@ -889,12 +889,47 @@
                             </VBox>
                             <VBox height="5%" width="100%"/>
                         </VBox>
-                        <VBox>
-                            <ScrollContainer height="750px" vertical="true">
-                                <content>
-                                    <VBox id="vboxFermo" height="750px" width="100%"/> <!-- height="65%" -->
-                                </content>
-                            </ScrollContainer>
+                        <VBox height="65%">
+                            <VBox height="20%"/>
+                            <VBox height="60%">
+                                <HBox>
+                                    <VBox width="10%"/>
+                                    <VBox width="30%">
+                                        <FlexBox  alignItems="Start" justifyContent="Center">
+                                            <Text text="1. SELEZIONA CATEGORIA" class="causaleFermiText"/>
+                                        </FlexBox>
+                                        <Select id="tipoFermi" items="{ModelFermiTipo>/}" change="SelectedTipo" forceSelection="false" width="100%" class="causaleFermiSelect">
+                                            <core:Item key="{ModelFermiTipo>index}" text="{ModelFermiTipo>name}"/>
+                                        </Select>
+                                    </VBox>
+                                    <VBox width="20%"/>
+                                    <VBox width="30%">
+                                        <FlexBox  alignItems="Start" justifyContent="Center">
+                                            <Text text="2. SELEZIONA CAUSALE" class="causaleFermiText"/>
+                                        </FlexBox>
+                                        <!--                                        <ComboBox id="causaleFermi" items="{path: 'ModelFermiCausale>/', sorter: { path: 'fermo' }}" selectionChange="SelectedCausale" forceSelection="false" width="100%">
+                                            <core:Item key="{ModelFermiCausale>id}" text="{ModelFermiCausale>fermo}" />
+                                        </ComboBox>-->
+                                        <Select id="causaleFermi" items="{ModelFermiCausale>/}" enabled="false" change="SelectedCausale" forceSelection="false" width="100%" class="causaleFermiSelect">
+                                            <core:Item key="{ModelFermiCausale>id}" text="{ModelFermiCausale>fermo}"/>
+                                        </Select>
+                                    </VBox>
+                                    <VBox width="10%"/>
+                                </HBox>
+                            </VBox>
+                            <VBox height="20%">
+                                <HBox>
+                                    <VBox width="10%"/>
+                                    <VBox width="30%">
+                                        <Button id="AnnullaFermo" text="Annulla" width="100%" enabled="true" press="AnnullaFermo" class="annullaButtonFermo"/>
+                                    </VBox>
+                                    <VBox width="20%"/>
+                                    <VBox width="30%">
+                                        <Button id="ConfermaFermo" text="Conferma" width="100%" enabled="false" press="ConfermaFermo" class="confermaButtonFermo"/>
+                                    </VBox>
+                                    <VBox width="10%"/>
+                                </HBox>
+                            </VBox>
                         </VBox>
                         <VBox height="10%" width="100%" class="blueBorderTop">
                             <VBox height="15%" width="100%"/>

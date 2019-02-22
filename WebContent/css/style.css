@@ -587,11 +587,6 @@
     color : black;
     font-family: Arial;
 }
-.sapMSelectListItemBase{
-    font-size: 15pt !important;
-    color : black;
-    font-family: Arial;
-}
 .causeText .sapMListTbl .sapMText {
     font-size: 20pt;
     color : #003A6B;
@@ -662,6 +657,32 @@
     font-size: 20pt;
     background: #5E3032;
     color: white;
+}
+/*.annullaButtonFermo {
+    left: 10%;
+    top: 30rem;
+}*/
+.annullaButtonFermo .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #A71930;
+    color: white;
+    border-radius: 10px;
+    padding: 1.5%;
+    height: 150%;
+}
+/*.confermaButtonFermo {
+    left: 60%;
+    top: 27rem;
+}*/
+.confermaButtonFermo .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #7CA295;
+    color: white;
+    border-radius: 10px;
+    padding: 1.5%;
+    height: 150%;
 }
 .annullaButtonDialog .sapMBtnInner {
     font-family: Arial;
@@ -978,4 +999,35 @@ monobuttonSPC .sapMBtnInner {
 .sapMMessageToast {
     font-size: 24pt;
     width: 60rem !important;
+}
+/* SELECT FERMO */
+.causaleFermiSelect {
+    top: 1rem;
+    height: 5rem;
+    border: 3px solid #003A6B;
+    border-radius: 100px;
+    background: white;
+}
+.causaleFermiSelect .sapMSltLabel {
+    color: #003A6B;
+    font-size: 24pt;
+    padding-top: 1rem;
+    padding-left: 1rem;
+}
+.causaleFermiSelect .sapMSltArrow {
+    width: 4rem;
+    line-height: 4rem;
+    background: #003A6B;
+    color: white;
+    font-size: 40pt;
+}
+.causaleFermiText {
+    color: #003A6B;
+    font-size: 24pt;
+}
+
+
+.sapMSelectListItemBase {
+    color: #003A6B !important;
+    font-size: 24pt !important;
 }

@@ -76,6 +76,9 @@ sap.ui.define([
         manualSetupDialog: null,
         manualSetupModel: new JSONModel({}),
         idRisorsa: null,
+        ModelFermiTipo: new JSONModel({}),
+        ModelFermiCausale: new JSONModel({}),
+        AllCausali: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -161,14 +164,14 @@ sap.ui.define([
             this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
-            
+
             var spl = Jdata.TempoFaseAttuale.split(":");
             var i, temp = "";
-            for (i = 0;i < spl.length-1; i++) {
+            for (i = 0; i < spl.length - 1; i++) {
                 temp += this.StringTime(Number(spl[i])) + ":";
             }
             Jdata.TempoFaseAttuale = temp.slice(0, -1);
-            
+
             this.ModelDetailPages.setProperty("/Linea/", Jdata);
             var link, key;
             var model = this.ModelDetailPages.getData();
@@ -804,7 +807,7 @@ sap.ui.define([
         SUCCESSShowFermi: function (Jdata) {
             var data = Jdata.fermi;
             var i, msec_in, msec_fin;
-            for (i = 0;i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 data[i].inizio = data[i].inizio.split("T")[1];
                 data[i].fine = data[i].fine.split("T")[1];
                 msec_in = this.StandardToMillisecs(data[i].inizio);
@@ -1440,96 +1443,32 @@ sap.ui.define([
             this.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
         },
         SUCCESSFermo: function (Jdata) {
-            this.ModelDetailPages.setProperty("/CausaliFermi/", Jdata);
-            this.getSplitAppObj().toDetail(this.createId("Fermo"));
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            var data = this.ModelDetailPages.getData().CausaliFermi.gerarchie;
-            var num_gerarchie = data.length;
-            var ID, CB;
-            var cols = 2;
-            var rows = Math.ceil(num_gerarchie / cols);
-            this.outerVBox = this.getView().byId("vboxFermo");
-            var vvbb1 = new sap.m.VBox({height: "80%", width: "100%"});
-            var vvbb2 = new sap.m.VBox({height: "5%", width: "100%"});
-            var vvbb3 = new sap.m.VBox({height: "10%", width: "100%"});
-            var hbox = new sap.m.HBox({height: "100%"});
-            var vb1 = new sap.m.VBox({width: "15%"});
-            var VB1 = new sap.m.VBox({width: "85%"});
-            var L1_vbox, L2_hbox, L3_vbox, title, subdata;
-//            var L1_height = String(Math.round(100 / rows)) + "%";
-            var L3_width = String(Math.round(100 / cols)) + "%";
-            var index = 0;
-            this.CheckFermo = [];
-            for (var i = 0; i < rows; i++) {
-                L2_hbox = new sap.m.HBox();
-                for (var j = 0; j < cols; j++) {
-                    title = new sap.m.Text({text: data[index].gerarchia});
-                    title.addStyleClass("customText");
-                    title.addStyleClass("underlineOEE");
-                    L3_vbox = new sap.m.VBox({width: L3_width});
-                    L3_vbox.addItem(title);
-                    subdata = data[index].attributi;
-                    for (var k = 0; k < subdata.length; k++) {
-                        ID = "CBFermo" + subdata[k].id;
-                        this.CheckFermo[ID] = 0;
-                        CB = new sap.m.CheckBox({
-                            id: ID,
-                            text: subdata[k].fermo,
-                            select: [this.ChangeCheckedFermo, this],
-                            selected: false});
-                        CB.addStyleClass("customTextFermi");
-                        L3_vbox.addItem(CB);
-                    }
-                    L2_hbox.addItem(L3_vbox);
-                    index++;
-                    if (index === data.length) {
-                        break;
-                    }
+            var i, j, temp;
+            var Tipi = [];
+            this.AllCausali = [];
+            for (i = 0; i < Jdata.gerarchie.length; i++) {
+                Tipi.push({"name": Jdata.gerarchie[i].gerarchia, "index": i});
+                temp = [];
+                for (j = 0; j < Jdata.gerarchie[i].attributi.length; j++) {
+                    temp.push(Jdata.gerarchie[i].attributi[j]);
                 }
-                L1_vbox = new sap.m.VBox(/*{height: L1_height}*/);
-                L1_vbox.addItem(new sap.m.HBox({height: '2rem'}));
-                L1_vbox.addItem(L2_hbox);
-                VB1.addItem(L1_vbox);
+                this.AllCausali.push(temp);
             }
-            hbox.addItem(vb1);
-            hbox.addItem(VB1);
-            vvbb1.addItem(hbox);
-            this.outerVBox.addItem(vvbb1);
-            this.outerVBox.addItem(vvbb2);
-            var hbox1 = new sap.m.HBox({});
-            var vb0 = new sap.m.VBox({width: "10%"});
-            var vb01 = new sap.m.VBox({width: "37%"});
-            var vb2 = new sap.m.VBox({width: "6%"});
-            var vb3 = new sap.m.VBox({width: "37%"});
-            var vb4 = new sap.m.VBox({width: "10%"});
-            var bt1 = new sap.m.Button({
-                id: "AnnullaFermo",
-                text: "ANNULLA",
-                width: "100%",
-                enabled: true,
-                press: [this.AnnullaFermo, this]});
-            bt1.addStyleClass("annullaButton");
-            var bt2 = new sap.m.Button({
-                id: "ConfermaFermo",
-                text: "CONFERMA",
-                width: "100%",
-                enabled: false,
-                press: [this.ConfermaFermo, this]});
-            bt2.addStyleClass("confermaButton");
-            vb3.addItem(bt2);
-            vb01.addItem(bt1);
-            vb0.addItem(new sap.m.Text({}));
-            vb2.addItem(new sap.m.Text({}));
-            vb4.addItem(new sap.m.Text({}));
-            hbox1.addItem(vb0);
-            hbox1.addItem(vb01);
-            hbox1.addItem(vb2);
-            hbox1.addItem(vb3);
-            hbox1.addItem(vb4);
-            vvbb3.addItem(hbox1);
-            this.outerVBox.addItem(vvbb3);
-            this.outerVBox.addItem(vvbb2);
+            this.ModelFermiTipo.setData(Tipi);
+            this.getView().setModel(this.ModelFermiTipo, "ModelFermiTipo");
+            this.getSplitAppObj().toDetail(this.createId("Fermo"));
             this.EnableButtons([]);
+        },
+        SelectedTipo: function (event) {
+            var index = Number(event.getSource().getSelectedKey());
+            this.ModelFermiCausale.setData(this.AllCausali[index]);
+            this.getView().setModel(this.ModelFermiCausale, "ModelFermiCausale");
+            this.getView().byId("causaleFermi").setEnabled(true);
+            this.getView().byId("causaleFermi").setSelectedItem(null);
+            this.getView().byId("ConfermaFermo").setEnabled(false);
+        },
+        SelectedCausale: function () {
+            this.getView().byId("ConfermaFermo").setEnabled(true);
         },
 //      RICHIAMATO DAL PULSANTE DI ANNULLA NEL FERMO
         AnnullaFermo: function () {
@@ -1548,79 +1487,37 @@ sap.ui.define([
                 this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
-            this.outerVBox.destroyItems();
+            this.getView().byId("ConfermaFermo").setEnabled(false);
+            this.getView().byId("tipoFermi").setSelectedItem(null);
+            this.getView().byId("causaleFermi").setEnabled(false);
+            this.ModelFermiTipo.setData({});
+            this.ModelFermiCausale.setData({});
         },
 //      RICHIAMATO DAL PULSANTE DI CONFERMA NEL FERMO
         ConfermaFermo: function () {
             this.GlobalBusyDialog.open();
-            var CB = sap.ui.getCore().byId(this.id_split[1]);
-            var idGross = CB.getId();
-            var root = "CBFermo";
-            var id = idGross.substring(root.length, idGross.length);
+            var select = this.getView().byId("causaleFermi");
+            var id = select.getSelectedKey();
+            var causale = select._getSelectedItemText();
             var link;
             if (this.discr === "FermoManuale") {
-                this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + CB.getProperty("text"));
+                this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + causale);
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                 this.GlobalBusyDialog.close();
-                if (this.ISLOCAL === 1) {
-                    this.Item = {};
-                    var now = new Date();
-                    this.Item.inizio = this.DateToStandard(now);
-                    this.Item.causa = CB.getProperty("text");
-                    this.SwitchColor("red");
-                    this.getSplitAppObj().toDetail(this.createId("Fault"));
-                    this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
-                    this.LOCALState = "Disponibile.Fermo";
-                } else {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleEventoID=" + id;
-                    this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
-                }
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchInFermoManuale&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleEventoID=" + id;
+                this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
             } else if (this.discr === "FermoAutomatico") {
                 this.getView().byId("ConfermaCausalizzazione").setEnabled(false);
                 var vbox = this.getView().byId("vbox_table");
                 vbox.destroyItems();
-                if (this.ISLOCAL === 1) {
-                    var data = this.ModelDetailPages.getData().FermiNonCausalizzati;
-                    var data_All = this.ModelDetailPages.getData().FermiTotali;
-                    for (var i = 0; i < data.fermi.length; i++) {
-                        if (data.fermi[i].select > 0) {
-                            data.fermi[i].causa = CB.getProperty("text");
-                            for (var j in data_All.fermi) {
-                                if (data.fermi[i].inizio === data_All.fermi[j].inizio) {
-                                    data_All.fermi[j].causa = CB.getProperty("text");
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    this.ModelDetailPages.setProperty("/FermiNonCausalizzati/", data);
-                    this.ModelDetailPages.setProperty("/FermiTotali/", data_All);
-                    this.LOCALUpdateFaultsModels();
-                    var dataProgress = this.ModelDetailPages.getData().DatiOEE;
-                    dataProgress.tempoFermiAutomatici = this.ModelDetailPages.getData().FermiNonCausalizzati.Totale.tempoGuastoTotale;
-                    this.ModelDetailPages.setProperty("/DatiOEE/", dataProgress);
-                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                    this.Causalizzazione();
-                } else {
-                    var string = this.GetStringIDFermiAuto();
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogCausale&Content-Type=text/json&ListLogID=" + string + "&CausaleID=" + id;
-                    this.AjaxCallerVoid(link, this.Causalizzazione.bind(this));
-                }
+                var string = this.GetStringIDFermiAuto();
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogCausale&Content-Type=text/json&ListLogID=" + string + "&CausaleID=" + id;
+                this.AjaxCallerVoid(link, this.Causalizzazione.bind(this));
             } else if (this.discr === "CambioCausaleFermo") {
-                if (this.ISLOCAL === 1) {
-                    this.LOCALState = "Disponibile.Fermo";
-                    this.getSplitAppObj().toDetail(this.createId("Fault"));
-                    this.EnableButtons(["ButtonModificaCondizioni", "ButtonFermo", "ButtonRiavvio", "ButtonChiusuraConfezionamento"]);
-                    this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + CB.getProperty("text"));
-                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-                } else {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangeFermo&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleID=" + id;
-                    this.State = "";
-                    this.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
-//                    this.AjaxCallerVoid(link, this.SUCCESSCauseChange.bind(this));
-                }
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangeFermo&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&CausaleID=" + id;
+                this.State = "";
+                this.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
-            this.outerVBox.destroyItems();
         },
 
         //        ----------------------  RIAVVIO  ----------------------

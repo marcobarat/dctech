@@ -13,7 +13,7 @@
                     width="100%"
                     rowHeight="40px"
                     enableColumnReordering="false"
-                    visibleRowCount="10"
+                    visibleRowCount="11"
                     class="alternate-color"
                     selectionMode="None"
                     rows="{ModelFermi>/}"
