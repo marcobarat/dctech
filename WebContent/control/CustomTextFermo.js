@@ -36,15 +36,17 @@ sap.ui.define([
                 var jqueryObj = jQuery.sap.byId(this.getId());
 //                var limit = 0.92 * document.documentElement.clientWidth;
                 var limit = jqueryObj.parent().parent().width();
-                var fontSize = 75;
-                var param = this.getSize(this.getText(), String(fontSize) + "px Arial");
-                while (Number(param) >= limit) {
-                    fontSize -= 1;
-                    param = this.getSize(this.getText(), String(fontSize) + "px Arial");
+                if (Number(limit) > 10) {
+                    var fontSize = 75;
+                    var param = this.getSize(this.getText(), String(fontSize) + "px Arial");
+                    while (Number(param) >= limit) {
+                        fontSize -= 1;
+                        param = this.getSize(this.getText(), String(fontSize) + "px Arial");
+                    }
+                    var padTop = Math.max(-(1.3 / 36) * fontSize + ((1.3 * 25) / 12), 0);
+                    jqueryObj.css("font-size", String(fontSize) + "px");
+                    jqueryObj.css("padding-top", String(padTop) + "rem");
                 }
-                var padTop = Math.max(-(1.3 / 36) * fontSize + ((1.3 * 25) / 12), 0);
-                jqueryObj.css("font-size", String(fontSize) + "px");
-                jqueryObj.css("padding-top", String(padTop) + "rem");
             }
         }
     });
