@@ -166,7 +166,7 @@
     padding-top: 5rem;
 }
 .annullaButtonSin {
-    left: 110.5rem;
+    left: 103.5rem;
     width: 50pt;
     height: 50pt;
 }
@@ -224,7 +224,7 @@
 }
 
 .setupCompletoSin {
-    left: 95rem;
+    left: 88rem;
     top: 5rem;
 }
 .setupCompletoSin .sapMBtnInner{
@@ -247,95 +247,95 @@
 
 .MarcatoreSX {
     position: absolute;
-    bottom: 32.5rem;
-    left: 2.5rem;
+    bottom: 31.5rem;
+    left: 2rem;
 }
 .MarcatoreDX {
     position: absolute;
-    left: 2.5rem;
-    bottom: 0.5rem;
+    left: 2rem;
+    bottom: 0rem;
 }
 .PackItalSX {
     position: absolute;
-    bottom: 29.5rem;
-    left: 20.5rem;
+    bottom: 28.5rem;
+    left: 19rem;
 }
 .PackItalDX {
     position: absolute;
-    bottom: 2.5rem;
-    left: 20.5rem;
+    bottom: 2rem;
+    left: 19rem;
 }
 .Scatolatrice {
     position: absolute;
-    bottom: 4rem;
-    right: 48rem;
+    bottom: 3.5rem;
+    right: 45rem;
 }
 .Etichettatrice {
     position: absolute;
-    bottom: 6rem;
-    right: 19rem;
+    bottom: 5.5rem;
+    right: 18rem;
 }
 
 .MarcatoreSX_SA {
     position: absolute;
-    bottom: 32.5rem;
-    left: 7.5rem;
+    bottom: 31.5rem;
+    left: 7rem;
 }
 .MarcatoreDX_SA {
     position: absolute;
-    left: 7.5rem;
-    bottom: 0.5rem;
+    left: 7rem;
+    bottom: 0rem;
 }
 .PackItalSX_SA {
     position: absolute;
-    bottom: 29.5rem;
-    left: 25.5rem;
+    bottom: 28.5rem;
+    left: 24rem;
 }
 .PackItalDX_SA {
     position: absolute;
-    bottom: 2.5rem;
-    left: 25.5rem;
+    bottom: 2rem;
+    left: 24rem;
 }
 .Scatolatrice_SA {
     position: absolute;
-    bottom: 4rem;
-    right: 43rem;
+    bottom: 3.5rem;
+    right: 40rem;
 }
 .Etichettatrice_SA {
     position: absolute;
-    bottom: 6rem;
-    right: 14rem;
+    bottom: 5.5rem;
+    right: 13rem;
 }
 
 .MarcatoreSX_SM {
     position: absolute;
-    bottom: 32.5rem;
-    left: 12.5rem;
+    bottom: 31.5rem;
+    left: 12rem;
 }
 .MarcatoreDX_SM {
     position: absolute;
-    left: 12.5rem;
-    bottom: 0.5rem;
+    left: 12rem;
+    bottom: 0rem;
 }
 .PackItalSX_SM {
     position: absolute;
-    bottom: 29.5rem;
-    left: 30.5rem;
+    bottom: 28.5rem;
+    left: 29rem;
 }
 .PackItalDX_SM {
     position: absolute;
-    bottom: 2.5rem;
-    left: 30.5rem;
+    bottom: 2rem;
+    left: 29rem;
 }
 .Scatolatrice_SM {
     position: absolute;
-    bottom: 4rem;
-    right: 38rem;
+    bottom: 3.5rem;
+    right: 35rem;
 }
 .Etichettatrice_SM {
     position: absolute;
-    bottom: 6rem;
-    right: 9rem;
+    bottom: 5.5rem;
+    right: 8rem;
 }
 
 .buttonWhite .sapMBtnInner {
@@ -508,6 +508,13 @@
     font-size: 56pt;
     color : #003A6B;
     font-family: Arial;
+}
+.textTopScalable {
+    font-size: 56pt;
+    color : #003A6B;
+    font-family: Arial;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .textTopReduced1 {
     font-size: 48pt;

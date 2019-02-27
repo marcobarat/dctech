@@ -1,7 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
           xmlns:u="sap.ui.unified" xmlns:comp="myapp.component" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-          xmlns:wt="myapp.control" 
+          xmlns:wt="myapp.control"
           
           controllerName="myapp.controller.Operatore">
     <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi" > 
@@ -14,7 +14,6 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <!--<Text text="{GeneralModel>/Intestazione/linea}" class="textTop"/>-->
                                         <Link text="{GeneralModel>/Intestazione/linea}" class="textTop" press="OpenSinottico"/>
                                     </FlexBox>
                                 </VBox>
@@ -22,15 +21,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione0" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione0" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="destinazione0" text="{GeneralModel>/Intestazione/destinazione}"/>
+                                        <wt:CustomTextFermo id="destinazione0" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -42,22 +40,21 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton1" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="77%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo0"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>
                                 </HBox>
                             </VBox>
-                            <!--<VBox height="10%" width="100%"/>-->
                         </VBox>
                     </VBox>
                 </content>
@@ -79,15 +76,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione1" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione1" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">    
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="destinazione1" text="{GeneralModel>/Intestazione/destinazione}"/>
+                                        <wt:CustomTextFermo id="destinazione1" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -147,19 +143,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton2" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="77%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo1"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -184,14 +180,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione2" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <wt:CustomTextFermo id="descrizione2" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione2"/>
+                                        <wt:CustomTextFermo id="destinazione2" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -351,19 +347,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton3" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="77%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo2"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -390,14 +386,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione3" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <wt:CustomTextFermo id="descrizione3" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione3"/>
+                                        <wt:CustomTextFermo id="destinazione3" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -610,7 +606,7 @@
                                     <VBox height="100%" width="10%"/>
                                     <VBox height="100%" width="40%">
                                         <HBox>
-                                            <VBox height="100%" width="59%">
+                                            <VBox height="100%" width="65%">
                                                 <VBox height="33%" width="100%">
                                                     <FlexBox alignItems="End" justifyContent="End">
                                                         <Text text="Attuale:" class="OEEText"/>
@@ -627,8 +623,8 @@
                                                     <Text/>
                                                 </VBox>
                                             </VBox>
-                                            <VBox height="100%" width="4%"/>
-                                            <VBox height="100%" width="39%">
+                                            <VBox height="100%" width="2%"/>
+                                            <VBox height="100%" width="33%">
                                                 <VBox height="33%" width="100%">
                                                     <FlexBox alignItems="Start" justifyContent="Start">
                                                         <Text text="{GeneralModel>/DatiOEE/tempoFermoAttuale}" class="OEEText"/>
@@ -657,19 +653,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton4" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
-                                        <FlexBox alignItems="Start" justifyContent="Center">
+                                    <VBox height="100%" width="92%">
+                                        <FlexBox alignItems="Start" justifyContent="Center" height="100%" width="100%">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo3"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+<!--                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>-->
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -693,14 +689,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione4" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <wt:CustomTextFermo id="descrizione4" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione4"/>
+                                        <wt:CustomTextFermo id="destinazione4" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -839,19 +835,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton5" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="92%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo4"/>
+                                            <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo4"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+<!--                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>-->
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -875,15 +871,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione5" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione5" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione5"/>
+                                        <wt:CustomTextFermo id="destinazione5" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -935,19 +930,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton6" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="92%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo5"/>
+                                            <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo5"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+<!--                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>-->
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -971,15 +966,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione6" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione6" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione6"/>
+                                        <wt:CustomTextFermo id="destinazione6" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1055,19 +1049,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton7" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="92%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo6"/>
+                                            <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo6"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+<!--                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>-->
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1091,15 +1085,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione7" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione7" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione7"/>
+                                        <wt:CustomTextFermo id="destinazione7" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1308,7 +1301,7 @@
                                     <VBox height="100%" width="10%"/>
                                     <VBox height="100%" width="40%">
                                         <HBox>
-                                            <VBox height="100%" width="59%">
+                                            <VBox height="100%" width="65%">
                                                 <VBox height="33%" width="100%">
                                                     <FlexBox alignItems="End" justifyContent="End">
                                                         <Text text="Attuale:" class="OEEText"/>
@@ -1325,8 +1318,8 @@
                                                     <Text/>
                                                 </VBox>
                                             </VBox>
-                                            <VBox height="100%" width="4%"/>
-                                            <VBox height="100%" width="39%">
+                                            <VBox height="100%" width="2%"/>
+                                            <VBox height="100%" width="33%">
                                                 <VBox height="33%" width="100%">
                                                     <FlexBox alignItems="Start" justifyContent="Start">
                                                         <Text text="{GeneralModel>/DatiOEE/tempoFermoAttuale}" class="OEEText"/>
@@ -1354,19 +1347,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton8" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="92%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo7"/>
+                                            <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo7"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+<!--                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>-->
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1390,15 +1383,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione8" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione8" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione8"/>
+                                        <wt:CustomTextFermo id="destinazione8" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1481,19 +1473,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton9" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="92%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo8"/>
+                                            <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo8"/>
                                         </FlexBox>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+<!--                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>-->
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1517,15 +1509,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione9" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione9" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione9"/>
+                                        <wt:CustomTextFermo id="destinazione9" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1579,19 +1570,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton10" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="77%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo9"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1618,15 +1609,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione10" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione10" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione10"/>
+                                        <wt:CustomTextFermo id="destinazione10" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1686,19 +1676,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton11" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="77%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo10"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1724,15 +1714,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione11" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
-                                        
+                                        <wt:CustomTextFermo id="descrizione11" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione11"/>
+                                        <wt:CustomTextFermo id="destinazione11" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1887,19 +1876,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton12" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="77%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo11"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>
                                 </HBox>
                             </VBox>
                         </VBox>
@@ -1923,14 +1912,14 @@
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text id="descrizione12" text="{GeneralModel>/Intestazione/descrizione}" class="textTop"/>
+                                        <wt:CustomTextFermo id="descrizione12" text="{GeneralModel>/Intestazione/descrizione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
                             <VBox height="30%" width="100%">
                                 <VBox width="100%">
                                     <FlexBox alignItems="Start" justifyContent="Center">
-                                        <Text text="{GeneralModel>/Intestazione/destinazione}" id="destinazione12"/>
+                                        <wt:CustomTextFermo id="destinazione12" text="{GeneralModel>/Intestazione/destinazione}" class="textTopScalable"/>
                                     </FlexBox>
                                 </VBox>
                             </VBox>
@@ -1952,19 +1941,19 @@
                             <VBox height="15%" width="100%"/>
                             <VBox height="85%" width="100%">
                                 <HBox>
-                                    <VBox height="100%" width="15%">
+                                    <VBox height="100%" width="8%">
                                         <wt:CustomButtonMessage newMessages="{GeneralModel>/Linea/msg}" id="msgButton13" width="80%" icon="sap-icon://message-popup" text="Messaggi" press="ShowMessaggi"/>
                                     </VBox>
-                                    <VBox height="100%" width="70%">
+                                    <VBox height="100%" width="77%">
                                         <FlexBox alignItems="Start" justifyContent="Center">
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo12"/>
                                         </FlexBox>
                                     </VBox>
                                     <VBox height="100%" width="2%"/>
-                                    <VBox height="100%" width="11%">
+                                    <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
-                                    <VBox height="100%" width="2%"/>
+                                    <VBox height="100%" width="1%"/>
                                 </HBox>
                             </VBox>
                         </VBox>

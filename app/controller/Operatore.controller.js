@@ -25,6 +25,7 @@ sap.ui.define([
         ModelAllarmi: new JSONModel({}),
         ModelParametri: new JSONModel({}),
         ModelFermi: new JSONModel({}),
+        ModelEnableSinButtons: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
         CheckFermo: null,
@@ -85,6 +86,13 @@ sap.ui.define([
             this.IDsTreeTables.setSizeLimit("1000");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("Operatore").attachPatternMatched(this.Starter, this);
+        },
+        InvalidateFermi: function () {
+            for (var i = 0;i < 13; i++) {
+                this.getView().byId("descrizione" + i).invalidate();
+                this.getView().byId("destinazione" + i).invalidate();
+                this.getView().byId("fermo" + i).invalidate();
+            }
         },
         Starter: function () {
             this.ModelDetailPages = new JSONModel({});
@@ -164,6 +172,17 @@ sap.ui.define([
             this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
+            
+            this.InvalidateFermi();
+            
+            var batchId = "";
+            if (Jdata.Batch.BatchID) {
+                batchId = Jdata.Batch.BatchID;
+            }
+            var dataSinButtons = {"batch": batchId, "fermo": Jdata.StatoLinea};
+            this.ModelEnableSinButtons.setData(dataSinButtons);
+            this.getView().setModel(this.ModelEnableSinButtons, "ModelEnableSinButtons");
+            sap.ui.getCore().setModel(this.ModelEnableSinButtons, "ModelEnableSinButtons");
 
             var spl = Jdata.TempoFaseAttuale.split(":");
             var i, temp = "";
@@ -177,10 +196,7 @@ sap.ui.define([
             var model = this.ModelDetailPages.getData();
             var data = model.Linea;
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
-            this.SetSizeDest(data.Batch.Destinazione);
-            this.SetSizeDesc(data.Batch.Descrizione);
             model.Intestazione.StatoLinea = this.SetLinea(data.StatoLinea);
-            this.SetSizeFermo(model.Intestazione.StatoLinea);
             this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
             if (typeof data.SKUattuale.attributi !== "undefined") {
                 data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
@@ -369,6 +385,7 @@ sap.ui.define([
                         fermoClean.shift();
                         fermoClean[0] = fermoClean[0].slice(1);
                         fermoClean.join("");
+//                        fermoClean = "MANCATO AVVIO MOTORE POSIZIONE LARGHEZZA NASTRATRICE MO82";
                         this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + fermoClean);
                     } else {
                         this.ModelDetailPages.setProperty("/CausaFermo/", "FERMO - " + data.CausaleEvento);
@@ -560,7 +577,8 @@ sap.ui.define([
                                 text: "",
                                 icon: "sap-icon://begin",
                                 stato: "{ModelSinottico>/Macchine/" + i + "/statoScritturaAuto}",
-                                batch: this.idBatch,
+                                batch: "{ModelEnableSinButtons>/batch}",
+                                fermo: "{ModelEnableSinButtons>/fermo}",
                                 press: [this.SendSingleSetup, this]});
                             button.addStyleClass("buttonSinottico");
                             button.addStyleClass(Jdata.Macchine[i].class + "_SA");
@@ -571,7 +589,8 @@ sap.ui.define([
                                 text: "",
                                 icon: "sap-icon://user-settings",
                                 stato: "{ModelSinottico>/Macchine/" + i + "/statoScritturaMan}",
-                                batch: this.idBatch,
+                                batch: "{ModelEnableSinButtons>/batch}",
+                                fermo: "{ModelEnableSinButtons>/fermo}",
                                 press: [this.ManualSetup, this]});
                             button.addStyleClass("buttonSinottico");
                             button.addStyleClass(Jdata.Macchine[i].class + "_SM");
@@ -904,11 +923,15 @@ sap.ui.define([
         SendMessage: function () {
             var link;
             var msg = this.getView().byId("inputMessage").getValue();
-            this.getView().byId("inputMessage").setValue("");
-            if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SendMessageChat&Content-Type=text/json&LineaID=" + this.linea_id + "&Messaggio=" + encodeURI(msg) + "&Imp=1&Origine=Operatore&OutputParameter=JSON";
+            if (msg !== "") {
+                this.getView().byId("inputMessage").setValue("");
+                if (this.ISLOCAL !== 1) {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/SendMessageChat&Content-Type=text/json&LineaID=" + this.linea_id + "&Messaggio=" + encodeURI(msg) + "&Imp=1&Origine=Operatore&OutputParameter=JSON";
+                }
+                this.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
+            } else {
+                MessageToast.show("Non si possono inviare messaggi vuoti", {duration: 2000});
             }
-            this.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
         },
         MSGChanged: function () {
             var obj = this.getView().byId("inputMessage");
@@ -1066,6 +1089,7 @@ sap.ui.define([
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
                 value: "{GeneralModel>valueModify}",
+                placeholder: "Inserire Valore",
                 type: "Text",
                 maxLength: 30});
             inputValueMod.addStyleClass("diffStandard");
@@ -1205,7 +1229,7 @@ sap.ui.define([
                 this.TempModel.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
                 var xmlSelection = this.XMLSelectionsBuilder(this.TempModel, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID);
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xmlSelection + "&OutputParameter=JSON";
-                this.SyncAjaxCallerVoid(link, this.SUCCESSSelectSKUCP.bind(this));
+                this.SyncAjaxCallerData(link, this.SUCCESSSelectSKUCP.bind(this));
 
             } else {
 //                MessageToast.show(Jdata.errorMessageJdata.errorMessage, {duration: 3000});
@@ -1873,6 +1897,7 @@ sap.ui.define([
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
                 value: "{GeneralModel>valueModify}",
+                placeholder: "Inserire Valore",
                 type: "Text",
                 maxLength: 30});
             inputValueMod.addStyleClass("diffStandard");
@@ -2332,88 +2357,6 @@ sap.ui.define([
             for (i in vec) {
                 if (sap.ui.getCore().byId(ButtonIDs[i]).getEnabled() === false) {
                     sap.ui.getCore().byId(ButtonIDs[i]).addStyleClass("styleDisabledButton");
-                }
-            }
-        },
-        SetSizeDest: function (string) {
-            var text;
-            var size = 0;
-            var specials = [" ", ".", ",", "'", ":", ";", "-", "(", ")"];
-            for (var i in string) {
-                if (specials.indexOf(string[i]) > -1) {
-                    size += 0.5;
-                } else {
-                    size += 1;
-                }
-            }
-            for (var j = 0; j < 13; j++) {
-                text = this.getView().byId("destinazione" + String(j));
-                if (size < 34) {
-                    text.removeStyleClass("textTopReduced1");
-                    text.removeStyleClass("textTopReduced2");
-                    text.addStyleClass("textTop");
-                } else if (size >= 34 && size < 42) {
-                    text.removeStyleClass("textTop");
-                    text.removeStyleClass("textTopReduced2");
-                    text.addStyleClass("textTopReduced1");
-                } else {
-                    text.removeStyleClass("textTop");
-                    text.removeStyleClass("textTopReduced1");
-                    text.addStyleClass("textTopReduced2");
-                }
-            }
-        },
-        SetSizeDesc: function (string) {
-            var text;
-            var size = 0;
-            var specials = [" ", ".", ",", "'", ":", ";", "-", "(", ")"];
-            for (var i in string) {
-                if (specials.indexOf(string[i]) > -1) {
-                    size += 0.5;
-                } else {
-                    size += 1;
-                }
-            }
-            for (var j = 0; j < 13; j++) {
-                text = this.getView().byId("descrizione" + String(j));
-                if (size < 40) {
-                    text.removeStyleClass("textTopReduced1");
-                    text.addStyleClass("textTop");
-                } else {
-                    text.removeStyleClass("textTop");
-                    text.addStyleClass("textTopReduced1");
-                }
-            }
-        },
-        SetSizeFermo: function (string) {
-            var text;
-            var size = 0;
-            var specials = [" ", ".", ",", "'", ":", ";", "-", "(", ")"];
-            for (var i in string) {
-                if (specials.indexOf(string[i]) > -1) {
-                    size += 0.5;
-                } else {
-                    size += 1;
-                }
-            }
-            for (var j = 0; j < 13; j++) {
-                text = this.getView().byId("fermo" + String(j));
-                var classes = ["textTop", "textTopReduced1", "textTopReduced4", "textTopReduced3", "textTopReduced2", "textTopReduced2a"];
-                for (var k = 0; k < classes.length; k++) {
-                    text.removeStyleClass(classes[k]);
-                }
-                if (size < 20) {
-                    text.addStyleClass("textTop");
-                } else if (size >= 20 && size < 26) {
-                    text.addStyleClass("textTopReduced1");
-                } else if (size >= 26 && size < 32) {
-                    text.addStyleClass("textTopReduced2");
-                } else if (size >= 32 && size < 36) {
-                    text.addStyleClass("textTopReduced2a");
-                } else if (size >= 36 && size < 46) {
-                    text.addStyleClass("textTopReduced3");
-                } else {
-                    text.addStyleClass("textTopReduced4");
                 }
             }
         },

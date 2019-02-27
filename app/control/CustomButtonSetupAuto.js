@@ -16,7 +16,8 @@ sap.ui.define([
             },
             properties: {
                 stato: {type: "string"},
-                batch: {type: "string"}
+                batch: {type: "string"},
+                fermo: {type: "string"}
             }
         },
         renderer: {},
@@ -25,21 +26,22 @@ sap.ui.define([
             var classes = ["buttonGood", "buttonError"];
             var stato = this.getStato();
             var batch = this.getBatch();
+            var fermo = this.getFermo();
             for (var k = 0; k < classes.length; k++) {
                 this.removeStyleClass(classes[k]);
             }
-            if (batch !== "") {
+            switch (stato) {
+                case "red":
+                    this.addStyleClass("buttonError");
+                    break;
+                case "green":
+                    this.addStyleClass("buttonGood");
+                    break;
+                default:
+                    break;
+            }
+            if (batch !== "" && (fermo === "Disponibile.Fermo" || fermo === "Disponibile.Attrezzaggio")) {
                 this.setEnabled(true);
-                switch (stato) {
-                    case "red":
-                        this.addStyleClass("buttonError");
-                        break;
-                    case "green":
-                        this.addStyleClass("buttonGood");
-                        break;
-                    default:
-                        break;
-                }
             } else {
                 this.setEnabled(false);
             }

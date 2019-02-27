@@ -16,7 +16,8 @@ sap.ui.define([
             },
             properties: {
                 stato: {type: "string"},
-                batch: {type: "string"}
+                batch: {type: "string"},
+                fermo: {type: "string"}
             }
         },
         renderer: {},
@@ -26,15 +27,16 @@ sap.ui.define([
             var stato = this.getStato();
             var batch = this.getBatch();
             this.removeStyleClass(classGood);
-            if (batch !== "") {
+            var fermo = this.getFermo();
+            switch (stato) {
+                case "green":
+                    this.addStyleClass("buttonGood");
+                    break;
+                default:
+                    break;
+            }
+            if (batch !== "" && (fermo === "Disponibile.Fermo" || fermo === "Disponibile.Attrezzaggio")) {
                 this.setEnabled(true);
-                switch (stato) {
-                    case "green":
-                        this.addStyleClass("buttonGood");
-                        break;
-                    default:
-                        break;
-                }
             } else {
                 this.setEnabled(false);
             }
