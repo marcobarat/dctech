@@ -39,7 +39,7 @@ sap.ui.define([
                 if (Number(limit) > 10) {
                     var fontSize = 75;
                     var param = this.getSize(this.getText(), String(fontSize) + "px Arial");
-                    while (Number(param) >= limit) {
+                    while (Number(param) >= limit && fontSize >= 20) {
                         fontSize -= 1;
                         param = this.getSize(this.getText(), String(fontSize) + "px Arial");
                     }
