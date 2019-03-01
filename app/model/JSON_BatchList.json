@@ -1,0 +1,32 @@
+[
+        {
+            "batchId": "1",
+            "sequenza": "5",
+            "formato": "093 Farfalle - Semola",
+            "grammatura": "Film 1 kg",
+            "destinazione": "ESTERO",
+            "quintali": "150.00",
+            "cartoni": "1250",
+            "ore": "02:05"
+        },
+        {
+            "batchId": "2",
+            "sequenza": "10",
+            "formato": "024 Rigatoni - Semola",
+            "grammatura": "Film 500 gr",
+            "destinazione": "HBEX COMERCIAL EXPORTADORA E IMPORTAD. LTDA",
+            "quintali": "20.00",
+            "cartoni": "166",
+            "ore": "00:33"
+        },
+        {
+            "batchId": "3",
+            "sequenza": "15",
+            "formato": "020 Zitone tagliato - Semola",
+            "grammatura": "Film 500 gr",
+            "destinazione": "ITA + ESTERO",
+            "quintali": "80.00",
+            "cartoni": "666",
+            "ore": "02:13"
+        }
+]

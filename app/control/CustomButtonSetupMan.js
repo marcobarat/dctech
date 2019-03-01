@@ -35,7 +35,7 @@ sap.ui.define([
                 default:
                     break;
             }
-            if (batch !== "" && (fermo === "Disponibile.Fermo" || fermo === "Disponibile.Attrezzaggio")) {
+            if (batch !== "" && (fermo === "Disponibile.Fermo" || fermo === "Disponibile.Attrezzaggio" || fermo === "Disponibile.Lavorazione")) {
                 this.setEnabled(true);
             } else {
                 this.setEnabled(false);

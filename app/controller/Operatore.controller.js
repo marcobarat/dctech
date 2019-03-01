@@ -14,6 +14,7 @@ sap.ui.define([
     var OperatoreController = Controller.extend("myapp.controller.Operatore", {
 
 //      VARIABILI GLOBALI
+        LINEAID: null,
         ISLOCAL: 0,
         ISATTR: 0,
         IDsTreeTables: new JSONModel({}),
@@ -26,6 +27,8 @@ sap.ui.define([
         ModelParametri: new JSONModel({}),
         ModelFermi: new JSONModel({}),
         ModelEnableSinButtons: new JSONModel({}),
+        ModelListaBatch: new JSONModel("model/JSON_BatchList.json"),
+        ModelMachineSetup: new JSONModel({}),
         GlobalBusyDialog: new sap.m.BusyDialog(),
         TabContainer: null,
         CheckFermo: null,
@@ -80,6 +83,10 @@ sap.ui.define([
         ModelFermiTipo: new JSONModel({}),
         ModelFermiCausale: new JSONModel({}),
         AllCausali: null,
+        MachineSetupClicked: null,
+        pdcID: null,
+        repartoID: null,
+        stabilimentoID: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -88,7 +95,7 @@ sap.ui.define([
             oRouter.getRoute("Operatore").attachPatternMatched(this.Starter, this);
         },
         InvalidateFermi: function () {
-            for (var i = 0;i < 13; i++) {
+            for (var i = 0; i < 13; i++) {
                 this.getView().byId("descrizione" + i).invalidate();
                 this.getView().byId("destinazione" + i).invalidate();
                 this.getView().byId("fermo" + i).invalidate();
@@ -105,6 +112,7 @@ sap.ui.define([
                 this.IDsTreeTables.getData().IDs[key] = 0;
             }
             sap.ui.getCore().setModel(this.IDsTreeTables, "IDsTreeTables");
+            this.LINEAID = jQuery.sap.getUriParameters().get("LINEAID");
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             sap.ui.getCore().setModel({ISLOCAL: this.ISLOCAL}, "ISLOCAL");
             this.ISATTR = Number(jQuery.sap.getUriParameters().get("ISATTR"));
@@ -118,7 +126,11 @@ sap.ui.define([
                 }
                 this.AjaxCallerData(link, this.LOCALCheckStatus.bind(this));
             } else {
-                this.ModelDetailPages.setProperty("/DettaglioLinea/", sap.ui.getCore().getModel("Global").getData());
+                if (Boolean(this.LINEAID)) {
+                    this.ModelDetailPages.setProperty("/DettaglioLinea/", {idLinea: Number(this.LINEAID)});
+                } else {
+                    this.ModelDetailPages.setProperty("/DettaglioLinea/", sap.ui.getCore().getModel("Global").getData());
+                }
                 this.RefreshFunction(0);
             }
 //        Gestione dell'orologio
@@ -172,9 +184,23 @@ sap.ui.define([
             this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
-            
+
+            this.pdcID = Jdata.PdcID;
+            this.repartoID = Jdata.RepartoID;
+            this.stabilimentoID = Jdata.StabilimentoID;
+
+            var dataBatch = Jdata.ListaBatch;
+            for (var n = 0; n < dataBatch.length; n++) {
+                dataBatch[n].batchSelected = (Jdata.Batch.BatchID) ? Jdata.Batch.BatchID : "";
+                dataBatch[n].ore = dataBatch[n].ore.split("T")[1].split(":").slice(0, 2).join(":");
+            }
+            this.ModelListaBatch.setData(dataBatch);
+            this.getView().setModel(this.ModelListaBatch, "ModelListaBatch");
+            sap.ui.getCore().setModel(this.ModelListaBatch, "ModelListaBatch");
+
+
             this.InvalidateFermi();
-            
+
             var batchId = "";
             if (Jdata.Batch.BatchID) {
                 batchId = Jdata.Batch.BatchID;
@@ -315,6 +341,7 @@ sap.ui.define([
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             this.State = this.ModelDetailPages.getData().Linea.StatoLinea;
             this.Counter = 0;
+            this.GlobalBusyDialog.close();
         },
 //      Nel caso di 'Lavorazione', 'Fermo' e 'Chiusura' vengono chiamate altre TRX per ricevere i dati necessari. Qui abbiamo le funzioni di SUCCESS
         SUCCESSLavorazioneOEE: function (Jdata) {
@@ -508,7 +535,15 @@ sap.ui.define([
             this.SinDialog.open();
             this.SinDialog.setBusy(true);
             this.idBatch = "";
-            this.getView().byId("setupCompletoButton").setEnabled(false);
+
+//            var stato = this.ModelDetailPages.getData().Linea.StatoLinea;
+//            if (stato === "Disponibile.Attrezzaggio" || stato === "Disponibile.Fermo") {
+//                this.getView().byId("setupCompletoButton").setEnabled(true);
+//            } else {
+//                this.getView().byId("setupCompletoButton").setEnabled(false);
+//            }
+
+//            this.getView().byId("setupCompletoButton").setEnabled(false);
             if (this.ModelDetailPages.getData().Linea.Batch.BatchID) {
                 this.idBatch = this.ModelDetailPages.getData().Linea.Batch.BatchID;
                 this.getView().byId("setupCompletoButton").setEnabled(true);
@@ -574,12 +609,13 @@ sap.ui.define([
 
                             button = new CustomButtonSetupAuto({
                                 id: "SA_" + Jdata.Macchine[i].risorsaid,
+                                name: Jdata.Macchine[i].nome,
                                 text: "",
                                 icon: "sap-icon://begin",
                                 stato: "{ModelSinottico>/Macchine/" + i + "/statoScritturaAuto}",
                                 batch: "{ModelEnableSinButtons>/batch}",
                                 fermo: "{ModelEnableSinButtons>/fermo}",
-                                press: [this.SendSingleSetup, this]});
+                                press: [this.InvioSetup, this]});
                             button.addStyleClass("buttonSinottico");
                             button.addStyleClass(Jdata.Macchine[i].class + "_SA");
                             vbox.addItem(button);
@@ -742,9 +778,9 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: "3000"});
             }
         },
-        SendSingleSetup: function (event) {
+        SendSingleSetup: function () {
             this.GlobalBusyDialog.open();
-            this.idRisorsa = event.getSource().getId().split("_")[1];
+//            this.idRisorsa = event.getSource().getId().split("_")[1];
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/Scrittura/SingleWrite&Content-Type=text/json&RisorsaID=" + this.idRisorsa + "&BatchID=" + this.idBatch + "&SKUID=" + this.skuId + "&OutputParameter=JSON";
             this.AjaxCallerVoid(link, this.SUCCESSSendSingleSetup.bind(this), this.FAILURESendSingleSetup.bind(this));
         },
@@ -797,7 +833,35 @@ sap.ui.define([
             this.GlobalBusyDialog.close();
             MessageToast.show("Comunicazione a DB fallita, riprovare", {duration: 3000});
         },
-
+        InvioSetup: function (event) {
+            if (event.getSource().getText() === "Invia Setup Completo") {
+                this.MachineSetupClicked = "completo";
+            } else {
+                this.MachineSetupClicked = "a " + event.getSource().getName();
+                this.idRisorsa = event.getSource().getId().split("_")[1];
+            }
+            var machine = {"machine": this.MachineSetupClicked};
+            this.ModelMachineSetup.setData(machine);
+            this.getView().setModel(this.ModelMachineSetup, "ModelMachineSetup");
+            sap.ui.getCore().setModel(this.ModelMachineSetup, "ModelMachineSetup");
+            this.ClosingDialog = this.getView().byId("AskSetup");
+            if (!this.ClosingDialog) {
+                this.ClosingDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AskSetup", this);
+                this.getView().addDependent(this.ClosingDialog);
+            }
+            this.ClosingDialog.addStyleClass("dialogStyle");
+            this.ClosingDialog.open();
+        },
+        ConfermaInvioSetup: function () {
+            if (this.MachineSetupClicked === "completo") {
+                this.SendCompleteSetup();
+            } else {
+                this.SendSingleSetup();
+            }
+        },
+        AnnullaInvioSetup: function () {
+            this.ClosingDialog.close();
+        },
         CloseDialog: function () {
             this.STOPSin = 0;
             this.RefreshSinFunction();
@@ -946,6 +1010,40 @@ sap.ui.define([
 //        ---------------------------------------------------------------------
 //        ---------------------------  DETAIL PAGES  --------------------------
 //        ---------------------------------------------------------------------
+
+//        ------------------------------  VUOTA  ------------------------------    
+
+        BatchManager: function (event) {
+            var lineaId = this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+            var batchId = event.getSource().getBatch();
+            var checkBox = event.getSource().getParent().getCells()[7].getSelected();
+            var text = event.getSource().getText();
+            var link;
+            if (text === "Trasferisci") {
+                var qli = event.getSource().getParent().getCells()[4].getText();
+                var cartoni = event.getSource().getParent().getCells()[5].getText();
+                if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+                    this.GlobalBusyDialog.open();
+                    if (checkBox) {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoPredisposizione&Content-Type=text/json&BatchID=" + batchId + "&LineaID=" + lineaId + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.stabilimentoID + "&OutputParameter=JSON";
+                    } else {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoForzato&Content-Type=text/json&BatchID=" + batchId + "&LineaID=" + lineaId + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.stabilimentoID + "&OutputParameter=JSON";
+                    }
+                    this.AjaxCallerData(link, this.RefreshFunction.bind(this));
+                } else {
+                    MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
+                }
+            } else {
+                this.GlobalBusyDialog.open();
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchRichiamo&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
+                this.AjaxCallerData(link, this.RefreshFunction.bind(this));
+            }
+        },
+        SelectedBoxSA: function (event) {
+            if (event.getSource().getSelected()) {
+                MessageToast.show("Selezionato trasferimento in SOLO ATTREZZAGIO", {duration: 2000});
+            }
+        },
 
 //        -------------------------  PRESA IN CARICO  -------------------------       
 
@@ -1542,6 +1640,11 @@ sap.ui.define([
                 this.State = "";
                 this.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
+            this.getView().byId("ConfermaFermo").setEnabled(false);
+            this.getView().byId("tipoFermi").setSelectedItem(null);
+            this.getView().byId("causaleFermi").setEnabled(false);
+            this.ModelFermiTipo.setData({});
+            this.ModelFermiCausale.setData({});
         },
 
         //        ----------------------  RIAVVIO  ----------------------
@@ -1804,7 +1907,7 @@ sap.ui.define([
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchChiuso&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
                 this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
-            this.getOwnerComponent().getRouter().navTo("Main");
+//            this.getOwnerComponent().getRouter().navTo("Main");
         },
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

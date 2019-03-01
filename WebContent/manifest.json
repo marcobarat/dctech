@@ -82,11 +82,6 @@
                     "target": "main"
                 }, 
                 {
-                    "name": "tmp",
-                    "pattern": "tmp",
-                    "target": "tmp"
-                },
-                {
                     "name": "Operatore",
                     "pattern": "Operatore",
                     "target": "Operatore"
@@ -97,13 +92,9 @@
                     "viewName": "view.Main",
                     "viewLevel": 0
                 },
-                "tmp": {
-                    "viewName": "view.Tmp",
-                    "viewLevel": 1
-                },
                 "Operatore": {
                     "viewName": "view.Operatore",
-                    "viewLevel": 1
+                    "viewLevel": 0
                 }
             }
         },

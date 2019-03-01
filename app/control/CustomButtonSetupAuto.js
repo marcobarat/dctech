@@ -17,7 +17,8 @@ sap.ui.define([
             properties: {
                 stato: {type: "string"},
                 batch: {type: "string"},
-                fermo: {type: "string"}
+                fermo: {type: "string"},
+                name: {type: "string"} 
             }
         },
         renderer: {},
@@ -40,7 +41,7 @@ sap.ui.define([
                 default:
                     break;
             }
-            if (batch !== "" && (fermo === "Disponibile.Fermo" || fermo === "Disponibile.Attrezzaggio")) {
+            if (batch !== "" && (fermo === "Disponibile.Fermo" || fermo === "Disponibile.Attrezzaggio" || fermo === "Disponibile.Lavorazione")) {
                 this.setEnabled(true);
             } else {
                 this.setEnabled(false);

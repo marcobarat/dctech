@@ -19,7 +19,7 @@
                                         rowHeight="40px"
                                         enableColumnReordering="false"
                                         id="sistemaTable"
-                                        visibleRowCount="10"
+                                        visibleRowCount="9"
                                         class="alternate-color"
                                         selectionMode="None"
                                         rows="{messaggi>/sistema/}"

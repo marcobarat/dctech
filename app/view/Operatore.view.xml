@@ -35,6 +35,73 @@
                             <VBox height="5%" width="100%"/>
                         </VBox>
                         <VBox height="65%" width="100%">
+                            <t:Table
+                                width="100%"
+                                rowHeight="80px"
+                                enableColumnReordering="false"
+                                visibleRowCount="6"
+                                class="alternate-color textTableList"
+                                selectionMode="None"
+                                rows="{ModelListaBatch>/}">
+                                <t:columns>
+                                    <t:Column hAlign="Center" width="8%" resizable="false">
+                                        <Label text="Sequenza"/>
+                                        <t:template>
+                                            <Text text="{ModelListaBatch>sequenza}"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="24%" resizable="false">
+                                        <Label text="Formato"/>
+                                        <t:template>
+                                            <Text text="{ModelListaBatch>formatoProduttivo}"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="10%" resizable="false">
+                                        <Label text="Confezione"/>
+                                        <t:template>
+                                            <Text text="{ModelListaBatch>confezione}"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="23%" resizable="false">
+                                        <Label text="Destinazione"/>
+                                        <t:template>
+                                            <Text text="{ModelListaBatch>destinazione}"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="7%" resizable="false">
+                                        <Label text="Quintali"/>
+                                        <t:template>
+                                            <Text text="{ModelListaBatch>qli}"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="7%" resizable="false">
+                                        <Label text="Cartoni"/>
+                                        <t:template>
+                                            <Text text="{ModelListaBatch>cartoni}"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="7%" resizable="false">
+                                        <Label text="Ore"/>
+                                        <t:template>
+                                            <Text text="{ModelListaBatch>ore}"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="4%" resizable="false">
+                                        <Label text="SA"/>
+                                        <t:template>
+                                            <CheckBox selected="{ModelListaBatch>soloAttrezzaggio}" select="SelectedBoxSA"/>
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column hAlign="Center" width="10%" resizable="false">
+                                        <t:template>
+                                            <wt:CustomBatchButton text="Trasferisci" class="styleButtonBatchesTransfer" press="BatchManager" batch="{ModelListaBatch>batchID}" batchSelected="{ModelListaBatch>batchSelected}"/>
+                                        </t:template>
+                                    </t:Column>
+                                </t:columns>
+                                <t:noData>
+                                    <Text class="sapUiTableCtrlEmptyMsg" text="Non ci sono batch." textAlign="Center"/>
+                                </t:noData>
+                            </t:Table>
                         </VBox>
                         <VBox height="10%" width="100%" class="blueBorderTop">
                             <VBox height="15%" width="100%"/>
@@ -661,7 +728,7 @@
                                             <Text text="{GeneralModel>/Intestazione/StatoLinea}" class="textTop" id="fermo3"/>
                                         </FlexBox>
                                     </VBox>
-<!--                                    <VBox height="100%" width="2%"/>
+                                    <!--                                    <VBox height="100%" width="2%"/>
                                     <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
@@ -843,7 +910,7 @@
                                             <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo4"/>
                                         </FlexBox>
                                     </VBox>
-<!--                                    <VBox height="100%" width="2%"/>
+                                    <!--                                    <VBox height="100%" width="2%"/>
                                     <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
@@ -938,7 +1005,7 @@
                                             <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo5"/>
                                         </FlexBox>
                                     </VBox>
-<!--                                    <VBox height="100%" width="2%"/>
+                                    <!--                                    <VBox height="100%" width="2%"/>
                                     <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
@@ -1057,7 +1124,7 @@
                                             <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo6"/>
                                         </FlexBox>
                                     </VBox>
-<!--                                    <VBox height="100%" width="2%"/>
+                                    <!--                                    <VBox height="100%" width="2%"/>
                                     <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
@@ -1355,7 +1422,7 @@
                                             <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo7"/>
                                         </FlexBox>
                                     </VBox>
-<!--                                    <VBox height="100%" width="2%"/>
+                                    <!--                                    <VBox height="100%" width="2%"/>
                                     <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>
@@ -1481,7 +1548,7 @@
                                             <wt:CustomTextFermo text="{GeneralModel>/Intestazione/StatoLinea}" class="textTopScalable" id="fermo8"/>
                                         </FlexBox>
                                     </VBox>
-<!--                                    <VBox height="100%" width="2%"/>
+                                    <!--                                    <VBox height="100%" width="2%"/>
                                     <VBox height="100%" width="12%">
                                         <Text text="{GeneralModel>/Linea/TempoFaseAttuale}" class="textTop"/>
                                     </VBox>

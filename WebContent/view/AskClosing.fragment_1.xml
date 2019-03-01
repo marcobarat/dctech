@@ -1,0 +1,73 @@
+<core:FragmentDefinition
+    controllerName="myapp.controller.ManagePianoGrey"
+    id="AskClosing"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table">
+    <Dialog contentWidth="1020px" contentHeight="320px" id="AskClosing" showHeader="false">
+        <FlexBox alignItems="Start" justifyContent="Center">
+            <VBox height="300px" width="1000px">
+                <VBox height="48px"/>
+                <VBox height="60px">
+                    <FlexBox alignItems="Start" justifyContent="Center">
+                        <Text text="Chiusura confezionamento" class="textTop"/>
+                    </FlexBox>
+                </VBox>
+                <VBox height="60px"/>
+                <VBox height="90px">
+                    <HBox>
+                        <VBox width="70px"/>
+                        <VBox width="400px">
+                            <Button text="Annulla" width="400px" press="AnnullaChiusuraConfezionamento" class="annullaButtonDialog textButtonsDialog"/>
+                        </VBox>
+                        <VBox  width="60px">
+                            <Text/>
+                        </VBox>
+                        <VBox width="400px">
+                            <Button text="Conferma" width="400px" press="ConfermaChiusuraConfezionamento" class="confermaButtonDialog textButtonsDialog"/>
+                        </VBox>
+                        <VBox width="70px"/>
+                    </HBox>
+                </VBox>
+                <VBox height="42px"/>
+            </VBox>
+        </FlexBox>
+    </Dialog>
+</core:FragmentDefinition>
+
+<!--<core:FragmentDefinition
+    controllerName="myapp.controller.ManagePianoGrey"
+    id="AskClosing"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table">
+    <Dialog contentWidth="1000px" contentHeight="300px" id="AskClosing" showHeader="false">
+        <VBox height="100%" width="100%">
+            <VBox height="100%" width="100%">
+                <VBox height="16%"/>
+                <VBox height="20%">
+                    <FlexBox alignItems="Start" justifyContent="Center">
+                        <Text text="Chiusura confezionamento" class="textTop"/>
+                    </FlexBox>
+                </VBox>
+                <VBox height="20%"/>
+                <VBox height="30%">
+                    <HBox>
+                        <VBox width="7%"/>
+                        <VBox width="40%">
+                            <Button text="Annulla" width="100%" press="AnnullaChiusuraConfezionamento" class="annullaButtonDialog"/>
+                        </VBox>
+                        <VBox  width="6%">
+                            <Text/>
+                        </VBox>
+                        <VBox width="40%">
+                            <Button text="Conferma" width="100%" press="ConfermaChiusuraConfezionamento" class="confermaButtonDialog"/>
+                        </VBox>
+                        <VBox width="7%"/>
+                    </HBox>
+                </VBox>
+                <VBox height="14%"/>
+            </VBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>-->
