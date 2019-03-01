@@ -94,7 +94,7 @@
                                     </t:Column>
                                     <t:Column hAlign="Center" width="10%" resizable="false">
                                         <t:template>
-                                            <wt:CustomBatchButton text="Trasferisci" class="styleButtonBatchesTransfer" press="BatchManager" batch="{ModelListaBatch>batchID}" batchSelected="{ModelListaBatch>batchSelected}"/>
+                                            <wt:CustomBatchButton text="Trasferisci" class="styleButtonBatchesTransfer" press="BatchManager" seq="{ModelListaBatch>sequenza}" minSeq="{ModelListaBatch>minSequenza}" batch="{ModelListaBatch>batchID}" batchSelected="{ModelListaBatch>batchSelected}"/>
                                         </t:template>
                                     </t:Column>
                                 </t:columns>
@@ -194,7 +194,7 @@
                                                     <HBox>
                                                         <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
                                                         <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
-                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                            <core:Item key="{GeneralModel>ID}" text="{GeneralModel>alternativa}" />
                                                         </Select>
                                                     </HBox>
                                                 </t:template>
@@ -305,7 +305,7 @@
                                                                     <HBox>
                                                                         <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
                                                                         <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
-                                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                                            <core:Item key="{GeneralModel>ID}" text="{GeneralModel>alternativa}" />
                                                                         </Select>
                                                                     </HBox>
                                                                 </t:template>
@@ -814,7 +814,7 @@
                                                                     <HBox>
                                                                         <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
                                                                         <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
-                                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                                            <core:Item key="{GeneralModel>ID}" text="{GeneralModel>alternativa}" />
                                                                         </Select>
                                                                     </HBox>
                                                                 </t:template>
@@ -1727,7 +1727,7 @@
                                                     <HBox>
                                                         <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
                                                         <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
-                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                            <core:Item key="{GeneralModel>ID}" text="{GeneralModel>alternativa}" />
                                                         </Select>
                                                     </HBox>
                                                 </t:template>
@@ -1839,7 +1839,7 @@
                                                                     <HBox>
                                                                         <wt:StyleTextTreeTableValue text="{= ${GeneralModel>isArray} ? '': ${GeneralModel>value}}" maxLength="20" diff="{GeneralModel>expand}" maxLines="2" visible="{= !${GeneralModel>isArray}}"/>
                                                                         <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'GeneralModel>value'}" visible="{= ${GeneralModel>isArray} === 1}">
-                                                                            <core:Item key="{GeneralModel>alternativa}" text="{GeneralModel>alternativa}" />
+                                                                            <core:Item key="{GeneralModel>ID}" text="{GeneralModel>alternativa}" />
                                                                         </Select>
                                                                     </HBox>
                                                                 </t:template>

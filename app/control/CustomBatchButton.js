@@ -17,8 +17,8 @@ sap.ui.define([
             properties: {
                 batch: {type: "string"},
                 batchSelected: {type: "string"},
-//                seq: {type: "string"},
-//                minSeq: {type: "string"}
+                seq: {type: "string"},
+                minSeq: {type: "string"}
             }
         },
         renderer: {},
@@ -27,18 +27,19 @@ sap.ui.define([
             if (sap.m.Button.prototype.onAfterRendering) {
                 sap.m.Button.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
             }
-            var batch = this.getBatch();
             var batchSelected = this.getBatchSelected();
-            if (typeof batch !== "undefined" && typeof batchSelected !== "undefined") {
+            var seq = this.getSeq();
+            var minSeq = this.getMinSeq();
+            if (typeof batchSelected !== "undefined") {
                 var classes = ["styleButtonBatchesTransfer", "styleButtonBatchesRecall"];
                 for (var i = 0; i < classes.length; i++) {
                     this.removeStyleClass(classes[i]);
                 }
-                if (batchSelected !== "") {
-                    if (batch !== batchSelected) {
+                if (seq === minSeq) {
+                    if (batchSelected === "") {
                         this.setText("Trasferisci");
                         this.addStyleClass("styleButtonBatchesTransfer");
-                        this.setEnabled(false);
+                        this.setEnabled(true);
                     } else {
                         this.setText("Richiama");
                         this.addStyleClass("styleButtonBatchesRecall");
@@ -47,7 +48,7 @@ sap.ui.define([
                 } else {
                     this.setText("Trasferisci");
                     this.addStyleClass("styleButtonBatchesTransfer");
-                    this.setEnabled(true);
+                    this.setEnabled(false);
                 }
             }
         }
