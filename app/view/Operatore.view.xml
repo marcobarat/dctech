@@ -1814,7 +1814,7 @@
                                                         enableSelectAll="false"
                                                         enableColumnReordering="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="11"
+                                                        visibleRowCount="10"
                                                         rowHeight="50px"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiAttrezzaggio">
@@ -1863,7 +1863,7 @@
                                                                     enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="20"
+                                                                    visibleRowCount="19"
                                                                     app:mydata="TreeTable_AttrezzaggioOld,TreeTable_AttrezzaggioNew"
                                                                     toggleOpenState="COUPLEDTreeTableIconPress"
                                                                     cellClick="LinkClick">
@@ -1901,7 +1901,7 @@
                                                                     enableColumnReordering="false"
                                                                     enableSelectAll="false"
                                                                     ariaLabelledBy="title"
-                                                                    visibleRowCount="20"
+                                                                    visibleRowCount="19"
                                                                     app:mydata="TreeTable_AttrezzaggioNew,TreeTable_AttrezzaggioOld"
                                                                     toggleOpenState="COUPLEDTreeTableIconPress"
                                                                     cellClick="LinkClick">

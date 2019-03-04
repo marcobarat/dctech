@@ -135,12 +135,14 @@
     width: 4.5rem;
     height: 4.5rem;
     padding: 0.6rem;
+    text-shadow: 0 0 0;
 }
 .messageButton .sapMBtnIcon {
     color: #003A6B;
     font-size: 3rem;
     padding-top: 0.5rem;
     padding-right: 0.5rem;
+    text-shadow: 0 0 0;
 }
 .newMessageButton {
     left: 2rem;
@@ -153,12 +155,14 @@
     width: 4.5rem;
     height: 4.5rem;
     padding: 0.6rem;
+    text-shadow: 0 0 0;
 }
 .newMessageButton .sapMBtnIcon {
     color: #003A6B;
     font-size: 3rem;
     padding-top: 0.5rem;
     padding-right: 0.5rem;
+    text-shadow: 0 0 0;
 }
 
 /* SINOTTICO */
@@ -169,6 +173,7 @@
     left: 103.5rem;
     width: 50pt;
     height: 50pt;
+    text-shadow: 0 0 0;
 }
 .annullaButtonSin:focus .sapMBtnInner {
     outline: none !important;
@@ -187,6 +192,7 @@
     border-radius: 2rem;
     border: 1px solid #003A6B;
     width: 4rem;
+    text-shadow: 0 0 0;
     height: 4rem;
 }
 
@@ -202,6 +208,7 @@
     background: white;
     color: white;
     border: none;
+    text-shadow: 0 0 0;
 }
 .annullaButtonLeg .sapMBtnIcon {
     color: #A71930;
@@ -243,6 +250,7 @@
     color: #003A6B;
     font-size: 30pt;
     margin-top: 0.6rem;
+    text-shadow: 0 0 0;
 }
 
 .MarcatoreSX {
@@ -340,14 +348,14 @@
 
 .buttonWhite .sapMBtnInner {
     color: #003A6B;
-    text-shadow: 0 0 0;
     background: white;
+    text-shadow: 0 0 0;
 }
 
 .buttonGood .sapMBtnInner {
     color: #003A6B;
-    text-shadow: 0 0 0;
     background: #7CA295;
+    text-shadow: 0 0 0;
 }
 
 .buttonWarning .sapMBtnInner {
@@ -404,6 +412,7 @@
     color: #003A6B;
     padding:4%;
     border-radius: 10px;
+    text-shadow: 0 0 0;
 }
 
 .styleButton .sapMBtnContent {
@@ -419,6 +428,7 @@
     padding:3%;
     color: #003A6B;
     border-radius: 10px;
+    text-shadow: 0 0 0;
 }
 .styleLongButton .sapMBtnContent {
     font-size: 15pt;
@@ -435,6 +445,7 @@
     padding:3.3%;
     color: #003A6B;
     border-radius: 10px;
+    text-shadow: 0 0 0;
 }
 .styleVeryLongButton .sapMBtnContent {
     font-size: 15pt;
@@ -443,6 +454,7 @@
     white-space: normal;
     margin-left: 5%;
     color: #003A6B;
+    text-shadow: 0 0 0;
 }
 .styleDisabledButton .sapMBtnContent {
     font-style: italic;
@@ -480,6 +492,7 @@
     background: #FFD300;
     width: 10em;
     border-radius: 10px;
+    text-shadow: 0 0 0;
 }
 .COUPLEDTTButton .sapMBtnInner {
     font-size: 15pt;
@@ -488,6 +501,7 @@
     background: #FFD300;
     width: 6em;
     border-radius: 10px;
+    text-shadow: 0 0 0;
 }
 /*STILE TESTI VARI*/
 .sapMText {
@@ -622,6 +636,7 @@
     border-radius: 10px;
     padding: 1.5%;
     height: 150%;
+    text-shadow: 0 0 0;
 }
 .chiudiButton .sapMBtnInner {
     font-family: Arial;
@@ -631,6 +646,7 @@
     border-radius: 10px;
     padding: 2.5%;
     height: 150%;
+    text-shadow: 0 0 0;
 }
 .allarmeButton .sapMBtnInner {
     font-family: Arial;
@@ -640,6 +656,7 @@
     border-radius: 10px;
     padding: 2.5%;
     height: 150%;
+    text-shadow: 0 0 0;
 }
 .confermaButton .sapMBtnInner {
     font-family: Arial;
@@ -649,6 +666,7 @@
     border-radius: 10px;
     padding: 1.5%;
     height: 150%;
+    text-shadow: 0 0 0;
 }
 .attrezzaggioButton .sapMBtnInner {
     font-family: Arial;
@@ -657,6 +675,7 @@
     color: white;
     padding: 0.65%;
     height: 150%;
+    text-shadow: 0 0 0;
     border-radius: 10px;
 }
 .chiusuraButton .sapMBtnInner {
@@ -664,6 +683,7 @@
     font-size: 20pt;
     background: #5E3032;
     color: white;
+    text-shadow: 0 0 0;
 }
 /*.annullaButtonFermo {
     left: 10%;
@@ -677,6 +697,7 @@
     border-radius: 10px;
     padding: 1.5%;
     height: 150%;
+    text-shadow: 0 0 0;
 }
 /*.confermaButtonFermo {
     left: 60%;
@@ -690,6 +711,7 @@
     border-radius: 10px;
     padding: 1.5%;
     height: 150%;
+    text-shadow: 0 0 0;
 }
 .annullaButtonDialog .sapMBtnInner {
     font-family: Arial;
@@ -700,6 +722,7 @@
     height: 200%;
     padding: 5%;
     top: 1rem;
+    text-shadow: 0 0 0;
 }
 .confermaButtonDialog .sapMBtnInner {
     font-family: Arial;
@@ -710,6 +733,7 @@
     height: 200%;
     padding: 5%;
     top: 1rem;
+    text-shadow: 0 0 0;
 }
 textButtonsDialog .sapMBtnContent {
     line-height: 1.8rem;
@@ -768,6 +792,7 @@ textButtonsDialog .sapMBtnContent {
     width: 70%;
     left: 18%;
     top: 5%;
+    text-shadow: 0 0 0;
 }
 .SPCButtonEmpty .sapMBtnInner {
     background: white;

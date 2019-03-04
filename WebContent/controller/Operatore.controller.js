@@ -88,6 +88,8 @@ sap.ui.define([
         repartoID: null,
         stabilimentoID: null,
         BCKUPSetup: null,
+        ModelSelect: new JSONModel({}),
+        BCKUPSKUAttuale: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -128,7 +130,7 @@ sap.ui.define([
                 this.AjaxCallerData(link, this.LOCALCheckStatus.bind(this));
             } else {
                 if (Boolean(this.LINEAID)) {
-                    this.ModelDetailPages.setProperty("/DettaglioLinea/", {idLinea: Number(this.LINEAID), Linea: "Coppia 03"});
+                    this.ModelDetailPages.setProperty("/DettaglioLinea/", {idLinea: Number(this.LINEAID), Linea: ""});
                 } else {
                     this.ModelDetailPages.setProperty("/DettaglioLinea/", sap.ui.getCore().getModel("Global").getData());
                 }
@@ -182,9 +184,13 @@ sap.ui.define([
                 }
             }
             this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-            this.SyncAjaxCallerData(link, this.CheckStatus.bind(this));
+            this.AjaxCallerData(link, this.CheckStatus.bind(this));
         },
         CheckStatus: function (Jdata) {
+
+            if (this.ModelDetailPages.getData().DettaglioLinea.Linea === "") {
+                this.ModelDetailPages.setProperty("/DettaglioLinea/", {idLinea: Number(this.LINEAID), Linea: Jdata.NomeLinea});
+            }
 
             this.pdcID = Jdata.PdcID;
             this.repartoID = Jdata.RepartoID;
@@ -226,13 +232,30 @@ sap.ui.define([
             model.Intestazione = {"linea": model.DettaglioLinea.Linea, "descrizione": data.Batch.Descrizione, "destinazione": data.Batch.Destinazione};
             model.Intestazione.StatoLinea = this.SetLinea(data.StatoLinea);
             this.ModelDetailPages.setProperty("/Intestazione/", model.Intestazione);
+
+            var SKU;
             if (typeof data.SKUattuale.attributi !== "undefined") {
-                data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
-                data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
-                this.exp = 0;
-                data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
-                var SKU = {"SKUattuale": data.SKUattuale, "SKUstandard": data.SKUstandard};
-                this.ModelDetailPages.setProperty("/SKU/", SKU);
+                if (!this.BCKUPSKUAttuale) {
+                    data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
+                    data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
+                    this.exp = 0;
+                    data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
+                    data.SKUattuale = this.RecursiveSelectReordering(data.SKUattuale);
+                    SKU = {"SKUattuale": data.SKUattuale, "SKUstandard": data.SKUstandard};
+                    this.ModelDetailPages.setProperty("/SKU/", SKU);
+                    this.BCKUPSKUAttuale = JSON.stringify(Jdata.SKUattuale);
+                } else {
+                    if (this.BCKUPSKUAttuale !== JSON.stringify(Jdata.SKUattuale)) {
+                        data.SKUattuale = this.RecursiveJSONComparison(data.SKUstandard, data.SKUattuale, "attributi");
+                        data.SKUattuale = this.RecursiveParentExpansion(data.SKUattuale);
+                        this.exp = 0;
+                        data.SKUattuale = this.RecursiveJSONExpansionFinder(data.SKUattuale);
+                        data.SKUattuale = this.RecursiveSelectReordering(data.SKUattuale);
+                        SKU = {"SKUattuale": data.SKUattuale, "SKUstandard": data.SKUstandard};
+                        this.ModelDetailPages.setProperty("/SKU/", SKU);
+                        this.BCKUPSKUAttuale = JSON.stringify(Jdata.SKUattuale);
+                    }
+                }
             }
 //          Gestione dei possibili stati della linea
             if (data.StatoLinea !== "Disponibile.Vuota" && data.StatoLinea !== "NonDisponibile") {
@@ -1104,22 +1127,9 @@ sap.ui.define([
                 this.LOCALState = "Disponibile.Attrezzaggio";
             } else {
                 this.GlobalBusyDialog.open();
-                this.TempModel.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
-                var xmlSelection = this.XMLSelectionsBuilder(this.TempModel, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID);
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xmlSelection + "&OutputParameter=JSON";
-                this.SyncAjaxCallerVoid(link, this.SUCCESSSelectSKU.bind(this));
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
+                this.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
-        },
-        SUCCESSSelectSKU: function (data) {
-            var Jdata = data.SKUattuale;
-            Jdata = this.RecursiveJSONComparison(this.ModelDetailPages.getData().SKU.SKUstandard, Jdata, "attributi");
-            Jdata = this.RecursiveParentExpansion(Jdata);
-            this.exp = 0;
-            Jdata = this.RecursiveJSONExpansionFinder(Jdata);
-            Jdata = this.RecursiveSelectReordering(Jdata);
-            this.ModelDetailPages.setProperty("/SKU/SKUattuale/", Jdata);
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-            this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
         },
 //        -------------------------  ATTREZZAGGIO LINEA  -------------------------       
 
@@ -1333,6 +1343,7 @@ sap.ui.define([
             data = this.RecursivePropertyCopy(data, "codeValueModify", "codeValue");
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.codeCheck = 0;
+            data = this.RecursiveJSONCodeCheck(data, "valueModify");
             data = this.RecursiveJSONCodeCheck(data, "codeValue");
             if (this.codeCheck === 0) {
 
@@ -1343,36 +1354,20 @@ sap.ui.define([
                 } else {
                     var XMLstring = this.XMLSetupUpdates(data, this.ModelDetailPages.getData().DettaglioLinea.idLinea, this.ModelDetailPages.getData().Linea.Batch.SKUID);
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=0&OutputParameter=JSON";
-                    this.SyncAjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
+                    this.AjaxCallerData(link, this.SUCCESSConfermaAttrezzaggio.bind(this));
                 }
             } else {
-                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.", {duration: 3000});
+                MessageToast.show("Tutti i campi devono essere inseriti.", {duration: 3000});
             }
         },
         SUCCESSConfermaAttrezzaggio: function (Jdata) {
             this.ModelDetailPages.setProperty("/SuccessConfermaAttrezzaggio/", Jdata);
             if (Jdata.error === 0) {
-                this.TempModel.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
-                var xmlSelection = this.XMLSelectionsBuilder(this.TempModel, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID);
-                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xmlSelection + "&OutputParameter=JSON";
-                this.SyncAjaxCallerData(link, this.SUCCESSSelectSKUCP.bind(this));
-
+                this.RefreshFunction(0);
             } else {
-//                MessageToast.show(Jdata.errorMessageJdata.errorMessage, {duration: 3000});
                 this.OpenNotifier(Jdata.errorMessage);
                 this.GlobalBusyDialog.close();
             }
-        },
-        SUCCESSSelectSKUCP: function (data) {
-            var Jdata = data.SKUattuale;
-            Jdata = this.RecursiveJSONComparison(this.ModelDetailPages.getData().SKU.SKUstandard, Jdata, "attributi");
-            Jdata = this.RecursiveParentExpansion(Jdata);
-            this.exp = 0;
-            Jdata = this.RecursiveJSONExpansionFinder(Jdata);
-            Jdata = this.RecursiveSelectReordering(Jdata);
-            this.ModelDetailPages.setProperty("/SKU/SKUattuale/", Jdata);
-            this.GlobalBusyDialog.close();
-            this.RefreshFunction(0);
         },
         //        -------------------------  LAVORAZIONE  -------------------------       
 
@@ -1470,7 +1465,7 @@ sap.ui.define([
                 this.SUCCESSModificaCondizioni();
             } else {
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchForOperatoreMod&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.SyncAjaxCallerData(link, this.SUCCESSModificaCondizioni.bind(this));
+                this.AjaxCallerData(link, this.SUCCESSModificaCondizioni.bind(this));
             }
         },
         SUCCESSModificaCondizioni: function (Jdata) {
@@ -1547,23 +1542,11 @@ sap.ui.define([
         SUCCESSConfermaModifica: function (Jdata) {
             this.ModelDetailPages.setProperty("/SuccessConfermaModifica/", Jdata);
             if (Jdata.error === 1) {
-                alert(Jdata.errorMessage);
+                this.OpenNotifier(Jdata.errorMessage);
+                this.GlobalBusyDialog.close();
             } else {
-                this.TempModel.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
-                var xmlSelection = this.XMLSelectionsBuilder(this.TempModel, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID);
-                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xmlSelection + "&OutputParameter=JSON";
-                this.SyncAjaxCallerVoid(link, this.SUCCESSSelectSKUMC.bind(this));
+                this.RefreshFunction(0);
             }
-        },
-        SUCCESSSelectSKUMC: function (data) {
-            var Jdata = data.SKUattuale;
-            Jdata = this.RecursiveJSONComparison(this.ModelDetailPages.getData().SKU.SKUstandard, Jdata, "attributi");
-            Jdata = this.RecursiveParentExpansion(Jdata);
-            this.exp = 0;
-            Jdata = this.RecursiveJSONExpansionFinder(Jdata);
-            Jdata = this.RecursiveSelectReordering(Jdata);
-            this.ModelDetailPages.setProperty("/SKU/SKUattuale/", Jdata);
-            this.RefreshFunction(0);
         },
 //        ----------------------  FERMO  ----------------------
 
@@ -1683,6 +1666,7 @@ sap.ui.define([
 
 //      RICHIAMATO DAL PULSANTE "RIAVVIO"
         Riavvio: function () {
+            this.GlobalBusyDialog.open();
             if (typeof this.ModelDetailPages.getData().SetupLinea === "undefined") {
                 this.ModelDetailPages.setProperty("/SetupLinea/", {});
             }
@@ -1697,6 +1681,7 @@ sap.ui.define([
             if (this.ISLOCAL !== 1) {
                 this.ModelDetailPages.setProperty("/SetupLinea/Modify/", Jdata);
             }
+            this.GlobalBusyDialog.close();
             var mod = this.ModelDetailPages.getData().SetupLinea.Modify;
             mod = this.RecursiveLinkRemoval(mod);
             mod = this.RecursiveModifyExpansion(mod);
@@ -1760,9 +1745,9 @@ sap.ui.define([
             if (Jdata.error === 0) {
                 this.RefreshFunction(0);
             } else {
-                alert(Jdata.errorMessage);
+                this.OpenNotifier(Jdata.errorMessage);
+                this.GlobalBusyDialog.close();
             }
-            this.GlobalBusyDialog.close();
         },
 //        ---------------  CAUSALIZZAZIONE ----------------
 
@@ -1987,8 +1972,9 @@ sap.ui.define([
                 this.PredisposizioneLineaAttrezzaggio();
                 this.LOCALState = "Disponibile.Attrezzaggio";
             } else {
+                this.GlobalBusyDialog.open();
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchPredisposizionePresoInCarico&Content-Type=text/json&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea;
-                this.SyncAjaxCallerVoid(link, this.RefreshFunction.bind(this));
+                this.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
             }
         },
 //      -------------------------- ATTREZZAGGIO --------------------------
@@ -2062,7 +2048,7 @@ sap.ui.define([
                 enableColumnReordering: false,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
-                visibleRowCount: 10,
+                visibleRowCount: 9,
                 cellClick: [TT, this.TreeTableRowClickExpander, this],
                 toolbar: [
                     new sap.m.Toolbar({
@@ -2140,6 +2126,7 @@ sap.ui.define([
         },
         SospensioneAttrezzaggio: function () {
 
+
             var data = {"stringa": "SOSPENSIONE PREDISPOSIZIONE"};
             this.ModelDetailPages.setProperty("/FineAttrezzaggio/", data);
             this.TabContainer = this.getView().byId("TabContainerAttrezzaggio");
@@ -2155,14 +2142,16 @@ sap.ui.define([
             var inputValueMod = new sap.m.Input({
                 editable: "{= ${GeneralModel>modify} === 1}",
                 visible: "{= ${GeneralModel>modify} === 1}",
-                value: "{= ${GeneralModel>modify} === 1 ? '#ND': ''}",
+//                value: "{= ${GeneralModel>valueModify} === '' ? '#ND' : ${GeneralModel>valueModify}}",
+                value: "{GeneralModel>valueModify}",
+                placeholder: "",
+//                value: "{= ${GeneralModel>modify} === 1 ? '#ND': ''}",
                 type: "Text",
                 maxLength: 30});
             inputValueMod.addStyleClass("diffStandard");
             var inputCodeValue = new sap.m.Input({
-                placeholder: "",
                 editable: "{= ${GeneralModel>code} === 1}",
-                value: "",
+                value: "{GeneralModel>codeValue}",
                 type: "Text",
                 maxLength: 30});
             inputCodeValue.addStyleClass("diffStandard");
@@ -2177,7 +2166,7 @@ sap.ui.define([
                 enableColumnReordering: false,
                 enableSelectAll: false,
                 ariaLabelledBy: "title",
-                visibleRowCount: 10,
+                visibleRowCount: 9,
                 cellClick: [TT, this.TreeTableRowClickExpander, this],
                 toolbar: [
                     new sap.m.Toolbar({
@@ -2216,6 +2205,7 @@ sap.ui.define([
                         template: inputCodeValue})
                 ]
             });
+            TreeTable.addStyleClass("defaultHeight");
             btn1.addStyleClass("TTButton");
             btn2.addStyleClass("TTButton");
             btn3.addStyleClass("TTButton");
@@ -2264,11 +2254,10 @@ sap.ui.define([
         },
         ConfermaAttrezzaggio: function (event, source) {
             var data = this.ModelDetailPages.getData().SetupLinea.Modify;
-            data = this.RecursivePropertyCopy(data, "value", "valueModify");
             this.codeCheck = 0;
             data = this.RecursiveJSONCodeCheck(data, "codeValue");
             if (this.codeCheck === 1 && source === 'F') {
-                MessageToast.show("Tutti i codici Lotto/Matricola devono essere inseriti.", {duration: 3000});
+                MessageToast.show("Tutti i campi Lotto/Matricola devono essere inseriti.", {duration: 3000});
             } else {
                 if (this.ISLOCAL === 1) {
                     this.getSplitAppObj().toDetail(this.createId("ConfermaAttrezzaggio"));
@@ -2276,6 +2265,8 @@ sap.ui.define([
                     this.SwitchColor("brown");
                     this.EnableButtonsAttr([]);
                 } else {
+                    data = (source === 'S') ? this.RecursiveJSONModifyFiller(data, "valueModify") : data;
+                    data = this.RecursivePropertyCopy(data, "value", "valueModify");
                     this.GlobalBusyDialog.open();
                     var XMLstring = this.XMLSetupUpdates(data, this.ModelDetailPages.getData().DettaglioLinea.idLinea, this.ModelDetailPages.getData().Linea.Batch.SKUID);
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ChangePredisposizione&Content-Type=text/json&xml=" + XMLstring + "&LineaID=" + this.ModelDetailPages.getData().DettaglioLinea.idLinea + "&Case=3&OutputParameter=JSON";
@@ -2729,9 +2720,10 @@ sap.ui.define([
                 }
                 body += "</Parameter>";
             }
-            return (heading + body + bottom);
+            return encodeURI(heading + body + bottom);
         },
         AlternativeSelectionChange: function (event) {
+            this.GlobalBusyDialog.open();
             var selectObj = event.getSource();
             var path = selectObj.getParent().getBindingContext("GeneralModel").sPath;
             var itemList = this.ModelDetailPages.getProperty(path).value;
@@ -2739,8 +2731,18 @@ sap.ui.define([
             for (var i = 0; i < itemList.length; i++) {
                 itemList[i].isSelected = (itemList[i].ID === ID) ? "1" : "0";
             }
+            this.ModelDetailPages.getProperty(path).value = this.ReorderSelect(itemList);
+            this.ModelSelect.setData(this.ModelDetailPages.getData().SKU.SKUattuale);
+            path = path.split("/").slice(3, path.length).join("/");
+            var xml = this.XMLSelectionsBuilder(this.ModelSelect, this.ModelDetailPages.getData().Linea.Batch.BatchID, this.ModelDetailPages.getData().Linea.Batch.SKUID, path);
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAlternative_SKUTree&Content-Type=text/json&xmlalternative=" + xml + "&OutputParameter=JSON";
+            this.AjaxCallerVoid(link, this.SUCCESSAlternativeSelectionChange.bind(this));
         },
-        XMLSelectionsBuilder: function (SKU, idBatch, idSKU) {
+        SUCCESSAlternativeSelectionChange: function () {
+            this.GlobalBusyDialog.close();
+            MessageToast.show("Selezione aggiornata", {duration: 2000});
+        },
+        XMLSelectionsBuilder: function (SKU, idBatch, idSKU, path) {
             var i, j, k, temp;
             var JSON = SKU.getData();
             var heading = "<Alternative>" +
@@ -2763,28 +2765,32 @@ sap.ui.define([
             var nodi = [];
             var ramiID = [];
             var foglieID = [];
+            var selector;
             for (i = 0; i < paths.length; i++) {
-                temp = "";
-                for (j = 0; j < 4; j++) {
-                    temp += "/" + paths[i][j];
-                }
-                padri.push(SKU.getProperty(temp).name);
-                for (j = 4; j < 6; j++) {
-                    temp += "/" + paths[i][j];
-                }
-                nodi.push(SKU.getProperty(temp).name);
-                for (j = 6; j < paths[i].length; j++) {
-                    temp += "/" + paths[i][j];
-                }
-                ramiID.push(SKU.getProperty(temp).ramoID);
-                for (k = 0; k < SKU.getProperty(temp).value.length; k++) {
-                    if (SKU.getProperty(temp).value[k].isSelected === "1") {
-                        foglieID.push(SKU.getProperty(temp).value[k].ID);
+                selector = (typeof path === "undefined") ? paths[i] : path;
+                if (paths[i].join("/") === selector) {
+                    temp = "";
+                    for (j = 0; j < 4; j++) {
+                        temp += "/" + paths[i][j];
+                    }
+                    padri.push(SKU.getProperty(temp).name);
+                    for (j = 4; j < 6; j++) {
+                        temp += "/" + paths[i][j];
+                    }
+                    nodi.push(SKU.getProperty(temp).name);
+                    for (j = 6; j < paths[i].length; j++) {
+                        temp += "/" + paths[i][j];
+                    }
+                    ramiID.push(SKU.getProperty(temp).ramoID);
+                    for (k = 0; k < SKU.getProperty(temp).value.length; k++) {
+                        if (SKU.getProperty(temp).value[k].isSelected === "1") {
+                            foglieID.push(SKU.getProperty(temp).value[k].ID);
+                        }
                     }
                 }
             }
             var body = "";
-            for (i = 0; i < paths.length; i++) {
+            for (i = 0; i < padri.length; i++) {
                 body += "<Alternativa><Padre>" + padri[i] + "</Padre><Nodo>" + nodi[i] + "</Nodo><RamoID>" + ramiID[i] + "</RamoID><FogliaID>" + foglieID[i] + "</FogliaID></Alternativa>";
             }
             return encodeURI(heading + body + bottom);
@@ -3533,6 +3539,23 @@ sap.ui.define([
                         if (json[key] === 1) {
                             if (json[attr] === "") {
                                 this.codeCheck = 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return json;
+        },
+        RecursiveJSONModifyFiller: function (json, attr) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveJSONModifyFiller(json[key], attr);
+                } else {
+                    if (key === "modify") {
+                        if (json[key] === 1) {
+                            if (json[attr] === "") {
+                                json[attr] = "ND";
                                 break;
                             }
                         }
