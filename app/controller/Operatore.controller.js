@@ -169,6 +169,7 @@ sap.ui.define([
             setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
+            this.Counter = 0;
             var link;
             var data = this.ModelDetailPages.getData();
 //          La TRX completa 'StatusLinea' viene chiamata solo nella prima volta e quando la linea è vuota o in Attesa Presa In Carico;
@@ -603,6 +604,17 @@ sap.ui.define([
             this.ModelLineName.setData({"IMG": imgName});
             this.getView().setModel(this.ModelLineName, "ModelLineName");
             sap.ui.getCore().setModel(this.ModelLineName, "ModelLineName");
+            if (this.linea_id === 31) {
+                this.getView().byId("imgSinottico").removeStyleClass("shiftImage");
+                this.getView().byId("imgSinottico").addStyleClass("shiftImage_L");
+                this.getView().byId("setupCompletoButton").removeStyleClass("setupCompletoSin");
+                this.getView().byId("setupCompletoButton").addStyleClass("setupCompletoSin_L");
+            } else {
+                this.getView().byId("imgSinottico").removeStyleClass("shiftImage_L");
+                this.getView().byId("imgSinottico").addStyleClass("shiftImage");
+                this.getView().byId("setupCompletoButton").removeStyleClass("setupCompletoSin_L");
+                this.getView().byId("setupCompletoButton").addStyleClass("setupCompletoSin");
+            }
             this.RefreshSinCounter = 10;
             var that = this;
 //          Timer che regola il refresh del sinottico
@@ -626,6 +638,7 @@ sap.ui.define([
             setTimeout(this.RefreshSinCall.bind(this), msec);
         },
         RefreshSinCall: function () {
+            this.RefreshMsgCounter = 0;
             var link;
             if (this.ISLOCAL !== 1) {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoByLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&OutputParameter=JSON";
@@ -642,13 +655,15 @@ sap.ui.define([
                     this.SetNameMacchine(Jdata);
                     for (i = 0; i < Jdata.Macchine.length; i++) {
                         Jdata.Macchine[i].class = Jdata.Macchine[i].nome.split(" ").join("");
+                        if (Jdata.LineaID === "31") {
+                            Jdata.Macchine[i].class += "_L";
+                        }
                     }
                     if (!sap.ui.getCore().byId("P_" + Jdata.Macchine[0].risorsaid)) {
                         vbox = this.getView().byId("vboxSin");
                         for (i = 0; i < Jdata.Macchine.length; i++) {
                             button = new CustomButtonSin({
                                 id: "P_" + Jdata.Macchine[i].risorsaid,
-//                                text: "{ModelSinottico>/Macchine/" + i + "/nome}",
                                 text: "",
                                 icon: "sap-icon://crm-service-manager",
                                 stato: "{ModelSinottico>/Macchine/" + i + "/stato}",
@@ -777,6 +792,7 @@ sap.ui.define([
             setTimeout(this.AlarmDataCaller.bind(this), msec);
         },
         AlarmDataCaller: function () {
+            this.AlarmCounter = 0;
             var link;
             if (this.AlarmDialog) {
                 if (this.AlarmDialog.isOpen()) {
@@ -999,6 +1015,7 @@ sap.ui.define([
             setTimeout(this.RefreshMsgCall.bind(this), msec);
         },
         RefreshMsgCall: function () {
+            this.RefreshMsgCounter = 0;
             var link;
             if (this.ISLOCAL !== 1) {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMessagesFromLineaIDOrigine&Content-Type=text/json&LineaID=" + this.linea_id + "&Origine=Operatore&OutputParameter=JSON";
@@ -1416,6 +1433,7 @@ sap.ui.define([
             setTimeout(this.SPCDataCaller.bind(this), msec);
         },
         SPCDataCaller: function () {
+            this.SPCCounter = 0;
             if (this.SPCDialog) {
                 if (this.SPCDialog.isOpen()) {
                     var data = this.ModelDetailPages.getData();
@@ -2306,7 +2324,7 @@ sap.ui.define([
 //      ----------------    FUNZIONI SINOTTICO    ----------------
 
         SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice", "confezionatrice"];
             for (var i = 0; i < data_linea.Macchine.length; i++) {
                 for (var j = 0; j < names.length; j++) {
                     if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
@@ -2322,6 +2340,9 @@ sap.ui.define([
                                 break;
                             case "scatolatrice":
                                 data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                            case "confezionatrice":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Confezionatrice SX" : "Confezionatrice DX";
                                 break;
                         }
                     }

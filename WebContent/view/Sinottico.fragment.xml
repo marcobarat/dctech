@@ -7,8 +7,8 @@
         <VBox id="vboxSin" height="100%" width="100%">
             <Button icon="sap-icon://decline" class="annullaButtonSin" press="DestroyDialogSin"/>
             <Button icon="sap-icon://legend" text="Legenda" class="legendaSin" press="ShowLegenda"/>
-            <Image src="img/{ModelLineName>/IMG}" width="100%" class="shiftImage"/>
-            <wt:CustomButtonSetupCompleto id="setupCompletoButton" icon="sap-icon://begin" text="Invia Setup Completo" class="setupCompletoSin" batch="{ModelEnableSinButtons>/batch}" fermo="{ModelEnableSinButtons>/fermo}" press="InvioSetup"/>
+            <Image src="img/{ModelLineName>/IMG}" width="100%" id="imgSinottico"/>
+            <wt:CustomButtonSetupCompleto id="setupCompletoButton" icon="sap-icon://begin" text="Invia Setup Completo" batch="{ModelEnableSinButtons>/batch}" fermo="{ModelEnableSinButtons>/fermo}" press="InvioSetup"/>
         </VBox>
     </Dialog>
 </core:FragmentDefinition>

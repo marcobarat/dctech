@@ -44,7 +44,7 @@
                                 selectionMode="None"
                                 rows="{ModelListaBatch>/}">
                                 <t:columns>
-                                    <t:Column hAlign="Center" width="8%" resizable="false">
+                                    <t:Column hAlign="Center" width="9%" resizable="false">
                                         <Label text="Sequenza"/>
                                         <t:template>
                                             <Text text="{ModelListaBatch>sequenza}"/>
@@ -62,7 +62,7 @@
                                             <Text text="{ModelListaBatch>confezione}"/>
                                         </t:template>
                                     </t:Column>
-                                    <t:Column hAlign="Center" width="23%" resizable="false">
+                                    <t:Column hAlign="Center" width="22%" resizable="false">
                                         <Label text="Destinazione"/>
                                         <t:template>
                                             <Text text="{ModelListaBatch>destinazione}"/>
