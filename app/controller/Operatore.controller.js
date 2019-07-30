@@ -604,15 +604,20 @@ sap.ui.define([
             this.ModelLineName.setData({"IMG": imgName});
             this.getView().setModel(this.ModelLineName, "ModelLineName");
             sap.ui.getCore().setModel(this.ModelLineName, "ModelLineName");
-            if (this.linea_id === 31) {
-                this.getView().byId("imgSinottico").removeStyleClass("shiftImage");
-                this.getView().byId("imgSinottico").addStyleClass("shiftImage_L");
-                this.getView().byId("setupCompletoButton").removeStyleClass("setupCompletoSin");
-                this.getView().byId("setupCompletoButton").addStyleClass("setupCompletoSin_L");
+            this.getView().byId("imgSinottico").removeStyleClass("shiftImage");
+            this.getView().byId("imgSinottico").removeStyleClass("shiftImage_6");
+            this.getView().byId("imgSinottico").removeStyleClass("shiftImage_9");
+            this.getView().byId("setupCompletoButton").removeStyleClass("setupCompletoSin");
+            this.getView().byId("setupCompletoButton").removeStyleClass("setupCompletoSin_6");
+            this.getView().byId("setupCompletoButton").removeStyleClass("setupCompletoSin_9");
+            if (Number(this.linea_id) === 31) {
+                this.getView().byId("imgSinottico").addStyleClass("shiftImage_9");
+                this.getView().byId("setupCompletoButton").addStyleClass("setupCompletoSin_9");
+            } else if (Number(this.linea_id) === 16) {
+                this.getView().byId("imgSinottico").addStyleClass("shiftImage_6");
+                this.getView().byId("setupCompletoButton").addStyleClass("setupCompletoSin_6");
             } else {
-                this.getView().byId("imgSinottico").removeStyleClass("shiftImage_L");
                 this.getView().byId("imgSinottico").addStyleClass("shiftImage");
-                this.getView().byId("setupCompletoButton").removeStyleClass("setupCompletoSin_L");
                 this.getView().byId("setupCompletoButton").addStyleClass("setupCompletoSin");
             }
             this.RefreshSinCounter = 10;
@@ -656,7 +661,10 @@ sap.ui.define([
                     for (i = 0; i < Jdata.Macchine.length; i++) {
                         Jdata.Macchine[i].class = Jdata.Macchine[i].nome.split(" ").join("");
                         if (Jdata.LineaID === "31") {
-                            Jdata.Macchine[i].class += "_L";
+                            Jdata.Macchine[i].class += "_9";
+                        }
+                        if (Jdata.LineaID === "16") {
+                            Jdata.Macchine[i].class += "_6";
                         }
                     }
                     if (!sap.ui.getCore().byId("P_" + Jdata.Macchine[0].risorsaid)) {
@@ -919,6 +927,7 @@ sap.ui.define([
             this.ClosingDialog.open();
         },
         ConfermaInvioSetup: function () {
+            this.ClosingDialog.close();
             if (this.MachineSetupClicked === "completo") {
                 this.SendCompleteSetup();
             } else {
@@ -2324,7 +2333,7 @@ sap.ui.define([
 //      ----------------    FUNZIONI SINOTTICO    ----------------
 
         SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice", "confezionatrice"];
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice", "confezionatrice", "dosatore"];
             for (var i = 0; i < data_linea.Macchine.length; i++) {
                 for (var j = 0; j < names.length; j++) {
                     if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
@@ -2343,6 +2352,9 @@ sap.ui.define([
                                 break;
                             case "confezionatrice":
                                 data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Confezionatrice SX" : "Confezionatrice DX";
+                                break;
+                            case "dosatore":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Dosatore SX" : "Dosatore DX";
                                 break;
                         }
                     }

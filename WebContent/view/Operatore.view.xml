@@ -483,10 +483,10 @@
                                     </VBox>
                                     <VBox width="4%" height="100%"/>
                                     <VBox width="8%" height="100%">
-                                        <wt:CustomButtonSPC enabled="false" width="100%" class="borderBlue" fase="{GeneralModel>/DatiSPC/0/fase}" nCamp="{GeneralModel>/DatiSPC/0/numeroCampionamenti}" allarme="{GeneralModel>/DatiSPC/0/allarme}" press="SPCGraph" app:mydata="0"/>
+                                        <wt:CustomButtonSPC enabled="false" width="100%" class="borderBlue" fase="{GeneralModel>/DatiSPC/0/fase}" nCamp="{GeneralModel>/DatiSPC/0/deltaPercentuale}" allarme="{GeneralModel>/DatiSPC/0/allarme}" press="SPCGraph" app:mydata="0"/>
                                     </VBox>
                                     <VBox width="8%" height="100%">
-                                        <wt:CustomButtonSPC enabled="false" width="100%" class="borderBlue" fase="{GeneralModel>/DatiSPC/1/fase}" nCamp="{GeneralModel>/DatiSPC/1/numeroCampionamenti}" allarme="{GeneralModel>/DatiSPC/1/allarme}" press="SPCGraph" app:mydata="1"/>
+                                        <wt:CustomButtonSPC enabled="false" width="100%" class="borderBlue" fase="{GeneralModel>/DatiSPC/1/fase}" nCamp="{GeneralModel>/DatiSPC/1/deltaPercentuale}" allarme="{GeneralModel>/DatiSPC/1/allarme}" press="SPCGraph" app:mydata="1"/>
                                     </VBox>
                                     <VBox width="6%" height="100%"/>
                                 </HBox>
@@ -789,7 +789,7 @@
                                                         enableColumnReordering="false"
                                                         enableSelectAll="false"
                                                         ariaLabelledBy="title"
-                                                        visibleRowCount="10"
+                                                        visibleRowCount="9"
                                                         rowHeight="50px"
                                                         cellClick="TreeTableRowClickExpander"
                                                         app:mydata="TreeTable_AttributiModifica">
@@ -879,21 +879,21 @@
                                                             </t:Column>
                                                         </wt:columns>
                                                     </wt:CustomTreeTable>
-                                                    <HBox>
-                                                        <VBox width="47%">
-                                                            <Button text="Annulla" width="100%" press="AnnullaModifica" class="annullaButton"/>
-                                                        </VBox>
-                                                        <VBox  width="6%">
-                                                            <Text/>
-                                                        </VBox>
-                                                        <VBox width="47%">
-                                                            <Button text="Conferma" width="100%" press="ConfermaModifica" class="confermaButton"/>
-                                                        </VBox> 
-                                                    </HBox>
                                                 </content>
                                             </TabContainerItem>
                                         </items>
                                     </TabContainer>
+                                    <HBox>
+                                        <VBox width="47%">
+                                            <Button text="Annulla" width="100%" press="AnnullaModifica" class="annullaButton"/>
+                                        </VBox>
+                                        <VBox  width="6%">
+                                            <Text/>
+                                        </VBox>
+                                        <VBox width="47%">
+                                            <Button text="Conferma" width="100%" press="ConfermaModifica" class="confermaButton"/>
+                                        </VBox> 
+                                    </HBox>
                                 </VBox>
                                 <VBox width="5%"/>
                             </HBox>

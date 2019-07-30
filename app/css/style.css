@@ -169,11 +169,14 @@
 .shiftImage {
     padding-top: 5rem;
 }
-.shiftImage_L {
+.shiftImage_9 {
+    padding-top: 1rem;
+}
+.shiftImage_6 {
     padding-top: 1rem;
 }
 .annullaButtonSin {
-    left: 103.5rem;
+    left: 102rem;
     width: 50pt;
     height: 50pt;
     text-shadow: 0 0 0;
@@ -248,18 +251,33 @@
     font-size: 20pt;
     color: #003A6B;
 }
-.setupCompletoSin_L {
-    left: 88.5rem;
-    top: 5rem;
+.setupCompletoSin_9 {
+    left: 45rem;
+    bottom: 41rem;
 }
-.setupCompletoSin_L .sapMBtnInner{
+.setupCompletoSin_9 .sapMBtnInner{
     border-radius: 10px;
     border: 1px solid #003A6B;
     background: white;
     font-size: 20pt;
     color: #003A6B;
 }
-.setupCompletoSin_L .sapMBtnIcon{
+.setupCompletoSin_9 .sapMBtnIcon{
+    font-size: 20pt;
+    color: #003A6B;
+}
+.setupCompletoSin_6 {
+    left: 45rem;
+    bottom: 88rem;
+}
+.setupCompletoSin_6 .sapMBtnInner{
+    border-radius: 10px;
+    border: 1px solid #003A6B;
+    background: white;
+    font-size: 20pt;
+    color: #003A6B;
+}
+.setupCompletoSin_6 .sapMBtnIcon{
     font-size: 20pt;
     color: #003A6B;
 }
@@ -394,127 +412,282 @@
     right: 8rem;
 }
 
-.ConfezionatriceSX_L {
+.ConfezionatriceSX_9 {
     position: absolute;
     bottom: 36.5rem;
     left: 1rem;
 }
-.ConfezionatriceDX_L {
+.ConfezionatriceDX_9 {
     position: absolute;
     left: 22rem;
     bottom: 36.5rem;
 }
-.MarcatoreSX_L {
+.MarcatoreSX_9 {
     position: absolute;
     bottom: 17rem;
     left: 9.5rem;
 }
-.MarcatoreDX_L {
+.MarcatoreDX_9 {
     position: absolute;
     left: 31.5rem;
     bottom: 17rem;
 }
-.PackItalSX_L {
+.PackItalSX_9 {
     position: absolute;
     bottom: 1rem;
     left: 10rem;
 }
-.PackItalDX_L {
+.PackItalDX_9 {
     position: absolute;
     bottom: 1rem;
     left: 35rem;
 }
-.Scatolatrice_L {
+.Scatolatrice_9 {
     position: absolute;
     bottom: 1rem;
     right: 35rem;
 }
-.Etichettatrice_L {
+.Etichettatrice_9 {
     position: absolute;
     bottom: 31rem;
     right: 15rem;
 }
 
-.ConfezionatriceSX_L_SA {
+.ConfezionatriceSX_9_SA {
     position: absolute;
     bottom: 36.5rem;
     left: 6rem;
 }
-.ConfezionatriceDX_L_SA {
+.ConfezionatriceDX_9_SA {
     position: absolute;
     left: 27rem;
     bottom: 36.5rem;
 }
-.MarcatoreSX_L_SA {
+.MarcatoreSX_9_SA {
     position: absolute;
     bottom: 17rem;
     left: 14.5rem;
 }
-.MarcatoreDX_L_SA {
+.MarcatoreDX_9_SA {
     position: absolute;
     left: 36.5rem;
     bottom: 17rem;
 }
-.PackItalSX_L_SA {
+.PackItalSX_9_SA {
     position: absolute;
     bottom: 1rem;
     left: 15rem;
 }
-.PackItalDX_L_SA {
+.PackItalDX_9_SA {
     position: absolute;
     bottom: 1rem;
     left: 40rem;
 }
-.Scatolatrice_L_SA {
+.Scatolatrice_9_SA {
     position: absolute;
     bottom: 1rem;
     right: 30rem;
 }
-.Etichettatrice_L_SA {
+.Etichettatrice_9_SA {
     position: absolute;
     bottom: 31rem;
     right: 10rem;
 }
 
-.ConfezionatriceSX_L_SM {
+.ConfezionatriceSX_9_SM {
     position: absolute;
     bottom: 36.5rem;
     left: 11rem;
 }
-.ConfezionatriceDX_L_SM {
+.ConfezionatriceDX_9_SM {
     position: absolute;
     left: 32rem;
     bottom: 36.5rem;
 }
-.MarcatoreSX_L_SM {
+.MarcatoreSX_9_SM {
     position: absolute;
     bottom: 17rem;
     left: 19.5rem;
 }
-.MarcatoreDX_L_SM {
+.MarcatoreDX_9_SM {
     position: absolute;
     left: 41.5rem;
     bottom: 17rem;
 }
-.PackItalSX_L_SM {
+.PackItalSX_9_SM {
     position: absolute;
     bottom: 1rem;
     left: 20rem;
 }
-.PackItalDX_L_SM {
+.PackItalDX_9_SM {
     position: absolute;
     bottom: 1rem;
     left: 45rem;
 }
-.Scatolatrice_L_SM {
+.Scatolatrice_9_SM {
     position: absolute;
     bottom: 1rem;
     right: 25rem;
 }
-.Etichettatrice_L_SM {
+.Etichettatrice_9_SM {
     position: absolute;
     bottom: 31rem;
     right: 5rem;
+}
+
+
+/* LINEA 6*/
+.DosatoreSX_6 {
+    position: absolute;
+    bottom: 41rem;
+    left: 10rem;
+}
+.DosatoreDX_6 {
+    position: absolute;
+    left: 11rem;
+    bottom: 20.5rem;
+}
+.ConfezionatriceSX_6 {
+    position: absolute;
+    bottom: 34rem;
+    left: 7rem;
+}
+.ConfezionatriceDX_6 {
+    position: absolute;
+    left: 7rem;
+    bottom: 13.5rem;
+}
+.MarcatoreSX_6 {
+    position: absolute;
+    bottom: 48rem;
+    left: 45rem;
+}
+.MarcatoreDX_6 {
+    position: absolute;
+    left: 46rem;
+    bottom: 8rem;
+}
+.PackItalSX_6 {
+    position: absolute;
+    bottom: 46rem;
+    left: 66rem;
+}
+.PackItalDX_6 {
+    position: absolute;
+    bottom: 12rem;
+    left: 67rem;
+}
+.Scatolatrice_6 {
+    position: absolute;
+    bottom: 69rem;
+    right: 40rem;
+}
+.Etichettatrice_6 {
+    position: absolute;
+    bottom: 76rem;
+    left: 3rem;
+}
+
+.DosatoreSX_6_SA {
+    position: absolute;
+    bottom: 41rem;
+    left: 15rem;
+}
+.DosatoreDX_6_SA {
+    position: absolute;
+    left: 16rem;
+    bottom: 20.5rem;
+}
+.ConfezionatriceSX_6_SA {
+    position: absolute;
+    bottom: 34rem;
+    left: 12rem;
+}
+.ConfezionatriceDX_6_SA {
+    position: absolute;
+    left: 12rem;
+    bottom: 13.5rem;
+}
+.MarcatoreSX_6_SA {
+    position: absolute;
+    bottom: 48rem;
+    left: 50rem;
+}
+.MarcatoreDX_6_SA {
+    position: absolute;
+    left: 51rem;
+    bottom: 8rem;
+}
+.PackItalSX_6_SA {
+    position: absolute;
+    bottom: 46rem;
+    left: 71rem;
+}
+.PackItalDX_6_SA {
+    position: absolute;
+    bottom: 12rem;
+    left: 72rem;
+}
+.Scatolatrice_6_SA {
+    position: absolute;
+    bottom: 69rem;
+    right: 35rem;
+}
+.Etichettatrice_6_SA {
+    position: absolute;
+    bottom: 76rem;
+    left: 8rem;
+}
+
+.DosatoreSX_6_SM {
+    position: absolute;
+    bottom: 41rem;
+    left: 20rem;
+}
+.DosatoreDX_6_SM {
+    position: absolute;
+    left: 21rem;
+    bottom: 20.5rem;
+}
+.ConfezionatriceSX_6_SM {
+    position: absolute;
+    bottom: 34rem;
+    left: 17rem;
+}
+.ConfezionatriceDX_6_SM {
+    position: absolute;
+    left: 17rem;
+    bottom: 13.5rem;
+}
+.MarcatoreSX_6_SM {
+    position: absolute;
+    bottom: 48rem;
+    left: 55rem;
+}
+.MarcatoreDX_6_SM {
+    position: absolute;
+    left: 56rem;
+    bottom: 8rem;
+}
+.PackItalSX_6_SM {
+    position: absolute;
+    bottom: 46rem;
+    left: 76rem;
+}
+.PackItalDX_6_SM {
+    position: absolute;
+    bottom: 12rem;
+    left: 77rem;
+}
+.Scatolatrice_6_SM {
+    position: absolute;
+    bottom: 69rem;
+    right: 30rem;
+}
+.Etichettatrice_6_SM {
+    position: absolute;
+    bottom: 76rem;
+    left: 13rem;
 }
 
 .buttonWhite .sapMBtnInner {
