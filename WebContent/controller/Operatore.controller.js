@@ -90,6 +90,8 @@ sap.ui.define([
         BCKUPSetup: null,
         ModelSelect: new JSONModel({}),
         BCKUPSKUAttuale: null,
+        AllarmeMedia: null,
+        Scartati: null,
 //------------------------------------------------------------------------------
 
         onInit: function () {
@@ -268,6 +270,10 @@ sap.ui.define([
                     if (typeof sap.ui.getCore().byId("ButtonPresaInCarico") === "undefined") {
                         this.CreateButtons();
                     }
+
+
+                    data.StatoLinea = "Disponibile.Lavorazione";
+
 
                     switch (data.StatoLinea) {
                         case "Disponibile.AttesaPresaInCarico":
@@ -1369,7 +1375,7 @@ sap.ui.define([
             data = this.RecursivePropertyCopy(data, "codeValueModify", "codeValue");
             this.backupSetupModify = JSON.parse(JSON.stringify(this.ModelDetailPages.getData().SetupLinea.Modify));
             this.codeCheck = 0;
-            data = this.RecursiveJSONCodeCheck(data, "valueModify");
+            data = this.RecursiveJSONModifyCheck(data, "valueModify");
             data = this.RecursiveJSONCodeCheck(data, "codeValue");
             if (this.codeCheck === 0) {
 
@@ -1418,6 +1424,8 @@ sap.ui.define([
             this.SPCDialog.open();
             this.SPCDialog.setBusy(true);
             this.SPCDataCaller();
+            this.TabContainer = this.getView().byId("graphTabContainer");
+            this.RemoveClosingButtons(2);
             var that = this;
             this.SPCTimer = setInterval(function () {
                 try {
@@ -1429,6 +1437,10 @@ sap.ui.define([
                     console.log(e);
                 }
             }, 1000);
+        },
+        TriggerRefresh: function () {
+            this.SPCDataCaller();
+            this.SPCDialog.setBusy(true);
         },
         FixDescription: function (str) {
             var prefix = (this.indexSPC === 0) ? "SX" : "DX";
@@ -1459,19 +1471,40 @@ sap.ui.define([
             }
         },
         SUCCESSSPCDataLoad: function (Jdata) {
+
+            Jdata = {
+                "valori": "#500.964093772528#501.000684395276#501.097615955748#501.137854360174#501.058068924156#501.002262031741#501.038035828567#500.91623224571#500.910609021139#500.755548119025#500.736993307123#500.79729397641#500.842564578769#500.821308120892#500.909177308803#500.898259577923#500.784433620131#500.798990258118#500.773091232306#500.756782109075#500.710103898168#500.595093508351#500.633584157516#500.794225741764#500.892803167588#500.852522850829#500.878270565746#500.852443509172#500.819199158254#500.950279242429#500.910251318186#500.862226186367#500.819003567731#500.794103210958#500.778692889862#500.733823600876#500.845441240788#500.904897116709#500.724407405039#500.748966664535#500.682069998082#500.777862998273#500.863076698446#500.888769028602#500.814892125741#500.876402913167#500.976762621851#500.884086359666#500.943677723699#500.925309951329",
+                "limSup": "#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964",
+                "limInf": "#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036",
+                "time": "#15:18:13#15:18:15#15:18:16#15:18:17#15:18:18#15:18:20#15:18:21#15:18:22#15:18:23#15:18:25#15:18:26#15:18:27#15:18:28#15:18:30#15:18:31#15:18:32#15:18:33#15:18:35#15:18:36#15:18:37#15:18:39#15:18:40#15:18:41#15:18:42#15:18:43#15:18:45#15:18:46#15:18:47#15:18:48#15:18:50#15:18:51#15:18:52#15:18:54#15:18:55#15:18:56#15:18:57#15:18:59#15:19:00#15:19:01#15:19:02#15:19:04#15:19:05#15:19:06#15:19:07#15:19:09#15:19:10#15:19:11#15:19:12#15:19:13#15:19:15",
+                "mediaProgressiva": "#500.964093772528#501.000684395276#503.097615955748#501.137854360174#501.058068924156#501.002262031741#501.038035828567#500.91623224571#500.910609021139#500.755548119025#500.736993307123#500.79729397641#500.842564578769#500.821308120892#500.909177308803#500.898259577923#500.784433620131#500.798990258118#500.773091232306#500.756782109075#500.710103898168#500.595093508351#500.633584157516#500.794225741764#500.892803167588#500.852522850829#500.878270565746#500.852443509172#500.819199158254#500.950279242429#500.910251318186#500.862226186367#500.819003567731#500.794103210958#500.778692889862#500.733823600876#500.845441240788#500.904897116709#500.724407405039#500.748966664535#500.682069998082#500.777862998273#500.863076698446#500.888769028602#500.814892125741#500.876402913167#500.976762621851#500.884086359666#500.943677723699#500.925309951329",
+                "netto": "#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036#500.576026831036",
+                "tolleranzaPercentuale": "#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964#501.530373168964",
+                "scartati": "40"
+            };
+
+            var spcData = Jdata;
+            var deltaJData = JSON.parse(JSON.stringify(Jdata));
+
             var isEmpty;
             this.Allarme = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].allarme;
+            this.AllarmeMedia = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].allarmeMedia;
             this.Fase = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].fase;
             this.Avanzamento = this.ModelDetailPages.getData().DatiSPC[this.indexSPC].avanzamento;
-            if (Jdata.valori === "") {
+            this.Scartati = Jdata.scartati;
+            if (Jdata.valori === "" && Jdata.mediaProgressiva === "") {
                 isEmpty = 1;
             } else {
                 isEmpty = 0;
-                Jdata = this.ParseSPCData(Jdata, "#");
+                spcData = this.ParseSPCData(spcData, "#");
+                deltaJData = this.ParseDeltaData(deltaJData, "#");
+
                 if (this.Fase === "1") {
-                    Jdata = this.Phase1(Jdata);
+                    spcData = this.Phase1(spcData);
                 }
-                this.ModelDetailPages.setProperty("/DatiSPC/Data/", Jdata);
+
+                this.ModelDetailPages.setProperty("/DatiSPC/Data/", spcData);
+                this.ModelDetailPages.setProperty("/DatiSPC/DeltaData", deltaJData);
                 this.getView().setModel(this.ModelDetailPages, "GeneralModel");
             }
             this.SPCDialogFiller(isEmpty);
@@ -2985,17 +3018,22 @@ sap.ui.define([
                     break;
             }
         },
+
         SPCDialogFiller: function (discr) {
             var textHeader = this.getView().byId("headerSPCWindow");
             textHeader.setText(String(this.DescrizioneParametro));
             var samplingHeader = this.getView().byId("samplingSPC");
+
             if (Number(this.Fase) === 1) {
                 samplingHeader.setText("Campionamento in corso: " + String(this.Avanzamento) + "/50");
             } else {
                 samplingHeader.setText("");
             }
+            var discardedPackages = this.getView().byId("pacchettiScartati");
+            discardedPackages.setText("Pacchetti scartati: " + String(this.Scartati));
             if (discr !== 1) {
                 var plotBox = this.getView().byId("plotBox");
+                var deltaBox = this.getView().byId("deltaBox");
                 var alarmButton = this.getView().byId("alarmButton");
                 if (Number(this.Fase) === 2 && Number(this.Allarme) === 1) {
                     alarmButton.setEnabled(true);
@@ -3006,15 +3044,28 @@ sap.ui.define([
                     alarmButton.removeStyleClass("allarmeButton");
                     alarmButton.addStyleClass("chiudiButton");
                 }
+                var deltaData = this.ModelDetailPages.getData().DatiSPC.DeltaData;
+                var deltaResult = this.PrepareDeltaDataToPlot(deltaData);
+                var deltaID = jQuery.sap.byId(deltaBox.getId()).get(0);
+                if (deltaID !== undefined) {
+                    Plotly.newPlot(deltaID, deltaResult.dataPlot, deltaResult.layout);
+                }
                 if (!((Number(this.Fase) === 1) && (this.ModelDetailPages.getData().DatiSPC.Data.valori.length < 50))) {
-                    var data = this.ModelDetailPages.getData().DatiSPC.Data;
-                    var result = this.PrepareDataToPlot(data, this.Fase);
-                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
-                    Plotly.newPlot(ID, result.dataPlot, result.layout);
+
+                    var spcData = this.ModelDetailPages.getData().DatiSPC.Data;
+                    var spcResult = this.PrepareDataToPlot(spcData, this.Fase);
+
+                    var spcID = jQuery.sap.byId(plotBox.getId()).get(0);
+
+                    if (spcID !== undefined) {
+                        Plotly.newPlot(spcID, spcResult.dataPlot, spcResult.layout);
+                    }
                 }
             }
         },
+
         ParseSPCData: function (data, char) {
+
             for (var key in data) {
                 data[key] = data[key].split(char);
                 for (var i = data[key].length - 1; i >= 0; i--) {
@@ -3027,7 +3078,44 @@ sap.ui.define([
                     }
                 }
             }
+
             return data;
+        },
+
+        ParseDeltaData: function (data, char) {
+            var k;
+            for (var key in data) {
+                data[key] = data[key].split(char);
+                for (var i = data[key].length - 1; i >= 0; i--) {
+                    if (data[key][i] === "") {
+                        data[key].splice(i, 1);
+                    } else {
+                        if (key !== "time") {
+                            data[key][i] = Number(data[key][i]);
+                        }
+                    }
+                }
+            }
+
+
+            data.inRangeValue = [];
+            data.ntRangeValue = [];
+            data.inRangeTime = [];
+            data.ntRangeTime = [];
+            console.log(data);
+            for (k = 0; k < data.mediaProgressiva.length; k++) {
+                if (data.mediaProgressiva[k] <= data.tolleranzaPercentuale[k] && data.mediaProgressiva[k] >= data.netto[k]) {
+                    data.inRangeValue.push(data.mediaProgressiva[k]);
+                    data.inRangeTime.push(data.time[k]);
+
+                } else {
+                    data.ntRangeValue.push(data.mediaProgressiva[k]);
+                    data.ntRangeTime.push(data.time[k]);
+
+                }
+            }
+            return data;
+
         },
         Phase1: function (data) {
             data.MR = [];
@@ -3098,6 +3186,7 @@ sap.ui.define([
                 }
             };
             if (fase === "1") {
+
                 var MR = {
                     x: Jdata.MRTime,
                     y: Jdata.MR,
@@ -3136,6 +3225,83 @@ sap.ui.define([
             }
             return {dataPlot: dataPlot, layout: layout};
         },
+        PrepareDeltaDataToPlot: function (Jdata) {
+            var dataPlot, layout;
+
+            var pointInRange = {
+                x: Jdata.inRangeTime,
+                y: Jdata.inRangeValue,
+                type: 'scatter',
+                line: {color: 'rgb(0,58,107)', width: 1},
+                mode: 'markers',
+                marker: {
+                    color: 'rgb(1, 255 , 1)',
+                    size: 12,
+                    opacity: 1,
+                    symbol: 'circle'
+                }
+            };
+            var pointNotRange = {
+                x: Jdata.ntRangeTime,
+                y: Jdata.ntRangeValue,
+                type: 'scatter',
+                line: {color: 'rgb(0,58,107)', width: 1},
+                mode: 'markers',
+                marker: {
+                    color: 'rgb(255, 1 , 1)',
+                    size: 12,
+                    opacity: 1,
+                    symbol: 'circle'
+                }
+            };
+
+            var valori = {
+                x: Jdata.time,
+                y: Jdata.mediaProgressiva,
+                type: 'scatter',
+                line: {color: 'rgb(0,58,107)', width: 1}
+            };
+
+            var limSup = {
+                x: Jdata.time,
+                y: Jdata.tolleranzaPercentuale,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            var limInf = {
+                x: Jdata.time,
+                y: Jdata.netto,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            dataPlot = [valori, limSup, limInf, pointNotRange, pointInRange];
+            layout = {
+                showlegend: false,
+                autosize: true,
+                xaxis: {
+                    showgrid: true,
+                    zeroline: false
+                },
+                yaxis: {
+                    showgrid: true,
+                    zeroline: false
+                }
+            };
+            if (Number(this.AllarmeMedia) === 0) {
+                layout.xaxis.linecolor = "rgb(124,162,149)";
+                layout.yaxis.linecolor = "rgb(124,162,149)";
+            } else {
+                layout.xaxis.linecolor = "rgb(255,211,0)";
+                layout.yaxis.linecolor = "rgb(255,211,0)";
+            }
+            layout.xaxis.linewidth = 4;
+            layout.xaxis.mirror = true;
+            layout.yaxis.linewidth = 4;
+            layout.yaxis.mirror = true;
+
+            return {dataPlot: dataPlot, layout: layout};
+        },
+
 //      ----------------    FUNZIONI FERMO    ----------------
 
         GetStringIDFermiAuto: function () {
@@ -3569,6 +3735,23 @@ sap.ui.define([
                     json[key] = this.RecursiveJSONCodeCheck(json[key], attr);
                 } else {
                     if (key === "code") {
+                        if (json[key] === 1) {
+                            if (json[attr] === "") {
+                                this.codeCheck = 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return json;
+        },
+        RecursiveJSONModifyCheck: function (json, attr) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveJSONModifyCheck(json[key], attr);
+                } else {
+                    if (key === "modify") {
                         if (json[key] === 1) {
                             if (json[attr] === "") {
                                 this.codeCheck = 1;

@@ -1125,9 +1125,10 @@ textButtonsDialog .sapMBtnContent {
 }
 .DualSPCButtonContent .sapMBtnContent {
     position: absolute;
-    left: 34%;
+    left: 14%;
     top: 36%;
     font-size: 24pt;
+    text-shadow: none;
 }
 .SPCButtonPhase1 .sapMBtnIcon {
     position: absolute;

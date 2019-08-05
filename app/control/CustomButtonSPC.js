@@ -34,21 +34,11 @@ sap.ui.define([
             }
             switch (fase) {
                 case "1":
-                    this.setEnabled(true);
-//                    if (this.getIcon() !== "img/triangolo_buco.png") {
-//                        this.setIcon("img/triangolo_buco.png");
-//                    }
-                    this.setText(nCamp + "%");
-                    this.addStyleClass("SPCButtonPhase1");
-                    this.addStyleClass("SPCButtonColorYellow");
-                    this.addStyleClass("DualSPCButtonContent");
-                    break;
                 case "2":
                     this.setEnabled(true);
-//                    this.setIcon("");
+                    this.addStyleClass("DualSPCButtonContent");
                     this.setText(nCamp + "%");
                     this.addStyleClass("SPCButtonPhase1");
-//                    this.setText("");
                     if (allarme === "0") {
                         this.addStyleClass("SPCButtonColorGreen");
                     } else if (allarme === "1") {

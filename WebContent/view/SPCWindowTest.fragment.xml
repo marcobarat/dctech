@@ -21,16 +21,7 @@
                 <items>
                      <TabContainerItem name="Media Progressiva">
                         <content>
-                             <VBox height="8%" width="100%" class="colorPage">
-                                <HBox>
-                                    <VBox height="100%" width="100%">
-                                        <FlexBox alignItems="Start" justifyContent="Center">
-                                            <Text id="pacchettiScartati" text="" class="textTop"/>
-                                        </FlexBox>
-                                    </VBox>
-                                </HBox>
-                            </VBox>
-                            <VBox id="deltaBox" height="730px" width="100%" class="colorPage"/>
+                            <VBox id="deltaBox" height="790px" width="100%" class="colorPage"/>
                             <VBox height="3%" width="100%" class="colorPage"/>
                             <VBox height="7%" width="100%" class="colorPage"/>
                         </content>
@@ -46,7 +37,7 @@
                                     </VBox>
                                 </HBox>
                             </VBox>
-                            <VBox id="plotBox" height="730px" width="100%" class="colorPage"/>
+                            <VBox id="plotBox" height="790px" width="100%" class="colorPage"/>
                             <VBox height="3%" width="100%" class="colorPage"/>
                             <VBox height="7%" width="100%" class="colorPage"/>
                         </content>
